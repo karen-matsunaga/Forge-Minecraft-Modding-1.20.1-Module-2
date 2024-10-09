@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_alexandrite_ore": {
+    "has_raw_alexandrite": {
       "conditions": {
         "items": [
           {
             "items": [
-              "mccourse:alexandrite_ore"
+              "mccourse:raw_alexandrite"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:alexandrite_from_blasting_alexandrite_ore"
+        "recipe": "mccourse:alexandrite_from_blasting_raw_alexandrite"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_alexandrite_ore",
+      "has_raw_alexandrite",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:alexandrite_from_blasting_alexandrite_ore"
+      "mccourse:alexandrite_from_blasting_raw_alexandrite"
     ]
   },
   "sends_telemetry_event": false

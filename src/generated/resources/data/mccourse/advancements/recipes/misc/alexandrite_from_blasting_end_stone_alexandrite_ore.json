@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_alexandrite_block": {
+    "has_end_stone_alexandrite_ore": {
       "conditions": {
         "items": [
           {
             "items": [
-              "mccourse:alexandrite_block"
+              "mccourse:end_stone_alexandrite_ore"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:raw_alexandrite"
+        "recipe": "mccourse:alexandrite_from_blasting_end_stone_alexandrite_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_alexandrite_block",
+      "has_end_stone_alexandrite_ore",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:raw_alexandrite"
+      "mccourse:alexandrite_from_blasting_end_stone_alexandrite_ore"
     ]
   },
   "sends_telemetry_event": false

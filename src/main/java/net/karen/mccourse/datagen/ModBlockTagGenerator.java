@@ -5,6 +5,7 @@ import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -24,6 +25,31 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(ModTags.Blocks.METAL_DETECTOR_VALUABLES)
                 .add(ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
                 ModBlocks.END_STONE_ALEXANDRITE_ORE.get(), ModBlocks.NETHER_ALEXANDRITE_ORE.get()).addTag(Tags.Blocks.ORES);
+
+        // Add Mineable Tags
+
+        // Pickaxe's tag
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(ModBlocks.ALEXANDRITE_BLOCK.get(),
+                        ModBlocks.RAW_ALEXANDRITE_BLOCK.get(),
+                        ModBlocks.ALEXANDRITE_ORE.get(),
+                        ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
+                        ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
+                        ModBlocks.NETHER_ALEXANDRITE_ORE.get(),
+                        ModBlocks.SOUND_BLOCK.get());
+
+        // Iron's tool tag
+        this.tag(BlockTags.NEEDS_IRON_TOOL)
+                .add(ModBlocks.ALEXANDRITE_BLOCK.get(),
+                        ModBlocks.RAW_ALEXANDRITE_BLOCK.get(),
+                        ModBlocks.ALEXANDRITE_ORE.get(),
+                        ModBlocks.SOUND_BLOCK.get());
+
+        // Diamond's tool tag
+        this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
+                .add(ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
+                        ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
+                        ModBlocks.NETHER_ALEXANDRITE_ORE.get());
     }
 
     @Override

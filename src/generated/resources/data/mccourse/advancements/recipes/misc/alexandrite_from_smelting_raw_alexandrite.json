@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:alexandrite_from_smelting_raw_alexandrite"
+        "recipe": "mccourse:alexandrite_from_smelting_raw_alexandrite"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:alexandrite_from_smelting_raw_alexandrite"
+      "mccourse:alexandrite_from_smelting_raw_alexandrite"
     ]
   },
   "sends_telemetry_event": false

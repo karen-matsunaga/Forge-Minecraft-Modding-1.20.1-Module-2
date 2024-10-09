@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_deepslate_alexandrite_ore": {
+    "has_alexandrite_block": {
       "conditions": {
         "items": [
           {
             "items": [
-              "mccourse:deepslate_alexandrite_ore"
+              "mccourse:alexandrite_block"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:alexandrite_from_smelting_deepslate_alexandrite_ore"
+        "recipe": "mccourse:raw_alexandrite_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_deepslate_alexandrite_ore",
+      "has_alexandrite_block",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:alexandrite_from_smelting_deepslate_alexandrite_ore"
+      "mccourse:raw_alexandrite_block"
     ]
   },
   "sends_telemetry_event": false

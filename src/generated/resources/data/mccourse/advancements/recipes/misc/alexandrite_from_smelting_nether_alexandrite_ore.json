@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_alexandrite_ore": {
+    "has_nether_alexandrite_ore": {
       "conditions": {
         "items": [
           {
             "items": [
-              "mccourse:alexandrite_ore"
+              "mccourse:nether_alexandrite_ore"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:alexandrite_from_smelting_alexandrite_ore"
+        "recipe": "mccourse:alexandrite_from_smelting_nether_alexandrite_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_alexandrite_ore",
+      "has_nether_alexandrite_ore",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:alexandrite_from_smelting_alexandrite_ore"
+      "mccourse:alexandrite_from_smelting_nether_alexandrite_ore"
     ]
   },
   "sends_telemetry_event": false
