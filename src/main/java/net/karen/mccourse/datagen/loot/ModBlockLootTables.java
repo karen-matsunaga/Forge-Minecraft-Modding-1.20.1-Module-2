@@ -36,6 +36,15 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.add(ModBlocks.NETHER_ALEXANDRITE_ORE.get(),
                 block -> createOreDrop(ModBlocks.NETHER_ALEXANDRITE_ORE.get(), ModItems.ALEXANDRITE.get()));
 
+        // Stairs
+        this.dropSelf(ModBlocks.ALEXANDRITE_STAIRS.get());
+
+        // Slabs - Drops are different because to put twice blocks
+        this.add(ModBlocks.ALEXANDRITE_SLABS.get(),
+                block -> createSlabItemTable(ModBlocks.ALEXANDRITE_SLABS.get()));
+
+
+
     }
 
     // Return all registries in deferred registry

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "mccourse:block/alexandrite_slabs"
+    },
+    "type=double": {
+      "model": "mccourse:block/alexandrite_block"
+    },
+    "type=top": {
+      "model": "mccourse:block/alexandrite_slabs_top"
+    }
+  }
+}

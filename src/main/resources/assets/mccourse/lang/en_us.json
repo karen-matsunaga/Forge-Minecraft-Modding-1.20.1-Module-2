@@ -13,6 +13,9 @@
 
   "block.mccourse.sound_block": "Sound Block",
 
+  "block.mccourse.alexandrite_stairs": "Alexandrite Stairs",
+  "block.mccourse.alexandrite_slabs": "Alexandrite Slab",
+
   "creativetab.course_tab": "Course Tab",
 
   "item.mccourse.metal_detector.no_valuable_values": "No Valuables Found!",

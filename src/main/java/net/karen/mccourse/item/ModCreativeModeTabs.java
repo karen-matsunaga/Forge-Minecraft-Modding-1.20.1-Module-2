@@ -46,6 +46,13 @@ public class ModCreativeModeTabs {
                         // Fuels
                         output.accept(ModItems.PEAT_BRICK.get());
 
+                        // Stairs
+                        output.accept(ModBlocks.ALEXANDRITE_STAIRS.get());
+
+                        // Slabs
+                        output.accept(ModBlocks.ALEXANDRITE_SLABS.get());
+
+
                     }).build());
 
     // Registry Creative Mode Tab
