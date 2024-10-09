@@ -52,6 +52,12 @@ public class ModCreativeModeTabs {
                         // Slabs
                         output.accept(ModBlocks.ALEXANDRITE_SLABS.get());
 
+                        // Pressure Plate
+                        output.accept(ModBlocks.ALEXANDRITE_PREASSURE_PLATE.get());
+
+                        // Button
+                        output.accept(ModBlocks.ALEXANDRITE_BUTTON.get());
+
 
                     }).build());
 
