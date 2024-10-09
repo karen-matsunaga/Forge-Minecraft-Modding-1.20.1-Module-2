@@ -48,22 +48,6 @@ public class ModCreativeModeTabs {
 
                     }).build());
 
-    // Second Creative Mode Tab
-//    public static final RegistryObject<CreativeModeTab> COURSE_TAB_2 = CREATIVE_MODE_TABS.register("course_tab_2",
-//            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.ALEXANDRITE.get()))
-//                    .title(Component.translatable("creativetab.course_tab_2"))
-//                    .displayItems((displayParameters, output) -> {
-//                        // Items
-//                        output.accept(ModItems.ALEXANDRITE.get());
-//                        output.accept(ModItems.RAW_ALEXANDRITE.get());
-//
-//                        // Blocks
-//                        output.accept(ModBlocks.ALEXANDRITE_BLOCK.get());
-//                        output.accept(ModBlocks.RAW_ALEXANDRITE_BLOCK.get());
-//
-//                    }).build());
-
-
     // Registry Creative Mode Tab
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TABS.register(eventBus);
