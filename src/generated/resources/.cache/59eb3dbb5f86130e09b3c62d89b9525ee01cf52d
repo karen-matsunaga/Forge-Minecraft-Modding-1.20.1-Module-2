@@ -1,0 +1,8 @@
+// 1.20.1	2024-10-09T15:44:28.9511599	Loot Tables
+3c04bafc8e377b8b3a0acec4fb355ebe506bd32a data/mccourse/loot_tables/blocks/alexandrite_block.json
+41b4cbd5d552c161b4df97969ca4e74f17ce4ac6 data/mccourse/loot_tables/blocks/alexandrite_ore.json
+a6867ba7e80db0a5939a62321ca9fb57eafe7b1c data/mccourse/loot_tables/blocks/deepslate_alexandrite_ore.json
+6bf6c5c0e383d60737282fa8eb87d43834243d8d data/mccourse/loot_tables/blocks/end_stone_alexandrite_ore.json
+9103276ebcbd0fb0770deac612de7bdb023df112 data/mccourse/loot_tables/blocks/nether_alexandrite_ore.json
+7b06f064286af9b42cc2af9b330255bdfc434d90 data/mccourse/loot_tables/blocks/raw_alexandrite_block.json
+7d8fa6812bfae52dfc6b76bdf45977c92f8766af data/mccourse/loot_tables/blocks/sound_block.json
