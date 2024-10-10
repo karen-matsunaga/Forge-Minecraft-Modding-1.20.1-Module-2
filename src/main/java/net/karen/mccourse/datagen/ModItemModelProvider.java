@@ -56,6 +56,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Alexandrite paxel
         handheldItem(ModItems.ALEXANDRITE_PAXEL);
 
+        // Alexandrite hammer
+        handheldItem(ModItems.ALEXANDRITE_HAMMER);
+
 
     }
 

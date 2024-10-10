@@ -82,6 +82,9 @@ public class ModCreativeModeTabs {
                         // Alexandrite paxel
                         output.accept(ModItems.ALEXANDRITE_PAXEL.get());
 
+                        // Alexandrite hammer
+                        output.accept(ModItems.ALEXANDRITE_HAMMER.get());
+
 
                     }).build());
 

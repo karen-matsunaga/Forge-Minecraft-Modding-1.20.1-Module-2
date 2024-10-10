@@ -10,7 +10,4 @@ public class PaxelItem extends DiggerItem implements Vanishable {
         super(pAttackDamageModifier, pAttackSpeedModifier, pTier, ModTags.Blocks.PAXEL_MINEABLE, pProperties);
     }
 
-
-
-
 }
