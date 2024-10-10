@@ -2,6 +2,7 @@ package net.karen.mccourse;
 
 import com.mojang.logging.LogUtils;
 import net.karen.mccourse.block.ModBlocks;
+import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModCreativeModeTabs;
 import net.karen.mccourse.item.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -37,6 +38,9 @@ public class MCCourseMod {
 
         // Register blocks
         ModBlocks.register(modEventBus);
+
+        // Register enchantments
+        ModEnchantments.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
