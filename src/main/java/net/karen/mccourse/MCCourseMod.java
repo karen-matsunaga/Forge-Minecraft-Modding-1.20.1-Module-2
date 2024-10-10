@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModCreativeModeTabs;
+import net.karen.mccourse.item.ModItemProperties;
 import net.karen.mccourse.item.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
@@ -98,7 +99,10 @@ public class MCCourseMod {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            event.enqueueWork(() -> {
+                ModItemProperties.addCustomItemProperties();
 
+            });
         }
     }
 }

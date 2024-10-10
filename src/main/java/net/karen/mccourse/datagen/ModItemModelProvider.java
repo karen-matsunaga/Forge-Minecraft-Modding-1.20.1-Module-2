@@ -69,7 +69,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.ALEXANDRITE_HORSE_ARMOR);
 
         // Data tablet item
-        simpleItem(ModItems.DATA_TABLET);
+        // simpleItem(ModItems.DATA_TABLET);
 
 
     }
