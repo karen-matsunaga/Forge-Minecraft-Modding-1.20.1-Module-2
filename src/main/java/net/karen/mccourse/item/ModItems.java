@@ -1,6 +1,7 @@
 package net.karen.mccourse.item;
 
 import net.karen.mccourse.MCCourseMod;
+import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.item.custom.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
@@ -79,6 +80,11 @@ public class ModItems {
     // Data Tablet item
     public static final RegistryObject<Item> DATA_TABLET = ITEMS.register("data_tablet",
             () -> new DataTabletItem(new Item.Properties().stacksTo(1)));
+
+    // Kohlrabi's seeds
+    public static final RegistryObject<Item> KOHLRABI_SEEDS = ITEMS.register("kohlrabi_seeds",
+            () -> new ItemNameBlockItem(ModBlocks.KOHLRABI_CROP.get(), new Item.Properties()));
+
 
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) {

@@ -100,6 +100,10 @@ public class ModCreativeModeTabs {
                         // Custom data tablet
                         output.accept(ModItems.DATA_TABLET.get());
 
+                        // Kohlrabi's seeds
+                        output.accept(ModItems.KOHLRABI_SEEDS.get());
+
+
 
                     }).build());
 

@@ -71,6 +71,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Data tablet item
         // simpleItem(ModItems.DATA_TABLET);
 
+        // Kohlrabi's seeds
+        simpleItem(ModItems.KOHLRABI_SEEDS);
+
 
     }
 
