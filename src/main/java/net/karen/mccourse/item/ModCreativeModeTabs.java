@@ -85,6 +85,12 @@ public class ModCreativeModeTabs {
                         // Alexandrite hammer
                         output.accept(ModItems.ALEXANDRITE_HAMMER.get());
 
+                        // Alexandrite armor
+                        output.accept(ModItems.ALEXANDRITE_HELMET.get());
+                        output.accept(ModItems.ALEXANDRITE_CHESTPLATE.get());
+                        output.accept(ModItems.ALEXANDRITE_LEGGINGS.get());
+                        output.accept(ModItems.ALEXANDRITE_BOOTS.get());
+
 
                     }).build());
 

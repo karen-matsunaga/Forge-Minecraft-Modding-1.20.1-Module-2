@@ -4,6 +4,7 @@ import net.karen.mccourse.MCCourseMod;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,10 +27,17 @@ public class DataGenerators {
         // Adding all providers
         // Recipe Provider
         generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput));
+
         // Loot Table Provider
         generator.addProvider(event.includeServer(), ModLootTableProvider.create(packOutput));
+
         // Block Tag Generator
-        generator.addProvider(event.includeServer(), new ModBlockTagGenerator(packOutput, lookupProvider, existingFileHelper));
+        BlockTagsProvider blockTagsProvider = new ModBlockTagGenerator(packOutput, lookupProvider, existingFileHelper);
+        generator.addProvider(event.includeServer(), blockTagsProvider);
+
+        // Item Tag Generator
+        generator.addProvider(event.includeServer(), new ModItemTagGenerator(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
+
         // Item Model Provider
         generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, existingFileHelper));
         // Block State Provider
