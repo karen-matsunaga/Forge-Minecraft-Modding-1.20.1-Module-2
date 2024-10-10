@@ -59,11 +59,14 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Alexandrite hammer
         handheldItem(ModItems.ALEXANDRITE_HAMMER);
 
-        // Alexandrite armor
+        // Alexandrite player's armor
 //        simpleItem(ModItems.ALEXANDRITE_HELMET);
 //        simpleItem(ModItems.ALEXANDRITE_CHESTPLATE);
 //        simpleItem(ModItems.ALEXANDRITE_LEGGINGS);
 //        simpleItem(ModItems.ALEXANDRITE_BOOTS);
+
+        // Alexandrite horse's armor
+        simpleItem(ModItems.ALEXANDRITE_HORSE_ARMOR);
 
 
     }
