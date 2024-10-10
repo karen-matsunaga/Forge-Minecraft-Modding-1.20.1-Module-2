@@ -63,6 +63,9 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         // Trapdoor block
         this.dropSelf(ModBlocks.ALEXANDRITE_TRAPDOOR.get());
 
+        // Custom lamp block
+        this.dropSelf(ModBlocks.ALEXANDRITE_LAMP.get());
+
 
     }
 

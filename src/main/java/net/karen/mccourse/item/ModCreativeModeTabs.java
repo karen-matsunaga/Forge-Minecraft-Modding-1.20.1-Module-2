@@ -94,6 +94,9 @@ public class ModCreativeModeTabs {
                         // Alexandrite horse's armor
                         output.accept(ModItems.ALEXANDRITE_HORSE_ARMOR.get());
 
+                        // Alexandrite custom lamp
+                        output.accept(ModBlocks.ALEXANDRITE_LAMP.get());
+
 
                     }).build());
 

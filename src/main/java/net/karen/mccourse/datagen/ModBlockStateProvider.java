@@ -2,9 +2,12 @@ package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
+import net.karen.mccourse.block.custom.AlexandriteLampBlock;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -74,7 +77,27 @@ public class ModBlockStateProvider extends BlockStateProvider {
         // Trapdoor
         blockItem(ModBlocks.ALEXANDRITE_TRAPDOOR, "_bottom");
 
+        // Custom lamp
+        customLamp();
+
     }
+
+
+    // Method to generate custom lamp automatically in .JSON file
+    private void customLamp() {
+        getVariantBuilder(ModBlocks.ALEXANDRITE_LAMP.get()).forAllStates(state -> {
+            if(state.getValue(AlexandriteLampBlock.CLICKED)) {
+                return new ConfiguredModel[]{new ConfiguredModel(models().cubeAll("alexandrite_lamp_on",
+                        new ResourceLocation(MCCourseMod.MOD_ID, "block/" + "alexandrite_lamp_on")))};
+            } else {
+                return new ConfiguredModel[]{new ConfiguredModel(models().cubeAll("alexandrite_lamp_off",
+                        new ResourceLocation(MCCourseMod.MOD_ID, "block/" +"alexandrite_lamp_off")))};
+            }
+        });
+        simpleBlockItem(ModBlocks.ALEXANDRITE_LAMP.get(), models().cubeAll("alexandrite_lamp_on",
+                new ResourceLocation(MCCourseMod.MOD_ID, "block/" +"alexandrite_lamp_on")));
+    }
+
 
     // Method to use trapdoor block
     private void blockItem(RegistryObject<Block> blockRegistryObject, String appendix) {

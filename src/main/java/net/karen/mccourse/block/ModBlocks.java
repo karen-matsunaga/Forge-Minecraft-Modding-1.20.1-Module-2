@@ -1,6 +1,8 @@
 package net.karen.mccourse.block;
 
+import com.sun.jna.platform.unix.solaris.Kstat2StatusException;
 import net.karen.mccourse.MCCourseMod;
+import net.karen.mccourse.block.custom.AlexandriteLampBlock;
 import net.karen.mccourse.block.custom.SoundBlock;
 import net.karen.mccourse.item.ModItems;
 import net.minecraft.sounds.SoundEvents;
@@ -97,6 +99,11 @@ public class ModBlocks {
     // Trapdoor block
     public static final RegistryObject<Block> ALEXANDRITE_TRAPDOOR = registerBlock("alexandrite_trapdoor",
             () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion(), BlockSetType.IRON));
+
+    // Custom Lamp block
+    public static final RegistryObject<Block> ALEXANDRITE_LAMP = registerBlock("alexandrite_lamp",
+            () -> new AlexandriteLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).sound(SoundType.GLASS)
+                      .lightLevel(state -> state.getValue(AlexandriteLampBlock.CLICKED) ? 15 : 0)));
 
 
 
