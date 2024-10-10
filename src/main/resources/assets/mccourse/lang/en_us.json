@@ -37,6 +37,11 @@
   "tooltip.mccourse.metal_detector.tooltip.shift": "Right Click on Blocks to find Valuables!",
   "tooltip.mccourse.metal_detector.tooltip": "Press §eSHIFT§r for more Information",
 
-  "tooltip.mccourse.sound_block": "Plays nice sounds when walking or right-clicking."
+  "tooltip.mccourse.sound_block": "Plays nice sounds when walking or right-clicking.",
 
+  "item.mccourse.alexandrite_sword": "Alexandrite Sword",
+  "item.mccourse.alexandrite_pickaxe": "Alexandrite Pickaxe",
+  "item.mccourse.alexandrite_shovel": "Alexandrite Shovel",
+  "item.mccourse.alexandrite_axe": "Alexandrite Axe",
+  "item.mccourse.alexandrite_hoe": "Alexandrite Hoe"
 }

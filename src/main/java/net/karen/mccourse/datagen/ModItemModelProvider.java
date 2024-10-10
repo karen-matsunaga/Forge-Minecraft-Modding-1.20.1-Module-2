@@ -46,6 +46,13 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Custom door block
         simpleBlockItem(ModBlocks.ALEXANDRITE_DOOR);
 
+        // Alexandrite tools
+        handheldItem(ModItems.ALEXANDRITE_SWORD);
+        handheldItem(ModItems.ALEXANDRITE_PICKAXE);
+        handheldItem(ModItems.ALEXANDRITE_SHOVEL);
+        handheldItem(ModItems.ALEXANDRITE_AXE);
+        handheldItem(ModItems.ALEXANDRITE_HOE);
+
 
     }
 
@@ -66,6 +73,13 @@ public class ModItemModelProvider extends ItemModelProvider {
     public void buttonItem(RegistryObject<Block> block, RegistryObject<Block> baseBlock) {
         this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/button_inventory"))
                 .texture("texture", new ResourceLocation(MCCourseMod.MOD_ID, "block/" + ForgeRegistries.BLOCKS.getKey(baseBlock.get()).getPath()));
+    }
+
+    // Registry all tool's models
+    private ItemModelBuilder handheldItem(RegistryObject<Item> item) {
+        return withExistingParent(item.getId().getPath(),
+                new ResourceLocation("item/handheld")).texture("layer0",
+                new ResourceLocation(MCCourseMod.MOD_ID,"item/" + item.getId().getPath()));
     }
 
     // Registry all block's models

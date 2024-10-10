@@ -2,6 +2,7 @@ package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
+import net.karen.mccourse.item.ModToolTiers;
 import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -59,8 +60,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         // Diamond's tool tag
         this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
                 .add(ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
-                        ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
-                        ModBlocks.NETHER_ALEXANDRITE_ORE.get());
+                        ModBlocks.END_STONE_ALEXANDRITE_ORE.get());
 
         // Fence's tag
         this.tag(BlockTags.FENCES)
@@ -73,6 +73,10 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         // Fence Gate's tag
         this.tag(BlockTags.FENCE_GATES)
                 .add(ModBlocks.ALEXANDRITE_FENCE_GATE.get());
+
+        // Alexandrite tool's tag
+        this.tag(ModTags.Blocks.NEEDS_ALEXANDRITE_TOOL)
+                .add(ModBlocks.NETHER_ALEXANDRITE_ORE.get());
 
     }
 
