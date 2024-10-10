@@ -58,6 +58,8 @@
 
   "enchantment.mccourse.lightning_striker": "Lightning Striker",
 
-  "block.mccourse.alexandrite_lamp": "Alexandrite Lamp"
+  "block.mccourse.alexandrite_lamp": "Alexandrite Lamp",
+
+  "item.mccourse.data_tablet": "Data Tablet"
 
 }

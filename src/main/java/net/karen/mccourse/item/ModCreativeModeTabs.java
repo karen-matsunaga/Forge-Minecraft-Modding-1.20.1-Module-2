@@ -97,6 +97,9 @@ public class ModCreativeModeTabs {
                         // Alexandrite custom lamp
                         output.accept(ModBlocks.ALEXANDRITE_LAMP.get());
 
+                        // Custom data tablet
+                        output.accept(ModItems.DATA_TABLET.get());
+
 
                     }).build());
 

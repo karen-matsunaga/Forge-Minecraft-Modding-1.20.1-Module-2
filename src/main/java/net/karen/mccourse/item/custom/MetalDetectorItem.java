@@ -1,9 +1,12 @@
 package net.karen.mccourse.item.custom;
 
+import net.karen.mccourse.item.ModItems;
+import net.karen.mccourse.util.InventoryUtil;
 import net.karen.mccourse.util.ModTags;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -48,6 +51,11 @@ public class MetalDetectorItem extends Item {
                     outputValuableCoordinates(positionClicked.below(i), player, blockState.getBlock());
                     foundBlock = true;
 
+                    // If found ore the information is recorded in data tablet item
+                    if(InventoryUtil.hasPlayerStackInInventory(player, ModItems.DATA_TABLET.get())) {
+                        addDataToDataTablet(player, positionClicked.below(i), blockState.getBlock());
+                    }
+
                     // Finished loop
                     break;
                 }
@@ -65,6 +73,17 @@ public class MetalDetectorItem extends Item {
                 player -> player.broadcastBreakEvent(player.getUsedItemHand()));
 
         return InteractionResult.SUCCESS;
+    }
+
+    // Data Tablet function
+    private void addDataToDataTablet(Player player, BlockPos below, Block block) {
+        ItemStack dataTablet = player.getInventory().getItem(InventoryUtil.getFirstInventoryIndex(player, ModItems.DATA_TABLET.get()));
+
+        CompoundTag data = new CompoundTag();
+        data.putString("mccourse.found_ore", "Valuable Found: " + I18n.get(block.getDescriptionId())
+                + " at (" + below.getX() + ", " + below.getY() + ", " + below.getZ() + " )");
+
+        dataTablet.setTag(data);
     }
 
     // When player press Shift keyword appears more information about Metal Detector item
