@@ -5,6 +5,7 @@ import net.karen.mccourse.block.ModBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -65,12 +66,27 @@ public class ModBlockStateProvider extends BlockStateProvider {
         // Fence
         blockItem(ModBlocks.ALEXANDRITE_FENCE_GATE);
 
+        // Door - Two halves of door (bottom and top)
+        doorBlockWithRenderType((DoorBlock) ModBlocks.ALEXANDRITE_DOOR.get(), modLoc("block/alexandrite_door_bottom"), modLoc("block/alexandrite_door_top"), "cutout");
 
+        // Trapdoor
+        trapdoorBlockWithRenderType((TrapDoorBlock) ModBlocks.ALEXANDRITE_TRAPDOOR.get(), modLoc("block/alexandrite_trapdoor"), true, "cutout");
+
+        // Trapdoor
+        blockItem(ModBlocks.ALEXANDRITE_TRAPDOOR, "_bottom");
+
+    }
+
+    // Method to use trapdoor block
+    private void blockItem(RegistryObject<Block> blockRegistryObject, String appendix) {
+        simpleBlockItem(blockRegistryObject.get(), new ModelFile.UncheckedModelFile("mccourse:block/"
+                + ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath() + appendix));
     }
 
     // Method to call the blocks
     private void blockItem(RegistryObject<Block> blockRegistryObject) {
-        simpleBlockItem(blockRegistryObject.get(), new ModelFile.UncheckedModelFile("mccourse:block/" + ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath()));
+        simpleBlockItem(blockRegistryObject.get(), new ModelFile.UncheckedModelFile("mccourse:block/"
+                + ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath()));
     }
 
     // Method to easy registry a block

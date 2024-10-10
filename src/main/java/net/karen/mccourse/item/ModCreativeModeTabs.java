@@ -66,6 +66,12 @@ public class ModCreativeModeTabs {
                         // Wall block
                         output.accept(ModBlocks.ALEXANDRITE_WALL.get());
 
+                        // Door block
+                        output.accept(ModBlocks.ALEXANDRITE_DOOR.get());
+
+                        // Trapdoor block
+                        output.accept(ModBlocks.ALEXANDRITE_TRAPDOOR.get());
+
 
                     }).build());
 
