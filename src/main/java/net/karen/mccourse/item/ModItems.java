@@ -3,6 +3,7 @@ package net.karen.mccourse.item;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.item.custom.FuelItem;
 import net.karen.mccourse.item.custom.MetalDetectorItem;
+import net.karen.mccourse.item.custom.PaxelItem;
 import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -51,6 +52,9 @@ public class ModItems {
     public static final RegistryObject<Item> ALEXANDRITE_HOE = ITEMS.register("alexandrite_hoe",
             () -> new HoeItem(ModToolTiers.ALEXANDRITE, 2, 3, new Item.Properties().durability(256)));
 
+    // Alexandrite Paxel
+    public static final RegistryObject<Item> ALEXANDRITE_PAXEL = ITEMS.register("alexandrite_paxel",
+            () -> new PaxelItem(ModToolTiers.ALEXANDRITE, 2, 3, new Item.Properties().durability(256)));
 
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) {

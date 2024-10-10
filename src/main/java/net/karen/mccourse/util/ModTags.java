@@ -34,6 +34,9 @@ public class ModTags {
         // Created Alexandrite Tool Level's tag
         public static final TagKey<Block> NEEDS_ALEXANDRITE_TOOL = tag("needs_alexandrite_tool");
 
+        // Created Alexandrite Paxel's tag
+        public static final TagKey<Block> PAXEL_MINEABLE = tag("mineable/paxel");
+
         // Pass block id
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name));

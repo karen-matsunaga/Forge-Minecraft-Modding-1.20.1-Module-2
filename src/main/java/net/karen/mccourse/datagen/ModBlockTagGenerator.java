@@ -78,6 +78,12 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(ModTags.Blocks.NEEDS_ALEXANDRITE_TOOL)
                 .add(ModBlocks.NETHER_ALEXANDRITE_ORE.get());
 
+        // Alexandrite paxel's tag
+        this.tag(ModTags.Blocks.PAXEL_MINEABLE)
+                .addTag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .addTag(BlockTags.MINEABLE_WITH_SHOVEL)
+                .addTag(BlockTags.MINEABLE_WITH_AXE);
+
     }
 
     @Override
