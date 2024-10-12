@@ -113,6 +113,9 @@ public class ModCreativeModeTabs {
                         // Gem Empowering Station's custom block model
                         output.accept(ModBlocks.GEM_EMPOWERING_STATION.get());
 
+                        // Radiation Staff's custom item model
+                        output.accept(ModItems.RADIATION_STAFF.get());
+
 
 
                     }).build());
