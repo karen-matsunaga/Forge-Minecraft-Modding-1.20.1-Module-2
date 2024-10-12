@@ -3,6 +3,7 @@ package net.karen.mccourse.block;
 import com.sun.jna.platform.unix.solaris.Kstat2StatusException;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.custom.AlexandriteLampBlock;
+import net.karen.mccourse.block.custom.GemEmpoweringStationBlock;
 import net.karen.mccourse.block.custom.KohlrabiCropBlock;
 import net.karen.mccourse.block.custom.SoundBlock;
 import net.karen.mccourse.item.ModItems;
@@ -120,6 +121,12 @@ public class ModBlocks {
     // Snapdragon's pot flower
     public static final RegistryObject<Block> POTTED_SNAPDRAGON = registerBlock("potted_snapdragon",
             () -> new FlowerPotBlock((() -> (FlowerPotBlock) Blocks.FLOWER_POT), SNAPDRAGON, BlockBehaviour.Properties.copy(Blocks.POTTED_ALLIUM)));
+
+    // Gem Empowering Station's custom block model
+    public static final RegistryObject<Block> GEM_EMPOWERING_STATION = registerBlock("gem_empowering_station",
+            () -> new GemEmpoweringStationBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
+
+
 
 
     // Register all custom blocks in the game

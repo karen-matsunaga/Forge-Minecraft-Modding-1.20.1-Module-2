@@ -80,7 +80,16 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Bar Brawl's music disc
         simpleItem(ModItems.BAR_BRAWL_RECORD);
 
+        // Gem Empowering Station
+        complexBlock(ModBlocks.GEM_EMPOWERING_STATION.get());
 
+
+    }
+
+    // Registry all complex block's models
+    private ItemModelBuilder complexBlock(Block block) {
+        return withExistingParent(ForgeRegistries.BLOCKS.getKey(block).getPath(), new ResourceLocation(MCCourseMod.MOD_ID,
+                "block/" + ForgeRegistries.BLOCKS.getKey(block).getPath()));
     }
 
     // Registry all fence's models

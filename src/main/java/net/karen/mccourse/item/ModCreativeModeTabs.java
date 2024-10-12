@@ -110,6 +110,9 @@ public class ModCreativeModeTabs {
                         // Bar Brawl's music disc
                         output.accept(ModItems.BAR_BRAWL_RECORD.get());
 
+                        // Gem Empowering Station's custom block model
+                        output.accept(ModBlocks.GEM_EMPOWERING_STATION.get());
+
 
 
                     }).build());

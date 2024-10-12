@@ -69,5 +69,7 @@
   "sounds.mccourse.metal_detector_found_ore": "Metal Detector Found an Ore",
 
   "item.mccourse.bar_brawl_record": "Bar Brawl Music Disc",
-  "item.mccourse.bar_brawl_record.desc": "Bryan Tech - Bar Brawl (CC0)"
+  "item.mccourse.bar_brawl_record.desc": "Bryan Tech - Bar Brawl (CC0)",
+
+  "block.mccourse.gem_empowering_station": "Gem Empowering Station"
 }

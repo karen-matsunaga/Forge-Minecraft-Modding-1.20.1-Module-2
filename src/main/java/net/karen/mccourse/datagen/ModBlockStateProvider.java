@@ -92,6 +92,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlock(ModBlocks.SNAPDRAGON.get(),
                 models().cross(blockTexture(ModBlocks.SNAPDRAGON.get()).getPath(), blockTexture(ModBlocks.SNAPDRAGON.get())).renderType("cutout"));
 
+        // Gem Empowering Station's custom block model - Created JSON file automatically on model folder
+        horizontalBlock(ModBlocks.GEM_EMPOWERING_STATION.get(),
+                new ModelFile.UncheckedModelFile(modLoc("block/gem_empowering_station")));
+
     }
 
     // Method to generate custom crop automatically in .JSON file models/blocks/name.json
