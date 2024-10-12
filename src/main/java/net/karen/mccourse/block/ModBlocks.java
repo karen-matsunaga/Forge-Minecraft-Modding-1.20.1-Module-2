@@ -6,6 +6,7 @@ import net.karen.mccourse.block.custom.AlexandriteLampBlock;
 import net.karen.mccourse.block.custom.KohlrabiCropBlock;
 import net.karen.mccourse.block.custom.SoundBlock;
 import net.karen.mccourse.item.ModItems;
+import net.karen.mccourse.sound.ModSounds;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
@@ -102,9 +103,10 @@ public class ModBlocks {
     public static final RegistryObject<Block> ALEXANDRITE_TRAPDOOR = registerBlock("alexandrite_trapdoor",
             () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion(), BlockSetType.IRON));
 
-    // Custom Lamp block
+    // Alexandrite's custom lamp and custom sound
     public static final RegistryObject<Block> ALEXANDRITE_LAMP = registerBlock("alexandrite_lamp",
-            () -> new AlexandriteLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).sound(SoundType.GLASS)
+            () -> new AlexandriteLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).sound(ModSounds.ALEXANDRITE_LAMP_SOUNDS)
+                      .strength(1f)
                       .lightLevel(state -> state.getValue(AlexandriteLampBlock.CLICKED) ? 15 : 0)));
 
     // Kohlrabi's crop block
