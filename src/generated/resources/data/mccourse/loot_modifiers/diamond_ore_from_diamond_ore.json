@@ -1,0 +1,14 @@
+{
+  "type": "mccourse:add_item",
+  "conditions": [
+    {
+      "block": "minecraft:diamond_ore",
+      "condition": "minecraft:block_state_property"
+    },
+    {
+      "chance": 1.0,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "item": "minecraft:diamond_ore"
+}
