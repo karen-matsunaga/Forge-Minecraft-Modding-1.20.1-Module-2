@@ -46,6 +46,9 @@ public class DataGenerators {
         // Mod Global Loot Modifier Provider
         generator.addProvider(event.includeClient(), new ModGlobalLootModifierProvider(packOutput));
 
+        // Mod Painting Variant Tag Provider
+        generator.addProvider(event.includeClient(), new ModPaintingVariantTagProvider(packOutput, lookupProvider, existingFileHelper));
+
     }
 
 }

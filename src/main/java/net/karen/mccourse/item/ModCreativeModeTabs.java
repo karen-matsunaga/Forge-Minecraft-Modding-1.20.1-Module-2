@@ -105,7 +105,7 @@ public class ModCreativeModeTabs {
 
                         // Snapdragon's flower and potted flower
                         output.accept(ModBlocks.SNAPDRAGON.get());
-                        output.accept(ModBlocks.POTTED_SNAPDRAGON.get());
+//                        output.accept(ModBlocks.POTTED_SNAPDRAGON.get());
 
                         // Bar Brawl's music disc
                         output.accept(ModItems.BAR_BRAWL_RECORD.get());
@@ -121,7 +121,6 @@ public class ModCreativeModeTabs {
 
                         // Alexandrite's shield
                         output.accept(ModItems.ALEXANDRITE_SHIELD.get());
-
 
 
                     }).build());

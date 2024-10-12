@@ -65,6 +65,7 @@
   "item.mccourse.kohlrabi_seeds": "Kohlrabi Seeds",
 
   "block.mccourse.snapdragon": "Snapdragon",
+  "block.mccourse.potted_snapdragon": "Snapdragon Potted",
 
   "sounds.mccourse.metal_detector_found_ore": "Metal Detector Found an Ore",
 
@@ -77,5 +78,12 @@
 
   "item.mccourse.alexandrite_bow": "Alexandrite Bow",
 
-  "item.mccourse.alexandrite_shield": "Alexandrite Shield"
+  "item.mccourse.alexandrite_shield": "Alexandrite Shield",
+
+  "painting.mccourse.world.title": "World",
+  "painting.mccourse.world.author": "NanoAttack",
+  "painting.mccourse.shrimp.title": "Shrimp",
+  "painting.mccourse.shrimp.author": "NanoAttack",
+  "painting.mccourse.saw_them.title": "Saw Them",
+  "painting.mccourse.saw_them.author": "NanoAttack"
 }
