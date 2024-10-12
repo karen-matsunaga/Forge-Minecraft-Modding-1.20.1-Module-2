@@ -6,6 +6,7 @@ import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModCreativeModeTabs;
 import net.karen.mccourse.item.ModItemProperties;
 import net.karen.mccourse.item.ModItems;
+import net.karen.mccourse.sound.ModSounds;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
@@ -45,6 +46,9 @@ public class MCCourseMod {
 
         // Register enchantments
         ModEnchantments.register(modEventBus);
+
+        // Register sounds
+        ModSounds.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);

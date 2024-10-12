@@ -64,6 +64,8 @@
 
   "item.mccourse.kohlrabi_seeds": "Kohlrabi Seeds",
 
-  "block.mccourse.snapdragon": "Snapdragon"
+  "block.mccourse.snapdragon": "Snapdragon",
+
+  "sounds.mccourse.metal_detector_found_ore": "Metal Detector Found an Ore"
 
 }

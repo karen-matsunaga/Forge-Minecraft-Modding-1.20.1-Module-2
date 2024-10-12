@@ -1,6 +1,7 @@
 package net.karen.mccourse.item.custom;
 
 import net.karen.mccourse.item.ModItems;
+import net.karen.mccourse.sound.ModSounds;
 import net.karen.mccourse.util.InventoryUtil;
 import net.karen.mccourse.util.ModTags;
 import net.minecraft.client.gui.screens.Screen;
@@ -8,6 +9,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -55,6 +57,10 @@ public class MetalDetectorItem extends Item {
                     if(InventoryUtil.hasPlayerStackInInventory(player, ModItems.DATA_TABLET.get())) {
                         addDataToDataTablet(player, positionClicked.below(i), blockState.getBlock());
                     }
+
+                    // If found ore it is sounded
+                    pContext.getLevel().playSeededSound(null, player.getX(), player.getY(), player.getZ(),
+                            ModSounds.METAL_DETECTOR_FOUND_ORE.get(), SoundSource.BLOCKS, 1f, 1f, 0);
 
                     // Finished loop
                     break;
