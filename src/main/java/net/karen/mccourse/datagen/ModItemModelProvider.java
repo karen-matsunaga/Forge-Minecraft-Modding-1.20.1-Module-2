@@ -77,6 +77,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Snapdragon's flower
         simpleBlockItem(ModBlocks.SNAPDRAGON);
 
+        // Bar Brawl's music disc
+        simpleItem(ModItems.BAR_BRAWL_RECORD);
+
 
     }
 

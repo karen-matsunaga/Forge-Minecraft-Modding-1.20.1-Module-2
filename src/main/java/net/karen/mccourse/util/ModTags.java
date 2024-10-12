@@ -16,6 +16,7 @@ public class ModTags {
         // Created Item's tags HERE
         // ...
 
+
         // Pass item id
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name));

@@ -107,6 +107,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.SNAPDRAGON.get());
                         output.accept(ModBlocks.POTTED_SNAPDRAGON.get());
 
+                        // Bar Brawl's music disc
+                        output.accept(ModItems.BAR_BRAWL_RECORD.get());
+
 
 
                     }).build());

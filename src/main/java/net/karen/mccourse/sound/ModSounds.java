@@ -30,6 +30,8 @@ public class ModSounds {
             ModSounds.ALEXANDRITE_LAMP_BREAK, ModSounds.ALEXANDRITE_LAMP_STEP, ModSounds.ALEXANDRITE_LAMP_FALL,
             ModSounds.ALEXANDRITE_LAMP_PLACE, ModSounds.ALEXANDRITE_LAMP_HIT);
 
+    // Bar Brawl's custom music disc
+    public static final RegistryObject<SoundEvent> BAR_BRAWL = registerSoundEvents("bar_brawl");
 
 
     // Registry all sounds automatically using id
