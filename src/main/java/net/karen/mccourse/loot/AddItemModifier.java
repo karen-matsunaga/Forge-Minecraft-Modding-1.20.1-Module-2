@@ -38,8 +38,8 @@ public class AddItemModifier extends LootModifier {
                 return generatedLoot;
             }
         }
-        // Update the data and return the list
-        generatedLoot.add(new ItemStack(this.item));
+        // Update the data and return the list - pCount increased the amount from drops of items, blocks, etc.
+        generatedLoot.add(new ItemStack(this.item, 2));
 
         // Return normal loot modifier even if to exist 1000 items
         return generatedLoot;

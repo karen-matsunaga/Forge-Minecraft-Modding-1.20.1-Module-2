@@ -33,6 +33,11 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
                 new LootTableIdCondition.Builder(new ResourceLocation("chests/jungle_temple")).build() },
                 ModItems.METAL_DETECTOR.get()));
 
+        // Added custom loot modifier
+        add("diamond_ore_from_diamond_ore", new AddItemModifier(new LootItemCondition[] {
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.DIAMOND_ORE).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() }, Blocks.DIAMOND_ORE.asItem()));
+
     }
 
 }

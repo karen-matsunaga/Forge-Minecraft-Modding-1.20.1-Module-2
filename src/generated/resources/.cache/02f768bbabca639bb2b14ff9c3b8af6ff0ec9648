@@ -1,5 +1,6 @@
-// 1.20.1	2024-10-12T16:40:41.3430569	Global Loot Modifiers : mccourse
-2aef6630d6d6aed0812245072f511110ffba6b0f data/forge/loot_modifiers/global_loot_modifiers.json
+// 1.20.1	2024-10-12T19:02:49.9114282	Global Loot Modifiers : mccourse
+a65e7b3bedee46b9ba90bff79d70939130ec2900 data/forge/loot_modifiers/global_loot_modifiers.json
+c8e48a3d79a0c4aa215e233a6868d90f6833de29 data/mccourse/loot_modifiers/diamond_ore_from_diamond_ore.json
 d3113b74ea6803d938cce696584cc514cd9df32c data/mccourse/loot_modifiers/kohlrabi_seeds_from_fern.json
 a631be6ec193f1729e591b246b0ccaed69d57811 data/mccourse/loot_modifiers/kohlrabi_seeds_from_grass.json
 5f99efa9741fc2a3f3d784f3a1b5ba6e0d21f3ad data/mccourse/loot_modifiers/metal_detector_from_jungle_temple.json
