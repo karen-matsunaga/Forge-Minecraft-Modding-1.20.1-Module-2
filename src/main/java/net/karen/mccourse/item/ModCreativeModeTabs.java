@@ -103,6 +103,10 @@ public class ModCreativeModeTabs {
                         // Kohlrabi's seeds
                         output.accept(ModItems.KOHLRABI_SEEDS.get());
 
+                        // Snapdragon's flower and potted flower
+                        output.accept(ModBlocks.SNAPDRAGON.get());
+                        output.accept(ModBlocks.POTTED_SNAPDRAGON.get());
+
 
 
                     }).build());

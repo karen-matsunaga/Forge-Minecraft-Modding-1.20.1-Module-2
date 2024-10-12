@@ -87,6 +87,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         // Kohlrabi's stages texture
         makeCrop(((KohlrabiCropBlock) ModBlocks.KOHLRABI_CROP.get()), "kohlrabi_stage", "kohlrabi_stage");
 
+
+        // Snapdragon's flower
+        simpleBlock(ModBlocks.SNAPDRAGON.get(),
+                models().cross(blockTexture(ModBlocks.SNAPDRAGON.get()).getPath(), blockTexture(ModBlocks.SNAPDRAGON.get())).renderType("cutout"));
+
     }
 
     // Method to generate custom crop automatically in .JSON file models/blocks/name.json

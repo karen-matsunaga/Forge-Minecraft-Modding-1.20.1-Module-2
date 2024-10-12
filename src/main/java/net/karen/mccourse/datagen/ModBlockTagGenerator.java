@@ -27,9 +27,9 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
                 ModBlocks.END_STONE_ALEXANDRITE_ORE.get(), ModBlocks.NETHER_ALEXANDRITE_ORE.get()).addTag(Tags.Blocks.ORES);
 
-        // Add Mineable Tags
+        // Add Mineable's tags
 
-        // Pickaxe's tag
+        // Pickaxe's tag, Alexandrite hammer's tag
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.ALEXANDRITE_BLOCK.get(),
                         ModBlocks.RAW_ALEXANDRITE_BLOCK.get(),
@@ -79,12 +79,6 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.NETHER_ALEXANDRITE_ORE.get());
 
         // Alexandrite paxel's tag
-        this.tag(ModTags.Blocks.PAXEL_MINEABLE)
-                .addTag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .addTag(BlockTags.MINEABLE_WITH_SHOVEL)
-                .addTag(BlockTags.MINEABLE_WITH_AXE);
-
-        // Alexandrite hammer's tag
         this.tag(ModTags.Blocks.PAXEL_MINEABLE)
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .addTag(BlockTags.MINEABLE_WITH_SHOVEL)

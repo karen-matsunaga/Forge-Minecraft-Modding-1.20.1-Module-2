@@ -21,6 +21,8 @@ public class ModItemTagGenerator extends ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         // Add Item Tags here
+
+        // Trimmable's armor item tag
         this.tag(ItemTags.TRIMMABLE_ARMOR)
                 .add(ModItems.ALEXANDRITE_HELMET.get(),
                         ModItems.ALEXANDRITE_CHESTPLATE.get(),

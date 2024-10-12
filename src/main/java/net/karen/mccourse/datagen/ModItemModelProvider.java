@@ -74,6 +74,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Kohlrabi's seeds
         simpleItem(ModItems.KOHLRABI_SEEDS);
 
+        // Snapdragon's flower
+        simpleBlockItem(ModBlocks.SNAPDRAGON);
+
 
     }
 
