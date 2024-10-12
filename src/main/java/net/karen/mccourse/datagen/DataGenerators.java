@@ -43,6 +43,9 @@ public class DataGenerators {
         // Block State Provider
         generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, existingFileHelper));
 
+        // Mod Global Loot Modifier Provider
+        generator.addProvider(event.includeClient(), new ModGlobalLootModifierProvider(packOutput));
+
     }
 
 }
