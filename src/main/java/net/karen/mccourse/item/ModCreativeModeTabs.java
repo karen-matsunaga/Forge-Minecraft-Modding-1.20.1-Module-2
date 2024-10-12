@@ -119,6 +119,9 @@ public class ModCreativeModeTabs {
                         // Alexandrite's bow
                         output.accept(ModItems.ALEXANDRITE_BOW.get());
 
+                        // Alexandrite's shield
+                        output.accept(ModItems.ALEXANDRITE_SHIELD.get());
+
 
 
                     }).build());
