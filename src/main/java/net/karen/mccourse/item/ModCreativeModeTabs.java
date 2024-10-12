@@ -116,6 +116,9 @@ public class ModCreativeModeTabs {
                         // Radiation Staff's custom item model
                         output.accept(ModItems.RADIATION_STAFF.get());
 
+                        // Alexandrite's bow
+                        output.accept(ModItems.ALEXANDRITE_BOW.get());
+
 
 
                     }).build());

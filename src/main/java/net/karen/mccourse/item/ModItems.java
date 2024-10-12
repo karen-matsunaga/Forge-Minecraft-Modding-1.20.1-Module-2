@@ -94,6 +94,10 @@ public class ModItems {
     public static final RegistryObject<Item> RADIATION_STAFF = ITEMS.register("radiation_staff",
             () -> new Item(new Item.Properties().durability(1024)));
 
+    // Alexandrite's bow
+    public static final RegistryObject<Item> ALEXANDRITE_BOW = ITEMS.register("alexandrite_bow",
+            () -> new BowItem(new Item.Properties().durability(500)));
+
 
 
     // Insert in MCCourseMod.java file
