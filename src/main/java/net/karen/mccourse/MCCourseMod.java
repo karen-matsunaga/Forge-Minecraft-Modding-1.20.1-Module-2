@@ -2,6 +2,7 @@ package net.karen.mccourse;
 
 import com.mojang.logging.LogUtils;
 import net.karen.mccourse.block.ModBlocks;
+import net.karen.mccourse.effect.ModEffects;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModCreativeModeTabs;
 import net.karen.mccourse.item.ModItemProperties;
@@ -57,6 +58,9 @@ public class MCCourseMod {
 
         // Register paintings
         ModPaintings.register(modEventBus);
+
+        // Register effects
+        ModEffects.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
