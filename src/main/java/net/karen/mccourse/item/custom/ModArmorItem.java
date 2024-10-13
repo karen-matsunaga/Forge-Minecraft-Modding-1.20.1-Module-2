@@ -17,8 +17,7 @@ public class ModArmorItem extends ArmorItem {
     // Specific armor material to mob effect instance that applied in player
     private static final Map<ArmorMaterial, MobEffectInstance> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, MobEffectInstance>())
-                    .put(ModArmorMaterials.ALEXANDRITE, new MobEffectInstance(MobEffects.JUMP, 200, 2))
-                    .put(ModArmorMaterials.ALEXANDRITE, new MobEffectInstance(ModEffects.FLY_POTION.get(), 200, 1))
+                    .put(ModArmorMaterials.ALEXANDRITE, new MobEffectInstance(ModEffects.FLY_POTION.get(), 1000, 2))
                     .build();
 
     public ModArmorItem(ArmorMaterial material, Type type, Properties properties) {
