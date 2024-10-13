@@ -89,17 +89,17 @@
 
   "effect.mccourse.slimey": "Slimey",
 
-  "item.minecraft.potion.effect.slimey_potion": "Slimey Potion"
-  "item.minecraft.splash_potion.effect.slimey_potion": "Slimey Splash Potion"
-  "item.minecraft.lingering_potion.effect.slimey_potion": "Slimey Lingering Potion"
+  "item.minecraft.potion.effect.slimey_potion": "Slimey Potion",
+  "item.minecraft.splash_potion.effect.slimey_potion": "Slimey Splash Potion",
+  "item.minecraft.lingering_potion.effect.slimey_potion": "Slimey Lingering Potion",
 
   "item.minecraft.tipped_arrow.effect.slimey_potion": "Arrow of Slimey",
 
   "effect.mccourse.fly": "Fly",
 
-  "item.minecraft.potion.effect.fly_potion": "Fly Potion"
-  "item.minecraft.splash_potion.effect.fly_potion": "Fly Splash Potion"
-  "item.minecraft.lingering_potion.effect.fly_potion": "Fly Lingering Potion"
+  "item.minecraft.potion.effect.fly_potion": "Fly Potion",
+  "item.minecraft.splash_potion.effect.fly_potion": "Fly Splash Potion",
+  "item.minecraft.lingering_potion.effect.fly_potion": "Fly Lingering Potion",
 
   "item.minecraft.tipped_arrow.effect.fly_potion": "Arrow of Fly"
 }
