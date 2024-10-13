@@ -1,6 +1,7 @@
 package net.karen.mccourse.item.custom;
 
 import com.google.common.collect.ImmutableMap;
+import net.karen.mccourse.effect.ModEffects;
 import net.karen.mccourse.item.ModArmorMaterials;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -13,10 +14,11 @@ import net.minecraft.world.level.Level;
 import java.util.Map;
 
 public class ModArmorItem extends ArmorItem {
-    // Specif armor material to mob effect instance that applied in player
+    // Specific armor material to mob effect instance that applied in player
     private static final Map<ArmorMaterial, MobEffectInstance> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, MobEffectInstance>())
-                    .put(ModArmorMaterials.ALEXANDRITE, new MobEffectInstance(MobEffects.JUMP, 200, 1))
+                    .put(ModArmorMaterials.ALEXANDRITE, new MobEffectInstance(MobEffects.JUMP, 200, 2))
+                    .put(ModArmorMaterials.ALEXANDRITE, new MobEffectInstance(ModEffects.FLY_POTION.get(), 200, 1))
                     .build();
 
     public ModArmorItem(ArmorMaterial material, Type type, Properties properties) {
