@@ -21,9 +21,12 @@ public class ModEffects {
                     "7107DE5E-7CE8-4030-940E-514C1F160890", -0.25f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     // Fly's effect
-    public static final RegistryObject<MobEffect> FLY_POTION = MOB_EFFECTS.register("fly",
-            () -> new FlyEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00).addAttributeModifier(Attributes.FLYING_SPEED,
+    public static final RegistryObject<MobEffect> FLY_EFFECT = MOB_EFFECTS.register("fly",
+            () -> new FlyEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)
+                    // Fly's effect
+                    .addAttributeModifier(Attributes.FLYING_SPEED,
                             "f81d4fae-7dec-11d0-a765-00a0c91e6bf7", 1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL)
+                    // Speed's effect
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf8",
                             1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 

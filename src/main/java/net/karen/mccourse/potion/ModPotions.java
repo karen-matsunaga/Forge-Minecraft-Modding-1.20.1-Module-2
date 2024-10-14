@@ -21,7 +21,7 @@ public class ModPotions {
 
     // Fly's potion register
     public static final RegistryObject<Potion> FLY_POTION = POTIONS.register("fly_potion",
-            () -> new Potion(new MobEffectInstance(ModEffects.FLY_POTION.get(), 200, 0)));
+            () -> new Potion(new MobEffectInstance(ModEffects.FLY_EFFECT.get(), 200, 0)));
 
     // Registry all potions on Forge
     public static void register(IEventBus eventBus) {
