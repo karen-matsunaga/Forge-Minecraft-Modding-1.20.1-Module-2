@@ -42,7 +42,8 @@ public class AddItemModifier extends LootModifier {
         if (tool != null && tool.getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
             // If Silk Touch is present, return the block itself
             if (context.getQueriedLootTableId().equals(Blocks.DIAMOND_ORE.getLootTable())) {
-                generatedLoot.add(new ItemStack(Items.DIAMOND, 1)); // Drop the diamond block and a diamond
+                // Drops diamond ore and diamond
+                generatedLoot.add(new ItemStack(Items.DIAMOND, 1));
                 return generatedLoot;
             }
         }
@@ -59,13 +60,14 @@ public class AddItemModifier extends LootModifier {
                 int baseDrop = 1;
                 int count = 1 + random.nextInt(fortuneLevel + 1); // Calculate extra drops based on Fortune level
                 int totalDiamonds = baseDrop + count;  // Add the item with increased count
-                generatedLoot.add(new ItemStack(this.item, totalDiamonds)); // Drop the diamond ores and some diamonds
+                generatedLoot.add(new ItemStack(Items.DIAMOND, totalDiamonds)); // Drops diamond ores and diamonds
+                generatedLoot.add(new ItemStack(this.item, totalDiamonds));
                 return generatedLoot;
             }
         }
 
-        // No Silk Touch or Fortune - add the item normally and default is 1
-        generatedLoot.add(new ItemStack(this.item, 1));
+        // No Silk Touch or Fortune - add the item normally
+        generatedLoot.add(new ItemStack(this.item));
         return generatedLoot;
     }
 

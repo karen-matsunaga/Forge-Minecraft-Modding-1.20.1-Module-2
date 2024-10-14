@@ -26,8 +26,8 @@ public class FlyEffect extends MobEffect {
     public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
 
         if (pLivingEntity instanceof Player player) {
-            player.getAbilities().flying = false;
             player.getAbilities().mayfly = false;
+            player.getAbilities().flying = false;
             player.onUpdateAbilities(); // Update the player abilities
         }
 
