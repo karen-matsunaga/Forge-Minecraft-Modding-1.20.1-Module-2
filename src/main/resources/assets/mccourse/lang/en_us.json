@@ -101,5 +101,11 @@
   "item.minecraft.splash_potion.effect.fly_potion": "Fly Splash Potion",
   "item.minecraft.lingering_potion.effect.fly_potion": "Fly Lingering Potion",
 
-  "item.minecraft.tipped_arrow.effect.fly_potion": "Arrow of Fly"
+  "item.minecraft.tipped_arrow.effect.fly_potion": "Arrow of Fly",
+
+  "item.minecraft.potion.effect.haste_potion": "Haste Potion",
+  "item.minecraft.splash_potion.effect.haste_potion": "Haste Splash Potion",
+  "item.minecraft.lingering_potion.effect.haste_potion": "Haste Lingering Potion",
+
+  "item.minecraft.tipped_arrow.effect.haste_potion": "Arrow of Haste"
 }

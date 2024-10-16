@@ -6,5 +6,7 @@
       "loot_table_id": "minecraft:chests/jungle_temple"
     }
   ],
-  "item": "mccourse:metal_detector"
+  "items": [
+    "mccourse:metal_detector"
+  ]
 }

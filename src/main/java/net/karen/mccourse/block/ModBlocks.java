@@ -1,6 +1,5 @@
 package net.karen.mccourse.block;
 
-import com.sun.jna.platform.unix.solaris.Kstat2StatusException;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.custom.AlexandriteLampBlock;
 import net.karen.mccourse.block.custom.GemEmpoweringStationBlock;

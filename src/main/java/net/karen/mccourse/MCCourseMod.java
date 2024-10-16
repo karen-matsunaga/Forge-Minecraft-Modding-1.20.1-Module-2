@@ -94,6 +94,7 @@ public class MCCourseMod {
             // Slimey's, Fly's, etc. potion recipe
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.SLIME_BALL, ModPotions.SLIMEY_POTION.get()));
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.EMERALD, ModPotions.FLY_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.CARROT, ModPotions.HASTE_POTION.get()));
         });
     }
 

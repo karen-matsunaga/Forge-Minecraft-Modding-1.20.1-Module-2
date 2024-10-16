@@ -21,13 +21,13 @@ public class ModArmorItem extends ArmorItem {
             (new ImmutableMap.Builder<ArmorMaterial, List<MobEffectInstance>>())
                     .put(ModArmorMaterials.ALEXANDRITE, Arrays.asList(
                             // Fly effect
-                            new MobEffectInstance(ModEffects.FLY_EFFECT.get(), -1, 2, false, false, true),
+                            new MobEffectInstance(ModEffects.FLY_EFFECT.get(), 200, 2, false, false, true),
                             // Strength effect
-                            new MobEffectInstance(MobEffects.DAMAGE_BOOST, -1, 1, false, false, true),
+                            new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2, false, false, true),
                             // Night vision effect
-                            new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 1, false, false, true),
+                            new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 2, false, false, true),
                             // Haste effect
-                            new MobEffectInstance(MobEffects.DIG_SPEED, -1, 1, false, false, true)
+                            new MobEffectInstance(MobEffects.DIG_SPEED, 200, 2, false, false, true)
                     ))
                     .build();
 

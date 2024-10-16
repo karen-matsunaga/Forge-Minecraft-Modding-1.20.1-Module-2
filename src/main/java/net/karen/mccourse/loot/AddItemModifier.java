@@ -16,21 +16,21 @@ import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class AddItemModifier extends LootModifier {
-
     public static final Supplier<Codec<AddItemModifier>> CODEC = Suppliers.memoize(() ->
             RecordCodecBuilder.create(inst -> codecStart(inst)
-                    .and(ForgeRegistries.ITEMS.getCodec().fieldOf("item").forGetter(m -> m.item))
+                    .and(ForgeRegistries.ITEMS.getCodec().listOf().fieldOf("items").forGetter(m -> m.items))  // Use listOf() to handle multiple items
                     .apply(inst, AddItemModifier::new))
     );
 
-    private final Item item;
+    private final List<Item> items;
 
-    public AddItemModifier(LootItemCondition[] conditionsIn, Item item) {
+    public AddItemModifier(LootItemCondition[] conditionsIn, List<Item> items) {
         super(conditionsIn);
-        this.item = item;
+        this.items = items;
     }
 
     @Override
@@ -40,11 +40,12 @@ public class AddItemModifier extends LootModifier {
 
         // Check for Silk Touch enchantment
         if (tool != null && tool.getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
-            // If Silk Touch is present, return the block itself
-            if (context.getQueriedLootTableId().equals(Blocks.DIAMOND_ORE.getLootTable())) {
-                // Drops diamond ore and diamond
-                generatedLoot.add(new ItemStack(Items.DIAMOND, 1));
-                return generatedLoot;
+            for (Item item : items) {  // Loop through each item in the list
+                if (context.getQueriedLootTableId().equals(Blocks.DIAMOND_ORE.getLootTable())) { // If mined DIAMOND ORE
+                    generatedLoot.add(new ItemStack(item));
+                } else if (context.getQueriedLootTableId().equals(Blocks.ANCIENT_DEBRIS.getLootTable())) { // If mined ANCIENT DEBRIS
+                    generatedLoot.add(new ItemStack(item, 2));
+                }
             }
         }
 
@@ -52,22 +53,33 @@ public class AddItemModifier extends LootModifier {
         if (tool != null && tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE) > 0) {
             // Fortune's enchantment level
             int fortuneLevel = tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
-            // Drops diamond ores randomly
+            // Drops ores randomly
             RandomSource random = context.getRandom();
 
-            // Example: Modify diamond ore drops with Fortune
-            if (context.getQueriedLootTableId().equals(Blocks.DIAMOND_ORE.getLootTable())) {
-                int baseDrop = 1;
-                int count = 1 + random.nextInt(fortuneLevel + 1); // Calculate extra drops based on Fortune level
-                int totalDiamonds = baseDrop + count;  // Add the item with increased count
-                generatedLoot.add(new ItemStack(Items.DIAMOND, totalDiamonds)); // Drops diamond ores and diamonds
-                generatedLoot.add(new ItemStack(this.item, totalDiamonds));
+            for (Item item : items) {  // Loop through each item in the list
+                if (context.getQueriedLootTableId().equals(Blocks.DIAMOND_ORE.getLootTable())) { // If mined DIAMOND ORE
+                    int drops = 1 + random.nextInt((fortuneLevel - 1) + 2);
+                    generatedLoot.add(new ItemStack(item, drops));  // Drop multiple diamond's ores and diamonds
+                } else if (context.getQueriedLootTableId().equals(Blocks.ANCIENT_DEBRIS.getLootTable())) {
+                    int drops = 1 + random.nextInt((fortuneLevel - 1) + 2);
+                    generatedLoot.add(new ItemStack(item, drops)); // Drop multiple ancient debris's ores and netherite scraps
+                }
+            }
+        }
+
+        // Apply loot conditions and add each item in the list
+        for (LootItemCondition condition : this.conditions) {
+            if (!condition.test(context)) {
                 return generatedLoot;
             }
         }
 
-        // No Silk Touch or Fortune - add the item normally
-        generatedLoot.add(new ItemStack(this.item));
+        // No Silk Touch or Fortune - add each item in the list normally and update the data and return the list
+        for (Item item : items) {
+            generatedLoot.add(new ItemStack(item));
+        }
+
+        // Return normal loot modifier even if to exist 1000 items
         return generatedLoot;
     }
 

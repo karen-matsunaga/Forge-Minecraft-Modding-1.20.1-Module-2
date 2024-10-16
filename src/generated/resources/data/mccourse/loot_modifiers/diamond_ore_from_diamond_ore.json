@@ -10,5 +10,8 @@
       "condition": "minecraft:random_chance"
     }
   ],
-  "item": "minecraft:diamond_ore"
+  "items": [
+    "minecraft:diamond_ore",
+    "minecraft:diamond"
+  ]
 }
