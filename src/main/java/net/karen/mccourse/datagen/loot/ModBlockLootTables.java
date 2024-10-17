@@ -96,11 +96,11 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
     // Custom ore's drops
     protected LootTable.Builder createOreDrop(Block pBlock, Item pItem) {
-        return createSilkTouchDispatchTable(pBlock, (LootPoolEntryContainer.Builder) this.applyExplosionDecay(pBlock,
+        return createSilkTouchDispatchTable(pBlock, this.applyExplosionDecay(pBlock,
                 LootItem.lootTableItem(pItem)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(10.0f, 20.f)))
-                        .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))))
-                        .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 4));
+                        .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
+                        .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 4))));
     }
 
     // Return all registries in deferred registry

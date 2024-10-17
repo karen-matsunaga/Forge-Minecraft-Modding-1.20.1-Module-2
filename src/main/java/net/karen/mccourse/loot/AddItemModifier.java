@@ -4,13 +4,13 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -22,9 +22,8 @@ import java.util.function.Supplier;
 public class AddItemModifier extends LootModifier {
     public static final Supplier<Codec<AddItemModifier>> CODEC = Suppliers.memoize(() ->
             RecordCodecBuilder.create(inst -> codecStart(inst)
-                    .and(ForgeRegistries.ITEMS.getCodec().listOf().fieldOf("items").forGetter(m -> m.items))  // Use listOf() to handle multiple items
-                    .apply(inst, AddItemModifier::new))
-    );
+                    .and(ForgeRegistries.ITEMS.getCodec().listOf().fieldOf("items").forGetter(m -> m.items))
+                    .apply(inst, AddItemModifier::new)));
 
     private final List<Item> items;
 
@@ -35,34 +34,29 @@ public class AddItemModifier extends LootModifier {
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-        // Get the tool used by the player
-        ItemStack tool = context.getParamOrNull(LootContextParams.TOOL);
+        generatedLoot.clear();
+        ItemStack tool = context.getParamOrNull(LootContextParams.TOOL);  // Get the tool used by the player
 
-        // Check for Silk Touch enchantment
-        if (tool != null && tool.getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
+        if (tool != null && tool.getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) { // Check for Silk Touch enchantment
             for (Item item : items) {  // Loop through each item in the list
                 if (context.getQueriedLootTableId().equals(Blocks.DIAMOND_ORE.getLootTable())) { // If mined DIAMOND ORE
-                    generatedLoot.add(new ItemStack(item));
+                        generatedLoot.add(new ItemStack(item));
                 } else if (context.getQueriedLootTableId().equals(Blocks.ANCIENT_DEBRIS.getLootTable())) { // If mined ANCIENT DEBRIS
-                    generatedLoot.add(new ItemStack(item, 2));
+                        generatedLoot.add(new ItemStack(item));
                 }
             }
         }
 
         // Check for Fortune enchantment
         if (tool != null && tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE) > 0) {
-            // Fortune's enchantment level
-            int fortuneLevel = tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
-            // Drops ores randomly
-            RandomSource random = context.getRandom();
+            int fortuneLevel = tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE); // Fortune's enchantment level
+            int drops = context.getRandom().nextInt(fortuneLevel) + UniformGenerator.between(1.0f, 2.0f).getInt(context); // Drops randomly
 
             for (Item item : items) {  // Loop through each item in the list
                 if (context.getQueriedLootTableId().equals(Blocks.DIAMOND_ORE.getLootTable())) { // If mined DIAMOND ORE
-                    int drops = 1 + random.nextInt((fortuneLevel - 1) + 2);
-                    generatedLoot.add(new ItemStack(item, drops));  // Drop multiple diamond's ores and diamonds
-                } else if (context.getQueriedLootTableId().equals(Blocks.ANCIENT_DEBRIS.getLootTable())) {
-                    int drops = 1 + random.nextInt((fortuneLevel - 1) + 2);
-                    generatedLoot.add(new ItemStack(item, drops)); // Drop multiple ancient debris's ores and netherite scraps
+                        generatedLoot.add(new ItemStack(item, drops)); // Drop multiple diamond's ores and diamonds
+                } else if (context.getQueriedLootTableId().equals(Blocks.ANCIENT_DEBRIS.getLootTable())) { // If mined ANCIENT DEBRIS
+                        generatedLoot.add(new ItemStack(item, drops)); // Drop multiple ancient debris's ores and netherite scraps
                 }
             }
         }
