@@ -100,7 +100,7 @@ public class ModEvents {
             trades.get(villagerLevel).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemStack(Items.EMERALD, 2), stack, 10, 2, 0.02f));
 
-            trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
+            trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(  // Received KOHLRABI SEEDS with Villager's level 2
                     new ItemStack(Items.EMERALD, 5),
                     new ItemStack(ModItems.KOHLRABI_SEEDS.get()), 3, 2, 0.02f));
         }
@@ -121,7 +121,7 @@ public class ModEvents {
     // CUSTOM EVENT - Custom Villager Wandering
     @SubscribeEvent
     public static void addWanderingTrades(WandererTradesEvent event) {
-        // List of all trades that the player can trade - Generic and Rare trades
+        // List of all trades that the player can trade - Generic and Rare trades because not exist levels
         List<VillagerTrades.ItemListing> genericTrades = event.getGenericTrades();
         List<VillagerTrades.ItemListing> rareTrades = event.getRareTrades();
 
