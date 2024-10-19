@@ -9,6 +9,7 @@ import net.karen.mccourse.item.ModItemProperties;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.loot.ModLootModifiers;
 import net.karen.mccourse.painting.ModPaintings;
+import net.karen.mccourse.particle.ModParticles;
 import net.karen.mccourse.potion.BetterBrewingRecipe;
 import net.karen.mccourse.potion.ModPotions;
 import net.karen.mccourse.sound.ModSounds;
@@ -73,6 +74,9 @@ public class MCCourseMod {
 
         // Register villagers
         ModVillagers.register(modEventBus);
+
+        // Register particles
+        ModParticles.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
