@@ -12,6 +12,7 @@ import net.karen.mccourse.painting.ModPaintings;
 import net.karen.mccourse.potion.BetterBrewingRecipe;
 import net.karen.mccourse.potion.ModPotions;
 import net.karen.mccourse.sound.ModSounds;
+import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
@@ -69,6 +70,9 @@ public class MCCourseMod {
 
         // Register potions
         ModPotions.register(modEventBus);
+
+        // Register villagers
+        ModVillagers.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);

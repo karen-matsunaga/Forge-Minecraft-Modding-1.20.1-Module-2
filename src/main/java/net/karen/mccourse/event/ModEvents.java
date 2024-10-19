@@ -2,10 +2,12 @@ package net.karen.mccourse.event;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.karen.mccourse.MCCourseMod;
+import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.command.ReturnHomeCommand;
 import net.karen.mccourse.command.SetHomeCommand;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.item.custom.HammerItem;
+import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -105,7 +107,7 @@ public class ModEvents {
                     new ItemStack(ModItems.KOHLRABI_SEEDS.get()), 3, 2, 0.02f));
         }
 
-        // Villager's farm profession
+        // Villager's toolsmith profession
         if (event.getType() == VillagerProfession.TOOLSMITH) {
             // List of all trades
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
@@ -116,6 +118,19 @@ public class ModEvents {
             trades.get(villagerLevel).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemStack(Items.EMERALD, 12), stack, 2, 5, 0.06f));
         }
+
+        // Custom Villager's soundmaster profession
+        if (event.getType() == ModVillagers.SOUND_MASTER.get()) {
+            // List of all trades
+            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+
+            // List of all trades that the player can trade
+            ItemStack stack = new ItemStack(ModBlocks.SOUND_BLOCK.get(), 1); // Received ALEXANDRITE PAXEL with Villager's level 3
+            int villagerLevel = 1;
+            trades.get(villagerLevel).add((pTrader, pRandom) -> new MerchantOffer(
+                    new ItemStack(Items.EMERALD, 25), stack, 2, 5, 0.06f));
+        }
+
     }
 
     // CUSTOM EVENT - Custom Villager Wandering

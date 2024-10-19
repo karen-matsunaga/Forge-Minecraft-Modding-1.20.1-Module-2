@@ -49,6 +49,9 @@ public class DataGenerators {
         // Mod Painting Variant Tag Provider
         generator.addProvider(event.includeClient(), new ModPaintingVariantTagProvider(packOutput, lookupProvider, existingFileHelper));
 
+        // Mod Poi Type Tags Provider
+        generator.addProvider(event.includeClient(), new ModPoiTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+
     }
 
 }

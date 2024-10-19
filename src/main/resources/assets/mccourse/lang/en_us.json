@@ -107,5 +107,8 @@
   "item.minecraft.splash_potion.effect.haste_potion": "Haste Splash Potion",
   "item.minecraft.lingering_potion.effect.haste_potion": "Haste Lingering Potion",
 
-  "item.minecraft.tipped_arrow.effect.haste_potion": "Arrow of Haste"
+  "item.minecraft.tipped_arrow.effect.haste_potion": "Arrow of Haste",
+
+  "entity.minecraft.villager.mccourse.soundmaster": "Soundmaster"
+
 }
