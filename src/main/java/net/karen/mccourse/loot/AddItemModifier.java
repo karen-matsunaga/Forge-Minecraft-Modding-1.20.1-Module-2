@@ -8,6 +8,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -30,6 +31,7 @@ public class AddItemModifier extends LootModifier {
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+        generatedLoot.clear(); // Clear old's loot tables
         if (context.getParamOrNull(LootContextParams.TOOL) != null && context.getParamOrNull(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
             for (Item item : items) {  // Loop through each item in the list
                 if (context.getQueriedLootTableId().equals(Blocks.DIAMOND_ORE.getLootTable())) { // If mined DIAMOND ORE with Silk Touch's enchantment
@@ -51,20 +53,23 @@ public class AddItemModifier extends LootModifier {
                         generatedLoot.add(new ItemStack(item, drops)); // Drop multiple ancient debris's ores and netherite scraps
                 }
             }
+
+            for (ItemStack itemStack : generatedLoot) { // All modifications of ore's loot tables
+                UniformGenerator.between(4.0F, 5.0F).getInt(context);
+                ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 4).build().apply(itemStack, context);
+                ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE).build().apply(itemStack, context);
+                ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE).build().apply(itemStack, context);
+            }
         }
 
-        // Apply loot conditions and add each item in the list
-        for (LootItemCondition condition : this.conditions) { if (!condition.test(context)) { return generatedLoot; } }
+        for (LootItemCondition condition : this.conditions) { if (!condition.test(context)) { return generatedLoot; } } // Apply loot conditions, and, add item on the list
 
-        // No Silk Touch or Fortune - add each item in the list normally and update the data and return the list
-        for (Item item : items) { generatedLoot.add(new ItemStack(item)); }
+        for (Item item : items) { generatedLoot.add(new ItemStack(item)); } // No enchantment add item on the list normally, update the data, and, return the list
 
         return generatedLoot; // Return normal loot modifier even if to exist 1000 items
     }
 
     @Override
-    public Codec<? extends IGlobalLootModifier> codec() {
-        return CODEC.get();
-    }
+    public Codec<? extends IGlobalLootModifier> codec() { return CODEC.get(); }
 
 }
