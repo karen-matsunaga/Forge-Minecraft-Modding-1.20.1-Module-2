@@ -55,7 +55,6 @@ public class AddItemModifier extends LootModifier {
             }
 
             for (ItemStack itemStack : generatedLoot) { // All modifications of ore's loot tables
-                UniformGenerator.between(4.0F, 5.0F).getInt(context);
                 ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 4).build().apply(itemStack, context);
                 ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE).build().apply(itemStack, context);
                 ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE).build().apply(itemStack, context);
