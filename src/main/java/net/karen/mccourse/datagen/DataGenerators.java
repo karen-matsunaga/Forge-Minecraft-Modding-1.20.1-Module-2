@@ -57,6 +57,9 @@ public class DataGenerators {
         // Mod Advancement Provider
         generator.addProvider(event.includeClient(), new ForgeAdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of(new ModAdvancementProvider())));
 
+        // Mod Fluid Tags Provider
+        generator.addProvider(event.includeClient(), new ModFluidTagsProvider(packOutput, lookupProvider, existingFileHelper));
+
     }
 
 }

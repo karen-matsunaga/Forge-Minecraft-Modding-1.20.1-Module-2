@@ -4,6 +4,8 @@ import com.mojang.logging.LogUtils;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.effect.ModEffects;
 import net.karen.mccourse.enchantment.ModEnchantments;
+import net.karen.mccourse.fluid.ModFluids;
+import net.karen.mccourse.fluid.ModFluidsTypes;
 import net.karen.mccourse.item.ModCreativeModeTabs;
 import net.karen.mccourse.item.ModItemProperties;
 import net.karen.mccourse.item.ModItems;
@@ -14,6 +16,8 @@ import net.karen.mccourse.potion.BetterBrewingRecipe;
 import net.karen.mccourse.potion.ModPotions;
 import net.karen.mccourse.sound.ModSounds;
 import net.karen.mccourse.villager.ModVillagers;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
@@ -77,6 +81,10 @@ public class MCCourseMod {
 
         // Register particles
         ModParticles.register(modEventBus);
+
+        // Register fluids
+        ModFluidsTypes.register(modEventBus);
+        ModFluids.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -149,6 +157,10 @@ public class MCCourseMod {
         public static void onClientSetup(FMLClientSetupEvent event) {
             event.enqueueWork(() -> {
                 ModItemProperties.addCustomItemProperties();
+
+                // Adding Soap Water's source and flowing layers
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_SOAP_WATER.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_SOAP_WATER.get(), RenderType.translucent());
 
             });
         }

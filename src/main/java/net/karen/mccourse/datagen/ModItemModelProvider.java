@@ -83,6 +83,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Gem Empowering Station
         complexBlock(ModBlocks.GEM_EMPOWERING_STATION.get());
 
+        // Soap Water Bucket fluid
+        simpleItem(ModItems.SOAP_WATER_BUCKET);
+
 
     }
 

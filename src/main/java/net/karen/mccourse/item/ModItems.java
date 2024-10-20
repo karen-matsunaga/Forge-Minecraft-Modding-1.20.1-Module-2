@@ -2,6 +2,7 @@ package net.karen.mccourse.item;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
+import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.item.custom.*;
 import net.karen.mccourse.sound.ModSounds;
 import net.minecraft.resources.ResourceLocation;
@@ -101,6 +102,10 @@ public class ModItems {
     // Alexandrite's shield
     public static final RegistryObject<Item> ALEXANDRITE_SHIELD = ITEMS.register("alexandrite_shield",
             () -> new ShieldItem(new Item.Properties().durability(500)));
+
+    // Soap Water Bucket custom fluid
+    public static final RegistryObject<Item> SOAP_WATER_BUCKET = ITEMS.register("soap_water_bucket",
+            () -> new BucketItem(ModFluids.SOURCE_SOAP_WATER, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
 
 

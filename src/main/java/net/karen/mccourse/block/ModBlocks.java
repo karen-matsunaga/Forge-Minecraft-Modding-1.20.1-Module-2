@@ -5,6 +5,7 @@ import net.karen.mccourse.block.custom.AlexandriteLampBlock;
 import net.karen.mccourse.block.custom.GemEmpoweringStationBlock;
 import net.karen.mccourse.block.custom.KohlrabiCropBlock;
 import net.karen.mccourse.block.custom.SoundBlock;
+import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.sound.ModSounds;
 import net.minecraft.sounds.SoundEvents;
@@ -124,6 +125,10 @@ public class ModBlocks {
     // Gem Empowering Station's custom block model
     public static final RegistryObject<Block> GEM_EMPOWERING_STATION = registerBlock("gem_empowering_station",
             () -> new GemEmpoweringStationBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
+
+    // Soap Water Block custom fluid
+    public static final RegistryObject<LiquidBlock> SOAP_WATER_BLOCK = BLOCKS.register("soap_water_block",
+            () -> new LiquidBlock(ModFluids.SOURCE_SOAP_WATER, BlockBehaviour.Properties.copy(Blocks.WATER).noLootTable()));
 
 
     // Register all custom blocks in the game

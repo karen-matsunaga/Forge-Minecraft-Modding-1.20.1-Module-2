@@ -109,6 +109,7 @@
 
   "item.minecraft.tipped_arrow.effect.haste_potion": "Arrow of Haste",
 
-  "entity.minecraft.villager.mccourse.soundmaster": "Soundmaster"
+  "entity.minecraft.villager.mccourse.soundmaster": "Soundmaster",
 
+  "item.mccourse.soap_water_bucket": "Soap Water Bucket"
 }

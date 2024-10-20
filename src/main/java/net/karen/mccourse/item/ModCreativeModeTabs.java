@@ -122,6 +122,9 @@ public class ModCreativeModeTabs {
                         // Alexandrite's shield
                         output.accept(ModItems.ALEXANDRITE_SHIELD.get());
 
+                        // Soup Water's custom bucket and custom fluid
+                        output.accept(ModItems.SOAP_WATER_BUCKET.get());
+
 
                     }).build());
 
