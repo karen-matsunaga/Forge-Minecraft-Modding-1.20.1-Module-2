@@ -4,6 +4,7 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
@@ -17,6 +18,7 @@ import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -32,11 +34,17 @@ public class AddItemModifier extends LootModifier {
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         generatedLoot.clear(); // Clear old's loot tables
+        List<ResourceLocation> ores = Arrays.asList( // All ores with loot table modified
+                Blocks.COAL_ORE.getLootTable(), Blocks.COPPER_ORE.getLootTable(), Blocks.IRON_ORE.getLootTable(), Blocks.GOLD_ORE.getLootTable(), // Stone ORES
+                Blocks.LAPIS_ORE.getLootTable(), Blocks.REDSTONE_ORE.getLootTable(), Blocks.DIAMOND_ORE.getLootTable(), Blocks.EMERALD_ORE.getLootTable(),
+                Blocks.ANCIENT_DEBRIS.getLootTable(), Blocks.NETHER_QUARTZ_ORE.getLootTable(),
+                Blocks.DEEPSLATE_COAL_ORE.getLootTable(), Blocks.DEEPSLATE_COPPER_ORE.getLootTable(), Blocks.DEEPSLATE_IRON_ORE.getLootTable(), // Deepslate ORES
+                Blocks.DEEPSLATE_GOLD_ORE.getLootTable(), Blocks.DEEPSLATE_LAPIS_ORE.getLootTable(), Blocks.DEEPSLATE_REDSTONE_ORE.getLootTable(),
+                Blocks.DEEPSLATE_DIAMOND_ORE.getLootTable(), Blocks.DEEPSLATE_EMERALD_ORE.getLootTable());
+
         if (context.getParamOrNull(LootContextParams.TOOL) != null && context.getParamOrNull(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
             for (Item item : items) {  // Loop through each item in the list
-                if (context.getQueriedLootTableId().equals(Blocks.DIAMOND_ORE.getLootTable())) { // If mined DIAMOND ORE with Silk Touch's enchantment
-                        generatedLoot.add(new ItemStack(item)); // Drop itself
-                } else if (context.getQueriedLootTableId().equals(Blocks.ANCIENT_DEBRIS.getLootTable())) { // If mined ANCIENT DEBRIS with Silk Touch's enchantment
+                if (ores.contains(context.getQueriedLootTableId())) { // If mined ORES with Silk Touch's enchantment
                         generatedLoot.add(new ItemStack(item)); // Drop itself
                 }
             }
@@ -47,15 +55,13 @@ public class AddItemModifier extends LootModifier {
             int drops = context.getRandom().nextInt(fortuneLevel) + UniformGenerator.between(1.0f, 2.0f).getInt(context); // Drops randomly
 
             for (Item item : items) {  // Loop through each item in the list
-                if (context.getQueriedLootTableId().equals(Blocks.DIAMOND_ORE.getLootTable())) { // If mined DIAMOND ORE with Fortune's enchantment
-                        generatedLoot.add(new ItemStack(item, drops)); // Drop multiple diamond's ores and diamonds
-                } else if (context.getQueriedLootTableId().equals(Blocks.ANCIENT_DEBRIS.getLootTable())) { // If mined ANCIENT DEBRIS with Fortune's enchantment
-                        generatedLoot.add(new ItemStack(item, drops)); // Drop multiple ancient debris's ores and netherite scraps
+                if (ores.contains(context.getQueriedLootTableId()) ) { // If mined ORES with Fortune's enchantment
+                        generatedLoot.add(new ItemStack(item, drops)); // Drop multiple ORES
                 }
             }
 
             for (ItemStack itemStack : generatedLoot) { // All modifications of ore's loot tables
-                ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 4).build().apply(itemStack, context);
+                ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 2).build().apply(itemStack, context);
                 ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE).build().apply(itemStack, context);
                 ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE).build().apply(itemStack, context);
             }
