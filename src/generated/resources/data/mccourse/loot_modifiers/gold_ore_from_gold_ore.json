@@ -1,0 +1,18 @@
+{
+  "type": "mccourse:add_item",
+  "conditions": [
+    {
+      "block": "minecraft:gold_ore",
+      "condition": "minecraft:block_state_property"
+    },
+    {
+      "chance": 1.0,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "items": [
+    "minecraft:gold_ore",
+    "minecraft:gold_ingot",
+    "minecraft:raw_gold"
+  ]
+}

@@ -2,9 +2,26 @@
   "entries": [
     "mccourse:ancient_debris_from_ancient_debris",
     "mccourse:metal_detector_from_jungle_temple",
+    "mccourse:gold_ore_from_gold_ore",
+    "mccourse:coal_ore_from_coal_ore",
+    "mccourse:deepslate_redstone_ore_from_deepslate_redstone_ore",
+    "mccourse:nether_gold_ore_from_nether_gold_ore",
+    "mccourse:kohlrabi_seeds_from_fern",
+    "mccourse:copper_ore_from_copper_ore",
+    "mccourse:deepslate_copper_ore_from_deepslate_copper_ore",
+    "mccourse:deepslate_iron_ore_from_deepslate_iron_ore",
+    "mccourse:nether_quartz_ore_from_nether_quartz_ore",
+    "mccourse:redstone_ore_from_redstone_ore",
+    "mccourse:iron_ore_from_iron_ore",
+    "mccourse:deepslate_diamond_ore_from_deepslate_diamond_ore",
+    "mccourse:deepslate_emerald_ore_from_deepslate_emerald_ore",
+    "mccourse:deepslate_lapis_ore_from_deepslate_lapis_ore",
     "mccourse:kohlrabi_seeds_from_grass",
     "mccourse:diamond_ore_from_diamond_ore",
-    "mccourse:kohlrabi_seeds_from_fern"
+    "mccourse:emerald_ore_from_emerald_ore",
+    "mccourse:deepslate_gold_ore_from_deepslate_gold_ore",
+    "mccourse:lapis_ore_from_lapis_ore",
+    "mccourse:deepslate_coal_ore_from_deepslate_coal_ore"
   ],
   "replace": false
 }

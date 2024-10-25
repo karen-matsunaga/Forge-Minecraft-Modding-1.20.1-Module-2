@@ -37,7 +37,7 @@ public class AddItemModifier extends LootModifier {
         List<ResourceLocation> ores = Arrays.asList( // All ores with loot table modified
                 Blocks.COAL_ORE.getLootTable(), Blocks.COPPER_ORE.getLootTable(), Blocks.IRON_ORE.getLootTable(), Blocks.GOLD_ORE.getLootTable(), // Stone ORES
                 Blocks.LAPIS_ORE.getLootTable(), Blocks.REDSTONE_ORE.getLootTable(), Blocks.DIAMOND_ORE.getLootTable(), Blocks.EMERALD_ORE.getLootTable(),
-                Blocks.ANCIENT_DEBRIS.getLootTable(), Blocks.NETHER_QUARTZ_ORE.getLootTable(),
+                Blocks.ANCIENT_DEBRIS.getLootTable(), Blocks.NETHER_QUARTZ_ORE.getLootTable(), Blocks.NETHER_GOLD_ORE.getLootTable(),
                 Blocks.DEEPSLATE_COAL_ORE.getLootTable(), Blocks.DEEPSLATE_COPPER_ORE.getLootTable(), Blocks.DEEPSLATE_IRON_ORE.getLootTable(), // Deepslate ORES
                 Blocks.DEEPSLATE_GOLD_ORE.getLootTable(), Blocks.DEEPSLATE_LAPIS_ORE.getLootTable(), Blocks.DEEPSLATE_REDSTONE_ORE.getLootTable(),
                 Blocks.DEEPSLATE_DIAMOND_ORE.getLootTable(), Blocks.DEEPSLATE_EMERALD_ORE.getLootTable());
@@ -45,7 +45,7 @@ public class AddItemModifier extends LootModifier {
         if (context.getParamOrNull(LootContextParams.TOOL) != null && context.getParamOrNull(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
             for (Item item : items) {  // Loop through each item in the list
                 if (ores.contains(context.getQueriedLootTableId())) { // If mined ORES with Silk Touch's enchantment
-                        generatedLoot.add(new ItemStack(item)); // Drop itself
+                        generatedLoot.add(new ItemStack(item)); // Drop itself, a block, and, an item
                 }
             }
         }
