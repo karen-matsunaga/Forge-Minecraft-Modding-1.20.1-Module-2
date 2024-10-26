@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.effect.ModEffects;
 import net.karen.mccourse.enchantment.ModEnchantments;
+import net.karen.mccourse.block.entity.ModBlockEntities;
 import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.fluid.ModFluidsTypes;
 import net.karen.mccourse.item.ModCreativeModeTabs;
@@ -14,8 +15,11 @@ import net.karen.mccourse.painting.ModPaintings;
 import net.karen.mccourse.particle.ModParticles;
 import net.karen.mccourse.potion.BetterBrewingRecipe;
 import net.karen.mccourse.potion.ModPotions;
+import net.karen.mccourse.screen.GemEmpoweringStationScreen;
+import net.karen.mccourse.screen.ModMenuTypes;
 import net.karen.mccourse.sound.ModSounds;
 import net.karen.mccourse.villager.ModVillagers;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -85,6 +89,10 @@ public class MCCourseMod {
         // Register fluids
         ModFluidsTypes.register(modEventBus);
         ModFluids.register(modEventBus);
+
+        // Register block entities
+        ModBlockEntities.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -161,6 +169,9 @@ public class MCCourseMod {
                 // Adding Soap Water's source and flowing layers
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_SOAP_WATER.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_SOAP_WATER.get(), RenderType.translucent());
+
+                // Gem Empowering's menu
+                MenuScreens.register(ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringStationScreen::new);
 
             });
         }
