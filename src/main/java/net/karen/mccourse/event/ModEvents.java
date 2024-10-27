@@ -5,19 +5,29 @@ import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.command.ReturnHomeCommand;
 import net.karen.mccourse.command.SetHomeCommand;
+import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.item.custom.HammerItem;
 import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -26,6 +36,7 @@ import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.command.ConfigCommand;
 
 import java.util.HashSet;
@@ -149,4 +160,30 @@ public class ModEvents {
                 new ItemStack(Items.EMERALD, 5),
                 new ItemStack(ModItems.KOHLRABI_SEEDS.get()), 3, 2, 0.02f));
     }
+
+    // CUSTOM EVENT - More Ores custom enchantment
+    @SubscribeEvent
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+        execute(event.getLevel(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), event.getPlayer());
+    }
+
+    // Player = Entity
+    private static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
+        if (!(entity instanceof LivingEntity livingEntity)) return;
+
+        ItemStack mainHandItem = livingEntity.getMainHandItem(); // Player
+        int oresLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.MORE_ORES.get());
+        if (!mainHandItem.isEnchanted() || oresLevel <= 0) return;
+
+        if (world.getBlockState(BlockPos.containing(x, y, z)).getBlock() == Blocks.STONE && Math.random() <= 0.1) {
+            if (world instanceof ServerLevel serverLevel) {
+                for (int i = 0; i < oresLevel; i++) {
+                    ItemEntity entityToSpawn = new ItemEntity(serverLevel, (x + 0.5), (y + 0.5), (z + 0.5),
+                            (new ItemStack((ForgeRegistries.BLOCKS.tags().getTag(BlockTags.create(new ResourceLocation("forge:ores"))).getRandomElement(RandomSource.create()).orElseGet(() -> Blocks.AIR)))));
+                    serverLevel.addFreshEntity(entityToSpawn);
+                }
+            }
+        }
+    }
+
 }
