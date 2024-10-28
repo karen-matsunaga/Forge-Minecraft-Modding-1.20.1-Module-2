@@ -169,16 +169,17 @@ public class ModEvents {
 
     // Player = Entity
     private static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
-        if (!(entity instanceof LivingEntity livingEntity)) return;
+        if (!(entity instanceof LivingEntity livingEntity))  { return; }
 
-        ItemStack mainHandItem = livingEntity.getMainHandItem(); // Player
+        ItemStack mainHandItem = livingEntity.getMainHandItem(); // Player has a tool
         int oresLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.MORE_ORES.get());
-        if (!mainHandItem.isEnchanted() || oresLevel <= 0) return;
+        if (!mainHandItem.isEnchanted() || oresLevel <= 0) { return; }
 
         if (world.getBlockState(BlockPos.containing(x, y, z)).getBlock() == Blocks.STONE && Math.random() <= 0.1) {
             if (world instanceof ServerLevel serverLevel) {
                 for (int i = 0; i < oresLevel; i++) {
                     ItemEntity entityToSpawn = new ItemEntity(serverLevel, (x + 0.5), (y + 0.5), (z + 0.5),
+                            // Convert ores from BlockTags to ItemTags
                             (new ItemStack((ForgeRegistries.BLOCKS.tags().getTag(BlockTags.create(new ResourceLocation("forge:ores"))).getRandomElement(RandomSource.create()).orElseGet(() -> Blocks.AIR)))));
                     serverLevel.addFreshEntity(entityToSpawn);
                 }
