@@ -2,10 +2,12 @@ package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
+import net.karen.mccourse.datagen.custom.GemEmpoweringRecipeBuilder;
 import net.karen.mccourse.item.ModItems;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -55,6 +57,13 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         // Items Blasting
         oreBlasting(pWriter, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(), 0.25f, 200, "alexandrite");
 
+        // Gem Empowering Station custom recipes
+        new GemEmpoweringRecipeBuilder(ModItems.RAW_ALEXANDRITE.get(), ModItems.ALEXANDRITE.get(), 3)
+                .unlockedBy("has_raw_alexandrite", has(ModItems.RAW_ALEXANDRITE.get())).save(pWriter);
+
+        new GemEmpoweringRecipeBuilder(Items.COAL, Items.DIAMOND, 7)
+                .unlockedBy("has_diamond", has(Items.DIAMOND)).save(pWriter);
+
     }
 
     // Smelting
@@ -80,5 +89,4 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                     .save(pFinishedRecipeConsumer, MCCourseMod.MOD_ID + ":" + getItemName(pResult) + pRecipeName + "_" + getItemName(itemlike));
         }
     }
-
 }

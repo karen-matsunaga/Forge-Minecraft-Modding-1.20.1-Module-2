@@ -15,6 +15,7 @@ import net.karen.mccourse.painting.ModPaintings;
 import net.karen.mccourse.particle.ModParticles;
 import net.karen.mccourse.potion.BetterBrewingRecipe;
 import net.karen.mccourse.potion.ModPotions;
+import net.karen.mccourse.recipe.ModRecipes;
 import net.karen.mccourse.screen.GemEmpoweringStationScreen;
 import net.karen.mccourse.screen.ModMenuTypes;
 import net.karen.mccourse.sound.ModSounds;
@@ -93,6 +94,9 @@ public class MCCourseMod {
         // Register block entities
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+
+        // Register recipes
+        ModRecipes.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
