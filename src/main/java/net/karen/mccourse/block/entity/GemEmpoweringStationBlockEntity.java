@@ -6,11 +6,16 @@ import net.karen.mccourse.recipe.GemEmpoweringRecipe;
 import net.karen.mccourse.screen.GemEmpoweringStationMenu;
 import net.karen.mccourse.util.InventoryDirectionEntry;
 import net.karen.mccourse.util.InventoryDirectionWrapper;
+import net.karen.mccourse.util.ModEnergyStorage;
 import net.karen.mccourse.util.WrappedHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -26,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -73,11 +79,25 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
                     new InventoryDirectionEntry(Direction.WEST, INPUT_SLOT, true),
                     new InventoryDirectionEntry(Direction.UP, INPUT_SLOT, true)).directionsMap;
 
+    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
 
     // Progress bar when an item transform on other
     protected final ContainerData data;
     private int progress = 0;
     private int maxProgress = 78;
+
+    // Progress bar when an item transform on custom energy storage - CLIENT and SERVER is synchronized
+    private final ModEnergyStorage ENERGY_STORAGE = createEnergyStorage();
+
+    private ModEnergyStorage createEnergyStorage() {
+        return new ModEnergyStorage(64000, 200) {
+            @Override
+            public void onEnergyChanged() {
+                setChanged();
+                getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        };
+    }
 
     // Variables progress and maxProgress synchronization
     public GemEmpoweringStationBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -107,6 +127,11 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         };
     }
 
+    // Restore energy storage saved
+    public IEnergyStorage getEnergyStorage() {
+        return this.ENERGY_STORAGE;
+    }
+
     // Drops all items on inventory
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
@@ -133,6 +158,10 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
     // Detected hopper's placed direction
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if(cap == ForgeCapabilities.ENERGY) {
+            return lazyEnergyHandler.cast();
+        }
+
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
             if(side == null) {
                 return lazyItemHandler.cast();
@@ -161,18 +190,22 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+        lazyEnergyHandler.invalidate();
     }
 
     // Save all items of inventory
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         pTag.put("inventory", itemHandler.serializeNBT());
+        pTag.putInt("gem_empowering_station.progress", progress);
+        pTag.putInt("energy", ENERGY_STORAGE.getEnergyStored());
         super.saveAdditional(pTag);
     }
 
@@ -180,12 +213,17 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
     public void load(CompoundTag pTag) {
         super.load(pTag);
         itemHandler.deserializeNBT(pTag.getCompound("inventory"));
+        progress = pTag.getInt("gem_empowering_station.progress");
+        ENERGY_STORAGE.setEnergy(pTag.getInt("energy"));
     }
 
     // Custom block entity class to work on Server side
     public void tick(Level level, BlockPos pPos, BlockState pState) {
+        fillUpOnEnergy(); // This is a "placeholder" for getting energy through wires or similar
+
         if (isOutputSlotEmptyOrReceivable() && hasRecipe()) {
             increaseCraftingProcess();
+            extractEnergy();
             setChanged(level, pPos, pState);
 
             if (hasProgressFinished()) {
@@ -195,6 +233,31 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         } else {
             resetProgress();
         }
+    }
+
+    private void extractEnergy() {
+        this.ENERGY_STORAGE.extractEnergy(100, false);
+    }
+
+
+    private void fillUpOnEnergy() {
+        if(hasEnergyItemInSlot(ENERGY_ITEM_SLOT)) {
+
+            if(this.itemHandler.getStackInSlot(ENERGY_ITEM_SLOT).getCount() > 0) {
+
+                int energyPlus1k = ENERGY_STORAGE.getEnergyStored() + 1000;
+
+                while(ENERGY_STORAGE.getEnergyStored() != energyPlus1k) {
+                    this.ENERGY_STORAGE.receiveEnergy(1000, false);
+                }
+                itemHandler.extractItem(ENERGY_ITEM_SLOT, 1, false);
+            }
+        }
+    }
+
+    private boolean hasEnergyItemInSlot(int energyItemSlot) {
+        return !this.itemHandler.getStackInSlot(energyItemSlot).isEmpty() &&
+                this.itemHandler.getStackInSlot(energyItemSlot).getItem() == ModItems.KOHLRABI.get();
     }
 
     private void craftItem() {
@@ -225,7 +288,11 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         if (recipe.isEmpty()) { return false; }
         ItemStack resultItem = recipe.get().getResultItem(getLevel().registryAccess());
         return canInsertAmountIntoOutputSlot(resultItem.getCount())
-                && canInsertItemIntoOutputSlot(resultItem.getItem());
+                && canInsertItemIntoOutputSlot(resultItem.getItem()) && hasEnoughEnergyToCraft();
+    }
+
+    private boolean hasEnoughEnergyToCraft() {
+        return this.ENERGY_STORAGE.getEnergyStored() >= 100 * maxProgress;
     }
 
     // Verify all custom recipes if are added or not inserted
@@ -250,5 +317,21 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
     private boolean isOutputSlotEmptyOrReceivable() {
         return this.itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ||
                 this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() < this.itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize();
+    }
+
+    // Save and restore on disk the energy storage
+    @Override
+    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        return saveWithoutMetadata();
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
     }
 }
