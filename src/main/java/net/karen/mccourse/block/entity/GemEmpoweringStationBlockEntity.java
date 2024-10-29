@@ -242,16 +242,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
 
     private void fillUpOnEnergy() {
         if(hasEnergyItemInSlot(ENERGY_ITEM_SLOT)) {
-
-            if(this.itemHandler.getStackInSlot(ENERGY_ITEM_SLOT).getCount() > 0) {
-
-                int energyPlus1k = ENERGY_STORAGE.getEnergyStored() + 1000;
-
-                while(ENERGY_STORAGE.getEnergyStored() != energyPlus1k) {
-                    this.ENERGY_STORAGE.receiveEnergy(1000, false);
-                }
-                itemHandler.extractItem(ENERGY_ITEM_SLOT, 1, false);
-            }
+            this.ENERGY_STORAGE.receiveEnergy(3200, false);
         }
     }
 
