@@ -28,10 +28,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -41,20 +45,18 @@ import java.util.Map;
 import java.util.Optional;
 
 public class GemEmpoweringStationBlockEntity extends BlockEntity implements MenuProvider {
-    // Custom block entity GUI
-    private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(4) { // Custom block entity GUI
 
         @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-        }
+        protected void onContentsChanged(int slot) { setChanged(); }
 
-        // An item inserted it is valid
+
         @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) { // An item inserted it is valid
             return switch (slot) {
-                case 0, 1 -> true; // Input a fluid or an item = Fluid input slot and Input slot
-                case 2 -> false; // Output an item = Output slot
+                case 0 -> true; // Input an item = Item input slot
+                case 1 -> stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent(); // Input a fluid item = Fluid input slot
+                case 2 -> false; // Output an item = Item output slot
                 case 3 -> stack.getItem() == ModItems.KOHLRABI.get(); // Transform an item on energy = Energy item slot
                 default -> super.isItemValid(slot, stack);
             };
@@ -68,6 +70,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
     private static final int ENERGY_ITEM_SLOT = 3;
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+
     // Hopper item inserted on Gem Empowering Station
     // DOWN, SOUTH, and, EAST directions doesn't worked, but NORTH, WEST, and, UP directions is worked
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
@@ -80,6 +83,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
                     new InventoryDirectionEntry(Direction.UP, INPUT_SLOT, true)).directionsMap;
 
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+    private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
 
     // Progress bar when an item transform on other
     protected final ContainerData data;
@@ -88,6 +92,23 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
 
     // Progress bar when an item transform on custom energy storage - CLIENT and SERVER is synchronized
     private final ModEnergyStorage ENERGY_STORAGE = createEnergyStorage();
+
+    private final FluidTank FLUID_TANK = createFluidTank();
+
+    private FluidTank createFluidTank() {
+        return new FluidTank(64000) {
+            @Override
+            protected void onContentsChanged() {
+                setChanged();
+                if (!level.isClientSide()) {
+                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                }
+            }
+
+            @Override
+            public boolean isFluidValid(FluidStack stack) { return true; }
+        };
+    }
 
     private ModEnergyStorage createEnergyStorage() {
         return new ModEnergyStorage(64000, 200) {
@@ -127,10 +148,9 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         };
     }
 
-    // Restore energy storage saved
-    public IEnergyStorage getEnergyStorage() {
-        return this.ENERGY_STORAGE;
-    }
+    public IEnergyStorage getEnergyStorage() { return this.ENERGY_STORAGE; } // Restore energy storage saved
+
+    public FluidStack getFluid() { return FLUID_TANK.getFluid(); }
 
     // Drops all items on inventory
     public void drops() {
@@ -144,9 +164,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
 
     // Name that to show in screen
     @Override
-    public Component getDisplayName() {
-        return Component.literal("Gem Empowering Station");
-    }
+    public Component getDisplayName() { return Component.literal("Gem Empowering Station"); }
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
@@ -158,9 +176,9 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
     // Detected hopper's placed direction
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ForgeCapabilities.ENERGY) {
-            return lazyEnergyHandler.cast();
-        }
+        if(cap == ForgeCapabilities.ENERGY) { return lazyEnergyHandler.cast(); }
+
+        if(cap == ForgeCapabilities.FLUID_HANDLER) { return lazyFluidHandler.cast(); }
 
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
             if(side == null) {
@@ -191,6 +209,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
         lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
+        lazyFluidHandler = LazyOptional.of(() -> FLUID_TANK);
     }
 
     @Override
@@ -198,6 +217,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         super.invalidateCaps();
         lazyItemHandler.invalidate();
         lazyEnergyHandler.invalidate();
+        lazyFluidHandler.invalidate();
     }
 
     // Save all items of inventory
@@ -206,6 +226,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         pTag.put("inventory", itemHandler.serializeNBT());
         pTag.putInt("gem_empowering_station.progress", progress);
         pTag.putInt("energy", ENERGY_STORAGE.getEnergyStored());
+        pTag = FLUID_TANK.writeToNBT(pTag);
         super.saveAdditional(pTag);
     }
 
@@ -215,11 +236,13 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         itemHandler.deserializeNBT(pTag.getCompound("inventory"));
         progress = pTag.getInt("gem_empowering_station.progress");
         ENERGY_STORAGE.setEnergy(pTag.getInt("energy"));
+        FLUID_TANK.readFromNBT(pTag);
     }
 
     // Custom block entity class to work on Server side
     public void tick(Level level, BlockPos pPos, BlockState pState) {
         fillUpOnEnergy(); // This is a "placeholder" for getting energy through wires or similar
+        fillUpOnFluid();
 
         if (isOutputSlotEmptyOrReceivable() && hasRecipe()) {
             increaseCraftingProcess();
@@ -228,6 +251,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
 
             if (hasProgressFinished()) {
                 craftItem();
+                extractFluid();
                 resetProgress();
             }
         } else {
@@ -235,10 +259,39 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         }
     }
 
-    private void extractEnergy() {
-        this.ENERGY_STORAGE.extractEnergy(100, false);
+    private void extractFluid() { this.FLUID_TANK.drain(500, IFluidHandler.FluidAction.EXECUTE); }
+
+    private void fillUpOnFluid() {
+        if (hasFluidSourceInSlot(FLUID_INPUT_SLOT)) { transferItemFluidToTank(FLUID_INPUT_SLOT); }
     }
 
+    private void transferItemFluidToTank(int fluidInputSlot) {
+        this.itemHandler.getStackInSlot(fluidInputSlot).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(iFluidHandlerItem -> {
+            int drainAmount = Math.min(this.FLUID_TANK.getSpace(), 1000);
+
+            FluidStack stack = iFluidHandlerItem.drain(drainAmount, IFluidHandler.FluidAction.SIMULATE);
+
+            if(stack.getFluid() == Fluids.WATER) {
+                stack = iFluidHandlerItem.drain(drainAmount, IFluidHandler.FluidAction.EXECUTE);
+                fillTankWithFluid(stack, iFluidHandlerItem.getContainer());
+            }
+
+        });
+    }
+
+    private void fillTankWithFluid(FluidStack stack, ItemStack container) {
+        this.FLUID_TANK.fill(new FluidStack(stack.getFluid(), stack.getAmount()), IFluidHandler.FluidAction.EXECUTE);
+
+        this.itemHandler.extractItem(FLUID_INPUT_SLOT, 1, false);
+        this.itemHandler.insertItem(FLUID_INPUT_SLOT, container, false);
+    }
+
+    private boolean hasFluidSourceInSlot(int fluidInputSlot) {
+        return this.itemHandler.getStackInSlot(fluidInputSlot).getCount() > 0 &&
+                this.itemHandler.getStackInSlot(fluidInputSlot).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
+    }
+
+    private void extractEnergy() { this.ENERGY_STORAGE.extractEnergy(100, false); }
 
     private void fillUpOnEnergy() {
         if(hasEnergyItemInSlot(ENERGY_ITEM_SLOT)) {
@@ -261,17 +314,11 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
                 this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() + resultItem.getCount())); // Output slot
     }
 
-    private void resetProgress() {
-        this.progress = 0;
-    }
+    private void resetProgress() { this.progress = 0; }
 
-    private boolean hasProgressFinished() {
-        return this.progress >= this.maxProgress;
-    }
+    private boolean hasProgressFinished() { return this.progress >= this.maxProgress; }
 
-    private void increaseCraftingProcess() {
-        this.progress++;
-    }
+    private void increaseCraftingProcess() { this.progress++; }
 
     private boolean hasRecipe() {
         Optional<GemEmpoweringRecipe> recipe = getCurrentRecipe();
@@ -279,12 +326,13 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         if (recipe.isEmpty()) { return false; }
         ItemStack resultItem = recipe.get().getResultItem(getLevel().registryAccess());
         return canInsertAmountIntoOutputSlot(resultItem.getCount())
-                && canInsertItemIntoOutputSlot(resultItem.getItem()) && hasEnoughEnergyToCraft();
+                && canInsertItemIntoOutputSlot(resultItem.getItem()) && hasEnoughEnergyToCraft()
+                && hasEnoughFluidToCraft();
     }
 
-    private boolean hasEnoughEnergyToCraft() {
-        return this.ENERGY_STORAGE.getEnergyStored() >= 100 * maxProgress;
-    }
+    private boolean hasEnoughFluidToCraft() { return this.FLUID_TANK.getFluidAmount() >= 500; }
+
+    private boolean hasEnoughEnergyToCraft() { return this.ENERGY_STORAGE.getEnergyStored() >= 100 * maxProgress; }
 
     // Verify all custom recipes if are added or not inserted
     private Optional<GemEmpoweringRecipe> getCurrentRecipe() {
@@ -312,17 +360,11 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
 
     // Save and restore on disk the energy storage
     @Override
-    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
+    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
-    }
+    public CompoundTag getUpdateTag() { return saveWithoutMetadata(); }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        super.onDataPacket(net, pkt);
-    }
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) { super.onDataPacket(net, pkt); }
 }
