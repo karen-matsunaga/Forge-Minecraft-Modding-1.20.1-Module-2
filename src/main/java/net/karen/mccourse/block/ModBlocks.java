@@ -6,6 +6,7 @@ import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.sound.ModSounds;
 import net.karen.mccourse.util.ModWoodTypes;
+import net.karen.mccourse.worldgen.tree.WalnutTreeGrower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -170,7 +171,7 @@ public class ModBlocks {
             });
 
     public static final RegistryObject<Block> WALNUT_SAPLING = registerBlock("walnut_sapling",
-            () -> new SaplingBlock(null, BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
+            () -> new SaplingBlock(new WalnutTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
 
     // Custom sign and hanging sign
     public static final RegistryObject<Block> WALNUT_SIGN = BLOCKS.register("walnut_sign",

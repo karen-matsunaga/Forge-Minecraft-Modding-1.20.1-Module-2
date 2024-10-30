@@ -60,6 +60,8 @@ public class DataGenerators {
         // Mod Fluid Tags Provider
         generator.addProvider(event.includeClient(), new ModFluidTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
-    }
+        // Mod World Gen Provider
+        generator.addProvider(event.includeClient(), new ModWorldGenProvider(packOutput, lookupProvider));
 
+    }
 }
