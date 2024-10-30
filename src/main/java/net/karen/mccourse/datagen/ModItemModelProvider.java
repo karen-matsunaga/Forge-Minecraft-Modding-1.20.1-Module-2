@@ -88,6 +88,11 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         // Walnut's sapling block
         saplingItem(ModBlocks.WALNUT_SAPLING);
+
+        // Walnut's sign block
+        simpleItem(ModItems.WALNUT_SIGN);
+        simpleItem(ModItems.WALNUT_HANGING_SIGN);
+
     }
 
     // Registry all sapling item's models

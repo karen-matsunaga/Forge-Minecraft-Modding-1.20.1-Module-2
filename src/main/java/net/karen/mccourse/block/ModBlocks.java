@@ -5,6 +5,7 @@ import net.karen.mccourse.block.custom.*;
 import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.sound.ModSounds;
+import net.karen.mccourse.util.ModWoodTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -171,6 +172,18 @@ public class ModBlocks {
     public static final RegistryObject<Block> WALNUT_SAPLING = registerBlock("walnut_sapling",
             () -> new SaplingBlock(null, BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
 
+    // Custom sign and hanging sign
+    public static final RegistryObject<Block> WALNUT_SIGN = BLOCKS.register("walnut_sign",
+            () -> new ModStandingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SIGN), ModWoodTypes.WALNUT));
+
+    public static final RegistryObject<Block> WALNUT_WALL_SIGN = BLOCKS.register("walnut_wall_sign",
+            () -> new ModWallSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WALL_SIGN), ModWoodTypes.WALNUT));
+
+    public static final RegistryObject<Block> WALNUT_HANGING_SIGN = BLOCKS.register("walnut_hanging_sign",
+            () -> new ModHangingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_HANGING_SIGN), ModWoodTypes.WALNUT));
+
+    public static final RegistryObject<Block> WALNUT_WALL_HANGING_SIGN = BLOCKS.register("walnut_wall_hanging_sign",
+            () -> new ModWallHangingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WALL_HANGING_SIGN), ModWoodTypes.WALNUT));
 
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
@@ -185,7 +198,5 @@ public class ModBlocks {
     }
 
     // Register all blocks in game
-    public static void register(IEventBus eventBus) {
-        BLOCKS.register(eventBus);
-    }
+    public static void register(IEventBus eventBus) { BLOCKS.register(eventBus); }
 }

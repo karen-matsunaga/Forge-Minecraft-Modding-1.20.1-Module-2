@@ -124,6 +124,8 @@
   "block.mccourse.stripped_walnut_log": "Stripped Walnut Log",
   "block.mccourse.stripped_walnut_wood": "Stripped Walnut Wood",
   "block.mccourse.walnut_leaves": "Walnut Leaves",
+  "block.mccourse.walnut_sapling": "Walnut Sapling",
 
-  "block.mccourse.walnut_sapling": "Walnut Sapling"
+  "block.mccourse.walnut_sign": "Walnut Sign",
+  "block.mccourse.walnut_hanging_sign": "Walnut Hanging Sign"
 }

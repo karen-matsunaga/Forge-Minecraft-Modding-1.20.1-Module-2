@@ -19,10 +19,12 @@ import net.karen.mccourse.recipe.ModRecipes;
 import net.karen.mccourse.screen.GemEmpoweringStationScreen;
 import net.karen.mccourse.screen.ModMenuTypes;
 import net.karen.mccourse.sound.ModSounds;
+import net.karen.mccourse.util.ModWoodTypes;
 import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
@@ -168,6 +170,10 @@ public class MCCourseMod {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             event.enqueueWork(() -> {
+
+                // Register custom wood type
+                Sheets.addWoodType(ModWoodTypes.WALNUT);
+
                 ModItemProperties.addCustomItemProperties();
 
                 // Adding Soap Water's source and flowing layers

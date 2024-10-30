@@ -114,6 +114,31 @@ public class ModBlockStateProvider extends BlockStateProvider {
         leavesBlock(ModBlocks.WALNUT_LEAVES);
         saplingBlock(ModBlocks.WALNUT_SAPLING);
 
+        // Walnut's custom sign
+        signBlock(((StandingSignBlock) ModBlocks.WALNUT_SIGN.get()), ((WallSignBlock) ModBlocks.WALNUT_WALL_SIGN.get()),
+                blockTexture(ModBlocks.WALNUT_PLANKS.get()));
+
+        hangingSignBlock(ModBlocks.WALNUT_HANGING_SIGN.get(), ModBlocks.WALNUT_WALL_HANGING_SIGN.get(),
+                blockTexture(ModBlocks.WALNUT_PLANKS.get()));
+    }
+
+    // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json
+    public void hangingSignBlock(Block signBlock, Block wallSignBlock, ResourceLocation texture) {
+        ModelFile sign = models().sign(name(signBlock), texture);
+        hangingSignBlock(signBlock, wallSignBlock, sign);
+    }
+
+    public void hangingSignBlock(Block signBlock, Block wallSignBlock, ModelFile sign) {
+        simpleBlock(signBlock, sign);
+        simpleBlock(wallSignBlock, sign);
+    }
+
+    private String name(Block block) {
+        return key(block).getPath();
+    }
+
+    private ResourceLocation key(Block block) {
+        return ForgeRegistries.BLOCKS.getKey(block);
     }
 
     // Method to generate custom leaves automatically in .JSON file models/blocks/name_leaves.json

@@ -134,6 +134,10 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.WALNUT_LEAVES.get());
                         output.accept(ModBlocks.WALNUT_SAPLING.get());
 
+                        // Walnut's custom sign
+                        output.accept(ModBlocks.WALNUT_SIGN.get());
+                        output.accept(ModBlocks.WALNUT_HANGING_SIGN.get());
+
                     }).build());
 
     // Registry Creative Mode Tab

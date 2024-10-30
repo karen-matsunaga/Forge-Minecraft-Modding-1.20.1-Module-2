@@ -21,9 +21,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.Set;
 
 public class ModBlockLootTables extends BlockLootSubProvider {
-    public ModBlockLootTables() {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
-    }
+    public ModBlockLootTables() { super(Set.of(), FeatureFlags.REGISTRY.allFlags()); }
 
     // Adding loot table's items and blocks
     @Override
@@ -101,6 +99,16 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.add(ModBlocks.WALNUT_LEAVES.get(), block ->
                 createLeavesDrops(block, ModBlocks.WALNUT_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
 
+        // Walnut's custom sign
+        this.add(ModBlocks.WALNUT_SIGN.get(), block ->
+                createSingleItemTable(ModItems.WALNUT_SIGN.get()));
+        this.add(ModBlocks.WALNUT_WALL_SIGN.get(), block ->
+                createSingleItemTable(ModItems.WALNUT_SIGN.get()));
+        this.add(ModBlocks.WALNUT_HANGING_SIGN.get(), block ->
+                createSingleItemTable(ModItems.WALNUT_HANGING_SIGN.get()));
+        this.add(ModBlocks.WALNUT_WALL_HANGING_SIGN.get(), block ->
+                createSingleItemTable(ModItems.WALNUT_HANGING_SIGN.get()));
+
     }
 
     // Custom ore's drops
@@ -114,7 +122,5 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
     // Return all registries in deferred registry
     @Override
-    protected Iterable<Block> getKnownBlocks() {
-        return ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;
-    }
+    protected Iterable<Block> getKnownBlocks() { return ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator; }
 }
