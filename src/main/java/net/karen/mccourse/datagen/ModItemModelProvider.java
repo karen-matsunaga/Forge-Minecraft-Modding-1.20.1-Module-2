@@ -86,7 +86,15 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Soap Water Bucket fluid
         simpleItem(ModItems.SOAP_WATER_BUCKET);
 
+        // Walnut's sapling block
+        saplingItem(ModBlocks.WALNUT_SAPLING);
+    }
 
+    // Registry all sapling item's models
+    private ItemModelBuilder saplingItem(RegistryObject<Block> item) {
+        return withExistingParent(item.getId().getPath(),
+                new ResourceLocation("item/generated")).texture("layer0",
+                new ResourceLocation(MCCourseMod.MOD_ID,"block/" + item.getId().getPath()));
     }
 
     // Registry all complex block's models
@@ -106,7 +114,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/wall_inventory"))
                 .texture("wall",  new ResourceLocation(MCCourseMod.MOD_ID, "block/" + ForgeRegistries.BLOCKS.getKey(baseBlock.get()).getPath()));
     }
-
 
     // Registry all button's models
     public void buttonItem(RegistryObject<Block> block, RegistryObject<Block> baseBlock) {

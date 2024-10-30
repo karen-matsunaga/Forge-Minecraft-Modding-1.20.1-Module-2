@@ -96,6 +96,36 @@ public class ModBlockStateProvider extends BlockStateProvider {
         horizontalBlock(ModBlocks.GEM_EMPOWERING_STATION.get(),
                 new ModelFile.UncheckedModelFile(modLoc("block/gem_empowering_station")));
 
+        // Walnut's custom wood
+        logBlock(((RotatedPillarBlock) ModBlocks.WALNUT_LOG.get()));
+        axisBlock(((RotatedPillarBlock) ModBlocks.WALNUT_WOOD.get()), blockTexture(ModBlocks.WALNUT_LOG.get()), blockTexture(ModBlocks.WALNUT_LOG.get()));
+        axisBlock((RotatedPillarBlock) ModBlocks.STRIPPED_WALNUT_LOG.get(), new ResourceLocation(MCCourseMod.MOD_ID, "block/stripped_walnut_log"),
+                new ResourceLocation(MCCourseMod.MOD_ID, "block/stripped_walnut_log_top"));
+        axisBlock((RotatedPillarBlock) ModBlocks.STRIPPED_WALNUT_WOOD.get(), new ResourceLocation(MCCourseMod.MOD_ID, "block/stripped_walnut_log"),
+                new ResourceLocation(MCCourseMod.MOD_ID, "block/stripped_walnut_log"));
+
+        blockItem(ModBlocks.WALNUT_LOG);
+        blockItem(ModBlocks.WALNUT_WOOD);
+        blockItem(ModBlocks.STRIPPED_WALNUT_LOG);
+        blockItem(ModBlocks.STRIPPED_WALNUT_WOOD);
+
+        blockWithItem(ModBlocks.WALNUT_PLANKS);
+
+        leavesBlock(ModBlocks.WALNUT_LEAVES);
+        saplingBlock(ModBlocks.WALNUT_SAPLING);
+
+    }
+
+    // Method to generate custom leaves automatically in .JSON file models/blocks/name_leaves.json
+    private void leavesBlock(RegistryObject<Block> blockRegistryObject) {
+        simpleBlockWithItem(blockRegistryObject.get(),
+                models().cubeAll(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));
+    }
+
+    // Method to generate custom sapling automatically in .JSON file models/blocks/name_sapling.json
+    private void saplingBlock(RegistryObject<Block> blockRegistryObject) {
+        simpleBlock(blockRegistryObject.get(),
+                models().cross(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));
     }
 
     // Method to generate custom crop automatically in .JSON file models/blocks/name.json
@@ -114,7 +144,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
         return models;
     }
 
-
     // Method to generate custom lamp automatically in .JSON file
     private void customLamp() {
         getVariantBuilder(ModBlocks.ALEXANDRITE_LAMP.get()).forAllStates(state -> {
@@ -130,20 +159,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 new ResourceLocation(MCCourseMod.MOD_ID, "block/" +"alexandrite_lamp_on")));
     }
 
-
     // Method to use trapdoor block
     private void blockItem(RegistryObject<Block> blockRegistryObject, String appendix) {
         simpleBlockItem(blockRegistryObject.get(), new ModelFile.UncheckedModelFile("mccourse:block/"
                 + ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath() + appendix));
     }
 
-
     // Method to call the blocks
     private void blockItem(RegistryObject<Block> blockRegistryObject) {
         simpleBlockItem(blockRegistryObject.get(), new ModelFile.UncheckedModelFile("mccourse:block/"
                 + ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath()));
     }
-
 
     // Method to easy registry a block
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {

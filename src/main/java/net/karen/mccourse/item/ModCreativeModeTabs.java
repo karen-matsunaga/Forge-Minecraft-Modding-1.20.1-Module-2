@@ -105,7 +105,7 @@ public class ModCreativeModeTabs {
 
                         // Snapdragon's flower and potted flower
                         output.accept(ModBlocks.SNAPDRAGON.get());
-//                        output.accept(ModBlocks.POTTED_SNAPDRAGON.get());
+                        output.accept(ModBlocks.POTTED_SNAPDRAGON.get());
 
                         // Bar Brawl's music disc
                         output.accept(ModItems.BAR_BRAWL_RECORD.get());
@@ -125,11 +125,17 @@ public class ModCreativeModeTabs {
                         // Soup Water's custom bucket and custom fluid
                         output.accept(ModItems.SOAP_WATER_BUCKET.get());
 
+                        // Walnut's custom wood
+                        output.accept(ModBlocks.WALNUT_LOG.get());
+                        output.accept(ModBlocks.WALNUT_WOOD.get());
+                        output.accept(ModBlocks.STRIPPED_WALNUT_LOG.get());
+                        output.accept(ModBlocks.STRIPPED_WALNUT_WOOD.get());
+                        output.accept(ModBlocks.WALNUT_PLANKS.get());
+                        output.accept(ModBlocks.WALNUT_LEAVES.get());
+                        output.accept(ModBlocks.WALNUT_SAPLING.get());
 
                     }).build());
 
     // Registry Creative Mode Tab
-    public static void register(IEventBus eventBus) {
-        CREATIVE_MODE_TABS.register(eventBus);
-    }
+    public static void register(IEventBus eventBus) { CREATIVE_MODE_TABS.register(eventBus); }
 }
