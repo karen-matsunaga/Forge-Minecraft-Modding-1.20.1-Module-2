@@ -27,8 +27,12 @@ public class ModEnchantments {
                     () -> new MoreOresEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
                             EquipmentSlot.MAINHAND));
 
+    // Magnetic enchantment
+    public static final RegistryObject<Enchantment> MAGNETIC =
+            ENCHANTMENTS.register("magnetic",
+                    () -> new MoreOresEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
+                            EquipmentSlot.MAINHAND));
+
     // Registry all enchantments in game
-    public static void register(IEventBus eventBus) {
-        ENCHANTMENTS.register(eventBus);
-    }
+    public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }
