@@ -207,10 +207,11 @@ public class ModEvents {
         Player player = event.getPlayer();
         if (player != null && event.getState().getBlock() != Blocks.AIR) {
             Level world = player.level();
-
             ItemStack mainHandItem = player.getMainHandItem(); // Player has a tool on main hand
             int magneticLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.MAGNETIC.get()); // Magnetic enchantment
             int moreOresEnchanted = mainHandItem.getEnchantmentLevel(ModEnchantments.MORE_ORES.get()); // More Ores enchantment
+
+            if (!mainHandItem.isEnchanted() || magneticLevel < 1) { return; } // Player has Magnetic enchantment
 
             event.setCanceled(true);
             BlockPos pos = event.getPos();
@@ -224,7 +225,7 @@ public class ModEvents {
                             }
                         });
                 world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-            } else if (magneticLevel > 0) { // Player has Magnetic enchantment level
+            } else { // Player has Magnetic enchantment level
                 Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Blocks are generated on Player's inventory
                         .forEach(drop -> {
                             if (!player.getInventory().add(drop)) {
