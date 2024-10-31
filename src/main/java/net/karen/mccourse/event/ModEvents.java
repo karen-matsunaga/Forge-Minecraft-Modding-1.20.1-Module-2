@@ -221,7 +221,7 @@ public class ModEvents {
                 Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Ores are generated on world
                         .forEach(drop -> {
                             if (player.getInventory().add(drop)) {
-                                player.drop(drop, true);
+                                player.drop(drop, true); // Ores doesn't added drop on Player's inventory
                             }
                         });
                 world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
@@ -229,7 +229,7 @@ public class ModEvents {
                 Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Blocks are generated on Player's inventory
                         .forEach(drop -> {
                             if (!player.getInventory().add(drop)) {
-                                player.drop(drop, false);
+                                player.drop(drop, false); // Blocks does added drop on Player's inventory
                             }
                         });
                 world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
