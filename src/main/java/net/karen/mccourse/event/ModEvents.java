@@ -253,11 +253,12 @@ public class ModEvents {
 
         if (!(livingEntity instanceof Player)) { return; } // Player is an entity
 
-        ItemStack mainHandItem = livingEntity.getItemBySlot(EquipmentSlot.HEAD); // Player has a tool on main hand
+        ItemStack mainHandItem = livingEntity.getItemBySlot(EquipmentSlot.HEAD); // Player has an item on helmet slot
         int glowingMobsLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.GLOWING_MOBS.get()); // Glowing Mobs enchantment level
 
-        if (!mainHandItem.isEnchanted() || glowingMobsLevel < 1) { return; } // Glowing Mobs enchantment level
+        if (!mainHandItem.isEnchanted() || glowingMobsLevel < 1) { return; } // Player has Glowing Mobs enchantment level
 
+        // If it has on helmet slot and Glowing Mobs's enchanted applied Glowing's effect on mobs
         List<LivingEntity> list = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(GLOWING_EYES), e -> e instanceof Enemy);
         for (LivingEntity e : list) { e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100)); }
     }
