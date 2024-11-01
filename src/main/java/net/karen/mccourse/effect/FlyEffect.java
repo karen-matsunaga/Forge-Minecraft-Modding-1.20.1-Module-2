@@ -10,7 +10,6 @@ public class FlyEffect extends MobEffect {
     protected FlyEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor); }
 
-
     // When the effect it is using
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {

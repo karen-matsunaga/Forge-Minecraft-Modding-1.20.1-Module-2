@@ -29,8 +29,6 @@ public class ModPotions {
             () -> new Potion(new MobEffectInstance(MobEffects.DIG_SPEED, 2000, 0)));
 
     // Registry all potions on Forge
-    public static void register(IEventBus eventBus) {
-        POTIONS.register(eventBus);
-    }
+    public static void register(IEventBus eventBus) { POTIONS.register(eventBus); }
 
 }

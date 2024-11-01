@@ -15,19 +15,25 @@ public class ModEnchantments {
 
     // Registry all custom enchantments - Books and enchantment's levels are adding automatically in game
 
-    // Lightning Striker enchantment
+    // Lightning Striker enchantment - SWORD enchantment
     public static final RegistryObject<Enchantment> LIGHTNING_STRIKER =
             ENCHANTMENTS.register("lightning_striker",
                     () -> new LightningStrikerEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.WEAPON,
                             EquipmentSlot.MAINHAND));
 
-    // More Ores enchantment
+    // Glowing Mobs enchantment - Helmet enchantment
+    public static final RegistryObject<Enchantment> GLOWING_MOBS =
+            ENCHANTMENTS.register("glowing_mobs",
+                    () -> new GlowingMobsEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.WEAPON,
+                            EquipmentSlot.HEAD));
+
+    // More Ores enchantment - PICKAXE, HAMMER, PAXEL enchantment
     public static final RegistryObject<Enchantment> MORE_ORES =
             ENCHANTMENTS.register("more_ores",
                     () -> new MoreOresEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
                             EquipmentSlot.MAINHAND));
 
-    // Magnetic enchantment
+    // Magnetic enchantment - PICKAXE, HAMMER, PAXEL enchantment
     public static final RegistryObject<Enchantment> MAGNETIC =
             ENCHANTMENTS.register("magnetic",
                     () -> new MoreOresEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,

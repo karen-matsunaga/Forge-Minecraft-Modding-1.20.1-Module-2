@@ -14,10 +14,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
@@ -33,6 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -168,6 +173,7 @@ public class ModEvents {
                 new ItemStack(ModItems.KOHLRABI_SEEDS.get()), 3, 2, 0.02f));
     }
 
+
     // CUSTOM EVENT - More Ores custom enchantment
     @SubscribeEvent
     public static void activatedMoreOresEnchantment(BlockEvent.BreakEvent event) {
@@ -235,6 +241,25 @@ public class ModEvents {
                 world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
             }
         }
+    }
+
+    // CUSTOM EVENT - Glowing Mobs's custom enchantment
+    // Credits by Lykrast - https://github.com/Lykrast/MeetYourFight/blob/master/src/main/java/lykrast/meetyourfight/item/SpectresEye.java
+    // Using code with some modifications
+    @SubscribeEvent
+    public static void activatedGlowingMobsEnchantment(LivingEvent event) {
+        int GLOWING_EYES = 20; // Range of Glowing effect on mobs
+        LivingEntity livingEntity = event.getEntity();
+
+        if (!(livingEntity instanceof Player)) { return; } // Player is an entity
+
+        ItemStack mainHandItem = livingEntity.getItemBySlot(EquipmentSlot.HEAD); // Player has a tool on main hand
+        int glowingMobsLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.GLOWING_MOBS.get()); // Glowing Mobs enchantment level
+
+        if (!mainHandItem.isEnchanted() || glowingMobsLevel < 1) { return; } // Glowing Mobs enchantment level
+
+        List<LivingEntity> list = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(GLOWING_EYES), e -> e instanceof Enemy);
+        for (LivingEntity e : list) { e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100)); }
     }
 
 }

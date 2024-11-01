@@ -31,9 +31,5 @@ public class ModEffects {
                             1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     // Registry all effects on Forge
-    public static void register(IEventBus eventBus) {
-        MOB_EFFECTS.register(eventBus);
-    }
-
-
+    public static void register(IEventBus eventBus) { MOB_EFFECTS.register(eventBus); }
 }
