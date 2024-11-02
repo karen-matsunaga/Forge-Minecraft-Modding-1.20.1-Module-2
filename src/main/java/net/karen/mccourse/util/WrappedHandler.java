@@ -25,20 +25,14 @@ public class WrappedHandler implements IItemHandlerModifiable {
     }
 
     @Override
-    public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
-        this.handler.setStackInSlot(slot, stack);
-    }
+    public void setStackInSlot(int slot, @Nonnull ItemStack stack) { this.handler.setStackInSlot(slot, stack); }
 
     @Override
-    public int getSlots() {
-        return this.handler.getSlots();
-    }
+    public int getSlots() { return this.handler.getSlots(); }
 
     @Nonnull
     @Override
-    public ItemStack getStackInSlot(int slot) {
-        return this.handler.getStackInSlot(slot);
-    }
+    public ItemStack getStackInSlot(int slot) { return this.handler.getStackInSlot(slot); }
 
     @Nonnull
     @Override
@@ -53,12 +47,8 @@ public class WrappedHandler implements IItemHandlerModifiable {
     }
 
     @Override
-    public int getSlotLimit(int slot) {
-        return this.handler.getSlotLimit(slot);
-    }
+    public int getSlotLimit(int slot) { return this.handler.getSlotLimit(slot); }
 
     @Override
-    public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        return this.insert.test(slot, stack) && this.handler.isItemValid(slot, stack);
-    }
+    public boolean isItemValid(int slot, @Nonnull ItemStack stack) { return this.insert.test(slot, stack) && this.handler.isItemValid(slot, stack); }
 }

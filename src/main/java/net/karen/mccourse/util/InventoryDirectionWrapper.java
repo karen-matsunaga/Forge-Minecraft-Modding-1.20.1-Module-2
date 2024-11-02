@@ -9,14 +9,13 @@ import java.util.Map;
 import java.util.Objects;
 
 public class InventoryDirectionWrapper {
+    public Map<Direction, LazyOptional<WrappedHandler>> directionsMap;
 
-        public Map<Direction, LazyOptional<WrappedHandler>> directionsMap;
-
-        public InventoryDirectionWrapper(IItemHandlerModifiable handler, InventoryDirectionEntry... entries) {
-            directionsMap = new HashMap<>();
-            for (var x : entries) {
-                directionsMap.put(x.direction,
-                        LazyOptional.of(() -> new WrappedHandler(handler, (i) -> Objects.equals(i, x.slotIndex), (i, s) -> x.canInsert)));
-            }
+    public InventoryDirectionWrapper(IItemHandlerModifiable handler, InventoryDirectionEntry... entries) {
+        directionsMap = new HashMap<>();
+        for (var x : entries) {
+            directionsMap.put(x.direction,
+                    LazyOptional.of(() -> new WrappedHandler(handler, (i) -> Objects.equals(i, x.slotIndex), (i, s) -> x.canInsert)));
         }
+    }
 }
