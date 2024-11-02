@@ -14,7 +14,6 @@ public class ModEnchantments {
             DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, MCCourseMod.MOD_ID);
 
     // Registry all custom enchantments - Books and enchantment's levels are adding automatically in game
-
     // Lightning Striker enchantment - SWORD enchantment
     public static final RegistryObject<Enchantment> LIGHTNING_STRIKER =
             ENCHANTMENTS.register("lightning_striker",
