@@ -2,11 +2,11 @@ package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
-import net.karen.mccourse.item.ModToolTiers;
 import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -93,6 +93,14 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         this.tag(BlockTags.PLANKS)
                 .add(ModBlocks.WALNUT_PLANKS.get());
+
+        // More Ores's tag
+        this.tag(ModTags.Blocks.MORE_ORES_BLOCKS)
+                .add(Blocks.STONE, Blocks.COBBLED_DEEPSLATE, Blocks.NETHERRACK); // Mined blocks
+
+        this.tag(ModTags.Blocks.MORE_ORES_AIR)
+                .add(Blocks.COAL_ORE, Blocks.COPPER_ORE, Blocks.IRON_ORE, Blocks.GOLD_ORE, Blocks.LAPIS_ORE, Blocks.REDSTONE_ORE,
+                        Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE, Blocks.ANCIENT_DEBRIS, Blocks.NETHER_QUARTZ_ORE); // Receive ores when broken blocks
 
     }
 

@@ -9,31 +9,20 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 public class ModTags {
-
     // Items
     public static class Items {
-
-        // Created Item's tags HERE
-        // ...
-
+        // Created Item's tags HERE ...
 
         // Pass item id
-        private static TagKey<Item> tag(String name) {
-            return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name));
-        }
+        private static TagKey<Item> tag(String name) { return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }
 
         // Pass item id in Forge
-        private static TagKey<Item> forgeTag(String name) {
-            return ItemTags.create(new ResourceLocation("forge", name));
-        }
-
+        private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
     }
 
     // Blocks
     public static class Blocks {
-
         // Created Block's tags HERE
-
         // Created METAL DETECTOR's tag
         public static final TagKey<Block> METAL_DETECTOR_VALUABLES = tag("metal_detector_valuables");
 
@@ -43,15 +32,14 @@ public class ModTags {
         // Created Alexandrite Paxel's tag
         public static final TagKey<Block> PAXEL_MINEABLE = tag("mineable/paxel");
 
+        // Created More Ores's block tag
+        public static final TagKey<Block> MORE_ORES_BLOCKS = tag("more_ores_blocks");
+        public static final TagKey<Block> MORE_ORES_AIR = tag("more_ores_air");
+
         // Pass block id
-        private static TagKey<Block> tag(String name) {
-            return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name));
-        }
+        private static TagKey<Block> tag(String name) { return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }
 
         // Pass block id in Forge
-        private static TagKey<Block> forgeTag(String name) {
-            return BlockTags.create(new ResourceLocation("forge", name));
-        }
+        private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
     }
-
 }
