@@ -24,14 +24,9 @@ public class ModFluidsTypes {
                     new Vector3f(224f / 255f, 56f / 255f, 208f / 255f),
                     FluidType.Properties.create().lightLevel(2).viscosity(5).density(15)));
 
-
     // Custom method to register custom fluid type
-    private static RegistryObject<FluidType> registerFluidType(String name, FluidType fluidType) {
-        return FLUID_TYPES.register(name, () -> fluidType);
-    }
+    private static RegistryObject<FluidType> registerFluidType(String name, FluidType fluidType) { return FLUID_TYPES.register(name, () -> fluidType); }
 
     // Registry all custom fluids types on Forge
-    public static void register(IEventBus eventBus) {
-        FLUID_TYPES.register(eventBus);
-    }
+    public static void register(IEventBus eventBus) { FLUID_TYPES.register(eventBus); }
 }

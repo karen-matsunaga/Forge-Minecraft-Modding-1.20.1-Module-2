@@ -21,7 +21,6 @@ public class ModFluids {
     public static final RegistryObject<FlowingFluid> FLOWING_SOAP_WATER = FLUIDS.register("flowing_soap_water_fluid",
             () -> new ForgeFlowingFluid.Flowing(ModFluids.SOAP_WATER_FLUID_PROPERTIES));
 
-
     // Registry all custom fluids when to inside on custom fluid
     public static final ForgeFlowingFluid.Properties SOAP_WATER_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
             ModFluidsTypes.SOAP_WATER_FLUID_TYPE, SOURCE_SOAP_WATER, FLOWING_SOAP_WATER)
@@ -29,7 +28,5 @@ public class ModFluids {
             .bucket(ModItems.SOAP_WATER_BUCKET);
 
     // Registry all custom fluids on forge
-    public static void register(IEventBus eventBus) {
-        FLUIDS.register(eventBus);
-    }
+    public static void register(IEventBus eventBus) { FLUIDS.register(eventBus); }
 }
