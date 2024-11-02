@@ -49,7 +49,6 @@ public class ModPlacedFeatures {
         // Position block of custom ores to go to generate on overworld
         register(context, SNAPDRAGON_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.SNAPDRAGON_KEY),
                 List.of(RarityFilter.onAverageOnceEvery(16), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome()));
-
     }
 
     // Register all custom tree generation on JSON file

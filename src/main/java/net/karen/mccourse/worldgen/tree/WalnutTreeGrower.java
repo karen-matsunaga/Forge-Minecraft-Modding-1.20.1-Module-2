@@ -9,7 +9,5 @@ import org.jetbrains.annotations.Nullable;
 
 public class WalnutTreeGrower extends AbstractTreeGrower {
     @Override
-    protected @Nullable ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource pRandom, boolean pHasFlowers) {
-        return ModConfiguredFeatures.WALNUT_KEY;
-    }
+    protected @Nullable ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource pRandom, boolean pHasFlowers) { return ModConfiguredFeatures.WALNUT_KEY; }
 }
