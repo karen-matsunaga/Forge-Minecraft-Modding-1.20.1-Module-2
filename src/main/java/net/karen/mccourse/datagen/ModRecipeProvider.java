@@ -23,9 +23,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(), ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
             ModBlocks.NETHER_ALEXANDRITE_ORE.get());
 
-    public ModRecipeProvider(PackOutput pOutput) {
-        super(pOutput);
-    }
+    public ModRecipeProvider(PackOutput pOutput) { super(pOutput); }
 
     // Create all recipes
     @Override

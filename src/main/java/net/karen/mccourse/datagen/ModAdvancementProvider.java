@@ -18,7 +18,8 @@ import java.util.function.Consumer;
 public class ModAdvancementProvider implements ForgeAdvancementProvider.AdvancementGenerator {
     @Override
     public void generate(HolderLookup.Provider registries, Consumer<Advancement> saver, ExistingFileHelper existingFileHelper) {
-        Advancement rootAdvancement = Advancement.Builder.advancement()
+        // Adding all custom advancement
+        Advancement rootAdvancement = Advancement.Builder.advancement() // Alexandrite's custom advancement
                 .display(new DisplayInfo(new ItemStack(ModItems.ALEXANDRITE.get()),
                         Component.literal("MC Course"), Component.literal("The Power lies in the Alexandrite!"),
                         new ResourceLocation(MCCourseMod.MOD_ID, "textures/block/alexandrite_ore.png"), FrameType.TASK,
@@ -26,13 +27,12 @@ public class ModAdvancementProvider implements ForgeAdvancementProvider.Advancem
                 .addCriterion("has_alexandrite", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.ALEXANDRITE.get()))
                 .save(saver, new ResourceLocation(MCCourseMod.MOD_ID, "mccourse"), existingFileHelper); // Alexandrite advancement
 
-        Advancement metalDetector = Advancement.Builder.advancement()
+        Advancement metalDetector = Advancement.Builder.advancement()  // Metal Detector's custom advancement
                 .display(new DisplayInfo(new ItemStack(ModItems.METAL_DETECTOR.get()),
                         Component.literal("Metal Detector"), Component.literal("Batteries not included! (Actually doesn't need batteries)"),
                         null, FrameType.TASK, true, true, false))
                 .parent(rootAdvancement)
                 .addCriterion("has_metal_detector", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.METAL_DETECTOR.get()))
                 .save(saver, new ResourceLocation(MCCourseMod.MOD_ID, "metal_detector"), existingFileHelper); // Metal Detector advancement
-
     }
 }

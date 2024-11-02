@@ -16,9 +16,7 @@ import net.minecraftforge.common.loot.LootTableIdCondition;
 import java.util.List;
 
 public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
-    public ModGlobalLootModifierProvider(PackOutput output) {
-        super(output, MCCourseMod.MOD_ID);
-    }
+    public ModGlobalLootModifierProvider(PackOutput output) { super(output, MCCourseMod.MOD_ID); }
 
     // Registry all blocks or items with custom loot modifiers
     @Override
@@ -132,7 +130,5 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.DEEPSLATE_COAL_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.COAL))); // Coal ore
-
-
     }
 }

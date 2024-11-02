@@ -40,14 +40,10 @@ public class GemEmpoweringRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public RecipeBuilder group(@Nullable String pGroupName) {
-        return this;
-    }
+    public RecipeBuilder group(@Nullable String pGroupName) { return this; }
 
     @Override
-    public Item getResult() {
-        return result;
-    }
+    public Item getResult() { return result; }
 
     // Save all Gem Empowering Station recipe custom recipes
     @Override
@@ -59,7 +55,6 @@ public class GemEmpoweringRecipeBuilder implements RecipeBuilder {
         pFinishedRecipeConsumer.accept(new Result(pRecipeId, this.result, this.count, this.ingredient,
                 this.advancement, new ResourceLocation(pRecipeId.getNamespace(), "recipes/"
                 + pRecipeId.getPath())));
-
     }
 
     // WRITE Gem Empowering Station JSON custom recipes
@@ -103,18 +98,12 @@ public class GemEmpoweringRecipeBuilder implements RecipeBuilder {
         }
 
         @Override
-        public RecipeSerializer<?> getType() {
-            return GemEmpoweringRecipe.Serializer.INSTANCE;
-        }
+        public RecipeSerializer<?> getType() { return GemEmpoweringRecipe.Serializer.INSTANCE; }
 
         @javax.annotation.Nullable
-        public JsonObject serializeAdvancement() {
-            return this.advancement.serializeToJson();
-        }
+        public JsonObject serializeAdvancement() { return this.advancement.serializeToJson(); }
 
         @javax.annotation.Nullable
-        public ResourceLocation getAdvancementId() {
-            return this.advancementId;
-        }
+        public ResourceLocation getAdvancementId() { return this.advancementId; }
     }
 }

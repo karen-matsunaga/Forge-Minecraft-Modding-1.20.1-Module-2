@@ -16,9 +16,9 @@ public class ModFluidTagsProvider extends FluidTagsProvider {
         super(packOutput, future, MCCourseMod.MOD_ID, existingFileHelper);
     }
 
-    // Adding Soup Water's source and flowing on Water's tags - The action it is as water
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
+        // Adding Soup Water's source and flowing on Water's tags - The action it is as water
         tag(FluidTags.WATER)
                 .add(ModFluids.SOURCE_SOAP_WATER.get())
                 .add(ModFluids.FLOWING_SOAP_WATER.get());

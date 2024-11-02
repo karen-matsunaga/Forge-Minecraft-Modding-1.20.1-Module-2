@@ -18,9 +18,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.function.Function;
 
 public class ModBlockStateProvider extends BlockStateProvider {
-    public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, MCCourseMod.MOD_ID, exFileHelper);
-    }
+    public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) { super(output, MCCourseMod.MOD_ID, exFileHelper); }
 
     // Registry all blocks - JSON file is created automatically
     @Override
@@ -133,13 +131,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlock(wallSignBlock, sign);
     }
 
-    private String name(Block block) {
-        return key(block).getPath();
-    }
+    private String name(Block block) { return key(block).getPath(); }
 
-    private ResourceLocation key(Block block) {
-        return ForgeRegistries.BLOCKS.getKey(block);
-    }
+    private ResourceLocation key(Block block) { return ForgeRegistries.BLOCKS.getKey(block); }
 
     // Method to generate custom leaves automatically in .JSON file models/blocks/name_leaves.json
     private void leavesBlock(RegistryObject<Block> blockRegistryObject) {
@@ -156,7 +150,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
     // Method to generate custom crop automatically in .JSON file models/blocks/name.json
     public void makeCrop(CropBlock block, String modelName, String textureName) {
         Function<BlockState, ConfiguredModel[]> function = state -> states(state, block, modelName, textureName);
-
         getVariantBuilder(block).forAllStates(function);
     }
 
@@ -165,7 +158,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
         ConfiguredModel[] models = new ConfiguredModel[1];
         models[0] = new ConfiguredModel(models().crop(modelName + state.getValue(((KohlrabiCropBlock) block).getAgeProperty()),
                 new ResourceLocation(MCCourseMod.MOD_ID, "block/" + textureName + state.getValue(((KohlrabiCropBlock) block).getAgeProperty()))).renderType("cutout"));
-
         return models;
     }
 
