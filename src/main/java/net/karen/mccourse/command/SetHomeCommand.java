@@ -22,12 +22,11 @@ public class SetHomeCommand {
         // Player's position
         String positionString = "(" + playerPos.getX() + ", " + playerPos.getY() + ", " + playerPos.getZ() + ")";
 
-        // Save data
+        // Save data of Player's position
         player.getPersistentData().putIntArray("mccourse.homepos",
                 new int[] {playerPos.getX(), playerPos.getY(), playerPos.getZ()});
 
         context.getSource().sendSuccess(() -> Component.literal("Set home at " + positionString), true);
-
         return 1;
     }
 }

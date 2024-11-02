@@ -17,8 +17,7 @@ public class ReturnHomeCommand {
         ServerPlayer player = context.getSource().getPlayer();
         boolean hasHomepos = player.getPersistentData().getIntArray("mccourse.homepos").length != 0;
 
-        // If exists some set home
-        if(hasHomepos) {
+        if(hasHomepos) { // If exists some set home
             int[] playerPos = player.getPersistentData().getIntArray("mccourse.homepos");
             player.teleportTo(playerPos[0], playerPos[1], playerPos[2]);
 
@@ -29,5 +28,4 @@ public class ReturnHomeCommand {
             return -1;
         }
     }
-
 }
