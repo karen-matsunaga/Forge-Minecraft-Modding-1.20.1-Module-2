@@ -21,8 +21,5 @@ public class ModPaintings {
     public static final RegistryObject<PaintingVariant> WORLD = PAINTING_VARIANTS.register("world",
             () -> new PaintingVariant(32, 32));
 
-    // Registry all on Forge
-    public static void register(IEventBus eventBus) {
-        PAINTING_VARIANTS.register(eventBus);
-    }
+    public static void register(IEventBus eventBus) { PAINTING_VARIANTS.register(eventBus); } // Registry all on Forge
 }
