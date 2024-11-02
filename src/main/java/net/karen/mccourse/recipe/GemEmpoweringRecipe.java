@@ -27,47 +27,30 @@ public class GemEmpoweringRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public boolean matches(SimpleContainer pContainer, Level pLevel) {
-        if (pLevel.isClientSide()) {
-            return false;
-        }
-
+        if (pLevel.isClientSide()) { return false; }
         return inputItems.get(0).test(pContainer.getItem(0)); // Verify if the item is equals on input slot
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {
-        return output.copy();
-    }
+    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) { return output.copy(); }
 
     @Override
-    public boolean canCraftInDimensions(int pWidth, int pHeight) {
-        return true;
-    }
+    public boolean canCraftInDimensions(int pWidth, int pHeight) { return true; }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return output.copy();
-    }
+    public ItemStack getResultItem(RegistryAccess pRegistryAccess) { return output.copy(); }
 
     @Override
-    public NonNullList<Ingredient> getIngredients() {
-        return this.inputItems;
-    }
+    public NonNullList<Ingredient> getIngredients() { return this.inputItems; }
 
     @Override
-    public ResourceLocation getId() {
-        return id;
-    }
+    public ResourceLocation getId() { return id; }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
-        return null;
-    }
+    public RecipeSerializer<?> getSerializer() { return null; }
 
     @Override
-    public RecipeType<?> getType() {
-        return Type.INSTANCE;
-    }
+    public RecipeType<?> getType() { return Type.INSTANCE; }
 
     public static class Type implements RecipeType<GemEmpoweringRecipe> {
         private Type() {}
@@ -91,7 +74,6 @@ public class GemEmpoweringRecipe implements Recipe<SimpleContainer> {
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
-
             return new GemEmpoweringRecipe(id, output, inputs);
         }
 

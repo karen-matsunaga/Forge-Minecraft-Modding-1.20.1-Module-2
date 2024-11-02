@@ -16,7 +16,5 @@ public class ModRecipes {
             SERIALIZERS.register("gem_empowering", () -> GemEmpoweringRecipe.Serializer.INSTANCE);
 
     // Register all recipes on Forge
-    public static void register(IEventBus eventBus) {
-        SERIALIZERS.register(eventBus);
-    }
+    public static void register(IEventBus eventBus) { SERIALIZERS.register(eventBus); }
 }
