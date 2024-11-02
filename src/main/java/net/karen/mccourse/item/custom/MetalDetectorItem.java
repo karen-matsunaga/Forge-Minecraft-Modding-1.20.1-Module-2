@@ -27,9 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class MetalDetectorItem extends Item {
-    public MetalDetectorItem(Properties pProperties) {
-        super(pProperties);
-    }
+    public MetalDetectorItem(Properties pProperties) { super(pProperties); }
 
     // Function of Metal Detector item
     @Override
@@ -72,12 +70,8 @@ public class MetalDetectorItem extends Item {
                     break;
                 }
             }
-
             // Output message if not found ore
-            if(!foundBlock) {
-                outputNoValuableFound(player);
-            }
-
+            if(!foundBlock) { outputNoValuableFound(player); }
         }
 
         // Durability of Metal Detector item hurt
@@ -137,8 +131,5 @@ public class MetalDetectorItem extends Item {
 
     // Custom method that identifies all blocks added it is
     // All blocks added in metal_detector_valuables.json
-    private boolean isValuableBlock(BlockState blockState) {
-        return blockState.is(ModTags.Blocks.METAL_DETECTOR_VALUABLES);
-    }
-
+    private boolean isValuableBlock(BlockState blockState) { return blockState.is(ModTags.Blocks.METAL_DETECTOR_VALUABLES); }
 }

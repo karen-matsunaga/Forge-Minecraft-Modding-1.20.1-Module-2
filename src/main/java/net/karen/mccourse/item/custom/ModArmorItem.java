@@ -31,9 +31,7 @@ public class ModArmorItem extends ArmorItem {
                     ))
                     .build();
 
-    public ModArmorItem(ArmorMaterial material, Type type, Properties properties) {
-        super(material, type, properties);
-    }
+    public ModArmorItem(ArmorMaterial material, Type type, Properties properties) { super(material, type, properties); }
 
     // Apply effect if player using all parts of armor
     @Override
@@ -70,9 +68,7 @@ public class ModArmorItem extends ArmorItem {
     // If player using same armor material
     private boolean hasPlayerCorrectArmorOn(ArmorMaterial mapArmorMaterial, Player player) {
         for (ItemStack armorStack : player.getArmorSlots()) {
-            if (!(armorStack.getItem() instanceof ArmorItem)) {
-                return false;
-            }
+            if (!(armorStack.getItem() instanceof ArmorItem)) { return false; }
         }
 
         ArmorItem boots = ((ArmorItem) player.getInventory().getArmor(0).getItem());

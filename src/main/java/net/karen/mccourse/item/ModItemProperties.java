@@ -19,7 +19,6 @@ public class ModItemProperties {
 
         // Alexandrite's bow
         makeBow(ModItems.ALEXANDRITE_BOW.get());
-
     }
 
     // Alexandrite's bow animation
@@ -35,5 +34,4 @@ public class ModItemProperties {
             return p_174632_ != null && p_174632_.isUsingItem() && p_174632_.getUseItem() == p_174630_ ? 1.0F : 0.0F;
         });
     }
-
 }

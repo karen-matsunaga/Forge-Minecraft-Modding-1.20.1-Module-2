@@ -9,7 +9,6 @@ public class FuelItem extends Item {
     // Declared Burn time
     private int burnTime = 0;
 
-
     public FuelItem(Properties pProperties, int burnTime) {
         super(pProperties);
         this.burnTime = burnTime;

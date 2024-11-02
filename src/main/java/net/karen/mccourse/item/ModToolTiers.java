@@ -11,11 +11,10 @@ import net.minecraftforge.common.TierSortingRegistry;
 
 import java.util.List;
 
-// Adding tool level
 public class ModToolTiers {
+    // Adding custom tool level
     public static final Tier ALEXANDRITE = TierSortingRegistry.registerTier(
             new ForgeTier(5, 1400, 11f, 3f, 26,
                     ModTags.Blocks.NEEDS_ALEXANDRITE_TOOL, () -> Ingredient.of(ModItems.ALEXANDRITE.get())),
             new ResourceLocation(MCCourseMod.MOD_ID, "alexandrite"), List.of(Tiers.NETHERITE), List.of());
-
 }

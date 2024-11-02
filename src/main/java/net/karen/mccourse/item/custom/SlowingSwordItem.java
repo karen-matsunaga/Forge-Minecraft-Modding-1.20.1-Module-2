@@ -17,9 +17,7 @@ public class SlowingSwordItem extends SwordItem {
     // Every time the player hit on entity to create slowing effect only to a living entity
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if(entity instanceof LivingEntity livingEntity) {
-            livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400), player);
-        }
+        if(entity instanceof LivingEntity livingEntity) { livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400), player); }
         return super.onLeftClickEntity(stack, player, entity);
     }
 }

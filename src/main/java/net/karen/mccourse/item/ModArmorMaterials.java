@@ -51,50 +51,31 @@ public enum ModArmorMaterials implements ArmorMaterial {
     }
 
     // Armor's durability
-    public int getDurabilityForType(ArmorItem.Type p_266745_) {
-        return HEALTH_FUNCTION_FOR_TYPE.get(p_266745_) * this.durabilityMultiplier;
-    }
+    public int getDurabilityForType(ArmorItem.Type p_266745_) { return HEALTH_FUNCTION_FOR_TYPE.get(p_266745_) * this.durabilityMultiplier; }
 
     // Armor's defense
-    public int getDefenseForType(ArmorItem.Type p_266752_) {
-        return this.protectionFunctionForType.get(p_266752_);
-    }
+    public int getDefenseForType(ArmorItem.Type p_266752_) { return this.protectionFunctionForType.get(p_266752_); }
 
     // Armor's enchantment value
-    public int getEnchantmentValue() {
-        return this.enchantmentValue;
-    }
+    public int getEnchantmentValue() { return this.enchantmentValue; }
 
     // Armor's sound
-    public SoundEvent getEquipSound() {
-        return this.sound;
-    }
+    public SoundEvent getEquipSound() { return this.sound; }
 
     // Armor's repair item
-    public Ingredient getRepairIngredient() {
-        return this.repairIngredient.get();
-    }
+    public Ingredient getRepairIngredient() { return this.repairIngredient.get(); }
 
     // Armor's name
-    public String getName() {
-        return MCCourseMod.MOD_ID + ":" + this.name;
-    }
+    public String getName() { return MCCourseMod.MOD_ID + ":" + this.name; }
 
     // Armor's toughness
-    public float getToughness() {
-        return this.toughness;
-    }
+    public float getToughness() { return this.toughness; }
 
     /**
      * Gets the percentage of knockback resistance provided by armor of the material.
      */
     // Armor's knockback resistance
-    public float getKnockbackResistance() {
-        return this.knockbackResistance;
-    }
+    public float getKnockbackResistance() { return this.knockbackResistance; }
 
-    public String getSerializedName() {
-        return MCCourseMod.MOD_ID + ":" + this.name;
-    }
-
+    public String getSerializedName() { return MCCourseMod.MOD_ID + ":" + this.name; }
 }

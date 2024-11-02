@@ -26,36 +26,34 @@ public class HammerItem extends DiggerItem implements Vanishable {
         BlockHitResult traceResult = player.level().clip(new ClipContext(player.getEyePosition(1f),
                 (player.getEyePosition(1f).add(player.getViewVector(1f).scale(6f))),
                 ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
-        if(traceResult.getType() == HitResult.Type.MISS) {
+        if (traceResult.getType() == HitResult.Type.MISS) {
             return positions;
         }
 
         // Directions in that player broken a block - (DOWN/UP, NORTH/SOUTH and EAST/WEST)
-        if(traceResult.getDirection() == Direction.DOWN || traceResult.getDirection() == Direction.UP) {
-            for(int x = -range; x <= range; x++) {
-                for(int y = -range; y <= range; y++) {
+        if (traceResult.getDirection() == Direction.DOWN || traceResult.getDirection() == Direction.UP) {
+            for (int x = -range; x <= range; x++) {
+                for (int y = -range; y <= range; y++) {
                     positions.add(new BlockPos(initalBlockPos.getX() + x, initalBlockPos.getY(), initalBlockPos.getZ() + y));
                 }
             }
         }
 
-        if(traceResult.getDirection() == Direction.NORTH || traceResult.getDirection() == Direction.SOUTH) {
-            for(int x = -range; x <= range; x++) {
-                for(int y = -range; y <= range; y++) {
+        if (traceResult.getDirection() == Direction.NORTH || traceResult.getDirection() == Direction.SOUTH) {
+            for (int x = -range; x <= range; x++) {
+                for (int y = -range; y <= range; y++) {
                     positions.add(new BlockPos(initalBlockPos.getX() + x, initalBlockPos.getY() + y, initalBlockPos.getZ()));
                 }
             }
         }
 
-        if(traceResult.getDirection() == Direction.EAST || traceResult.getDirection() == Direction.WEST) {
-            for(int x = -range; x <= range; x++) {
-                for(int y = -range; y <= range; y++) {
+        if (traceResult.getDirection() == Direction.EAST || traceResult.getDirection() == Direction.WEST) {
+            for (int x = -range; x <= range; x++) {
+                for (int y = -range; y <= range; y++) {
                     positions.add(new BlockPos(initalBlockPos.getX(), initalBlockPos.getY() + y, initalBlockPos.getZ() + x));
                 }
             }
         }
-
         return positions;
     }
-
 }
