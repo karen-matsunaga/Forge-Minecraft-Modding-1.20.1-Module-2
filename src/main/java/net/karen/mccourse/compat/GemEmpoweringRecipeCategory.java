@@ -31,31 +31,21 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.GEM_EMPOWERING_STATION.get()));
     }
 
+    @Override
+    public RecipeType<GemEmpoweringRecipe> getRecipeType() { return GEM_EMPOWERING_TYPE; }
 
     @Override
-    public RecipeType<GemEmpoweringRecipe> getRecipeType() {
-        return GEM_EMPOWERING_TYPE;
-    }
+    public Component getTitle() { return Component.literal("Gem Infusing Station"); } // Title appears on screen
 
     @Override
-    public Component getTitle() {
-        return Component.literal("Gem Infusing Station");
-    }
+    public IDrawable getBackground() { return this.background; } // Background appears on screen
 
     @Override
-    public IDrawable getBackground() {
-        return this.background;
-    }
-
-    @Override
-    public IDrawable getIcon() {
-        return this.icon;
-    }
+    public IDrawable getIcon() { return this.icon; } // Box slot appears on screen
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, GemEmpoweringRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 80, 11).addIngredients(recipe.getIngredients().get(0));
-
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 80, 59).addItemStack(recipe.getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.INPUT, 80, 11).addIngredients(recipe.getIngredients().get(0)); // Recipe input slot on screen
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 80, 59).addItemStack(recipe.getResultItem(null)); // Recipe output slot on screen
     }
 }

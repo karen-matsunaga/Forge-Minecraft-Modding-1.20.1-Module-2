@@ -17,9 +17,7 @@ import java.util.List;
 @JeiPlugin
 public class JEIMCCoursePlugin implements IModPlugin {
     @Override
-    public ResourceLocation getPluginUid() {
-        return new ResourceLocation(MCCourseMod.MOD_ID, "jei_plugin");
-    }
+    public ResourceLocation getPluginUid() { return new ResourceLocation(MCCourseMod.MOD_ID, "jei_plugin"); }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
