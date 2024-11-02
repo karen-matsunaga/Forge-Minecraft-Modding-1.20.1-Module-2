@@ -54,7 +54,7 @@ public class ModEvents {
     // Done with the help of https://github.com/CoFH/CoFHCore/blob/1.19.x/src/main/java/cofh/core/event/AreaEffectEvents.java
     // Don't be a jerk License
     // CUSTOM EVENT - Hammer's tool
-    private static final Set<BlockPos> HARVESTED_BLOCKS = new HashSet<>(); // Hammer's tool EVENT
+    private static final Set<BlockPos> HARVESTED_BLOCKS = new HashSet<>(); // Hammer's receive blocks range
 
     @SubscribeEvent
     public static void onHammerUsage(BlockEvent.BreakEvent event) {
@@ -63,14 +63,10 @@ public class ModEvents {
 
         if (mainHandItem.getItem() instanceof HammerItem hammer && player instanceof ServerPlayer serverPlayer) { // If player destroyed a block with Hammer tool
             BlockPos initalBlockPos = event.getPos();
-            if (HARVESTED_BLOCKS.contains(initalBlockPos)) {
-                return;
-            }
+            if (HARVESTED_BLOCKS.contains(initalBlockPos)) { return; }
 
             for (BlockPos pos : HammerItem.getBlocksToBeDestroyed(1, initalBlockPos, serverPlayer)) { // Player's position to break a block with Hammer tool
-                if (pos == initalBlockPos || !hammer.isCorrectToolForDrops(mainHandItem, event.getLevel().getBlockState(pos))) {
-                    continue;
-                }
+                if (pos == initalBlockPos || !hammer.isCorrectToolForDrops(mainHandItem, event.getLevel().getBlockState(pos))) { continue; }
 
                 // Have to add them to a Set otherwise, the same code right here will get called for each block!
                 HARVESTED_BLOCKS.add(pos); // Player destroyed block with Hammer tool
@@ -266,5 +262,4 @@ public class ModEvents {
         List<LivingEntity> list = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(GLOWING_EYES), e -> e instanceof Enemy);
         for (LivingEntity e : list) { e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100)); }
     }
-
 }
