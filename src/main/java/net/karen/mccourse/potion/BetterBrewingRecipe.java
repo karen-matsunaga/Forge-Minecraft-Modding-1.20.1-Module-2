@@ -22,22 +22,16 @@ public class BetterBrewingRecipe implements IBrewingRecipe {
 
     // Potion's input -> Potion's type
     @Override
-    public boolean isInput(ItemStack input) {
-        return PotionUtils.getPotion(input) == this.input;
-    }
+    public boolean isInput(ItemStack input) { return PotionUtils.getPotion(input) == this.input; }
 
     // Potion's ingredient -> item
     @Override
-    public boolean isIngredient(ItemStack ingredient) {
-        return ingredient.getItem() == this.ingredient;
-    }
+    public boolean isIngredient(ItemStack ingredient) { return ingredient.getItem() == this.ingredient; }
 
     // Potion's output -> custom potion
     @Override
     public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
-        if(!this.isInput(input) || !this.isIngredient(ingredient)) {
-            return ItemStack.EMPTY;
-        }
+        if(!this.isInput(input) || !this.isIngredient(ingredient)) { return ItemStack.EMPTY; }
 
         ItemStack itemStack = new ItemStack(input.getItem());
         itemStack.setTag(new CompoundTag());

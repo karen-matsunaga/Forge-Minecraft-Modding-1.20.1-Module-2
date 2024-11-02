@@ -15,7 +15,6 @@ public class ModPotions {
             DeferredRegister.create(ForgeRegistries.POTIONS, MCCourseMod.MOD_ID);
 
     // Registry all potions
-
     // Slimey's potion register
     public static final RegistryObject<Potion> SLIMEY_POTION = POTIONS.register("slimey_potion",
             () -> new Potion(new MobEffectInstance(ModEffects.SLIMEY_EFFECT.get(), 2000, 0)));
@@ -28,7 +27,5 @@ public class ModPotions {
     public static final RegistryObject<Potion> HASTE_POTION = POTIONS.register("haste_potion",
             () -> new Potion(new MobEffectInstance(MobEffects.DIG_SPEED, 2000, 0)));
 
-    // Registry all potions on Forge
-    public static void register(IEventBus eventBus) { POTIONS.register(eventBus); }
-
+    public static void register(IEventBus eventBus) { POTIONS.register(eventBus); } // Registry all potions on Forge
 }
