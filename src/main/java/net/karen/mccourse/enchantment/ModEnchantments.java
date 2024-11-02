@@ -24,7 +24,7 @@ public class ModEnchantments {
     // Glowing Mobs enchantment - HELMET enchantment
     public static final RegistryObject<Enchantment> GLOWING_MOBS =
             ENCHANTMENTS.register("glowing_mobs",
-                    () -> new GlowingMobsEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.WEAPON,
+                    () -> new GlowingMobsEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.ARMOR_HEAD,
                             EquipmentSlot.HEAD));
 
     // More Ores enchantment - PICKAXE, HAMMER, PAXEL enchantment
