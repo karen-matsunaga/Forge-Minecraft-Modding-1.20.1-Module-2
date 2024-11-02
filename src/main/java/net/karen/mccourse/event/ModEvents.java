@@ -173,7 +173,6 @@ public class ModEvents {
                 new ItemStack(ModItems.KOHLRABI_SEEDS.get()), 3, 2, 0.02f));
     }
 
-
     // CUSTOM EVENT - More Ores custom enchantment
     @SubscribeEvent
     public static void activatedMoreOresEnchantment(BlockEvent.BreakEvent event) {
@@ -206,7 +205,7 @@ public class ModEvents {
     }
 
     // Credits by Parlack - https://www.youtube.com/watch?v=YOLHn23HU5w
-    // Used some lines code with modifications
+    // Using code with some modifications
     // CUSTOM EVENT - Magnetic custom enchantment
     @SubscribeEvent
     public static void activatedMagneticEnchantment(BlockEvent.BreakEvent event) {
@@ -244,7 +243,8 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Glowing Mobs's custom enchantment
-    // Credits by Lykrast - https://github.com/Lykrast/MeetYourFight/blob/master/src/main/java/lykrast/meetyourfight/item/SpectresEye.java
+    // Credits by Lykrast - https://github.com/Lykrast/MeetYourFight/blob/master/LICENSE
+    // Distributed under MIT
     // Using code with some modifications
     @SubscribeEvent
     public static void activatedGlowingMobsEnchantment(LivingEvent event) {

@@ -21,7 +21,7 @@ public class ModEnchantments {
                     () -> new LightningStrikerEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.WEAPON,
                             EquipmentSlot.MAINHAND));
 
-    // Glowing Mobs enchantment - Helmet enchantment
+    // Glowing Mobs enchantment - HELMET enchantment
     public static final RegistryObject<Enchantment> GLOWING_MOBS =
             ENCHANTMENTS.register("glowing_mobs",
                     () -> new GlowingMobsEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.WEAPON,

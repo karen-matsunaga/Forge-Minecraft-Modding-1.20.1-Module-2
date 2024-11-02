@@ -7,8 +7,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 
 public class FlyEffect extends MobEffect {
-    protected FlyEffect(MobEffectCategory pCategory, int pColor) {
-        super(pCategory, pColor); }
+    protected FlyEffect(MobEffectCategory pCategory, int pColor) { super(pCategory, pColor); }
 
     // When the effect it is using
     @Override
@@ -23,19 +22,15 @@ public class FlyEffect extends MobEffect {
     // When the effect it is ending
     @Override
     public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
-
         if (pLivingEntity instanceof Player player) {
             player.getAbilities().mayfly = false;
             player.getAbilities().flying = false;
             player.onUpdateAbilities(); // Update the player abilities
         }
-
         super.removeAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
     }
 
     // Duration of effect
     @Override
-    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return true;
-    }
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) { return true; }
 }

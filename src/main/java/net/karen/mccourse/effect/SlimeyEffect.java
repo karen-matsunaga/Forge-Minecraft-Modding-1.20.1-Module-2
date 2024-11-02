@@ -6,9 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class SlimeyEffect extends MobEffect {
-    public SlimeyEffect(MobEffectCategory pCategory, int pColor) {
-        super(pCategory, pColor);
-    }
+    public SlimeyEffect(MobEffectCategory pCategory, int pColor) { super(pCategory, pColor); }
 
     // Climbing Effect by SameDifferent: https://github.com/samedifferent/TrickOrTreat/blob/master/LICENSE
     // Distributed under MIT
