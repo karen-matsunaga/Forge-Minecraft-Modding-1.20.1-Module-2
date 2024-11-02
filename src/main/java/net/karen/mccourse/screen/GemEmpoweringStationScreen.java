@@ -22,9 +22,7 @@ public class GemEmpoweringStationScreen extends AbstractContainerScreen<GemEmpow
     private EnergyDisplayTooltipArea energyInfoArea;
     private FluidTankRenderer fluidRenderer;
 
-    public GemEmpoweringStationScreen(GemEmpoweringStationMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
-    }
+    public GemEmpoweringStationScreen(GemEmpoweringStationMenu pMenu, Inventory pPlayerInventory, Component pTitle) { super(pMenu, pPlayerInventory, pTitle); }
 
     // Titles to show on custom block entity GUI
     @Override
@@ -36,15 +34,12 @@ public class GemEmpoweringStationScreen extends AbstractContainerScreen<GemEmpow
         assignFluidRenderer();
     }
 
-    private void assignFluidRenderer() {
-        fluidRenderer = new FluidTankRenderer(64000, true, 16, 39);
-    }
+    private void assignFluidRenderer() { fluidRenderer = new FluidTankRenderer(64000, true, 16, 39); }
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int pMouseX, int pMouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-
         renderEnergyAreaTooltip(guiGraphics, pMouseX, pMouseY, x, y);
         renderFluidTooltipArea(guiGraphics, pMouseX, pMouseY, x, y, menu.blockEntity.getFluid(), 26, 11, fluidRenderer);
     }
@@ -88,9 +83,7 @@ public class GemEmpoweringStationScreen extends AbstractContainerScreen<GemEmpow
 
     // Render progress arrow when item transform on other
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
-        if(menu.isCrafting()) {
-            guiGraphics.blit(TEXTURE, x + 85, y + 30, 176, 0, 8, menu.getScaledProgress());
-        }
+        if(menu.isCrafting()) { guiGraphics.blit(TEXTURE, x + 85, y + 30, 176, 0, 8, menu.getScaledProgress()); }
     }
 
     @Override

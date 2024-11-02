@@ -22,9 +22,7 @@ public class EnergyDisplayTooltipArea {
     private final int height;
     private final IEnergyStorage energy;
 
-    public EnergyDisplayTooltipArea(int xMin, int yMin, IEnergyStorage energy)  {
-        this(xMin, yMin, energy,8,64);
-    }
+    public EnergyDisplayTooltipArea(int xMin, int yMin, IEnergyStorage energy)  { this(xMin, yMin, energy,8,64); }
 
     public EnergyDisplayTooltipArea(int xMin, int yMin, IEnergyStorage energy, int width, int height)  {
         xPos = xMin;
@@ -34,9 +32,7 @@ public class EnergyDisplayTooltipArea {
         this.energy = energy;
     }
 
-    public List<Component> getTooltips() {
-        return List.of(Component.literal(energy.getEnergyStored()+" / "+energy.getMaxEnergyStored()+" FE"));
-    }
+    public List<Component> getTooltips() { return List.of(Component.literal(energy.getEnergyStored()+" / "+energy.getMaxEnergyStored()+" FE")); }
 
     public void render(GuiGraphics guiGraphics) {
         int stored = (int)(height * (energy.getEnergyStored() / (float)energy.getMaxEnergyStored()));

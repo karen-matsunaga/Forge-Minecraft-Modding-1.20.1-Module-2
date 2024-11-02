@@ -125,7 +125,6 @@ public class FluidTankRenderer {
                 if (width > 0 && height > 0) {
                     long maskTop = TEXTURE_SIZE - height;
                     int maskRight = TEXTURE_SIZE - width;
-
                     drawTextureWithMasking(matrix, x, y, sprite, maskTop, maskRight, 100);
                 }
             }
@@ -137,7 +136,6 @@ public class FluidTankRenderer {
         float green = (color >> 8 & 0xFF) / 255.0F;
         float blue = (color & 0xFF) / 255.0F;
         float alpha = ((color >> 24) & 0xFF) / 255F;
-
         RenderSystem.setShaderColor(red, green, blue, alpha);
     }
 
@@ -148,7 +146,6 @@ public class FluidTankRenderer {
         float vMax = textureSprite.getV1();
         uMax = uMax - (maskRight / 16F * (uMax - uMin));
         vMax = vMax - (maskTop / 16F * (vMax - vMin));
-
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
         Tesselator tessellator = Tesselator.getInstance();
@@ -166,9 +163,7 @@ public class FluidTankRenderer {
 
         Fluid fluidType = fluidStack.getFluid();
         try {
-            if (fluidType.isSame(Fluids.EMPTY)) {
-                return tooltip;
-            }
+            if (fluidType.isSame(Fluids.EMPTY)) { return tooltip; }
 
             Component displayName = fluidStack.getDisplayName();
             tooltip.add(displayName);
@@ -183,10 +178,7 @@ public class FluidTankRenderer {
                 MutableComponent amountString = Component.translatable("mccourse.tooltip.liquid.amount", nf.format(milliBuckets));
                 tooltip.add(amountString.withStyle(ChatFormatting.GRAY));
             }
-        } catch (RuntimeException e) {
-            MCCourseMod.LOGGER.error("Failed to get tooltip for fluid: " + e);
-        }
-
+        } catch (RuntimeException e) { MCCourseMod.LOGGER.error("Failed to get tooltip for fluid: " + e); }
         return tooltip;
     }
 

@@ -18,13 +18,10 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<GemEmpoweringStationMenu>> GEM_EMPOWERING_MENU =
             registerMenuType(GemEmpoweringStationMenu::new, "gem_empowering_menu");
 
-
     private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }
 
     // Registry all menus on Forge
-    public static void register(IEventBus eventBus) {
-        MENUS.register(eventBus);
-    }
+    public static void register(IEventBus eventBus) { MENUS.register(eventBus); }
 }
