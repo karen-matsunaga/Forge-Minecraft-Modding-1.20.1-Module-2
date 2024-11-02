@@ -27,26 +27,18 @@ import org.jetbrains.annotations.Nullable;
 public class GemEmpoweringStationBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    public GemEmpoweringStationBlock(Properties pProperties) {
-        super(pProperties);
-    }
+    public GemEmpoweringStationBlock(Properties pProperties) { super(pProperties); }
 
     // Created block state voxel shape on block
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 12, 16);
 
     // Connected custom block entity and custom block
-    public BlockState rotate(BlockState pState, Rotation pRot) {
-        return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING)));
-    }
+    public BlockState rotate(BlockState pState, Rotation pRot) { return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING))); }
 
-    public BlockState mirror(BlockState pState, Mirror pMirror) {
-        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
-    }
+    public BlockState mirror(BlockState pState, Mirror pMirror) { return pState.rotate(pMirror.getRotation(pState.getValue(FACING))); }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE;
-    }
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) { return SHAPE; }
 
     // Created block state position
     @Nullable
@@ -57,19 +49,13 @@ public class GemEmpoweringStationBlock extends BaseEntityBlock {
 
     // Created block state definition
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING);
-    }
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) { pBuilder.add(FACING); }
 
     // * BLOCK ENTITY * //
 
-
     // Required this method do not to show invisible block
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
-        return RenderShape.MODEL;
-    }
-
+    public RenderShape getRenderShape(BlockState pState) { return RenderShape.MODEL; }
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
@@ -78,11 +64,10 @@ public class GemEmpoweringStationBlock extends BaseEntityBlock {
             if (blockEntity instanceof GemEmpoweringStationBlockEntity) {
                 ((GemEmpoweringStationBlockEntity) blockEntity).drops();
             }
-
             super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
         }
-
     }
+
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit){
         if (!pLevel.isClientSide()) {
@@ -93,20 +78,15 @@ public class GemEmpoweringStationBlock extends BaseEntityBlock {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
-
         return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new GemEmpoweringStationBlockEntity(pPos, pState);
-    }
+    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) { return new GemEmpoweringStationBlockEntity(pPos, pState); }
 
         @Override
         public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if (pLevel.isClientSide()) { // Client side
-            return null;
-        }
+        if (pLevel.isClientSide()) { return null; } // Client side
 
         return createTickerHelper(pBlockEntityType, ModBlockEntities.GEM_EMPOWERING_STATION_BE.get(),
                 (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1)); // Server side

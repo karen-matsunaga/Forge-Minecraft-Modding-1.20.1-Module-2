@@ -23,18 +23,14 @@ public class AlexandriteLampBlock extends Block {
     // If player clicked on block's state changed to (ON/OFF)
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-
         if(!pLevel.isClientSide() && pHand == InteractionHand.MAIN_HAND) {
             boolean currentState = pState.getValue(CLICKED);
             pLevel.setBlock(pPos, pState.setValue(CLICKED, !currentState), 3);
         }
-
         return InteractionResult.SUCCESS;
     }
 
     // Block state is created only if player clicked on block
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(CLICKED);
-    }
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) { pBuilder.add(CLICKED); }
 }

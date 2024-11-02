@@ -17,11 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 
-
 public class GemEmpoweringBlockEntityRenderer implements BlockEntityRenderer<GemEmpoweringStationBlockEntity> {
-    public GemEmpoweringBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-
-    }
+    public GemEmpoweringBlockEntityRenderer(BlockEntityRendererProvider.Context context) { }
 
     @Override
     public void render(GemEmpoweringStationBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource,

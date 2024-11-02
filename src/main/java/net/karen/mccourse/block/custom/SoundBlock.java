@@ -20,30 +20,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class SoundBlock extends Block {
-    public SoundBlock(Properties pProperties) {
-        super(pProperties);
-    }
+    public SoundBlock(Properties pProperties) { super(pProperties); }
 
-    //
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
                                  Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-
-        // Sound Block test
-//        if(pLevel.isClientSide()) {
-//            if(pHand == InteractionHand.MAIN_HAND) {
-//                MCCourseMod.LOGGER.info("Main Hand, Client");
-//            } else {
-//                MCCourseMod.LOGGER.info("Off Hand, Client");
-//            }
-//        } else {
-//            if(pHand == InteractionHand.MAIN_HAND) {
-//                MCCourseMod.LOGGER.info("Main Hand, Server");
-//            } else {
-//                MCCourseMod.LOGGER.info("Off Hand, Server");
-//            }
-//        }
-
         // Sounds when player clicked in block
         if(!pLevel.isClientSide() && pHand == InteractionHand.MAIN_HAND) {
             // If crouching on block
@@ -56,7 +37,6 @@ public class SoundBlock extends Block {
                 return InteractionResult.CONSUME;
             }
         }
-
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
 
@@ -64,7 +44,6 @@ public class SoundBlock extends Block {
     @Override
     public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
         pLevel.playSound(pEntity, pPos, SoundEvents.NOTE_BLOCK_BIT.get(), SoundSource.BLOCKS, 1f, 1f);
-
         super.stepOn(pLevel, pPos, pState, pEntity);
     }
 
@@ -72,7 +51,6 @@ public class SoundBlock extends Block {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         pTooltip.add(Component.translatable("tooltip.mccourse.sound_block"));
-
         super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
     }
 }

@@ -102,9 +102,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
             @Override
             protected void onContentsChanged() {
                 setChanged();
-                if (!level.isClientSide()) {
-                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-                }
+                if (!level.isClientSide()) { level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3); }
             }
 
             @Override
@@ -196,9 +194,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
             if(directionWrappedHandlerMap.containsKey(side)) {
                 Direction localDir = this.getBlockState().getValue(GemEmpoweringStationBlock.FACING);
 
-                if(side == Direction.DOWN ||side == Direction.UP) {
-                    return directionWrappedHandlerMap.get(side).cast();
-                }
+                if(side == Direction.DOWN ||side == Direction.UP) { return directionWrappedHandlerMap.get(side).cast(); }
 
                 return switch (localDir) {
                     default -> directionWrappedHandlerMap.get(side.getOpposite()).cast();
@@ -208,7 +204,6 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
                 };
             }
         }
-
         return super.getCapability(cap, side);
     }
 
@@ -262,9 +257,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
                 extractFluid();
                 resetProgress();
             }
-        } else {
-            resetProgress();
-        }
+        } else { resetProgress(); }
     }
 
     private void extractFluid() { this.FLUID_TANK.drain(500, IFluidHandler.FluidAction.EXECUTE); }
@@ -302,9 +295,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
     private void extractEnergy() { this.ENERGY_STORAGE.extractEnergy(100, false); }
 
     private void fillUpOnEnergy() {
-        if(hasEnergyItemInSlot(ENERGY_ITEM_SLOT)) {
-            this.ENERGY_STORAGE.receiveEnergy(3200, false);
-        }
+        if(hasEnergyItemInSlot(ENERGY_ITEM_SLOT)) { this.ENERGY_STORAGE.receiveEnergy(3200, false); }
     }
 
     private boolean hasEnergyItemInSlot(int energyItemSlot) {
@@ -348,7 +339,6 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         for (int i = 0; i < this.itemHandler.getSlots(); i++) {
             inventory.setItem(i, this.itemHandler.getStackInSlot(i));
         }
-
         return this.level.getRecipeManager().getRecipeFor(GemEmpoweringRecipe.Type.INSTANCE, inventory, level);
     }
 
