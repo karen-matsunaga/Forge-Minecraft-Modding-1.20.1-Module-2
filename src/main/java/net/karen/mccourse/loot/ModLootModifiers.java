@@ -16,10 +16,6 @@ public class ModLootModifiers {
     public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ADD_ITEM =
             LOOT_MODIFIERS_SERIALIZERS.register("add_item", AddItemModifier.CODEC);
 
-
     // Registry all loot modifiers on Forge
-    public static void register(IEventBus eventBus) {
-        LOOT_MODIFIERS_SERIALIZERS.register(eventBus);
-    }
-
+    public static void register(IEventBus eventBus) { LOOT_MODIFIERS_SERIALIZERS.register(eventBus); }
 }

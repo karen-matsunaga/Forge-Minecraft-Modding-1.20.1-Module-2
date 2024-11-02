@@ -76,5 +76,4 @@ public class AddItemModifier extends LootModifier {
 
     @Override
     public Codec<? extends IGlobalLootModifier> codec() { return CODEC.get(); }
-
 }
