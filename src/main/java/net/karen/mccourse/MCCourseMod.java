@@ -52,7 +52,6 @@ public class MCCourseMod {
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
-
     public MCCourseMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -108,7 +107,6 @@ public class MCCourseMod {
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
-
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -135,11 +133,9 @@ public class MCCourseMod {
             event.accept(ModItems.ALEXANDRITE);
             // Second item
             event.accept(ModItems.RAW_ALEXANDRITE);
-
         }
 
         if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-
             // Blocks
             // First block
             event.accept(ModBlocks.ALEXANDRITE_BLOCK);
@@ -160,9 +156,7 @@ public class MCCourseMod {
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-
-    }
+    public void onServerStarting(ServerStartingEvent event) { }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -170,7 +164,6 @@ public class MCCourseMod {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             event.enqueueWork(() -> {
-
                 // Register custom wood type
                 Sheets.addWoodType(ModWoodTypes.WALNUT);
 
@@ -182,7 +175,6 @@ public class MCCourseMod {
 
                 // Gem Empowering's menu
                 MenuScreens.register(ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringStationScreen::new);
-
             });
         }
     }
