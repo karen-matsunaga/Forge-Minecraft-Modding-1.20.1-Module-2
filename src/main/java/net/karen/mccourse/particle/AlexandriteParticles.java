@@ -28,24 +28,18 @@ public class AlexandriteParticles extends TextureSheetParticle {
 
     // Return of particle
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-    }
+    public ParticleRenderType getRenderType() { return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT; }
 
     public static class Provider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet spriteSet;
 
         // Created constructor to set spriteSet
-        public Provider(SpriteSet spriteSet) {
-            this.spriteSet = spriteSet;
-        }
+        public Provider(SpriteSet spriteSet) { this.spriteSet = spriteSet; }
 
         // Created method to create custom particles
         public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double pX, double pY, double pZ,
                                        double pXSpeed, double pYSpeed, double pZSpeed) {
             return new AlexandriteParticles(level, pX, pY, pZ, this.spriteSet, pXSpeed, pYSpeed, pZSpeed);
         }
-
     }
-
 }

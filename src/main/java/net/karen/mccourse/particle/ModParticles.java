@@ -16,8 +16,5 @@ public class ModParticles {
     public static final RegistryObject<SimpleParticleType> ALEXANDRITE_PARTICLES =
             PARTICLE_TYPES.register("alexandrite_particles", () -> new SimpleParticleType(true));
 
-    public static void register(IEventBus eventBus) { // Registry all on Forge
-        PARTICLE_TYPES.register(eventBus);
-    }
-
+    public static void register(IEventBus eventBus) { PARTICLE_TYPES.register(eventBus); } // Registry all on Forge
 }
