@@ -10,8 +10,7 @@ public class SlimeyEffect extends MobEffect {
 
     // Climbing Effect by SameDifferent: https://github.com/samedifferent/TrickOrTreat/blob/master/LICENSE
     // Distributed under MIT
-
-    // Slimey's effect duration
+    // Slimey effect applied
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         if(pLivingEntity.horizontalCollision) {
@@ -19,10 +18,9 @@ public class SlimeyEffect extends MobEffect {
             Vec3 climbVec = new Vec3(initialVec.x, 0.2D, initialVec.z);
             pLivingEntity.setDeltaMovement(climbVec.x * 0.91D, climbVec.y * 0.98D, climbVec.z * 0.91D);
         }
-
         super.applyEffectTick(pLivingEntity, pAmplifier);
     }
 
     @Override
-    public boolean isDurationEffectTick(int pDuration, int pAmplifier) { return true; }
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) { return true; } // Slimey effect duration
 }

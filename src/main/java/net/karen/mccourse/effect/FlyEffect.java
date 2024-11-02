@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 public class FlyEffect extends MobEffect {
     protected FlyEffect(MobEffectCategory pCategory, int pColor) { super(pCategory, pColor); }
 
-    // When the effect it is using
+    // Fly effect applied
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         if (pLivingEntity instanceof Player player) {
@@ -19,7 +19,7 @@ public class FlyEffect extends MobEffect {
         super.applyEffectTick(pLivingEntity, pAmplifier);
     }
 
-    // When the effect it is ending
+    // Fly effect ended
     @Override
     public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
         if (pLivingEntity instanceof Player player) {
@@ -30,7 +30,6 @@ public class FlyEffect extends MobEffect {
         super.removeAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
     }
 
-    // Duration of effect
     @Override
-    public boolean isDurationEffectTick(int pDuration, int pAmplifier) { return true; }
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) { return true; } // Fly effect duration
 }
