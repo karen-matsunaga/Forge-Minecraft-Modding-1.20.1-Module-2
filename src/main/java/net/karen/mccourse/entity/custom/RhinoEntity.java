@@ -29,11 +29,13 @@ import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class RhinoEntity extends TamableAnimal implements PlayerRideable {
@@ -57,15 +59,16 @@ public class RhinoEntity extends TamableAnimal implements PlayerRideable {
     // Rhino custom entity IA
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));  // Walk animation
+        this.goalSelector.addGoal(0, new FloatGoal(this)); // Walk animation
         this.goalSelector.addGoal(1, new RhinoAttackGoal(this, 1.0D, true)); // Attack animation
-        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this)); // Tamable animation
-        this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.25d, 18f, 7f, false));
-        this.goalSelector.addGoal(1, new FollowParentGoal(this, 1.1d)); // Walk animation
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 4f));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.2D, Ingredient.of(Items.COOKED_BEEF), true));
+        this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this)); // Tamable animation
+        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.25d, 18f, 7f, false));
+        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1d));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 4f));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this)); // Attack animation
     }
 
@@ -182,8 +185,7 @@ public class RhinoEntity extends TamableAnimal implements PlayerRideable {
             }
         }
 
-
-        if (isTame() && pHand == InteractionHand.MAIN_HAND) {
+        if (isTame() && pHand == InteractionHand.MAIN_HAND && !isFood(itemstack)) {
             if (!pPlayer.isCrouching()) { setRiding(pPlayer); }
             else { setOrderedToSit(!isOrderedToSit()); setInSittingPose(!isOrderedToSit()); }  // TOGGLES SITTING FOR OUR ENTITY
             return InteractionResult.SUCCESS;
@@ -230,7 +232,7 @@ public class RhinoEntity extends TamableAnimal implements PlayerRideable {
     }
 
     @Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity pLivingEntity) {
+    public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity pLivingEntity) {
         Direction direction = this.getMotionDirection();
         if (direction.getAxis() != Direction.Axis.Y) {
             int[][] offsets = DismountHelper.offsetsForDirection(direction);
@@ -255,4 +257,8 @@ public class RhinoEntity extends TamableAnimal implements PlayerRideable {
         }
         return super.getDismountLocationForPassenger(pLivingEntity);
     }
+
+    /* BREEDING */
+    @Override
+    public boolean isFood(ItemStack pStack) { return pStack.is(Items.COOKED_BEEF); } // COOKED BEEF breedable Rhino entities
 }
