@@ -35,7 +35,7 @@ public class ModEnchantments {
     // Magnetic enchantment - PICKAXE, HAMMER, PAXEL enchantment
     public static final RegistryObject<Enchantment> MAGNETIC =
             ENCHANTMENTS.register("magnetic",
-                    () -> new MoreOresEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
+                    () -> new MagneticEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
                             EquipmentSlot.MAINHAND));
 
     // Registry all enchantments in game
