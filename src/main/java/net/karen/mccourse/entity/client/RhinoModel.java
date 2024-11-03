@@ -90,6 +90,7 @@ public class RhinoModel<T extends RhinoEntity> extends HierarchicalModel<T> {
 		this.animateWalk(ModAnimationDefinitions.RHINO_WALK, limbSwing, limbSwingAmount, 2f, 2.5f);
 		this.animate(entity.idleAnimationState, ModAnimationDefinitions.RHINO_IDLE, ageInTicks, 1f); // Rhino's walk animation
 		this.animate(entity.attackAnimationState, ModAnimationDefinitions.RHINO_ATTACK, ageInTicks, 1f); // Rhino's attack animation
+		this.animate(entity.attackAnimationState, ModAnimationDefinitions.RHINO_SIT, ageInTicks, 1f); // Rhino's sit animation
 	}
 
 	private void applyHeadRotation(RhinoEntity pEntity, float pNetHeadYaw, float pHeadPitch, float pAgeInTicks) {
