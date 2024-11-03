@@ -129,5 +129,8 @@
   "block.mccourse.walnut_sign": "Walnut Sign",
   "block.mccourse.walnut_hanging_sign": "Walnut Hanging Sign",
 
-  "item.mccourse.rhino_spawn_egg": "Rhino Spawn Egg"
+  "item.mccourse.rhino_spawn_egg": "Rhino Spawn Egg",
+
+  "entity.mccourse.rhino": "Rhino",
+  "entity.mccourse.white_rhino": "White Rhino"
 }
