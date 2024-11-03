@@ -61,7 +61,7 @@ public class RhinoEntity extends TamableAnimal implements PlayerRideable {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this)); // Walk animation
         this.goalSelector.addGoal(1, new RhinoAttackGoal(this, 1.0D, true)); // Attack animation
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D)); // Breed animation
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.2D, Ingredient.of(Items.COOKED_BEEF), true));
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this)); // Tamable animation
         this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.25d, 18f, 7f, false));
