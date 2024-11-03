@@ -1,6 +1,10 @@
 package net.karen.mccourse.entity.custom;
 
 import net.karen.mccourse.entity.ModEntities;
+import net.karen.mccourse.entity.ai.RhinoAttackGoal;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.AnimationState;
@@ -9,26 +13,36 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class RhinoEntity extends Animal {
+    private static final EntityDataAccessor<Boolean> ATTACKING =
+            SynchedEntityData.defineId(RhinoEntity.class, EntityDataSerializers.BOOLEAN); // Rhino's entity data access - CLIENT / SERVER
+
     // Rhino custom entity animation
-    public final AnimationState idleAnimationState = new AnimationState();
+    public final AnimationState idleAnimationState = new AnimationState(); // Rhino custom walk animation
     private int idleAnimationTimeout = 0;
+
+    public final AnimationState attackAnimationState = new AnimationState(); // Rhino custom attack animation
+    public int attackAnimationTimeout = 0;
 
     public RhinoEntity(EntityType<? extends Animal> pEntityType, Level pLevel) { super(pEntityType, pLevel); }
 
     // Rhino custom entity IA
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new FollowParentGoal(this, 1.1d));
+        this.goalSelector.addGoal(0, new FloatGoal(this));  // Walk animation
+        this.goalSelector.addGoal(1, new RhinoAttackGoal(this, 1.0D, true)); // Attack animation
+        this.goalSelector.addGoal(1, new FollowParentGoal(this, 1.1d)); // Walk animation
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 4f));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this)); // Attack animation
     }
 
     // Custom attributes of Rhino custom entity
@@ -37,6 +51,7 @@ public class RhinoEntity extends Animal {
                 .add(Attributes.MOVEMENT_SPEED, 0.15D)
                 .add(Attributes.FOLLOW_RANGE, 24D)
                 .add(Attributes.ARMOR_TOUGHNESS, 0.1f)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5f)
                 .add(Attributes.ATTACK_DAMAGE, 2f);
     }
 
@@ -45,10 +60,17 @@ public class RhinoEntity extends Animal {
     public @Nullable AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) { return ModEntities.RHINO.get().create(pLevel); }
 
     private void setupAnimationStates() {
+        // Walk animation
         if (this.idleAnimationTimeout <= 0) {
             this.idleAnimationTimeout = this.random.nextInt(40) + 80;
             this.idleAnimationState.start(this.tickCount);
         } else { --this.idleAnimationTimeout; }
+        // Attack animation
+        if (this.isAttacking() && attackAnimationTimeout <= 0) {
+            attackAnimationTimeout = 80; // 20 (ticks) * 4 (seconds) = 80 ticks / 4 seconds - Length in ticks of your animation
+            attackAnimationState.start(this.tickCount);
+        } else { --this.attackAnimationTimeout; }
+        if (!this.isAttacking()) { attackAnimationState.stop(); } // None attack
     }
 
     protected void updateWalkAnimation(float v) {
@@ -60,4 +82,12 @@ public class RhinoEntity extends Animal {
 
     @Override
     public void tick() { super.tick(); if (this.level().isClientSide()) { this.setupAnimationStates(); } }
+
+    // Rhino's attack animation
+    public void setAttacking(boolean attacking) { this.entityData.set(ATTACKING, attacking); } // It is attacked
+
+    public boolean isAttacking() { return this.entityData.get(ATTACKING); }
+
+    @Override
+    protected void defineSynchedData() { super.defineSynchedData(); this.entityData.define(ATTACKING, false); } // Default it is not attack
 }

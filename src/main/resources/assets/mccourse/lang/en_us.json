@@ -25,7 +25,6 @@
   "block.mccourse.alexandrite_door": "Alexandrite Door",
   "block.mccourse.alexandrite_trapdoor": "Alexandrite Trapdoor",
 
-
   "creativetab.course_tab": "Course Tab",
 
   "item.mccourse.metal_detector.no_valuable_values": "No Valuables Found!",
@@ -119,7 +118,6 @@
   "mccourse.tooltip.liquid.amount.with.capacity": "%s / %s mB",
   "mccourse.tooltip.liquid.amount": "%s mB",
 
-
   "block.mccourse.walnut_log": "Walnut Log",
   "block.mccourse.walnut_planks": "Walnut Planks",
   "block.mccourse.walnut_wood": "Walnut Wood",
@@ -129,5 +127,7 @@
   "block.mccourse.walnut_sapling": "Walnut Sapling",
 
   "block.mccourse.walnut_sign": "Walnut Sign",
-  "block.mccourse.walnut_hanging_sign": "Walnut Hanging Sign"
+  "block.mccourse.walnut_hanging_sign": "Walnut Hanging Sign",
+
+  "item.mccourse.rhino_spawn_egg": "Rhino Spawn Egg"
 }
