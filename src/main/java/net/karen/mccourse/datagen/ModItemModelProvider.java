@@ -91,6 +91,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.WALNUT_SIGN);
         simpleItem(ModItems.WALNUT_HANGING_SIGN);
 
+        // Rhino's custom egg
+        withExistingParent(ModItems.RHINO_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+
     }
 
     // Registry all sapling item's models

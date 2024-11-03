@@ -5,6 +5,8 @@ import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.effect.ModEffects;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.block.entity.ModBlockEntities;
+import net.karen.mccourse.entity.ModEntities;
+import net.karen.mccourse.entity.client.RhinoRenderer;
 import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.fluid.ModFluidsTypes;
 import net.karen.mccourse.item.ModCreativeModeTabs;
@@ -25,6 +27,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
@@ -98,6 +101,9 @@ public class MCCourseMod {
 
         // Register recipes
         ModRecipes.register(modEventBus);
+
+        // Register entities
+        ModEntities.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -175,6 +181,9 @@ public class MCCourseMod {
 
                 // Gem Empowering's menu
                 MenuScreens.register(ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringStationScreen::new);
+
+                // Adding Rhino's custom entity renderer
+                EntityRenderers.register(ModEntities.RHINO.get(), RhinoRenderer::new);
             });
         }
     }

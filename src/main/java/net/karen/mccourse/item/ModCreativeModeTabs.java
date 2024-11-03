@@ -138,6 +138,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.WALNUT_SIGN.get());
                         output.accept(ModBlocks.WALNUT_HANGING_SIGN.get());
 
+                        // Rhino's custom egg
+                        output.accept(ModItems.RHINO_SPAWN_EGG.get());
+
                     }).build());
 
     // Registry Creative Mode Tab
