@@ -52,7 +52,7 @@ public class ModConfiguredFeatures {
                 new StraightTrunkPlacer(5, 4, 3),
                 BlockStateProvider.simple(ModBlocks.WALNUT_LEAVES.get()),
                 new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(2), 3),
-                new TwoLayersFeatureSize(1, 0, 2)).build());
+                new TwoLayersFeatureSize(1, 0, 2)).dirt(BlockStateProvider.simple(Blocks.END_STONE)).build()); // Dirt block or End Stone block
 
         // Register all custom ores and define the amount of ores to generate on overworld
         register(context, OVERWORLD_ALEXANDRITE_ORE_KEY, Feature.ORE, new OreConfiguration(overworldAlexandriteOres, 9));
