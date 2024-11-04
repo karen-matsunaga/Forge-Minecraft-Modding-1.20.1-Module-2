@@ -1,17 +1,21 @@
 package net.karen.mccourse.worldgen;
 
 import net.karen.mccourse.MCCourseMod;
+import net.karen.mccourse.entity.ModEntities;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ForgeBiomeModifiers;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.List;
 
 public class ModBiomeModifiers {
     // Adding all custom biomes modifiers
@@ -23,6 +27,8 @@ public class ModBiomeModifiers {
     public static final ResourceKey<BiomeModifier> ADD_END_ALEXANDRITE_ORE = registerKey("add_end_alexandrite_ore");
 
     public static final ResourceKey<BiomeModifier> ADD_SNAPDRAGON = registerKey("add_snapdragon"); // Custom flowers
+
+    public static final ResourceKey<BiomeModifier> SPAWN_RHINO = registerKey("spawn_rhino"); // Custom entities
 
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
         var placedFeatures = context.lookup(Registries.PLACED_FEATURE);
@@ -56,6 +62,10 @@ public class ModBiomeModifiers {
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.SNAPDRAGON_PLACED_KEY)),
                 GenerationStep.Decoration.VEGETAL_DECORATION));
 
+        // World to spawn all custom entities on biomes selected
+        context.register(SPAWN_RHINO, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                biomes.getOrThrow(Tags.Biomes.IS_DRY_OVERWORLD),
+                List.of(new MobSpawnSettings.SpawnerData(ModEntities.RHINO.get(), 20, 1, 3))));
     }
 
     // Register all custom tree on JSON file
