@@ -1,9 +1,7 @@
 package net.karen.mccourse.entity;
 
 import net.karen.mccourse.MCCourseMod;
-import net.karen.mccourse.entity.custom.DiceProjectileEntity;
-import net.karen.mccourse.entity.custom.MagicProjectileEntity;
-import net.karen.mccourse.entity.custom.RhinoEntity;
+import net.karen.mccourse.entity.custom.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -36,6 +34,15 @@ public class ModEntities {
                             .clientTrackingRange(4)
                             .updateInterval(20)
                             .build("magic_projectile"));
+
+    // Register all custom boats
+    public static final RegistryObject<EntityType<ModBoatEntity>> MOD_BOAT =
+            ENTITY_TYPES.register("mod_boat", () -> EntityType.Builder.<ModBoatEntity>of(ModBoatEntity::new, MobCategory.MISC)
+                    .sized(1.375f, 0.5625f).build("mod_boat")); // Custom boat
+
+    public static final RegistryObject<EntityType<ModChestBoatEntity>> MOD_CHEST_BOAT =
+            ENTITY_TYPES.register("mod_chest_boat", () -> EntityType.Builder.<ModChestBoatEntity>of(ModChestBoatEntity::new, MobCategory.MISC)
+                    .sized(1.375f, 0.5625f).build("mod_chest_boat")); // Custom chest boat
 
     public static void register(IEventBus eventBus) { ENTITY_TYPES.register(eventBus); } // Register all custom entities on forge
 }

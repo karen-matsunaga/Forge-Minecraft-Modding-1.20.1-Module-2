@@ -6,6 +6,8 @@ import net.karen.mccourse.entity.client.MagicProjectileModel;
 import net.karen.mccourse.entity.client.RhinoModel;
 import net.karen.mccourse.entity.custom.RhinoEntity;
 import net.karen.mccourse.entity.layers.ModModelLayers;
+import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -22,6 +24,8 @@ public class ModEventBusEvents {
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ModModelLayers.RHINO_LAYER, RhinoModel::createBodyLayer); // Rhino's layer
         event.registerLayerDefinition(ModModelLayers.MAGIC_PROJECTILE_LAYER, MagicProjectileModel::createBodyLayer); // Magic Projectile's layer
+        event.registerLayerDefinition(ModModelLayers.WALNUT_BOAT_LAYER, BoatModel::createBodyModel); // Boat's layer
+        event.registerLayerDefinition(ModModelLayers.WALNUT_CHEST_BOAT_LAYER, ChestBoatModel::createBodyModel); // Chest Boat's layer
     }
 
     // Registry all custom entities attributes

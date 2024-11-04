@@ -7,6 +7,7 @@ import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.block.entity.ModBlockEntities;
 import net.karen.mccourse.entity.ModEntities;
 import net.karen.mccourse.entity.client.MagicProjectileRenderer;
+import net.karen.mccourse.entity.client.ModBoatRenderer;
 import net.karen.mccourse.entity.client.RhinoRenderer;
 import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.fluid.ModFluidsTypes;
@@ -187,6 +188,8 @@ public class MCCourseMod {
                 EntityRenderers.register(ModEntities.RHINO.get(), RhinoRenderer::new); // Adding Rhino's custom entity renderer
                 EntityRenderers.register(ModEntities.DICE_PROJECTILE.get(), ThrownItemRenderer::new); // Adding Dice Projectile's custom projectile entity renderer
                 EntityRenderers.register(ModEntities.MAGIC_PROJECTILE.get(), MagicProjectileRenderer::new); // Adding Magic Projectile's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.MOD_BOAT.get(), pContext -> new ModBoatRenderer(pContext, false)); // Adding Boat's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.MOD_CHEST_BOAT.get(), pContext -> new ModBoatRenderer(pContext, true)); // Adding Chest Boat's custom projectile entity renderer
             });
         }
     }

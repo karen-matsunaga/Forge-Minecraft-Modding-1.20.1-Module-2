@@ -97,6 +97,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Dino's custom item
         simpleItem(ModItems.DICE);
 
+        // Boat's custom item
+        simpleItem(ModItems.WALNUT_BOAT);
+        simpleItem(ModItems.WALNUT_CHEST_BOAT);
+
     }
 
     // Registry all sapling item's models

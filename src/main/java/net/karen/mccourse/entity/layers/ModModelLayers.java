@@ -12,4 +12,11 @@ public class ModModelLayers {
     // Registry all custom entities projectiles model layers
     public static final ModelLayerLocation MAGIC_PROJECTILE_LAYER = new ModelLayerLocation(
             new ResourceLocation(MCCourseMod.MOD_ID, "magic_projectile_layer"), "magic_projectile_layer");
+
+    // Registry all custom boats
+    public static final ModelLayerLocation WALNUT_BOAT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(MCCourseMod.MOD_ID, "boat/walnut"), "main"); // Custom boat
+
+    public static final ModelLayerLocation WALNUT_CHEST_BOAT_LAYER = new ModelLayerLocation(
+            new ResourceLocation(MCCourseMod.MOD_ID, "chest_boat/walnut"), "main"); // Custom chest boat
 }

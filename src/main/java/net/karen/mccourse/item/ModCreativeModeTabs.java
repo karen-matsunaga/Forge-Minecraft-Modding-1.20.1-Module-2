@@ -144,6 +144,10 @@ public class ModCreativeModeTabs {
                         // Dice's custom projectile item
                         output.accept(ModItems.DICE.get());
 
+                        // Boats's custom boats
+                        output.accept(ModItems.WALNUT_BOAT.get());
+                        output.accept(ModItems.WALNUT_CHEST_BOAT.get());
+
                     }).build());
 
     // Registry Creative Mode Tab

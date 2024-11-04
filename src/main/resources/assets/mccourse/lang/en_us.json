@@ -133,6 +133,10 @@
 
   "entity.mccourse.rhino": "Rhino",
   "entity.mccourse.white_rhino": "White Rhino",
+  "entity.mccourse.mod_chest_boat": "Chest Boat",
 
-  "item.mccourse.dice": "Dice"
+  "item.mccourse.dice": "Dice",
+
+  "item.mccourse.walnut_boat": "Walnut Boat",
+  "item.mccourse.walnut_chest_boat": "Walnut Chest Boat"
 }
