@@ -25,6 +25,7 @@ import net.karen.mccourse.screen.ModMenuTypes;
 import net.karen.mccourse.sound.ModSounds;
 import net.karen.mccourse.util.ModWoodTypes;
 import net.karen.mccourse.villager.ModVillagers;
+import net.karen.mccourse.worldgen.tree.ModTrunkPlacerTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -107,6 +108,9 @@ public class MCCourseMod {
 
         // Register entities
         ModEntities.register(modEventBus);
+
+        // Register trunk placer types
+        ModTrunkPlacerTypes.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
