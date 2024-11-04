@@ -58,7 +58,7 @@ public class RhinoEntity extends TamableAnimal implements PlayerRideable {
 
     public final AnimationState sitAnimationState = new AnimationState(); // Rhino custom sit animation
 
-    /* BOSS BAR */
+    /* BOSS BAR - DISABLE */
 //     private final ServerBossEvent bossEvent =
 //             new ServerBossEvent(Component.literal("Our Cool Rhino"), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.NOTCHED_12);
 
@@ -270,7 +270,7 @@ public class RhinoEntity extends TamableAnimal implements PlayerRideable {
     @Override
     public boolean isFood(ItemStack pStack) { return pStack.is(Items.COOKED_BEEF); } // COOKED BEEF breedable Rhino entities
 
-    /* BOSS BAR */
+    /* BOSS BAR - DISABLE */
 //    @Override
 //    public void startSeenByPlayer(ServerPlayer pServerPlayer) { super.startSeenByPlayer(pServerPlayer); this.bossEvent.addPlayer(pServerPlayer); }
 //
