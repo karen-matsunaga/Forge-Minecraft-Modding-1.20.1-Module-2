@@ -141,6 +141,9 @@ public class ModCreativeModeTabs {
                         // Rhino's custom egg
                         output.accept(ModItems.RHINO_SPAWN_EGG.get());
 
+                        // Dice's custom projectile item
+                        output.accept(ModItems.DICE.get());
+
                     }).build());
 
     // Registry Creative Mode Tab

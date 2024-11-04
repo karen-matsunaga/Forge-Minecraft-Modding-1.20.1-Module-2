@@ -132,5 +132,7 @@
   "item.mccourse.rhino_spawn_egg": "Rhino Spawn Egg",
 
   "entity.mccourse.rhino": "Rhino",
-  "entity.mccourse.white_rhino": "White Rhino"
+  "entity.mccourse.white_rhino": "White Rhino",
+
+  "item.mccourse.dice": "Dice"
 }
