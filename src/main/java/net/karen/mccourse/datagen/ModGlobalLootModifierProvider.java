@@ -3,6 +3,7 @@ package net.karen.mccourse.datagen;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.loot.AddItemModifier;
+import net.karen.mccourse.loot.AddSusSandItemModifier;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -34,6 +35,11 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
         add("metal_detector_from_jungle_temple", new AddItemModifier(new LootItemCondition[] {
                 new LootTableIdCondition.Builder(new ResourceLocation("chests/jungle_temple")).build() },
                 List.of(ModItems.METAL_DETECTOR.get())));
+
+        // Added custom suspicious sand
+        add("metal_detector_from_suspicious_sand", new AddSusSandItemModifier(new LootItemCondition[] {
+                new LootTableIdCondition.Builder(new ResourceLocation("archaeology/desert_pyramid")).build() },
+                ModItems.METAL_DETECTOR.get()));
 
         // Added custom ores loot modifier
         add("diamond_ore_from_diamond_ore", new AddItemModifier(new LootItemCondition[] { // Diamond ore
