@@ -27,6 +27,8 @@ public class ModPlacedFeatures {
 
     public static final ResourceKey<PlacedFeature> SNAPDRAGON_PLACED_KEY = registerKey("snapdragon_placed"); // Custom flowers
 
+    public static final ResourceKey<PlacedFeature> ALEXANDRITE_GEODE_PLACED_KEY = registerKey("alexandrite_geode_placed"); // Custom geodes
+
     public static void bootstrap(BootstapContext<PlacedFeature> context) { // All custom tree generation placed with time or bone meal on a chunk
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
@@ -49,6 +51,12 @@ public class ModPlacedFeatures {
         // Position block of custom ores to go to generate on overworld
         register(context, SNAPDRAGON_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.SNAPDRAGON_KEY),
                 List.of(RarityFilter.onAverageOnceEvery(16), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome()));
+
+        // Position block of custom geodes to go to generate on overworld
+        register(context, ALEXANDRITE_GEODE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.ALEXANDRITE_GEODE_KEY),
+                List.of(RarityFilter.onAverageOnceEvery(50), InSquarePlacement.spread(),
+                        HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(50)),
+                        BiomeFilter.biome()));
     }
 
     // Register all custom tree generation on JSON file
