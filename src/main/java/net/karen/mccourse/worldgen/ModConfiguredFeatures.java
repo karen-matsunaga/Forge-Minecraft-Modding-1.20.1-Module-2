@@ -2,6 +2,7 @@ package net.karen.mccourse.worldgen;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
+import net.karen.mccourse.worldgen.tree.custom.WalnutFoliagePlacer;
 import net.karen.mccourse.worldgen.tree.custom.WalnutTrunkPlacer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -15,9 +16,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
@@ -50,9 +49,9 @@ public class ModConfiguredFeatures {
         // Register all custom trees
         register(context, WALNUT_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(ModBlocks.WALNUT_LOG.get()),
-                new WalnutTrunkPlacer(5, 4, 3),
+                new WalnutTrunkPlacer(5, 4, 3), // Log's position
                 BlockStateProvider.simple(ModBlocks.WALNUT_LEAVES.get()),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(2), 3),
+                new WalnutFoliagePlacer(ConstantInt.of(3), ConstantInt.of(2), 3), // Leave's position
                 new TwoLayersFeatureSize(1, 0, 2)).dirt(BlockStateProvider.simple(Blocks.END_STONE)).build()); // Dirt block or End Stone block
 
         // Register all custom ores and define the amount of ores to generate on overworld
