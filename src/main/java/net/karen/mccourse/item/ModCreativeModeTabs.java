@@ -148,6 +148,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.WALNUT_BOAT.get());
                         output.accept(ModItems.WALNUT_CHEST_BOAT.get());
 
+                        // Colored custom block
+                        output.accept(ModBlocks.COLORED_LEAVES.get());
+
                     }).build());
 
     // Registry Creative Mode Tab

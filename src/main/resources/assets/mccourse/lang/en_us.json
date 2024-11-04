@@ -138,5 +138,7 @@
   "item.mccourse.dice": "Dice",
 
   "item.mccourse.walnut_boat": "Walnut Boat",
-  "item.mccourse.walnut_chest_boat": "Walnut Chest Boat"
+  "item.mccourse.walnut_chest_boat": "Walnut Chest Boat",
+
+  "block.mccourse.colored_leaves": "Colored Leaves"
 }
