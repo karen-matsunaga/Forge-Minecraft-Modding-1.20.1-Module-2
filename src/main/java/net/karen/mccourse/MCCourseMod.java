@@ -6,6 +6,7 @@ import net.karen.mccourse.effect.ModEffects;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.block.entity.ModBlockEntities;
 import net.karen.mccourse.entity.ModEntities;
+import net.karen.mccourse.entity.client.MagicProjectileRenderer;
 import net.karen.mccourse.entity.client.RhinoRenderer;
 import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.fluid.ModFluidsTypes;
@@ -184,7 +185,8 @@ public class MCCourseMod {
                 MenuScreens.register(ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringStationScreen::new);
 
                 EntityRenderers.register(ModEntities.RHINO.get(), RhinoRenderer::new); // Adding Rhino's custom entity renderer
-                EntityRenderers.register(ModEntities.DICE_PROJECTILE.get(), ThrownItemRenderer::new); // Adding Dice projectile's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.DICE_PROJECTILE.get(), ThrownItemRenderer::new); // Adding Dice Projectile's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.MAGIC_PROJECTILE.get(), MagicProjectileRenderer::new); // Adding Magic Projectile's custom projectile entity renderer
             });
         }
     }

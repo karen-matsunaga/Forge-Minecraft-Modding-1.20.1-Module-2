@@ -8,4 +8,8 @@ public class ModModelLayers {
     // Registry all custom entities model layers
     public static final ModelLayerLocation RHINO_LAYER = new ModelLayerLocation(
             new ResourceLocation(MCCourseMod.MOD_ID, "rhino_layer"), "rhino_layer");
+
+    // Registry all custom entities projectiles model layers
+    public static final ModelLayerLocation MAGIC_PROJECTILE_LAYER = new ModelLayerLocation(
+            new ResourceLocation(MCCourseMod.MOD_ID, "magic_projectile_layer"), "magic_projectile_layer");
 }

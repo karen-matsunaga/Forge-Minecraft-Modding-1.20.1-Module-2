@@ -2,6 +2,7 @@ package net.karen.mccourse.event;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.entity.ModEntities;
+import net.karen.mccourse.entity.client.MagicProjectileModel;
 import net.karen.mccourse.entity.client.RhinoModel;
 import net.karen.mccourse.entity.custom.RhinoEntity;
 import net.karen.mccourse.entity.layers.ModModelLayers;
@@ -19,7 +20,8 @@ public class ModEventBusEvents {
     // Registry all custom entities layers
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(ModModelLayers.RHINO_LAYER, RhinoModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.RHINO_LAYER, RhinoModel::createBodyLayer); // Rhino's layer
+        event.registerLayerDefinition(ModModelLayers.MAGIC_PROJECTILE_LAYER, MagicProjectileModel::createBodyLayer); // Magic Projectile's layer
     }
 
     // Registry all custom entities attributes

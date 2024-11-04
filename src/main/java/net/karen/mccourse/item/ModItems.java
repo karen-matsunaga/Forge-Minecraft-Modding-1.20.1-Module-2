@@ -95,7 +95,7 @@ public class ModItems {
 
     // Radiation Staff's custom item model
     public static final RegistryObject<Item> RADIATION_STAFF = ITEMS.register("radiation_staff",
-            () -> new Item(new Item.Properties().durability(1024)));
+            () -> new RadiationStaffItem(new Item.Properties().durability(1024)));
 
     // Alexandrite's bow
     public static final RegistryObject<Item> ALEXANDRITE_BOW = ITEMS.register("alexandrite_bow",
