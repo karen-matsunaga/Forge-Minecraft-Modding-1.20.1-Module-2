@@ -25,6 +25,8 @@ import net.karen.mccourse.screen.ModMenuTypes;
 import net.karen.mccourse.sound.ModSounds;
 import net.karen.mccourse.util.ModWoodTypes;
 import net.karen.mccourse.villager.ModVillagers;
+import net.karen.mccourse.worldgen.biome.ModTerraBlenderAPI;
+import net.karen.mccourse.worldgen.biome.surface.ModSurfaceRules;
 import net.karen.mccourse.worldgen.tree.ModFoliagePlacerTypes;
 import net.karen.mccourse.worldgen.tree.ModTrunkPlacerTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -51,6 +53,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import terrablender.api.SurfaceRuleManager;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MCCourseMod.MOD_ID)
@@ -116,6 +119,9 @@ public class MCCourseMod {
         // Register foliage placer types
         ModFoliagePlacerTypes.register(modEventBus);
 
+        // Register custom biomes
+        ModTerraBlenderAPI.registerRegions();
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -136,10 +142,13 @@ public class MCCourseMod {
             // Snapdragon's potted flower
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.SNAPDRAGON.getId(), ModBlocks.POTTED_SNAPDRAGON);
 
-            // Slimey's, Fly's, etc. potion recipe
+            // Slimey's, Fly's, etc. custom potion recipes
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.SLIME_BALL, ModPotions.SLIMEY_POTION.get()));
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.EMERALD, ModPotions.FLY_POTION.get()));
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.CARROT, ModPotions.HASTE_POTION.get()));
+
+            // Added custom Surface Rules
+            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MOD_ID, ModSurfaceRules.makeRules());
         });
     }
 
