@@ -130,6 +130,16 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.add(ModBlocks.CATTAIL_CROP.get(), createCropDrops(ModBlocks.CATTAIL_CROP.get(), ModItems.CATTAIL.get(),
                 ModItems.CATTAIL_SEEDS.get(), lootitemcondition$builder2));
 
+        // Ruby custom oxidizable block
+        this.dropSelf(ModBlocks.RUBY_BLOCK.get());
+        this.dropSelf(ModBlocks.RUBY_BLOCK_1.get());
+        this.dropSelf(ModBlocks.RUBY_BLOCK_2.get());
+        this.dropSelf(ModBlocks.RUBY_BLOCK_3.get());
+
+        this.dropSelf(ModBlocks.WAXED_RUBY_BLOCK.get());
+        this.dropSelf(ModBlocks.WAXED_RUBY_BLOCK_1.get());
+        this.dropSelf(ModBlocks.WAXED_RUBY_BLOCK_2.get());
+        this.dropSelf(ModBlocks.WAXED_RUBY_BLOCK_3.get());
     }
 
     // Custom ore's drops

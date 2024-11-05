@@ -128,6 +128,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         // Kaupen custom portal
         blockWithItem(ModBlocks.KAUPEN_PORTAL);
+
+        // Ruby custom oxidizable block
+        blockWithItem(ModBlocks.RUBY_BLOCK);
+        blockWithItem(ModBlocks.RUBY_BLOCK_1);
+        blockWithItem(ModBlocks.RUBY_BLOCK_2);
+        blockWithItem(ModBlocks.RUBY_BLOCK_3);
+
+        blockWithItem(ModBlocks.WAXED_RUBY_BLOCK);
+        blockWithItem(ModBlocks.WAXED_RUBY_BLOCK_1);
+        blockWithItem(ModBlocks.WAXED_RUBY_BLOCK_2);
+        blockWithItem(ModBlocks.WAXED_RUBY_BLOCK_3);
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json

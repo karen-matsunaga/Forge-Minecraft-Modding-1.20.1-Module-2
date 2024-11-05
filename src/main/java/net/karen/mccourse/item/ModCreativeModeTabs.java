@@ -158,6 +158,18 @@ public class ModCreativeModeTabs {
                         // Kaupen's custom portal
                         output.accept(ModBlocks.KAUPEN_PORTAL.get());
 
+                        // Ruby's custom oxidizable block
+                        output.accept(ModBlocks.RUBY_BLOCK.get());
+                        output.accept(ModBlocks.RUBY_BLOCK_1.get());
+                        output.accept(ModBlocks.RUBY_BLOCK_2.get());
+                        output.accept(ModBlocks.RUBY_BLOCK_3.get());
+
+                        output.accept(ModBlocks.WAXED_RUBY_BLOCK.get());
+                        output.accept(ModBlocks.WAXED_RUBY_BLOCK_1.get());
+                        output.accept(ModBlocks.WAXED_RUBY_BLOCK_2.get());
+                        output.accept(ModBlocks.WAXED_RUBY_BLOCK_3.get());
+
+
                     }).build());
 
     // Registry Creative Mode Tab
