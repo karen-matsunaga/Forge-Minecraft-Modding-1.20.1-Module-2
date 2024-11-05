@@ -21,6 +21,7 @@ import net.karen.mccourse.potion.BetterBrewingRecipe;
 import net.karen.mccourse.potion.ModPotions;
 import net.karen.mccourse.recipe.ModRecipes;
 import net.karen.mccourse.screen.GemEmpoweringStationScreen;
+import net.karen.mccourse.screen.KaupenFurnaceScreen;
 import net.karen.mccourse.screen.ModMenuTypes;
 import net.karen.mccourse.sound.ModSounds;
 import net.karen.mccourse.util.ModWoodTypes;
@@ -201,6 +202,7 @@ public class MCCourseMod {
 
                 // Gem Empowering's menu
                 MenuScreens.register(ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringStationScreen::new);
+                MenuScreens.register(ModMenuTypes.KAUPEN_FURNACE_MENU.get(), KaupenFurnaceScreen::new);
 
                 EntityRenderers.register(ModEntities.RHINO.get(), RhinoRenderer::new); // Adding Rhino's custom entity renderer
                 EntityRenderers.register(ModEntities.DICE_PROJECTILE.get(), ThrownItemRenderer::new); // Adding Dice Projectile's custom projectile entity renderer

@@ -140,15 +140,18 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.WAXED_RUBY_BLOCK_1.get());
         this.dropSelf(ModBlocks.WAXED_RUBY_BLOCK_2.get());
         this.dropSelf(ModBlocks.WAXED_RUBY_BLOCK_3.get());
+
+        // Kaupen custom furnace
+        this.dropSelf(ModBlocks.KAUPEN_FURNACE_BLOCK.get());
     }
 
     // Custom ore's drops
     protected LootTable.Builder createOreDrop(Block pBlock, Item pItem) {
         return createSilkTouchDispatchTable(pBlock, this.applyExplosionDecay(pBlock,
                 LootItem.lootTableItem(pItem)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(10.0f, 20.f)))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 5.0f)))
                         .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
-                        .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 4))));
+                        .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 1))));
     }
 
     // Return all registries in deferred registry

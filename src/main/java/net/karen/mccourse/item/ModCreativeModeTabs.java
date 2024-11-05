@@ -169,6 +169,8 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.WAXED_RUBY_BLOCK_2.get());
                         output.accept(ModBlocks.WAXED_RUBY_BLOCK_3.get());
 
+                        // Kaupen's custom furnace
+                        output.accept(ModBlocks.KAUPEN_FURNACE_BLOCK.get());
 
                     }).build());
 

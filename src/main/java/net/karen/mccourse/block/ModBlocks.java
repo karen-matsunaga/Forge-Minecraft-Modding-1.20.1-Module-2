@@ -234,6 +234,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> WAXED_RUBY_BLOCK_3 = registerBlock("waxed_ruby_block_3",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
+    // Kaupen custom furnace
+    public static final RegistryObject<Block> KAUPEN_FURNACE_BLOCK = registerBlock("kaupen_furnace",
+            () -> new KaupenFurnaceBlock(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {

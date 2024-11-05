@@ -29,6 +29,12 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(ModHangingSignBlockEntity::new,
                             ModBlocks.WALNUT_HANGING_SIGN.get(), ModBlocks.WALNUT_WALL_HANGING_SIGN.get()).build(null));
 
+    // Register all custom furnace
+    public static final RegistryObject<BlockEntityType<KaupenFurnaceBlockEntity>> KAUPEN_FURNACE_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("kaupen_furnace_block_entity", () ->
+                    BlockEntityType.Builder.of(KaupenFurnaceBlockEntity::new,
+                            ModBlocks.KAUPEN_FURNACE_BLOCK.get()).build(null));
+
     // Register all block entities on Forge
     public static void register(IEventBus eventBus) { BLOCK_ENTITIES.register(eventBus); }
 }
