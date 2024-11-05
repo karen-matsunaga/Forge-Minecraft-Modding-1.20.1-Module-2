@@ -101,6 +101,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.WALNUT_BOAT);
         simpleItem(ModItems.WALNUT_CHEST_BOAT);
 
+        // Cattail's custom crop
+        simpleItem(ModItems.CATTAIL);
+        simpleItem(ModItems.CATTAIL_SEEDS);
+
     }
 
     // Registry all sapling item's models

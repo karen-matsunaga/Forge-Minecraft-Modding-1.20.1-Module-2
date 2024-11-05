@@ -203,6 +203,10 @@ public class ModBlocks {
                 public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) { return 30; }
             });
 
+    // Cattail custom crop block
+    public static final RegistryObject<Block> CATTAIL_CROP = BLOCKS.register("cattail_crop",
+            () -> new CattailCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
+
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

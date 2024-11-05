@@ -3,6 +3,7 @@ package net.karen.mccourse.datagen;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.block.custom.AlexandriteLampBlock;
+import net.karen.mccourse.block.custom.CattailCropBlock;
 import net.karen.mccourse.block.custom.KohlrabiCropBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -121,6 +122,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         // Colored custom block
         leavesBlock(ModBlocks.COLORED_LEAVES);
+
+        // Cattail custom crop
+        makeCattailCrop(((CattailCropBlock) ModBlocks.CATTAIL_CROP.get()), "cat_tail_stage", "cat_tail_stage");
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json
@@ -162,6 +166,21 @@ public class ModBlockStateProvider extends BlockStateProvider {
         ConfiguredModel[] models = new ConfiguredModel[1];
         models[0] = new ConfiguredModel(models().crop(modelName + state.getValue(((KohlrabiCropBlock) block).getAgeProperty()),
                 new ResourceLocation(MCCourseMod.MOD_ID, "block/" + textureName + state.getValue(((KohlrabiCropBlock) block).getAgeProperty()))).renderType("cutout"));
+        return models;
+    }
+
+    // Cattail's crop block automatically created models/block/json.file
+    public void makeCattailCrop(CropBlock block, String modelName, String textureName) {
+        Function<BlockState, ConfiguredModel[]> function = state -> cattailStates(state, block, modelName, textureName);
+
+        getVariantBuilder(block).forAllStates(function);
+    }
+
+    private ConfiguredModel[] cattailStates(BlockState state, CropBlock block, String modelName, String textureName) {
+        ConfiguredModel[] models = new ConfiguredModel[1];
+        models[0] = new ConfiguredModel(models().crop(modelName + state.getValue(((CattailCropBlock) block).getAgeProperty()),
+                new ResourceLocation(MCCourseMod.MOD_ID, "block/" + textureName + state.getValue(((CattailCropBlock) block).getAgeProperty()))).renderType("cutout"));
+
         return models;
     }
 

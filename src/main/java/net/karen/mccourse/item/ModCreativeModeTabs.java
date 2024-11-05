@@ -151,6 +151,10 @@ public class ModCreativeModeTabs {
                         // Colored custom block
                         output.accept(ModBlocks.COLORED_LEAVES.get());
 
+                        // Cattail's custom crop
+                        output.accept(ModItems.CATTAIL_SEEDS.get());
+                        output.accept(ModItems.CATTAIL.get());
+
                     }).build());
 
     // Registry Creative Mode Tab

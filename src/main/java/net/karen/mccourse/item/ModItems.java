@@ -133,6 +133,12 @@ public class ModItems {
     public static final RegistryObject<Item> WALNUT_CHEST_BOAT = ITEMS.register("walnut_chest_boat",
             () -> new ModBoatItem(true, ModBoatEntity.Type.WALNUT, new Item.Properties()));
 
+    // Cattail custom crop
+    public static final RegistryObject<Item> CATTAIL = ITEMS.register("cattail",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CATTAIL_SEEDS = ITEMS.register("cattail_seeds",
+            () -> new ItemNameBlockItem(ModBlocks.CATTAIL_CROP.get(), new Item.Properties()));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }
