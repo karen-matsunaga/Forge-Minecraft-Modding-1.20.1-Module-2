@@ -143,5 +143,7 @@
   "block.mccourse.colored_leaves": "Colored Leaves",
 
   "item.mccourse.cattail": "Cattail",
-  "item.mccourse.cattail_seeds": "Cattail Seeds"
+  "item.mccourse.cattail_seeds": "Cattail Seeds",
+
+  "block.mccourse.kaupen_portal": "Kaupen Portal"
 }

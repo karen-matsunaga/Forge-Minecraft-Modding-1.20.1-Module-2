@@ -155,6 +155,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.CATTAIL_SEEDS.get());
                         output.accept(ModItems.CATTAIL.get());
 
+                        // Kaupen's custom portal
+                        output.accept(ModBlocks.KAUPEN_PORTAL.get());
+
                     }).build());
 
     // Registry Creative Mode Tab

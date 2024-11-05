@@ -207,6 +207,10 @@ public class ModBlocks {
     public static final RegistryObject<Block> CATTAIL_CROP = BLOCKS.register("cattail_crop",
             () -> new CattailCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
 
+    // Kaupen custom portal block
+    public static final RegistryObject<Block> KAUPEN_PORTAL = registerBlock("kaupen_portal",
+            () -> new KaupenPortalBlock(BlockBehaviour.Properties.copy(Blocks.NETHER_PORTAL).noLootTable().noOcclusion().noCollission()));
+
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

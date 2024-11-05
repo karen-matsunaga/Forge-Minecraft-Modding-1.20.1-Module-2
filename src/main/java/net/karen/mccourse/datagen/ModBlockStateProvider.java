@@ -125,6 +125,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         // Cattail custom crop
         makeCattailCrop(((CattailCropBlock) ModBlocks.CATTAIL_CROP.get()), "cat_tail_stage", "cat_tail_stage");
+
+        // Kaupen custom portal
+        blockWithItem(ModBlocks.KAUPEN_PORTAL);
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json
