@@ -12,17 +12,26 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class GemEmpoweringRecipe implements Recipe<SimpleContainer> {
     // Adding specify items on Gem Empowering Station
     private final NonNullList<Ingredient> inputItems;
     private final ItemStack output;
     private final ResourceLocation id;
+    private final int craftTime;
+    private final int energyAmount;
+    private final FluidStack fluidStack;
 
-    public GemEmpoweringRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> inputItems) {
+    public GemEmpoweringRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> inputItems,
+                               int craftTime, int energyAmount, FluidStack fluidStack) {
         this.inputItems = inputItems;
         this.output = output;
         this.id = id;
+        this.craftTime = craftTime;
+        this.energyAmount = energyAmount;
+        this.fluidStack = fluidStack;
     }
 
     @Override
@@ -42,6 +51,12 @@ public class GemEmpoweringRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public NonNullList<Ingredient> getIngredients() { return this.inputItems; }
+
+    public int getCraftTime() { return craftTime; } // Craft Time
+
+    public int getEnergyAmount() { return energyAmount; } // Energy Amount
+
+    public FluidStack getFluidStack() { return fluidStack; } // Fluid Stack
 
     @Override
     public ResourceLocation getId() { return id; }
@@ -67,14 +82,17 @@ public class GemEmpoweringRecipe implements Recipe<SimpleContainer> {
         @Override
         public GemEmpoweringRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output")); // Crafting type
+            FluidStack fluidStack = new FluidStack(ForgeRegistries.FLUIDS.getValue(new ResourceLocation(json.get("fluidType").getAsString())),
+                    json.get("fluidAmount").getAsInt()); // Read Fluid Stack on JSON file
 
             JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
             NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY); // Input ingredient
 
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
-            }
-            return new GemEmpoweringRecipe(id, output, inputs);
+            for (int i = 0; i < inputs.size(); i++) { inputs.set(i, Ingredient.fromJson(ingredients.get(i))); }
+
+            int craftTime = json.get("craftTime").getAsInt(); // Read Craft Time on JSON file
+            int energyAmount = json.get("energyAmount").getAsInt(); // Read Energy Amount on JSON file
+            return new GemEmpoweringRecipe(id, output, inputs, craftTime, energyAmount, fluidStack);
         }
 
         // Read one ingredient and one item stack on each JSON file
@@ -82,22 +100,25 @@ public class GemEmpoweringRecipe implements Recipe<SimpleContainer> {
         @Override
         public GemEmpoweringRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
+            FluidStack fluidStack = buf.readFluidStack(); // Read Fluid Stack from Network
 
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromNetwork(buf));
-            }
+            for (int i = 0; i < inputs.size(); i++) { inputs.set(i, Ingredient.fromNetwork(buf)); }
 
-            ItemStack output = buf.readItem();
-            return new GemEmpoweringRecipe(id, output, inputs);
+            int craftTime = buf.readInt(); // Read Craft Time from Network
+            int energyAmount = buf.readInt(); // Read Energy Amount from Network
+            ItemStack output = buf.readItem(); // Read Output from Network
+            return new GemEmpoweringRecipe(id, output, inputs, craftTime, energyAmount, fluidStack);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, GemEmpoweringRecipe recipe) {
             buf.writeInt(recipe.getIngredients().size());
+            buf.writeFluidStack(recipe.fluidStack); // Read Fluid Stack to Network = Read integer
 
-            for (Ingredient ing : recipe.getIngredients()) {
-                ing.toNetwork(buf);
-            }
+            for (Ingredient ing : recipe.getIngredients()) { ing.toNetwork(buf); }
+
+            buf.writeInt(recipe.craftTime); // Read Craft Time to Network = Read integer
+            buf.writeInt(recipe.energyAmount); // Read Energy Amount to Network = Read integer
             buf.writeItemStack(recipe.getResultItem(null), false);
         }
     }

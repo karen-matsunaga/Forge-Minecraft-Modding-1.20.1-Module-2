@@ -28,7 +28,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -91,6 +90,12 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
     protected final ContainerData data;
     private int progress = 0;
     private int maxProgress = 78;
+
+    // Added DEFAULT values
+    private final int DEFAULT_MAX_PROGRESS = 78;
+    private int energyAmount = 0;
+    private final int DEFAULT_ENERGY_AMOUNT = 100;
+    private FluidStack neededFluidStack = FluidStack.EMPTY;
 
     // Progress bar when an item transform on custom energy storage - CLIENT and SERVER is synchronized
     private final ModEnergyStorage ENERGY_STORAGE = createEnergyStorage();
@@ -164,7 +169,6 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
-
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
@@ -187,9 +191,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         if(cap == ForgeCapabilities.FLUID_HANDLER) { return lazyFluidHandler.cast(); }
 
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
-            if(side == null) {
-                return lazyItemHandler.cast();
-            }
+            if(side == null) { return lazyItemHandler.cast(); }
 
             if(directionWrappedHandlerMap.containsKey(side)) {
                 Direction localDir = this.getBlockState().getValue(GemEmpoweringStationBlock.FACING);
@@ -228,6 +230,9 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
     protected void saveAdditional(CompoundTag pTag) {
         pTag.put("inventory", itemHandler.serializeNBT());
         pTag.putInt("gem_empowering_station.progress", progress);
+        pTag.putInt("gem_empowering_station.max_progress", maxProgress);
+        pTag.putInt("gem_empowering_station.energy_amount", energyAmount);
+        neededFluidStack.writeToNBT(pTag);
         pTag.putInt("energy", ENERGY_STORAGE.getEnergyStored());
         pTag = FLUID_TANK.writeToNBT(pTag);
         super.saveAdditional(pTag);
@@ -238,6 +243,9 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         super.load(pTag);
         itemHandler.deserializeNBT(pTag.getCompound("inventory"));
         progress = pTag.getInt("gem_empowering_station.progress");
+        maxProgress = pTag.getInt("gem_empowering_station.max_progress");
+        energyAmount = pTag.getInt("gem_empowering_station.energy_amount");
+        neededFluidStack = FluidStack.loadFluidStackFromNBT(pTag);
         ENERGY_STORAGE.setEnergy(pTag.getInt("energy"));
         FLUID_TANK.readFromNBT(pTag);
     }
@@ -260,7 +268,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         } else { resetProgress(); }
     }
 
-    private void extractFluid() { this.FLUID_TANK.drain(500, IFluidHandler.FluidAction.EXECUTE); }
+    private void extractFluid() { this.FLUID_TANK.drain(neededFluidStack.getAmount(), IFluidHandler.FluidAction.EXECUTE); }
 
     private void fillUpOnFluid() {
         if (hasFluidSourceInSlot(FLUID_INPUT_SLOT)) { transferItemFluidToTank(FLUID_INPUT_SLOT); }
@@ -271,12 +279,8 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
             int drainAmount = Math.min(this.FLUID_TANK.getSpace(), 1000);
 
             FluidStack stack = iFluidHandlerItem.drain(drainAmount, IFluidHandler.FluidAction.SIMULATE);
-
-            if(stack.getFluid() == Fluids.WATER) {
-                stack = iFluidHandlerItem.drain(drainAmount, IFluidHandler.FluidAction.EXECUTE);
-                fillTankWithFluid(stack, iFluidHandlerItem.getContainer());
-            }
-
+            stack = iFluidHandlerItem.drain(drainAmount, IFluidHandler.FluidAction.EXECUTE);
+            fillTankWithFluid(stack, iFluidHandlerItem.getContainer());
         });
     }
 
@@ -292,7 +296,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
                 this.itemHandler.getStackInSlot(fluidInputSlot).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
     }
 
-    private void extractEnergy() { this.ENERGY_STORAGE.extractEnergy(100, false); }
+    private void extractEnergy() { this.ENERGY_STORAGE.extractEnergy(energyAmount, false); }
 
     private void fillUpOnEnergy() {
         if(hasEnergyItemInSlot(ENERGY_ITEM_SLOT)) { this.ENERGY_STORAGE.receiveEnergy(3200, false); }
@@ -323,15 +327,20 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         Optional<GemEmpoweringRecipe> recipe = getCurrentRecipe();
 
         if (recipe.isEmpty()) { return false; }
+
+        maxProgress = recipe.get().getCraftTime();
+        energyAmount = recipe.get().getEnergyAmount();
+        neededFluidStack = recipe.get().getFluidStack();
+
         ItemStack resultItem = recipe.get().getResultItem(getLevel().registryAccess());
         return canInsertAmountIntoOutputSlot(resultItem.getCount())
                 && canInsertItemIntoOutputSlot(resultItem.getItem()) && hasEnoughEnergyToCraft()
                 && hasEnoughFluidToCraft();
     }
 
-    private boolean hasEnoughFluidToCraft() { return this.FLUID_TANK.getFluidAmount() >= 500; }
+    private boolean hasEnoughFluidToCraft() { return this.FLUID_TANK.getFluidAmount() >= neededFluidStack.getAmount(); }
 
-    private boolean hasEnoughEnergyToCraft() { return this.ENERGY_STORAGE.getEnergyStored() >= 100 * maxProgress; }
+    private boolean hasEnoughEnergyToCraft() { return this.ENERGY_STORAGE.getEnergyStored() >= energyAmount * maxProgress; }
 
     // Verify all custom recipes if are added or not inserted
     private Optional<GemEmpoweringRecipe> getCurrentRecipe() {
