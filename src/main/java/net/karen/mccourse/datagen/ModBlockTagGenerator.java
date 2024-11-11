@@ -6,6 +6,7 @@ import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -15,9 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagGenerator extends BlockTagsProvider {
     public ModBlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
-                                @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, MCCourseMod.MOD_ID, existingFileHelper);
-    }
+                                @Nullable ExistingFileHelper existingFileHelper) { super(output, lookupProvider, MCCourseMod.MOD_ID, existingFileHelper); }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
@@ -93,11 +92,29 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(BlockTags.PLANKS)
                 .add(ModBlocks.WALNUT_PLANKS.get());
 
+        // More Ores Drops
+        this.tag(ModTags.Blocks.MORE_ORES_ONE_DROPS) // More Ores I
+                .add(Blocks.COAL_ORE)
+                .add(Blocks.COPPER_ORE);
 
+        this.tag(ModTags.Blocks.MORE_ORES_TWO_DROPS) // More Ores II
+                .add(Blocks.IRON_ORE)
+                .add(Blocks.LAPIS_ORE);
+
+        this.tag(ModTags.Blocks.MORE_ORES_THREE_DROPS) // More Ores III
+                .add(Blocks.REDSTONE_ORE)
+                .add(Blocks.GOLD_ORE);
+
+        this.tag(ModTags.Blocks.MORE_ORES_FOUR_DROPS) // More Ores IV
+                .add(Blocks.DIAMOND_ORE)
+                .add(Blocks.EMERALD_ORE);
+
+        this.tag(ModTags.Blocks.MORE_ORES_FIVE_DROPS) // More Ores V
+                .add(Blocks.ANCIENT_DEBRIS)
+                .add(Blocks.NETHER_GOLD_ORE)
+                .add(Blocks.NETHER_QUARTZ_ORE);
     }
 
     @Override
-    public String getName() {
-        return "Block Tags";
-    }
+    public String getName() { return "Block Tags"; }
 }

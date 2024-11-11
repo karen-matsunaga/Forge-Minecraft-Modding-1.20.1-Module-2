@@ -32,6 +32,13 @@ public class ModTags {
         // Created Alexandrite Paxel's tag
         public static final TagKey<Block> PAXEL_MINEABLE = tag("mineable/paxel");
 
+        // Created More Ores's drops
+        public static final TagKey<Block> MORE_ORES_ONE_DROPS = tag("ores/more_ores_one_drops"); // More Ores I
+        public static final TagKey<Block> MORE_ORES_TWO_DROPS = tag("ores/more_ores_two_drops"); // More Ores II
+        public static final TagKey<Block> MORE_ORES_THREE_DROPS = tag("ores/more_ores_three_drops"); // More Ores III
+        public static final TagKey<Block> MORE_ORES_FOUR_DROPS = tag("ores/more_ores_four_drops"); // More Ores IV
+        public static final TagKey<Block> MORE_ORES_FIVE_DROPS = tag("ores/more_ores_five_drops"); // More Ores V
+
         // Pass block id
         private static TagKey<Block> tag(String name) { return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }
 
