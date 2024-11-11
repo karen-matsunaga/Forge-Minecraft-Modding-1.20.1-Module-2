@@ -12,14 +12,12 @@ public class MoreOresEnchantment extends Enchantment {
     protected MoreOresEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) { super(pRarity, pCategory, pApplicableSlots); }
 
     @Override
-    public int getMaxLevel() {
-        return 5;
-    } // More Ores enchantment max level
+    public int getMaxLevel() { return 5; } // More Ores enchantment max level
 
     @Override
     public @NotNull Component getFullname(int pLevel) {
         if (pLevel > 0) {
-            return Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.BOLD, ChatFormatting.LIGHT_PURPLE) // Colors used on description name
+            return Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN) // Colors used on description name
                     .append(CommonComponents.SPACE) // Separate words and numbers
                     .append(Component.translatable("enchantment.level." + pLevel));  // Name and level enchantment on item, and chat
         }
