@@ -8,6 +8,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.EnumMap;
@@ -15,12 +16,21 @@ import java.util.function.Supplier;
 
 public enum ModArmorMaterials implements ArmorMaterial {
 
+    // Alexandrite's armor material
     ALEXANDRITE("alexandrite", 24, Util.make(new EnumMap<>(ArmorItem.Type.class), (p_266655_) -> {
         p_266655_.put(ArmorItem.Type.BOOTS, 4);
         p_266655_.put(ArmorItem.Type.LEGGINGS, 5);
         p_266655_.put(ArmorItem.Type.CHESTPLATE, 7);
         p_266655_.put(ArmorItem.Type.HELMET, 5);
-    }), 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0F, 0.1F, () -> Ingredient.of(ModItems.ALEXANDRITE.get()));
+    }), 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0F, 0.1F, () -> Ingredient.of(ModItems.ALEXANDRITE.get())),
+
+    // My custom armor material
+    PINK("pink", 24, Util.make(new EnumMap<>(ArmorItem.Type.class), (p_266655_) -> {
+        p_266655_.put(ArmorItem.Type.BOOTS, 4);
+        p_266655_.put(ArmorItem.Type.LEGGINGS, 5);
+        p_266655_.put(ArmorItem.Type.CHESTPLATE, 7);
+        p_266655_.put(ArmorItem.Type.HELMET, 5);
+    }), 15, SoundEvents.ARMOR_EQUIP_DIAMOND, 3.0F, 0.1F, () -> Ingredient.of(Items.DIAMOND));
 
     public static final StringRepresentable.EnumCodec<ArmorMaterials> CODEC = StringRepresentable.fromEnum(ArmorMaterials::values);
     private static final EnumMap<ArmorItem.Type, Integer> HEALTH_FUNCTION_FOR_TYPE = Util.make(new EnumMap<>(ArmorItem.Type.class), (p_266653_) -> {
@@ -29,6 +39,7 @@ public enum ModArmorMaterials implements ArmorMaterial {
         p_266653_.put(ArmorItem.Type.CHESTPLATE, 16);
         p_266653_.put(ArmorItem.Type.HELMET, 11);
     });
+
     private final String name;
     private final int durabilityMultiplier;
     private final EnumMap<ArmorItem.Type, Integer> protectionFunctionForType;

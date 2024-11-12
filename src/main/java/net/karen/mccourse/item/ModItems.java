@@ -139,6 +139,19 @@ public class ModItems {
     public static final RegistryObject<Item> CATTAIL_SEEDS = ITEMS.register("cattail_seeds",
             () -> new ItemNameBlockItem(ModBlocks.CATTAIL_CROP.get(), new Item.Properties()));
 
+    // Pink's custom armor
+    public static final RegistryObject<Item> PINK_HELMET = ITEMS.register("pink_helmet",
+            () -> new ModHelmetArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.HELMET, new Item.Properties()));
+
+    public static final RegistryObject<Item> PINK_CHESTPLATE = ITEMS.register("pink_chestplate",
+            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
+    public static final RegistryObject<Item> PINK_LEGGINGS = ITEMS.register("pink_leggings",
+            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+
+    public static final RegistryObject<Item> PINK_BOOTS = ITEMS.register("pink_boots",
+            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.BOOTS, new Item.Properties()));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }

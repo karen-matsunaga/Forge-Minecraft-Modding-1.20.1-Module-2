@@ -157,5 +157,10 @@
   "block.mccourse.waxed_ruby_block_2": "Waxed Block of Ruby 2",
   "block.mccourse.waxed_ruby_block_3": "Waxed Block of Ruby 3",
 
-  "block.mccourse.kaupen_furnace": "Kaupen Furnace"
+  "block.mccourse.kaupen_furnace": "Kaupen Furnace",
+
+  "item.mccourse.pink_helmet": "Pink Helmet",
+  "item.mccourse.pink_chestplate": "Pink Chestplate",
+  "item.mccourse.pink_leggings": "Pink Leggings",
+  "item.mccourse.pink_boots": "Pink Boots"
 }

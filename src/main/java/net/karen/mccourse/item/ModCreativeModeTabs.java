@@ -172,6 +172,11 @@ public class ModCreativeModeTabs {
                         // Kaupen's custom furnace
                         output.accept(ModBlocks.KAUPEN_FURNACE_BLOCK.get());
 
+                        output.accept(ModItems.PINK_HELMET.get());
+                        output.accept(ModItems.PINK_CHESTPLATE.get());
+                        output.accept(ModItems.PINK_LEGGINGS.get());
+                        output.accept(ModItems.PINK_BOOTS.get());
+
                     }).build());
 
     // Registry Creative Mode Tab
