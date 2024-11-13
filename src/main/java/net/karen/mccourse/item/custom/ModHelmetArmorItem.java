@@ -20,7 +20,7 @@ public class ModHelmetArmorItem extends ArmorItem {
             (new ImmutableMap.Builder<ArmorMaterial, List<MobEffectInstance>>())
                     .put(ModArmorMaterials.PINK, Arrays.asList(
                             // Glowing effect
-                            new MobEffectInstance(MobEffects.GLOWING, 200, 2, false, false, false),
+                            new MobEffectInstance(MobEffects.GLOWING, 200, 2, false, false, true),
                             // Strength effect
                             new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2, false, false, true),
                             // Night vision effect
@@ -33,7 +33,7 @@ public class ModHelmetArmorItem extends ArmorItem {
     // Apply effect if player using all parts of armor
     @Override
     public void onArmorTick(ItemStack stack, Level level, Player player) {
-        if (!level.isClientSide() && hasFullSuitOfArmorOn(player)) { evaluateArmorEffects(player); }
+        if (!level.isClientSide() && hasHelmetOn(player)) { evaluateArmorEffects(player); }
     }
 
     /// If player is using same armor material applies all effects
@@ -58,11 +58,10 @@ public class ModHelmetArmorItem extends ArmorItem {
 
     // If player using same armor material
     private boolean hasPlayerCorrectArmorOn(ArmorMaterial mapArmorMaterial, Player player) {
-        for (ItemStack armorStack : player.getArmorSlots()) { if (!(armorStack.getItem() instanceof ArmorItem)) { return false; } }
-        ArmorItem helmet = ((ArmorItem) player.getInventory().getArmor(3).getItem());
+        if (!(player.getInventory().getArmor(3).getItem() instanceof ArmorItem helmet)) { return false; }
         return helmet.getMaterial() == mapArmorMaterial;
     }
 
     // If player using Helmet part
-    private boolean hasFullSuitOfArmorOn(Player player) { ItemStack helmet = player.getInventory().getArmor(3); return !helmet.isEmpty(); }
+    private boolean hasHelmetOn(Player player) { ItemStack helmet = player.getInventory().getArmor(3); return !helmet.isEmpty(); }
 }
