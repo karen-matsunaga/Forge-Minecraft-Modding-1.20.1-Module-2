@@ -26,39 +26,31 @@ public class AddItemModifier extends LootModifier {
     public static final Supplier<Codec<AddItemModifier>> CODEC = Suppliers.memoize(() ->
             RecordCodecBuilder.create(inst -> codecStart(inst)
                     .and(ForgeRegistries.ITEMS.getCodec().listOf().fieldOf("items").forGetter(m -> m.items)).apply(inst, AddItemModifier::new)));
-
     private final List<Item> items;
-
     public AddItemModifier(LootItemCondition[] conditionsIn, List<Item> items) { super(conditionsIn); this.items = items; }
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         generatedLoot.clear(); // Clear old's loot tables
-        List<ResourceLocation> ores = Arrays.asList( // All ores with loot table modified
-                Blocks.COAL_ORE.getLootTable(), Blocks.COPPER_ORE.getLootTable(), Blocks.IRON_ORE.getLootTable(), Blocks.GOLD_ORE.getLootTable(), // Stone ORES
-                Blocks.LAPIS_ORE.getLootTable(), Blocks.REDSTONE_ORE.getLootTable(), Blocks.DIAMOND_ORE.getLootTable(), Blocks.EMERALD_ORE.getLootTable(),
-                Blocks.ANCIENT_DEBRIS.getLootTable(), Blocks.NETHER_QUARTZ_ORE.getLootTable(), Blocks.NETHER_GOLD_ORE.getLootTable(),
-                Blocks.DEEPSLATE_COAL_ORE.getLootTable(), Blocks.DEEPSLATE_COPPER_ORE.getLootTable(), Blocks.DEEPSLATE_IRON_ORE.getLootTable(), // Deepslate ORES
-                Blocks.DEEPSLATE_GOLD_ORE.getLootTable(), Blocks.DEEPSLATE_LAPIS_ORE.getLootTable(), Blocks.DEEPSLATE_REDSTONE_ORE.getLootTable(),
-                Blocks.DEEPSLATE_DIAMOND_ORE.getLootTable(), Blocks.DEEPSLATE_EMERALD_ORE.getLootTable());
+        List<ResourceLocation> ores = Arrays.asList(
+                Blocks.COAL_ORE.getLootTable(), Blocks.IRON_ORE.getLootTable(), Blocks.GOLD_ORE.getLootTable(), Blocks.LAPIS_ORE.getLootTable(), // Stone ORES
+                Blocks.NETHER_QUARTZ_ORE.getLootTable(), Blocks.NETHER_GOLD_ORE.getLootTable(), // Nether ORES
+                Blocks.DEEPSLATE_COAL_ORE.getLootTable(), Blocks.DEEPSLATE_IRON_ORE.getLootTable(), Blocks.DEEPSLATE_GOLD_ORE.getLootTable(), // Deepslate ORES
+                Blocks.DEEPSLATE_LAPIS_ORE.getLootTable()); // All ores with loot table modified
 
+        // If mined ORES with Silk Touch's enchantment
         if (context.getParamOrNull(LootContextParams.TOOL) != null && context.getParamOrNull(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
-            for (Item item : items) {  // Loop through each item in the list
-                if (ores.contains(context.getQueriedLootTableId())) { // If mined ORES with Silk Touch's enchantment
-                        generatedLoot.add(new ItemStack(item)); // Drop itself, a block, and, an item
-                }
-            }
+            // Loop through each item in the list and drop itself an item
+            for (Item item : items) { if (ores.contains(context.getQueriedLootTableId())) { generatedLoot.add(new ItemStack(item)); } }
         }
 
+        // If mined ORES with Fortune's enchantment
         if (context.getParamOrNull(LootContextParams.TOOL) != null && context.getParamOrNull(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.BLOCK_FORTUNE) > 0) {
             int fortuneLevel = context.getParamOrNull(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.BLOCK_FORTUNE); // Fortune's enchantment level
             int drops = context.getRandom().nextInt(fortuneLevel) + UniformGenerator.between(1.0f, 2.0f).getInt(context); // Drops randomly
 
-            for (Item item : items) {  // Loop through each item in the list
-                if (ores.contains(context.getQueriedLootTableId()) ) { // If mined ORES with Fortune's enchantment
-                        generatedLoot.add(new ItemStack(item, drops)); // Drop multiple ORES
-                }
-            }
+            // Loop through each item in the list and drop items
+            for (Item item : items) { if (ores.contains(context.getQueriedLootTableId()) ) { generatedLoot.add(new ItemStack(item, drops)); } }
 
             for (ItemStack itemStack : generatedLoot) { // All modifications of ore's loot tables
                 ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 2).build().apply(itemStack, context);
@@ -66,11 +58,8 @@ public class AddItemModifier extends LootModifier {
                 ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE).build().apply(itemStack, context);
             }
         }
-
-        for (LootItemCondition condition : this.conditions) { if (!condition.test(context)) { return generatedLoot; } } // Apply loot conditions, and, add item on the list
-
-        for (Item item : items) { generatedLoot.add(new ItemStack(item)); } // No enchantment add item on the list normally, update the data, and, return the list
-
+        for (LootItemCondition condition : this.conditions) { if (!condition.test(context)) { return generatedLoot; } } // Apply loot conditions, and add item on the list
+        for (Item item : items) { generatedLoot.add(new ItemStack(item)); } // No enchantment add item on the list normally, update the data, and return the list
         return generatedLoot; // Return normal loot modifier even if to exist 1000 items
     }
 
