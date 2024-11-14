@@ -302,7 +302,7 @@ public class ModEvents {
         // All monsters received Glowing effect with red color
         List<LivingEntity> monster = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(GLOWING_EYES), e -> e instanceof Enemy);
         for (LivingEntity e : monster) {
-            e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100));
+            e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1, true, false,false));
             String teamName = "GlowingMonsterTeam";
             PlayerTeam teamMonster = ((Player) livingEntity).getScoreboard().getPlayerTeam(teamName); // Assign each entity to a team with a specific color for the glowing effect
             if (teamMonster == null) {
@@ -315,7 +315,7 @@ public class ModEvents {
         // All animals received Glowing effect with blue color
         List<LivingEntity> animal = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(GLOWING_EYES), a -> a instanceof Animal);
         for (LivingEntity a : animal) {
-            a.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100));
+            a.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1, true, false,false));
             String teamAnimalName = "GlowingAnimalTeam";
             PlayerTeam teamAnimal = ((Player) livingEntity).getScoreboard().getPlayerTeam(teamAnimalName);
             if (teamAnimal == null) {
@@ -328,7 +328,7 @@ public class ModEvents {
         // All villagers received Glowing effect with dark purple color
         List<LivingEntity> villager = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(GLOWING_EYES), v -> v instanceof Npc);
         for (LivingEntity v : villager) {
-            v.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100));
+            v.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1, true, false,false));
             String teamVillagerName = "GlowingVillagerTeam";
             PlayerTeam teamVillager = ((Player) livingEntity).getScoreboard().getPlayerTeam(teamVillagerName);
             if (teamVillager == null) {
@@ -341,7 +341,7 @@ public class ModEvents {
         // All water animals received Glowing effect with yellow color
         List<LivingEntity> waterAnimals = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(GLOWING_EYES), w -> w instanceof WaterAnimal);
         for (LivingEntity w : waterAnimals) {
-            w.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100));
+            w.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1, true, false,false));
             String teamWaterAnimalName = "GlowingWaterAnimalsTeam";
             PlayerTeam teamWaterAnimal = ((Player) livingEntity).getScoreboard().getPlayerTeam(teamWaterAnimalName);
             if (teamWaterAnimal == null) {
@@ -354,7 +354,7 @@ public class ModEvents {
         // All ambient creature animals received Glowing effect with dark blue color
         List<LivingEntity> ambientCreatureAnimals = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(GLOWING_EYES), ac -> ac instanceof AmbientCreature);
         for (LivingEntity ac : ambientCreatureAnimals) {
-            ac.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100));
+            ac.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1, true, false,false));
             String teamAmbientCreatureAnimalsName = "GlowingAmbientCreatureAnimalsTeam";
             PlayerTeam teamAmbientCreatureAnimals = ((Player) livingEntity).getScoreboard().getPlayerTeam(teamAmbientCreatureAnimalsName);
             if (teamAmbientCreatureAnimals == null) {
@@ -367,7 +367,7 @@ public class ModEvents {
         // Allay received Glowing effect with dark blue color
         List<LivingEntity> allay = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(GLOWING_EYES), al -> al instanceof Allay);
         for (LivingEntity al : allay) {
-            al.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100));
+            al.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1, true, false,false));
             String teamAllayName = "GlowingAllayTeam";
             PlayerTeam teamAllay = ((Player) livingEntity).getScoreboard().getPlayerTeam(teamAllayName);
             if (teamAllay == null) {
@@ -380,7 +380,7 @@ public class ModEvents {
         // Iron Golem and Snow Golem received Glowing effect with dark purple color
         List<LivingEntity> abstractGolem = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(GLOWING_EYES), ag -> ag instanceof AbstractGolem);
         for (LivingEntity ag : abstractGolem) {
-            ag.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100));
+            ag.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1, true, false,false));
             String teamAbstractGolemName = "GlowingAbstractGolemTeam";
             PlayerTeam teamAbstractGolem = ((Player) livingEntity).getScoreboard().getPlayerTeam(teamAbstractGolemName);
             if (teamAbstractGolem == null) {
