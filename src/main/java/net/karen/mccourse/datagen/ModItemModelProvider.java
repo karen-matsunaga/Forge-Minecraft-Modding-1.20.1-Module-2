@@ -94,7 +94,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Rhino's custom egg
         withExistingParent(ModItems.RHINO_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
 
-        // Dino's custom item
+        // Dice's custom item
         simpleItem(ModItems.DICE);
 
         // Boat's custom item
