@@ -1,7 +1,6 @@
 package net.karen.mccourse.item.custom;
 
 import com.google.common.collect.ImmutableMap;
-import net.karen.mccourse.effect.ModEffects;
 import net.karen.mccourse.item.ModArmorMaterials;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -21,10 +20,9 @@ public class ModArmorItem extends ArmorItem {
             (new ImmutableMap.Builder<ArmorMaterial, List<MobEffectInstance>>())
                     .put(ModArmorMaterials.ALEXANDRITE, Arrays.asList(
                             // Added all custom effects or vanilla effects on player only all armor slots
-                            new MobEffectInstance(ModEffects.FLY_EFFECT.get(), 300, 2, false, false, true),
-                            new MobEffectInstance(MobEffects.DAMAGE_BOOST, 300, 2, false, false, true),
-                            new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 2, false, false, true),
-                            new MobEffectInstance(MobEffects.DIG_SPEED, 300, 2, false, false, true))).build();
+                            new MobEffectInstance(MobEffects.DAMAGE_BOOST, 300, 1, false, false, true),
+                            new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false, true),
+                            new MobEffectInstance(MobEffects.DIG_SPEED, 300, 1, false, false, true))).build();
 
     public ModArmorItem(ArmorMaterial material, Type type, Properties properties) { super(material, type, properties); }
 
