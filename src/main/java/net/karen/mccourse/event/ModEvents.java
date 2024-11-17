@@ -19,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -38,6 +39,7 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -257,6 +259,7 @@ public class ModEvents {
             ItemStack mainHandItem = player.getMainHandItem(); // Player has a tool on main hand
             int magneticLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.MAGNETIC.get()); // Magnetic enchantment
             int moreOresEnchanted = mainHandItem.getEnchantmentLevel(ModEnchantments.MORE_ORES.get()); // More Ores enchantment
+            int autoSmeltEnchanted = mainHandItem.getEnchantmentLevel(ModEnchantments.AUTO_SMELT.get()); // Auto Smelt enchantment
 
             if (!mainHandItem.isEnchanted() || magneticLevel < 1) { return; } // Player has Magnetic enchantment
 
@@ -273,7 +276,17 @@ public class ModEvents {
                             }
                         });
                 world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Prevents drop in the world
-            } else { // Player has Magnetic enchantment level
+            }
+            if (autoSmeltEnchanted > 0) { // Player has Auto Smelt enchantment level
+                Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Ores or blocks are generated on world
+                        .forEach(drop -> {
+                            if (player.getInventory().add(drop)) {
+                                player.drop(drop, true); // Ores or blocks doesn't added drop on Player's inventory
+                            }
+                        });
+                world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Prevents drop in the world
+            }
+            else { // Player has Magnetic enchantment level
                 Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Blocks are generated on Player's inventory
                         .forEach(drop -> {
                             if (!player.getInventory().add(drop)) {
@@ -281,6 +294,48 @@ public class ModEvents {
                             }
                         });
                 world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Prevents drop in the world
+            }
+        }
+    }
+
+    // CUSTOM EVENT - Auto Smelt custom enchantment
+    @SubscribeEvent
+    public static void activatedAutoSmeltEnchantment(BlockEvent.BreakEvent event) {
+        LevelAccessor world = event.getLevel();
+        double x = event.getPos().getX();
+        double y = event.getPos().getY();
+        double z = event.getPos().getZ();
+        Entity entity = event.getPlayer();
+
+        if (!(entity instanceof LivingEntity livingEntity)) { return; } // Player is an entity
+
+        ItemStack mainHandItem = livingEntity.getMainHandItem(); // Player has a tool on main hand
+        int autoSmeltLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.AUTO_SMELT.get()); // Auto Smelt enchantment level
+
+        if (!mainHandItem.isEnchanted() || autoSmeltLevel < 1) { return; } // Player has Auto Smelt enchantment
+
+        BlockPos pos = BlockPos.containing(x, y, z); // Player x, y, and z coordinates
+
+        if (!mainHandItem.getItem().isCorrectToolForDrops(world.getBlockState(pos))) { return; } // Player used tool
+
+        // Check if there is a casting recipe for the block
+        if (world instanceof Level level) {
+            ItemStack smeltResult = level.getRecipeManager()
+                    .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(new ItemStack(world.getBlockState(pos).getBlock())), level)
+                    .map(recipe -> recipe.getResultItem(level.registryAccess()).copy())
+                    .orElse(ItemStack.EMPTY);
+
+            if (!smeltResult.isEmpty()) {
+                // Replaces the block with air and drops the molten item
+                if (world instanceof ServerLevel serverLevel) {
+                    ItemEntity entityToSpawn = new ItemEntity(serverLevel, x + 0.5, y + 0.5, z + 0.5, smeltResult);
+                    serverLevel.addFreshEntity(entityToSpawn);
+                }
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+            } else {
+                // Drop normal resources if there is no foundry revenue
+                Block.dropResources(world.getBlockState(pos), world, pos, null);
+                world.destroyBlock(pos, false);
             }
         }
     }
@@ -415,6 +470,12 @@ public class ModEvents {
             if (tooltip != null && itemStack.getEnchantmentLevel(ModEnchantments.MAGNETIC.get()) > 0) {
                 tooltip.add(CommonComponents.EMPTY);
                 tooltip.add(Component.literal("§a§lMagnetic = §r§aWhen mined blocks automatically store on Player's inventory"));
+            }
+
+            // Tool has Auto Smelt enchantment
+            if (tooltip != null && itemStack.getEnchantmentLevel(ModEnchantments.AUTO_SMELT.get()) > 0) {
+                tooltip.add(CommonComponents.EMPTY);
+                tooltip.add(Component.literal("§a§lAuto Smelt = §r§aTransform all items that can be roasted on furnace"));
             }
 
             // Tool has Glowing Mobs custom enchantment

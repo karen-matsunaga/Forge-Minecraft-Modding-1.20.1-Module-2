@@ -38,6 +38,12 @@ public class ModEnchantments {
                     () -> new MagneticEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
                             EquipmentSlot.MAINHAND));
 
+    // Auto Smelt enchantment - PICKAXE, HAMMER, PAXEL enchantment
+    public static final RegistryObject<Enchantment> AUTO_SMELT =
+            ENCHANTMENTS.register("auto_smelt",
+                    () -> new AutoSmeltEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
+                            EquipmentSlot.MAINHAND));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }
