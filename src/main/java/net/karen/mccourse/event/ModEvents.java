@@ -280,7 +280,7 @@ public class ModEvents {
             if (autoSmeltEnchanted > 0) { // Player has Auto Smelt enchantment level
                 Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Ores or blocks are generated on world
                         .forEach(drop -> {
-                            if (player.getInventory().add(drop)) {
+                            if (!player.getInventory().add(drop)) {
                                 player.drop(drop, true); // Ores or blocks doesn't added drop on Player's inventory
                             }
                         });
