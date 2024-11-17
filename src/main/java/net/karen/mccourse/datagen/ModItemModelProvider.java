@@ -105,6 +105,17 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.CATTAIL);
         simpleItem(ModItems.CATTAIL_SEEDS);
 
+        // My custom armor and tool
+        simpleItem(ModItems.PINK_HELMET);
+        simpleItem(ModItems.PINK_CHESTPLATE);
+        simpleItem(ModItems.PINK_LEGGINGS);
+        simpleItem(ModItems.PINK_BOOTS);
+
+        handheldItem(ModItems.PINK_SWORD);
+        handheldItem(ModItems.PINK_PICKAXE);
+        handheldItem(ModItems.PINK_SHOVEL);
+        handheldItem(ModItems.PINK_AXE);
+        handheldItem(ModItems.PINK_HOE);
     }
 
     // Registry all sapling item's models

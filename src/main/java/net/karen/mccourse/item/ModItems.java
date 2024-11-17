@@ -141,16 +141,32 @@ public class ModItems {
 
     // Pink's custom armor
     public static final RegistryObject<Item> PINK_HELMET = ITEMS.register("pink_helmet",
-            () -> new ModHelmetArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new ModHelmetArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.HELMET, new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> PINK_CHESTPLATE = ITEMS.register("pink_chestplate",
-            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.CHESTPLATE, new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> PINK_LEGGINGS = ITEMS.register("pink_leggings",
-            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.LEGGINGS, new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> PINK_BOOTS = ITEMS.register("pink_boots",
-            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.BOOTS, new Item.Properties()));
+            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.BOOTS, new Item.Properties().fireResistant()));
+
+    // Pink's custom tool
+    public static final RegistryObject<Item> PINK_SWORD = ITEMS.register("pink_sword",
+            () -> new SlowingSwordItem(ModToolTiers.PINK, 2, 3, new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> PINK_PICKAXE = ITEMS.register("pink_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.PINK, 1, 2, new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> PINK_SHOVEL = ITEMS.register("pink_shovel",
+            () -> new ShovelItem(ModToolTiers.PINK, 2, 3, new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> PINK_AXE = ITEMS.register("pink_axe",
+            () -> new AxeItem(ModToolTiers.PINK, 2, 3, new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> PINK_HOE = ITEMS.register("pink_hoe",
+            () -> new HoeItem(ModToolTiers.PINK, 2, 3, new Item.Properties().fireResistant()));
 
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }

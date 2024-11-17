@@ -163,5 +163,11 @@
   "item.mccourse.pink_helmet": "Pink Helmet",
   "item.mccourse.pink_chestplate": "Pink Chestplate",
   "item.mccourse.pink_leggings": "Pink Leggings",
-  "item.mccourse.pink_boots": "Pink Boots"
+  "item.mccourse.pink_boots": "Pink Boots",
+
+  "item.mccourse.pink_sword": "Pink Sword",
+  "item.mccourse.pink_pickaxe": "Pink Pickaxe",
+  "item.mccourse.pink_shovel": "Pink Shovel",
+  "item.mccourse.pink_axe": "Pink Axe",
+  "item.mccourse.pink_hoe": "Pink Hoe"
 }

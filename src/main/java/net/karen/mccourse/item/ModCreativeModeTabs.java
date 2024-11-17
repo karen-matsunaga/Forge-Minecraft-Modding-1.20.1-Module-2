@@ -172,10 +172,17 @@ public class ModCreativeModeTabs {
                         // Kaupen's custom furnace
                         output.accept(ModBlocks.KAUPEN_FURNACE_BLOCK.get());
 
+                        // My custom armor and tool
                         output.accept(ModItems.PINK_HELMET.get());
                         output.accept(ModItems.PINK_CHESTPLATE.get());
                         output.accept(ModItems.PINK_LEGGINGS.get());
                         output.accept(ModItems.PINK_BOOTS.get());
+
+                        output.accept(ModItems.PINK_SWORD.get());
+                        output.accept(ModItems.PINK_PICKAXE.get());
+                        output.accept(ModItems.PINK_SHOVEL.get());
+                        output.accept(ModItems.PINK_AXE.get());
+                        output.accept(ModItems.PINK_HOE.get());
 
                     }).build());
 
