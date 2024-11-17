@@ -11,7 +11,10 @@ import net.karen.mccourse.item.custom.HammerItem;
 import net.karen.mccourse.util.ModTags;
 import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -45,6 +48,7 @@ import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -388,6 +392,47 @@ public class ModEvents {
                 teamAbstractGolem.setColor(ChatFormatting.DARK_PURPLE); // Set YELLOW color
             }
             ((Player) livingEntity).getScoreboard().addPlayerToTeam(ag.getScoreboardName(), teamAbstractGolem); // Restore team on game
+        }
+    }
+
+    // CUSTOM EVENT - Custom Item Tooltip with custom enchantment description
+    @SubscribeEvent
+    public static void enchantmentDescription(ItemTooltipEvent event) {
+        ItemStack itemStack = event.getItemStack(); // Player has a tool
+        List<Component> tooltip = event.getToolTip(); // Player has a tooltip description on tool
+
+        if (!itemStack.isEnchanted()) { return; } // Tool is enchanted
+
+        // SHIFT pressed
+        if (Screen.hasShiftDown()) {
+            // Tool has More Ores custom enchantment
+            if (tooltip != null && itemStack.getEnchantmentLevel(ModEnchantments.MORE_ORES.get()) > 0) {
+                tooltip.add(CommonComponents.EMPTY);
+                tooltip.add(Component.literal("§a§lMore Ores = §r§aIncrease amount drop of vanilla ores"));
+            }
+
+            // Tool has Magnetic custom enchantment
+            if (tooltip != null && itemStack.getEnchantmentLevel(ModEnchantments.MAGNETIC.get()) > 0) {
+                tooltip.add(CommonComponents.EMPTY);
+                tooltip.add(Component.literal("§a§lMagnetic = §r§aWhen mined blocks automatically store on Player's inventory"));
+            }
+
+            // Tool has Glowing Mobs custom enchantment
+            if (tooltip != null && itemStack.getEnchantmentLevel(ModEnchantments.GLOWING_MOBS.get()) > 0) {
+                tooltip.add(CommonComponents.EMPTY);
+                tooltip.add(Component.literal("§e§lGlowing Mobs = §r§eAnimals and enemies detector"));
+            }
+
+            // Tool has Lightning Striker custom enchantment
+            if (tooltip != null && itemStack.getEnchantmentLevel(ModEnchantments.LIGHTNING_STRIKER.get()) > 0) {
+                tooltip.add(CommonComponents.EMPTY);
+                tooltip.add(Component.literal("§c§lLightning Striker = §r§cWhen player hit on animals or enemies appears lightning"));
+            }
+        }
+        // SHIFT not pressed
+        else {
+            tooltip.add(CommonComponents.EMPTY);
+            tooltip.add(Component.literal("Press §e§lSHIFT§r to more information about enchantments"));
         }
     }
 }
