@@ -1,6 +1,5 @@
 package net.karen.mccourse.item.custom;
 
-import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModesPickaxe;
 import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.BlockPos;
@@ -11,7 +10,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -76,7 +74,7 @@ public class ModesPickaxeItem extends PickaxeItem {
             breakAdjacentBlocks(itemstack, world, pos, player, targetState, 0); // If is ore broken all blocks same type
         } else {
             breakArea(itemstack, world, pos, player, 2); // Radius 2 that results on 5x5x5 area
-            itemstack.hurtAndBreak(15, player, (e) -> e.broadcastBreakEvent(player.getUsedItemHand())); // If not is ore broken 5x5x5 area
+            itemstack.hurtAndBreak(0, player, (e) -> e.broadcastBreakEvent(player.getUsedItemHand())); // If not is ore broken 5x5x5 area
         }
     }
 
@@ -116,7 +114,7 @@ public class ModesPickaxeItem extends PickaxeItem {
         }
     }
 
-    // Auto Smelt method
+    // Auto Smelt mode method
     private void autoSmeltMode(BlockEvent.BreakEvent event) {
         LevelAccessor world = event.getLevel();
         double x = event.getPos().getX();
@@ -146,7 +144,7 @@ public class ModesPickaxeItem extends PickaxeItem {
         }
     }
 
-    // Mores Ores method
+    // Mores Ores mode method
     private void moreOresMode(BlockEvent.BreakEvent event) {
         LevelAccessor world = event.getLevel();
         BlockPos pos = event.getPos();
@@ -163,7 +161,7 @@ public class ModesPickaxeItem extends PickaxeItem {
         }
     }
 
-    // Magnetic method
+    // Magnetic mode method
     private void magneticMode(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         if (player != null && event.getState().getBlock() != Blocks.AIR) {

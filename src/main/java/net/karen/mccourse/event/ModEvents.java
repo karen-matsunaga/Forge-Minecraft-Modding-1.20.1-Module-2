@@ -261,11 +261,8 @@ public class ModEvents {
         Player player = event.getPlayer();
         if (player != null && event.getState().getBlock() != Blocks.AIR) {
             Level world = player.level();
-
             ItemStack mainHandItem = player.getMainHandItem(); // Player has a tool on main hand
             int magneticLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.MAGNETIC.get()); // Magnetic enchantment
-            int moreOresEnchanted = mainHandItem.getEnchantmentLevel(ModEnchantments.MORE_ORES.get()); // More Ores enchantment
-            int autoSmeltEnchanted = mainHandItem.getEnchantmentLevel(ModEnchantments.AUTO_SMELT.get()); // Auto Smelt enchantment
 
             if (!mainHandItem.isEnchanted() || magneticLevel < 1) { return; } // Player has Magnetic enchantment
 
@@ -281,26 +278,6 @@ public class ModEvents {
                         }
                     });
             world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Prevents drop in the world
-
-            if (moreOresEnchanted > 0) { // Player has More Ores enchantment level
-                event.setCanceled(false);
-                Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Ores are generated on world
-                        .forEach(drop -> {
-                            if (player.getInventory().add(drop)) {
-                                player.drop(drop, true); // Ores doesn't added drop on Player's inventory
-                            }
-                        });
-                world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Prevents drop in the world
-            }
-            if (autoSmeltEnchanted > 0) { // Player has Auto Smelt enchantment level
-                Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Ores or blocks are generated on world
-                        .forEach(drop -> {
-                            if (!player.getInventory().add(drop)) {
-                                player.drop(drop, true); // Ores or blocks doesn't added drop on Player's inventory
-                            }
-                        });
-                world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Prevents drop in the world
-            }
         }
     }
 
@@ -508,27 +485,27 @@ public class ModEvents {
     // CUSTOM EVENT - Custom Modes Pickaxe event GUI
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void eventHandler(RenderGuiOverlayEvent.Pre event) {
-//        int w = event.getWindow().getGuiScaledWidth();
         int h = event.getWindow().getGuiScaledHeight();
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
 
         if (player != null) {
             ItemStack heldItem = player.getMainHandItem();
-            if (heldItem.getItem() instanceof ModesPickaxeItem) {
-                ModesPickaxeItem picareta = (ModesPickaxeItem) heldItem.getItem();
-                ModesPickaxe modo = picareta.getModoAtual();
+            if (heldItem.getItem() instanceof ModesPickaxeItem modesPickaxe) {
+                ModesPickaxe mode = modesPickaxe.getModoAtual();
 
                 // Show text mode actual on screen
-                Component modoText = Component.literal("Mode actual: ").setStyle(Style.EMPTY.withColor(0x0000FF)); // Blue color
-                Component modoTipo = Component.literal(modo.toString()).setStyle(Style.EMPTY.withColor(0xFFFFFF)); // White color
+                Component modeText = Component.literal("Mode actual: ").setStyle(Style.EMPTY.withColor(0xFFAA00)
+                        .applyFormat(ChatFormatting.BOLD)); // Gold color
+                Component modeType = Component.literal(mode.toString().replace("_", " ")).setStyle(Style.EMPTY.withColor(0xFF5555)
+                        .applyFormat(ChatFormatting.BOLD)); // Red color
 
                 // Renders text on overlay on same line
                 int x = 10;
                 int y = h - 30;
-                event.getGuiGraphics().drawString(mc.font, modoText, x, y, 0x0000FF, false);
-                x += mc.font.width(modoText);
-                event.getGuiGraphics().drawString(mc.font, modoTipo, x, y, 0xFFFFFF, false);
+                event.getGuiGraphics().drawString(mc.font, modeText, x, y, 0xFFAA00, false);
+                x += mc.font.width(modeText);
+                event.getGuiGraphics().drawString(mc.font, modeType, x, y, 0xFF5555, false);
 
                 // drawString method parameters:
                 // - mc.font: The source object used to draw the text.
