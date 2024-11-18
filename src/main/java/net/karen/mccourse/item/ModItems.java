@@ -156,8 +156,9 @@ public class ModItems {
     public static final RegistryObject<Item> PINK_SWORD = ITEMS.register("pink_sword",
             () -> new SlowingSwordItem(ModToolTiers.PINK, 2, 3, new Item.Properties().fireResistant()));
 
+    // Pink's custom modes pickaxe
     public static final RegistryObject<Item> PINK_PICKAXE = ITEMS.register("pink_pickaxe",
-            () -> new PickaxeItem(ModToolTiers.PINK, 1, 2, new Item.Properties().fireResistant()));
+            () -> new ModesPickaxeItem(ModToolTiers.PINK, 1, 2, new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> PINK_SHOVEL = ITEMS.register("pink_shovel",
             () -> new ShovelItem(ModToolTiers.PINK, 2, 3, new Item.Properties().fireResistant()));

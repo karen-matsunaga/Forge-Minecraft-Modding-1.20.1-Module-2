@@ -7,14 +7,18 @@ import net.karen.mccourse.command.ReturnHomeCommand;
 import net.karen.mccourse.command.SetHomeCommand;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
+import net.karen.mccourse.item.ModesPickaxe;
 import net.karen.mccourse.item.custom.HammerItem;
+import net.karen.mccourse.item.custom.ModesPickaxeItem;
 import net.karen.mccourse.util.ModTags;
 import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -47,6 +51,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.scores.PlayerTeam;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -55,6 +60,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -267,6 +273,15 @@ public class ModEvents {
             BlockPos pos = event.getPos(); // Block position = (X, Y, Z)
             BlockState state = event.getState(); // Block state = AIR
 
+            // Player has Magnetic custom enchantment
+            Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Blocks are generated on Player's inventory
+                    .forEach(drop -> {
+                        if (!player.getInventory().add(drop)) {
+                            player.drop(drop, false); // Blocks does added drop on Player's inventory
+                        }
+                    });
+            world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Prevents drop in the world
+
             if (moreOresEnchanted > 0) { // Player has More Ores enchantment level
                 event.setCanceled(false);
                 Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Ores are generated on world
@@ -282,15 +297,6 @@ public class ModEvents {
                         .forEach(drop -> {
                             if (!player.getInventory().add(drop)) {
                                 player.drop(drop, true); // Ores or blocks doesn't added drop on Player's inventory
-                            }
-                        });
-                world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Prevents drop in the world
-            }
-            else { // Player has Magnetic enchantment level
-                Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Blocks are generated on Player's inventory
-                        .forEach(drop -> {
-                            if (!player.getInventory().add(drop)) {
-                                player.drop(drop, false); // Blocks does added drop on Player's inventory
                             }
                         });
                 world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Prevents drop in the world
@@ -494,6 +500,44 @@ public class ModEvents {
         else {
             tooltip.add(CommonComponents.EMPTY);
             tooltip.add(Component.literal("Press §e§lSHIFT§r to more information about enchantments"));
+        }
+    }
+
+    // Credits by Parlack - Pickaxe modes - https://www.youtube.com/watch?v=pBo1c3hM3b0
+    // Using code with some modifications
+    // CUSTOM EVENT - Custom Modes Pickaxe event GUI
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void eventHandler(RenderGuiOverlayEvent.Pre event) {
+//        int w = event.getWindow().getGuiScaledWidth();
+        int h = event.getWindow().getGuiScaledHeight();
+        Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
+
+        if (player != null) {
+            ItemStack heldItem = player.getMainHandItem();
+            if (heldItem.getItem() instanceof ModesPickaxeItem) {
+                ModesPickaxeItem picareta = (ModesPickaxeItem) heldItem.getItem();
+                ModesPickaxe modo = picareta.getModoAtual();
+
+                // Show text mode actual on screen
+                Component modoText = Component.literal("Mode actual: ").setStyle(Style.EMPTY.withColor(0x0000FF)); // Blue color
+                Component modoTipo = Component.literal(modo.toString()).setStyle(Style.EMPTY.withColor(0xFFFFFF)); // White color
+
+                // Renders text on overlay on same line
+                int x = 10;
+                int y = h - 30;
+                event.getGuiGraphics().drawString(mc.font, modoText, x, y, 0x0000FF, false);
+                x += mc.font.width(modoText);
+                event.getGuiGraphics().drawString(mc.font, modoTipo, x, y, 0xFFFFFF, false);
+
+                // drawString method parameters:
+                // - mc.font: The source object used to draw the text.
+                // - modoText: The text component to be drawn.
+                // - x: X position when the text will be drawn on screen.
+                // - y: Y position when the text will be drawn on screen.
+                // - 0x0000FF: Text color on hexadecimal format.
+                // - false: Boolean that indicates if the text should have a shadow (false = without shadow).
+            }
         }
     }
 }

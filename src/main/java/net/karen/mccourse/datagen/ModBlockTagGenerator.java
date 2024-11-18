@@ -113,6 +113,18 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(Blocks.ANCIENT_DEBRIS)
                 .add(Blocks.NETHER_GOLD_ORE)
                 .add(Blocks.NETHER_QUARTZ_ORE);
+
+        this.tag(ModTags.Blocks.MORE_ORES_MODES_PICKAXE_DROPS) // Modes Pickaxe's Mores Ores mode
+                .add(Blocks.COAL_ORE)
+                .add(Blocks.COPPER_ORE)
+                .add(Blocks.IRON_ORE)
+                .add(Blocks.LAPIS_ORE)
+                .add(Blocks.REDSTONE_ORE)
+                .add(Blocks.GOLD_ORE)
+                .add(Blocks.DIAMOND_ORE)
+                .add(Blocks.EMERALD_ORE)
+                .add(Blocks.ANCIENT_DEBRIS)
+                .add(Blocks.NETHER_QUARTZ_ORE);
     }
 
     @Override
