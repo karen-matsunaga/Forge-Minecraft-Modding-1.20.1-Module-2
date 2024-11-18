@@ -6,11 +6,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.NotNull;
 
 public class AutoSmeltEnchantment extends Enchantment {
     protected AutoSmeltEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, pCategory, pApplicableSlots); }
+        super(pRarity, pCategory, pApplicableSlots);
+    }
 
     @Override
     public int getMaxLevel() { return 1; }
@@ -23,5 +25,10 @@ public class AutoSmeltEnchantment extends Enchantment {
                     .append(Component.translatable("enchantment.level." + pLevel));  // Level enchantment
         }
         return super.getFullname(pLevel);
+    }
+
+    // Auto Smelt and More Ores doesn't work together
+    public boolean checkCompatibility(@NotNull Enchantment pEnch) {
+        return super.checkCompatibility(pEnch) && pEnch != ModEnchantments.MORE_ORES.get();
     }
 }
