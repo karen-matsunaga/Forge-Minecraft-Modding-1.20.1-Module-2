@@ -27,8 +27,9 @@ public class AutoSmeltEnchantment extends Enchantment {
         return super.getFullname(pLevel);
     }
 
-    // Auto Smelt and More Ores doesn't work together
+    // Magnetic, Auto Smelt, and More Ores doesn't work together
     public boolean checkCompatibility(@NotNull Enchantment pEnch) {
-        return super.checkCompatibility(pEnch) && pEnch != ModEnchantments.MORE_ORES.get();
+        return super.checkCompatibility(pEnch) && pEnch != ModEnchantments.MORE_ORES.get() &&
+                pEnch != ModEnchantments.MAGNETIC.get();
     }
 }
