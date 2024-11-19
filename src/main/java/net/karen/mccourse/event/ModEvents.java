@@ -259,7 +259,8 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedMagneticEnchantment(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
-        if (player != null && event.getState().getBlock() != Blocks.AIR) {
+        BlockState state = event.getState(); // Block state = AIR
+        if (player != null && state.getBlock() != Blocks.AIR) {
             Level world = player.level();
             ItemStack mainHandItem = player.getMainHandItem(); // Player has a tool on main hand
             int magneticLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.MAGNETIC.get()); // Magnetic enchantment
@@ -268,7 +269,6 @@ public class ModEvents {
 
             event.setCanceled(true); // Prevents drop in the world = DEFAULT is dropped on the ground
             BlockPos pos = event.getPos(); // Block position = (X, Y, Z)
-            BlockState state = event.getState(); // Block state = AIR
 
             // Player has Magnetic custom enchantment
             Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem) // Blocks are generated on Player's inventory
@@ -277,7 +277,7 @@ public class ModEvents {
                             player.drop(drop, false); // Blocks does added drop on Player's inventory
                         }
                     });
-            world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Prevents drop in the world
+            world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Remove broken block position
         }
     }
 
@@ -509,7 +509,7 @@ public class ModEvents {
 
                 // drawString method parameters:
                 // - mc.font: The source object used to draw the text.
-                // - modoText: The text component to be drawn.
+                // - modeText: The text component to be drawn.
                 // - x: X position when the text will be drawn on screen.
                 // - y: Y position when the text will be drawn on screen.
                 // - 0x0000FF: Text color on hexadecimal format.
