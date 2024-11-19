@@ -57,7 +57,7 @@ public class ModesPickaxeItem extends PickaxeItem {
         if (!world.isClientSide) {
             // Slow mode and Fast mode logics
             if (modeActual.equals(ModesPickaxe.SLOW) || modeActual.equals(ModesPickaxe.FAST)) {
-                itemstack.hurtAndBreak(0, entity, (e) -> e.broadcastBreakEvent(entity.getUsedItemHand()));
+                itemstack.hurtAndBreak(1, entity, (e) -> e.broadcastBreakEvent(entity.getUsedItemHand()));
             }
             else if (modeActual == ModesPickaxe.HAMMER) { mineSpecial(itemstack, world, pos, (Player) entity); } // Hammer mode logic
             else if (modeActual == ModesPickaxe.AUTO_SMELT) { autoSmeltMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity)); }
@@ -73,8 +73,8 @@ public class ModesPickaxeItem extends PickaxeItem {
         if (isOreBlock(targetState)) {
             breakAdjacentBlocks(itemstack, world, pos, player, targetState, 0); // If is ore broken all blocks same type
         } else {
-            breakArea(itemstack, world, pos, player, 2); // Radius 2 that results on 5x5x5 area
-            itemstack.hurtAndBreak(0, player, (e) -> e.broadcastBreakEvent(player.getUsedItemHand())); // If not is ore broken 5x5x5 area
+            breakArea(itemstack, world, pos, player, 1); // Radius 2 that results on 5x5x5 area
+            itemstack.hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(player.getUsedItemHand())); // If not is ore broken 5x5x5 area
         }
     }
 
@@ -213,7 +213,8 @@ public class ModesPickaxeItem extends PickaxeItem {
                     break;
             }
             // Show message on chat with mode actual
-            player.displayClientMessage(Component.literal("Mode actual: " + modeActual), true);
+            player.displayClientMessage(Component.literal("§6§lMode actual: §c§l"
+                    + modeActual.toString().replace("_", " ")), true);
         }
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
     }
