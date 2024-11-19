@@ -35,6 +35,15 @@ public class ModEntities {
                             .updateInterval(20)
                             .build("magic_projectile"));
 
+    // My custom ender pearl
+    public static final RegistryObject<EntityType<BouncyBallsProjectileEntity>> BOUNCY_BALLS_PROJECTILE =
+            ENTITY_TYPES.register("bouncy_balls_projectile",
+                    () -> EntityType.Builder.<BouncyBallsProjectileEntity>of(BouncyBallsProjectileEntity::new, MobCategory.MISC)
+                            .sized(0.5f, 0.5f)
+                            .clientTrackingRange(4)
+                            .updateInterval(20)
+                            .build("bouncy_balls_projectile"));
+
     // Register all custom boats
     public static final RegistryObject<EntityType<ModBoatEntity>> MOD_BOAT =
             ENTITY_TYPES.register("mod_boat", () -> EntityType.Builder.<ModBoatEntity>of(ModBoatEntity::new, MobCategory.MISC)

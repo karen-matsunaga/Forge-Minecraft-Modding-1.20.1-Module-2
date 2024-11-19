@@ -207,6 +207,7 @@ public class MCCourseMod {
                 EntityRenderers.register(ModEntities.RHINO.get(), RhinoRenderer::new); // Adding Rhino's custom entity renderer
                 EntityRenderers.register(ModEntities.DICE_PROJECTILE.get(), ThrownItemRenderer::new); // Adding Dice Projectile's custom projectile entity renderer
                 EntityRenderers.register(ModEntities.MAGIC_PROJECTILE.get(), MagicProjectileRenderer::new); // Adding Magic Projectile's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.BOUNCY_BALLS_PROJECTILE.get(), ThrownItemRenderer::new); // Adding Bouncy Balls Projectile's custom projectile entity renderer
                 EntityRenderers.register(ModEntities.MOD_BOAT.get(), pContext -> new ModBoatRenderer(pContext, false)); // Adding Boat's custom projectile entity renderer
                 EntityRenderers.register(ModEntities.MOD_CHEST_BOAT.get(), pContext -> new ModBoatRenderer(pContext, true)); // Adding Chest Boat's custom projectile entity renderer
             });

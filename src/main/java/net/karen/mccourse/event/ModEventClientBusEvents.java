@@ -5,6 +5,7 @@ import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.block.entity.ModBlockEntities;
 import net.karen.mccourse.block.entity.renderer.GemEmpoweringBlockEntityRenderer;
 import net.karen.mccourse.particle.AlexandriteParticles;
+import net.karen.mccourse.particle.BouncyBallsParticles;
 import net.karen.mccourse.particle.ModParticles;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
@@ -24,6 +25,7 @@ public class ModEventClientBusEvents {
     @SubscribeEvent
     public static void registerParticleFactories(RegisterParticleProvidersEvent event) { // Register custom particles event
         event.registerSpriteSet(ModParticles.ALEXANDRITE_PARTICLES.get(), AlexandriteParticles.Provider::new);
+        event.registerSpriteSet(ModParticles.BOUNCY_BALLS_PARTICLES.get(), BouncyBallsParticles.Provider::new); // Bouncy balls
     }
 
     @SubscribeEvent

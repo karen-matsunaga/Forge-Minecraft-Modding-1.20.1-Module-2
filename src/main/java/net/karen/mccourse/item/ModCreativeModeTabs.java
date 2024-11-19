@@ -184,6 +184,10 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.PINK_AXE.get());
                         output.accept(ModItems.PINK_HOE.get());
 
+                        // My custom ender pearl
+                        output.accept(ModItems.BOUNCY_BALLS.get());
+                        output.accept(ModItems.BOUNCY_BALLS_PARTICLES.get());
+
                     }).build());
 
     // Registry Creative Mode Tab

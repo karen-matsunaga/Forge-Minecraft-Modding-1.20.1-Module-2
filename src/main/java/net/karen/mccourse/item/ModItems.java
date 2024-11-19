@@ -169,6 +169,13 @@ public class ModItems {
     public static final RegistryObject<Item> PINK_HOE = ITEMS.register("pink_hoe",
             () -> new HoeItem(ModToolTiers.PINK, 2, 3, new Item.Properties().fireResistant()));
 
+    // Bouncy ball's custom Ender pearls
+    public static final RegistryObject<Item> BOUNCY_BALLS = ITEMS.register("bouncy_balls",
+            () -> new BouncyBallsItem(new Item.Properties().durability(1000)));
+
+    public static final RegistryObject<Item> BOUNCY_BALLS_PARTICLES = ITEMS.register("bouncy_balls_particles",
+            () -> new Item(new Item.Properties()));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }

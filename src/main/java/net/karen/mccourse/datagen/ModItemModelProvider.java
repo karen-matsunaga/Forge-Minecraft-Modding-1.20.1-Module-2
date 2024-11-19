@@ -116,6 +116,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.PINK_SHOVEL);
         handheldItem(ModItems.PINK_AXE);
         handheldItem(ModItems.PINK_HOE);
+
+        // My custom ender pearl
+        simpleItem(ModItems.BOUNCY_BALLS);
+        simpleItem(ModItems.BOUNCY_BALLS_PARTICLES);
     }
 
     // Registry all sapling item's models

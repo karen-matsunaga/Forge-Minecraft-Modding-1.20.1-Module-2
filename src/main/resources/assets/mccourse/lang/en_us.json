@@ -169,5 +169,8 @@
   "item.mccourse.pink_pickaxe": "Pink Pickaxe",
   "item.mccourse.pink_shovel": "Pink Shovel",
   "item.mccourse.pink_axe": "Pink Axe",
-  "item.mccourse.pink_hoe": "Pink Hoe"
+  "item.mccourse.pink_hoe": "Pink Hoe",
+
+  "item.mccourse.bouncy_balls": "Bouncy Balls",
+  "item.mccourse.bouncy_balls_particles": "Bouncy Balls Particles"
 }
