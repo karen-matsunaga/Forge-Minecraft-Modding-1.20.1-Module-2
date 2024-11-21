@@ -18,9 +18,9 @@ public class GlowingMobsEnchantment extends Enchantment {
     @Override
     public @NotNull Component getFullname(int pLevel) {
         if (pLevel > 0) {
-            return Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.BOLD, ChatFormatting.YELLOW) // Colors used on description name
-                    .append(CommonComponents.SPACE) // Separate words and numbers
-                    .append(Component.translatable("enchantment.level." + pLevel));  // Name and level enchantment on item, and chat
+            return Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.BOLD, ChatFormatting.YELLOW) // Colors used on name enchantment
+                    .append(CommonComponents.SPACE) // Separate name and level
+                    .append(Component.translatable(String.valueOf(pLevel)));  // Level enchantment on item, chat, and enchanted book
         }
         return super.getFullname(pLevel);
     }

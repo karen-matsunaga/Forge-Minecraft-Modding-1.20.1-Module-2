@@ -17,16 +17,15 @@ public class MagneticEnchantment extends Enchantment {
     @Override
     public @NotNull Component getFullname(int pLevel) {
         if (pLevel > 0) {
-            return Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN) // Colors used on description name
-                    .append(CommonComponents.SPACE) // Separate words and numbers
-                    .append(Component.translatable("enchantment.level." + pLevel));  // Name and level enchantment on item, and chat
+            return Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN) // Colors used on name enchantment
+                    .append(CommonComponents.SPACE) // Separate name and level
+                    .append(Component.translatable(String.valueOf(pLevel)));  // Level enchantment on item, chat, and enchanted book
         }
         return super.getFullname(pLevel);
     }
 
     // Magnetic, Auto Smelt, and More Ores doesn't work together
     public boolean checkCompatibility(@NotNull Enchantment pEnch) {
-        return super.checkCompatibility(pEnch) && pEnch != ModEnchantments.AUTO_SMELT.get() &&
-                pEnch != ModEnchantments.MORE_ORES.get();
+        return super.checkCompatibility(pEnch) && pEnch != ModEnchantments.AUTO_SMELT.get() && pEnch != ModEnchantments.MORE_ORES.get();
     }
 }
