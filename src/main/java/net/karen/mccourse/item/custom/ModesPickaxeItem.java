@@ -2,6 +2,7 @@ package net.karen.mccourse.item.custom;
 
 import net.karen.mccourse.item.ModesPickaxe;
 import net.karen.mccourse.util.ModTags;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -25,7 +27,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Objects;
 
 // Credits by Parlack - Pickaxe modes - https://www.youtube.com/watch?v=pBo1c3hM3b0
@@ -59,7 +63,7 @@ public class ModesPickaxeItem extends PickaxeItem {
             if (modeActual.equals(ModesPickaxe.SLOW) || modeActual.equals(ModesPickaxe.FAST)) {
                 itemstack.hurtAndBreak(1, entity, (e) -> e.broadcastBreakEvent(entity.getUsedItemHand()));
             }
-            else if (modeActual == ModesPickaxe.HAMMER) { mineSpecial(itemstack, world, pos, (Player) entity); } // Hammer mode logic
+            else if (modeActual == ModesPickaxe.HAMMER) { hammerMode(itemstack, world, pos, (Player) entity); } // Hammer mode logic
             else if (modeActual == ModesPickaxe.AUTO_SMELT) { autoSmeltMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity)); }
             else if (modeActual == ModesPickaxe.MORE_ORES) { moreOresMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity)); }
             else if (modeActual == ModesPickaxe.MAGNETIC) { magneticMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity)); }
@@ -68,7 +72,7 @@ public class ModesPickaxeItem extends PickaxeItem {
     }
 
     // Hammer mode method
-    private void mineSpecial(ItemStack itemstack, Level world, BlockPos pos, Player player) {
+    private void hammerMode(ItemStack itemstack, Level world, BlockPos pos, Player player) {
         BlockState targetState = world.getBlockState(pos);
         if (isOreBlock(targetState)) {
             breakAdjacentBlocks(itemstack, world, pos, player, targetState, 0); // If is ore broken all blocks same type
@@ -220,4 +224,15 @@ public class ModesPickaxeItem extends PickaxeItem {
     }
 
     public ModesPickaxe getModoAtual() { return modeActual; } // Getter Pickaxe mode actual
+
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        if (Screen.hasShiftDown()) {
+            pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip.shift"));
+        }
+        else {
+            pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip"));
+        }
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+    }
 }

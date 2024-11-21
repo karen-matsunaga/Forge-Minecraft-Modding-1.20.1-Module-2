@@ -172,5 +172,8 @@
   "item.mccourse.pink_hoe": "Pink Hoe",
 
   "item.mccourse.bouncy_balls": "Bouncy Balls",
-  "item.mccourse.bouncy_balls_particles": "Bouncy Balls Particles"
+  "item.mccourse.bouncy_balls_particles": "Bouncy Balls Particles",
+
+  "tooltip.mccourse.modes_pickaxe.tooltip.shift": "§lPickaxe break 3x3 area, auto smelt, more ores, magnetic, and different speed mine",
+  "tooltip.mccourse.modes_pickaxe.tooltip": "Press §eSHIFT§r for more Information"
 }
