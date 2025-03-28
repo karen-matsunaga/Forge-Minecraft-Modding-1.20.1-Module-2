@@ -14,10 +14,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -27,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -43,7 +41,7 @@ public class ModesPickaxeItem extends PickaxeItem {
 
     // Define mine speed of pickaxe depends on the mode
     @Override
-    public float getDestroySpeed(ItemStack stack, BlockState state) {
+    public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
         return switch (modeActual) {
             case SLOW -> 2.0F; // Stone pickaxe speed
             case FAST -> 25.0F; // Pickaxe ultra speed
@@ -56,7 +54,7 @@ public class ModesPickaxeItem extends PickaxeItem {
     }
 
     // When broken blocks with pickaxe
-    public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
+    public boolean mineBlock(@NotNull ItemStack itemstack, @NotNull Level world, @NotNull BlockState blockstate, @NotNull BlockPos pos, @NotNull LivingEntity entity) {
         boolean retval = super.mineBlock(itemstack, world, blockstate, pos, entity);
         if (!world.isClientSide) {
             // Slow mode and Fast mode logics
@@ -189,7 +187,7 @@ public class ModesPickaxeItem extends PickaxeItem {
 
     // Method is called when pressed right button -> Trade modes
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level world, Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!world.isClientSide) {
             // Trading the pickaxe mode
@@ -226,7 +224,7 @@ public class ModesPickaxeItem extends PickaxeItem {
     public ModesPickaxe getModoAtual() { return modeActual; } // Getter Pickaxe mode actual
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
         if (Screen.hasShiftDown()) {
             pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip.shift"));
         }
@@ -235,4 +233,6 @@ public class ModesPickaxeItem extends PickaxeItem {
         }
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
+
+
 }

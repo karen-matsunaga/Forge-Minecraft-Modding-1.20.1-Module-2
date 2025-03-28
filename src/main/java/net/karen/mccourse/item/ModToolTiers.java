@@ -19,8 +19,9 @@ public class ModToolTiers {
                     ModTags.Blocks.NEEDS_ALEXANDRITE_TOOL, () -> Ingredient.of(ModItems.ALEXANDRITE.get())),
             new ResourceLocation(MCCourseMod.MOD_ID, "alexandrite"), List.of(Tiers.NETHERITE), List.of());
 
+    // Modes Pickaxe and Pink level
     public static final Tier PINK = TierSortingRegistry.registerTier(
-            new ForgeTier(4, 1400, 11f, 3f, 26,
-                    ModTags.Blocks.NEEDS_ALEXANDRITE_TOOL, () -> Ingredient.of(Items.DIAMOND)),
+            new ForgeTier(4, 0, 11f, 3f, 26,
+                    ModTags.Blocks.NEEDS_PINK_TOOL, () -> Ingredient.of(Items.DIAMOND)),
             new ResourceLocation(MCCourseMod.MOD_ID, "pink"), List.of(Tiers.DIAMOND), List.of());
 }

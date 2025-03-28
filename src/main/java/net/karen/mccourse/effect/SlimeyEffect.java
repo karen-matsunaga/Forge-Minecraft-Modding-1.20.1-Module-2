@@ -13,7 +13,7 @@ public class SlimeyEffect extends MobEffect {
     // Slimey effect applied
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        if(pLivingEntity.horizontalCollision) {
+        if (pLivingEntity.horizontalCollision) {
             Vec3 initialVec = pLivingEntity.getDeltaMovement();
             Vec3 climbVec = new Vec3(initialVec.x, 0.2D, initialVec.z);
             pLivingEntity.setDeltaMovement(climbVec.x * 0.91D, climbVec.y * 0.98D, climbVec.z * 0.91D);

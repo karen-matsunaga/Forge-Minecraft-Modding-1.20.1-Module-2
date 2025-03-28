@@ -29,6 +29,8 @@ public class ModTags {
         // Created Alexandrite Tool Level's tag
         public static final TagKey<Block> NEEDS_ALEXANDRITE_TOOL = tag("needs_alexandrite_tool");
 
+        public static final TagKey<Block> NEEDS_PINK_TOOL = tag("needs_pink_tool");
+
         // Created Alexandrite Paxel's tag
         public static final TagKey<Block> PAXEL_MINEABLE = tag("mineable/paxel");
 
@@ -38,6 +40,8 @@ public class ModTags {
         public static final TagKey<Block> MORE_ORES_THREE_DROPS = tag("ores/more_ores_three_drops"); // More Ores III
         public static final TagKey<Block> MORE_ORES_FOUR_DROPS = tag("ores/more_ores_four_drops"); // More Ores IV
         public static final TagKey<Block> MORE_ORES_FIVE_DROPS = tag("ores/more_ores_five_drops"); // More Ores V
+
+        public static final TagKey<Block> RAINBOW_DROPS = tag("ores/rainbow_drops");
 
         // Created More Ores's alternative drops
         public static final TagKey<Block> MORE_ORES_MODES_PICKAXE_DROPS = tag("ores/more_ores_modes_pickaxe_drops"); // Modes Pickaxe's More Ores mode

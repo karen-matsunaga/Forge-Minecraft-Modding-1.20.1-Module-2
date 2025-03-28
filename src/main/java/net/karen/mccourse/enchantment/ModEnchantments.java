@@ -44,6 +44,12 @@ public class ModEnchantments {
                     () -> new AutoSmeltEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
                             EquipmentSlot.MAINHAND));
 
+    // Rainbow enchantment - PICKAXE, HAMMER, PAXEL enchantment
+    public static final RegistryObject<Enchantment> RAINBOW =
+            ENCHANTMENTS.register("rainbow",
+                    () -> new RainbowEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
+                            EquipmentSlot.MAINHAND));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }

@@ -188,6 +188,33 @@ public class ModEvents {
                 new ItemStack(ModItems.KOHLRABI_SEEDS.get()), 3, 2, 0.02f));
     }
 
+    // Rainbow custom enchantment
+    @SubscribeEvent
+    public static void activatedRainbowEnchantment(BlockEvent.BreakEvent event) {
+        LevelAccessor world = event.getLevel();
+        BlockPos pos = event.getPos();
+        Entity entity = event.getPlayer();
+
+        if (!(entity instanceof LivingEntity livingEntity)) { return; }
+
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
+        int rainbowLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.RAINBOW.get());
+
+        if (!mainHandItem.isEnchanted() || rainbowLevel < 1) { return; }
+
+        BlockState blockState = world.getBlockState(pos);
+        BlockPos blockPos = BlockPos.containing(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ()  + 0.5);
+        List<Block> targetBlocks = List.of(Blocks.DIAMOND_ORE, Blocks.DEEPSLATE_DIAMOND_ORE, Blocks.EMERALD_ORE, Blocks.DEEPSLATE_EMERALD_ORE); // List of blocks to replace
+
+        // Mined Ore and replaced to block ore
+        if (rainbowLevel == 1 && targetBlocks.contains(blockState.getBlock())) {  // Ores generated on world
+            if (targetBlocks.contains(Blocks.DIAMOND_ORE) || targetBlocks.contains(Blocks.DEEPSLATE_DIAMOND_ORE)) {
+                world.setBlock(blockPos, Blocks.DIAMOND_BLOCK.defaultBlockState(), 3); // Diamond ore or Deepslate diamond ore replaced to Diamond Block
+                event.setCanceled(true);
+            }
+        }
+    }
+
     // Credits by Shadow of Fire - https://github.com/Shadows-of-Fire/Apotheosis/blob/1.20/LICENSE
     // Distributed under MIT
     // Using code with some modifications
@@ -461,6 +488,12 @@ public class ModEvents {
                 tooltip.add(Component.literal("§a§lAuto Smelt = §r§aTransform all items that can be roasted on furnace"));
             }
 
+            // Tool has Rainbow custom enchantment
+            if (tooltip != null && itemStack.getEnchantmentLevel(ModEnchantments.RAINBOW.get()) > 0) {
+                tooltip.add(CommonComponents.EMPTY);
+                tooltip.add(Component.literal("§a§lRainbow = §r§cReplace ore turned on block ore"));
+            }
+
             // Tool has Glowing Mobs custom enchantment
             if (tooltip != null && itemStack.getEnchantmentLevel(ModEnchantments.GLOWING_MOBS.get()) > 0) {
                 tooltip.add(CommonComponents.EMPTY);
@@ -503,9 +536,9 @@ public class ModEvents {
                 // Renders text on overlay on same line
                 int x = 10;
                 int y = h - 30;
-                event.getGuiGraphics().drawString(mc.font, modeText, x, y, 0xFFAA00, false);
+                event.getGuiGraphics().drawString(mc.font, modeText, x, y, 0xFFAA00, false); // Mode Text
                 x += mc.font.width(modeText);
-                event.getGuiGraphics().drawString(mc.font, modeType, x, y, 0xFF5555, false);
+                event.getGuiGraphics().drawString(mc.font, modeType, x, y, 0xFF5555, false); // Mode Type
 
                 // drawString method parameters:
                 // - mc.font: The source object used to draw the text.

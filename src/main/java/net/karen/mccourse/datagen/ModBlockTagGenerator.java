@@ -114,6 +114,17 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(Blocks.NETHER_GOLD_ORE)
                 .add(Blocks.NETHER_QUARTZ_ORE);
 
+        this.tag(ModTags.Blocks.RAINBOW_DROPS) // Rainbow I
+                .add(Blocks.COAL_BLOCK)
+                .add(Blocks.COPPER_BLOCK)
+                .add(Blocks.DIAMOND_BLOCK)
+                .add(Blocks.EMERALD_BLOCK)
+                .add(Blocks.GOLD_BLOCK)
+                .add(Blocks.IRON_BLOCK)
+                .add(Blocks.LAPIS_BLOCK)
+                .add(Blocks.REDSTONE_BLOCK)
+                .add(Blocks.NETHERITE_BLOCK);
+
         this.tag(ModTags.Blocks.MORE_ORES_MODES_PICKAXE_DROPS) // Modes Pickaxe's Mores Ores mode
                 .add(Blocks.COAL_ORE)
                 .add(Blocks.COPPER_ORE)

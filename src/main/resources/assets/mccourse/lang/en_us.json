@@ -60,6 +60,7 @@
   "enchantment.mccourse.more_ores": "More Ores",
   "enchantment.mccourse.magnetic": "Magnetic",
   "enchantment.mccourse.auto_smelt": "Auto Smelt",
+  "enchantment.mccourse.rainbow": "Rainbow",
 
   "block.mccourse.alexandrite_lamp": "Alexandrite Lamp",
 
@@ -166,7 +167,7 @@
   "item.mccourse.pink_boots": "Pink Boots",
 
   "item.mccourse.pink_sword": "Pink Sword",
-  "item.mccourse.pink_pickaxe": "Pink Pickaxe",
+  "item.mccourse.pink_pickaxe": "§l§3Pink Pickaxe",
   "item.mccourse.pink_shovel": "Pink Shovel",
   "item.mccourse.pink_axe": "Pink Axe",
   "item.mccourse.pink_hoe": "Pink Hoe",
@@ -174,6 +175,6 @@
   "item.mccourse.bouncy_balls": "Bouncy Balls",
   "item.mccourse.bouncy_balls_particles": "Bouncy Balls Particles",
 
-  "tooltip.mccourse.modes_pickaxe.tooltip.shift": "§lPickaxe break 3x3 area, auto smelt, more ores, magnetic, and different speed mine",
+  "tooltip.mccourse.modes_pickaxe.tooltip.shift": "§l§3Pickaxe break 3x3 area\n§aauto smelt§3\n§a more ores§3\n§a magnetic§3\ndifferent speed mine",
   "tooltip.mccourse.modes_pickaxe.tooltip": "Press §eSHIFT§r for more Information"
 }
