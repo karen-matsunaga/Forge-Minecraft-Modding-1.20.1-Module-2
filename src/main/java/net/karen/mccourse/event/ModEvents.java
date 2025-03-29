@@ -21,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
@@ -188,30 +189,46 @@ public class ModEvents {
                 new ItemStack(ModItems.KOHLRABI_SEEDS.get()), 3, 2, 0.02f));
     }
 
-    // Rainbow custom enchantment
     @SubscribeEvent
     public static void activatedRainbowEnchantment(BlockEvent.BreakEvent event) {
         LevelAccessor world = event.getLevel();
         BlockPos pos = event.getPos();
         Entity entity = event.getPlayer();
 
-        if (!(entity instanceof LivingEntity livingEntity)) { return; }
+        if (!(entity instanceof LivingEntity livingEntity)) { return; } // Player is an entity
 
-        ItemStack mainHandItem = livingEntity.getMainHandItem();
-        int rainbowLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.RAINBOW.get());
+        ItemStack mainHandItem = livingEntity.getMainHandItem(); // Player has tool on main hand
+        int rainbowLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.RAINBOW.get()); // Player has tool with Rainbow enchantment
 
-        if (!mainHandItem.isEnchanted() || rainbowLevel < 1) { return; }
+        if (!mainHandItem.isEnchanted() || rainbowLevel < 1) { return; } // Player's tool doesn't have Rainbow enchantment
 
         BlockState blockState = world.getBlockState(pos);
-        BlockPos blockPos = BlockPos.containing(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ()  + 0.5);
-        List<Block> targetBlocks = List.of(Blocks.DIAMOND_ORE, Blocks.DEEPSLATE_DIAMOND_ORE, Blocks.EMERALD_ORE, Blocks.DEEPSLATE_EMERALD_ORE); // List of blocks to replace
+        BlockPos blockPos = BlockPos.containing(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ()  + 0.5); // Block position
+        Block block = blockState.getBlock();
 
-        // Mined Ore and replaced to block ore
-        if (rainbowLevel == 1 && targetBlocks.contains(blockState.getBlock())) {  // Ores generated on world
-            if (targetBlocks.contains(Blocks.DIAMOND_ORE) || targetBlocks.contains(Blocks.DEEPSLATE_DIAMOND_ORE)) {
-                world.setBlock(blockPos, Blocks.DIAMOND_BLOCK.defaultBlockState(), 3); // Diamond ore or Deepslate diamond ore replaced to Diamond Block
-                event.setCanceled(true);
-            }
+        Map<Block, Block> rainbowOres = new HashMap<>(); // KEY = ore AND VALUE = block ore
+        rainbowOres.put(Blocks.COAL_ORE, Blocks.COAL_BLOCK);
+        rainbowOres.put(Blocks.DEEPSLATE_COAL_ORE, Blocks.COAL_BLOCK);
+        rainbowOres.put(Blocks.COPPER_ORE, Blocks.COPPER_BLOCK);
+        rainbowOres.put(Blocks.DEEPSLATE_COPPER_ORE, Blocks.COPPER_BLOCK);
+        rainbowOres.put(Blocks.DIAMOND_ORE, Blocks.DIAMOND_BLOCK);
+        rainbowOres.put(Blocks.DEEPSLATE_DIAMOND_ORE, Blocks.DIAMOND_BLOCK);
+        rainbowOres.put(Blocks.EMERALD_ORE, Blocks.EMERALD_BLOCK);
+        rainbowOres.put(Blocks.DEEPSLATE_EMERALD_ORE, Blocks.EMERALD_BLOCK);
+        rainbowOres.put(Blocks.GOLD_ORE, Blocks.GOLD_BLOCK);
+        rainbowOres.put(Blocks.DEEPSLATE_GOLD_ORE, Blocks.GOLD_BLOCK);
+        rainbowOres.put(Blocks.IRON_ORE, Blocks.IRON_BLOCK);
+        rainbowOres.put(Blocks.DEEPSLATE_IRON_ORE, Blocks.IRON_BLOCK);
+        rainbowOres.put(Blocks.LAPIS_ORE, Blocks.LAPIS_BLOCK);
+        rainbowOres.put(Blocks.DEEPSLATE_LAPIS_ORE, Blocks.LAPIS_BLOCK);
+        rainbowOres.put(Blocks.REDSTONE_ORE, Blocks.REDSTONE_BLOCK);
+        rainbowOres.put(Blocks.DEEPSLATE_REDSTONE_ORE, Blocks.REDSTONE_BLOCK);
+        rainbowOres.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERITE_BLOCK);
+
+        // Check if the block is in rainbowOres and has Rainbow level 1
+        if (rainbowLevel == 1 && rainbowOres.containsKey(block)) {
+            world.setBlock(blockPos, rainbowOres.get(block).defaultBlockState(), 3); // Create VALUE block
+            event.setCanceled(true); // Ore not break
         }
     }
 
