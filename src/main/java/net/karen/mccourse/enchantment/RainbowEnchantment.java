@@ -9,15 +9,13 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import org.jetbrains.annotations.NotNull;
 
 public class RainbowEnchantment extends Enchantment {
-    protected RainbowEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, pCategory, pApplicableSlots);
-    }
+    protected RainbowEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) { super(pRarity, pCategory, pApplicableSlots); }
 
     @Override
-    public int getMaxLevel() { return 1; }
+    public int getMaxLevel() { return 1; } // Rainbow enchantment max level
 
     @Override
-    public Component getFullname(int pLevel) {
+    public @NotNull Component getFullname(int pLevel) {
         if (pLevel > 0) {
             return Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN)
                     .append(CommonComponents.SPACE)
@@ -25,6 +23,9 @@ public class RainbowEnchantment extends Enchantment {
         }
         return super.getFullname(pLevel);
     }
+
+    @Override
+    public boolean isTreasureOnly() { return true; } // Rainbow custom enchantment exclusive on chest
 
     // Auto Smelt and Rainbow Enchantment doesn't work together
     public boolean checkCompatibility(@NotNull Enchantment pEnch) {
