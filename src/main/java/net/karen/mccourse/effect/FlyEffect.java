@@ -13,7 +13,7 @@ public class FlyEffect extends MobEffect {
     @Override
     public void applyEffectTick(@NotNull LivingEntity pLivingEntity, int pAmplifier) {
         if (pLivingEntity instanceof Player player) {
-            player.getAbilities().mayfly = player.hasEffect(ModEffects.FLY_EFFECT.get()); // Allow flight
+            player.getAbilities().mayfly = true; // Allow flight
             player.onUpdateAbilities(); // Update the player abilities
         }
         super.applyEffectTick(pLivingEntity, pAmplifier);
@@ -30,5 +30,5 @@ public class FlyEffect extends MobEffect {
     } // Fly effect ended
 
     @Override
-    public boolean isDurationEffectTick(int pDuration, int pAmplifier) { return pDuration % 40 == 0; } // Fly effect duration
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) { return true; } // Fly effect duration
 }
