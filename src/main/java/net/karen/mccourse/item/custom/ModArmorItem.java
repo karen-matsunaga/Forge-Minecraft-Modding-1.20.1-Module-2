@@ -57,11 +57,10 @@ public class ModArmorItem extends ArmorItem {
 
     // If player not to receive the effects it is adding
     private void addEffectToPlayer(Player player, MobEffectInstance effect) {
-        // Player has effects and used all armor slots (Helmet, Chestplate, Leggings and Boots)
+        // Player not has effects and used all armor slots (Helmet, Chestplate, Leggings and Boots)
         boolean hasPlayerEffect = player.hasEffect(effect.getEffect());
-        if (!hasPlayerEffect) {
-            player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration(), effect.getAmplifier()));
-        } // Player received effects
+        // Player not received effects
+        if (!hasPlayerEffect) { player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration(), effect.getAmplifier())); }
     }
 
     // If player received effects not using armor

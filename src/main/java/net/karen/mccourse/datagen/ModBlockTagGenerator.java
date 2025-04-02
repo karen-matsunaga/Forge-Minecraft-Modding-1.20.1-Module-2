@@ -76,7 +76,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(ModTags.Blocks.NEEDS_ALEXANDRITE_TOOL)
                 .add(ModBlocks.NETHER_ALEXANDRITE_ORE.get());
 
-        // Alexandrite paxel's tag
+        // Alexandrite Paxel's tag
         this.tag(ModTags.Blocks.PAXEL_MINEABLE)
                 .addTag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .addTag(BlockTags.MINEABLE_WITH_SHOVEL)
@@ -92,7 +92,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(BlockTags.PLANKS)
                 .add(ModBlocks.WALNUT_PLANKS.get());
 
-        // More Ores Drops
+        // More Ores's tags
         this.tag(ModTags.Blocks.MORE_ORES_ONE_DROPS) // More Ores I
                 .add(Blocks.COAL_ORE)
                 .add(Blocks.COPPER_ORE);
@@ -114,17 +114,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(Blocks.NETHER_GOLD_ORE)
                 .add(Blocks.NETHER_QUARTZ_ORE);
 
-        this.tag(ModTags.Blocks.RAINBOW_DROPS) // Rainbow I
-                .add(Blocks.COAL_BLOCK)
-                .add(Blocks.COPPER_BLOCK)
-                .add(Blocks.DIAMOND_BLOCK)
-                .add(Blocks.EMERALD_BLOCK)
-                .add(Blocks.GOLD_BLOCK)
-                .add(Blocks.IRON_BLOCK)
-                .add(Blocks.LAPIS_BLOCK)
-                .add(Blocks.REDSTONE_BLOCK)
-                .add(Blocks.NETHERITE_BLOCK);
-
+        // Modes Pickaxe's tag
         this.tag(ModTags.Blocks.MORE_ORES_MODES_PICKAXE_DROPS) // Modes Pickaxe's Mores Ores mode
                 .add(Blocks.COAL_ORE)
                 .add(Blocks.COPPER_ORE)
