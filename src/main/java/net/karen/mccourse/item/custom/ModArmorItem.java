@@ -19,6 +19,7 @@ public class ModArmorItem extends ArmorItem {
     // Specific armor material to mob effect instance that applied in player
     private static final Map<ArmorMaterial, List<MobEffectInstance>> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, List<MobEffectInstance>>())
+                    // Alexandrite custom armor
                     .put(ModArmorMaterials.ALEXANDRITE, Arrays.asList(
                             // Added all custom effects or vanilla effects on player only all armor slots
                             new MobEffectInstance(MobEffects.DAMAGE_BOOST, -1, 1, false, false, true),
@@ -26,7 +27,12 @@ public class ModArmorItem extends ArmorItem {
                             new MobEffectInstance(ModEffects.FLY_EFFECT.get(), -1, 1, false, false, true),
                             new MobEffectInstance(MobEffects.REGENERATION, -1, 4, false, false, true),
                             new MobEffectInstance(MobEffects.FIRE_RESISTANCE, -1, 1, false, false, true),
-                            new MobEffectInstance(MobEffects.DIG_SPEED, -1, 1, false, false, true))).build();
+                            new MobEffectInstance(MobEffects.DIG_SPEED, -1, 1, false, false, true)))
+                    // Pink custom armor
+                    .put(ModArmorMaterials.PINK, Arrays.asList(
+                            new MobEffectInstance(MobEffects.GLOWING, -1, 1, false, false, true),
+                            new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 1, false, false, true),
+                            new MobEffectInstance(MobEffects.JUMP, -1, 1, false, false, true))).build();
 
     public ModArmorItem(ArmorMaterial material, Type type, Properties properties) { super(material, type, properties); }
 

@@ -142,16 +142,16 @@ public class ModItems {
 
     // Pink's custom armor
     public static final RegistryObject<Item> PINK_HELMET = ITEMS.register("pink_helmet",
-            () -> new ModHelmetArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.HELMET, new Item.Properties().fireResistant()));
+            () -> new ModArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.HELMET, new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> PINK_CHESTPLATE = ITEMS.register("pink_chestplate",
-            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.CHESTPLATE, new Item.Properties().fireResistant()));
+            () -> new ModArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.CHESTPLATE, new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> PINK_LEGGINGS = ITEMS.register("pink_leggings",
-            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.LEGGINGS, new Item.Properties().fireResistant()));
+            () -> new ModArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.LEGGINGS, new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> PINK_BOOTS = ITEMS.register("pink_boots",
-            () -> new ArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.BOOTS, new Item.Properties().fireResistant()));
+            () -> new ModArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.BOOTS, new Item.Properties().fireResistant()));
 
     // Pink's custom tool
     public static final RegistryObject<Item> PINK_SWORD = ITEMS.register("pink_sword",
