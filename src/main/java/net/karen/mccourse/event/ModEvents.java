@@ -58,6 +58,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -87,8 +88,9 @@ public class ModEvents {
 
         if (mainHandItem.getItem() instanceof HammerItem hammer && player instanceof ServerPlayer serverPlayer) { // If player destroyed a block with Hammer tool
             BlockPos initalBlockPos = event.getPos();
-            if (HARVESTED_BLOCKS.contains(initalBlockPos)) { return; }
             int radius = hammer.getRadius(); // Radius declared on ModItems with HammerItem class
+
+            if (HARVESTED_BLOCKS.contains(initalBlockPos)) { return; }
 
             for (BlockPos pos : HammerItem.getBlocksToBeDestroyed(radius, initalBlockPos, serverPlayer)) { // Player's position to break a block with Hammer tool
                 if (pos == initalBlockPos || !hammer.isCorrectToolForDrops(mainHandItem, event.getLevel().getBlockState(pos))) { continue; }
@@ -208,31 +210,19 @@ public class ModEvents {
 
         BlockState blockState = world.getBlockState(pos);
         BlockPos blockPos = BlockPos.containing(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5); // Block position
-        Block block = blockState.getBlock();
 
-        Map<Block, Block> rainbowOres = new HashMap<>(); // KEY = ore AND VALUE = block ore
-        rainbowOres.put(Blocks.COAL_ORE, Blocks.COAL_BLOCK);
-        rainbowOres.put(Blocks.DEEPSLATE_COAL_ORE, Blocks.COAL_BLOCK);
-        rainbowOres.put(Blocks.COPPER_ORE, Blocks.COPPER_BLOCK);
-        rainbowOres.put(Blocks.DEEPSLATE_COPPER_ORE, Blocks.COPPER_BLOCK);
-        rainbowOres.put(Blocks.DIAMOND_ORE, Blocks.DIAMOND_BLOCK);
-        rainbowOres.put(Blocks.DEEPSLATE_DIAMOND_ORE, Blocks.DIAMOND_BLOCK);
-        rainbowOres.put(Blocks.EMERALD_ORE, Blocks.EMERALD_BLOCK);
-        rainbowOres.put(Blocks.DEEPSLATE_EMERALD_ORE, Blocks.EMERALD_BLOCK);
-        rainbowOres.put(Blocks.GOLD_ORE, Blocks.GOLD_BLOCK);
-        rainbowOres.put(Blocks.DEEPSLATE_GOLD_ORE, Blocks.GOLD_BLOCK);
-        rainbowOres.put(Blocks.IRON_ORE, Blocks.IRON_BLOCK);
-        rainbowOres.put(Blocks.DEEPSLATE_IRON_ORE, Blocks.IRON_BLOCK);
-        rainbowOres.put(Blocks.LAPIS_ORE, Blocks.LAPIS_BLOCK);
-        rainbowOres.put(Blocks.DEEPSLATE_LAPIS_ORE, Blocks.LAPIS_BLOCK);
-        rainbowOres.put(Blocks.REDSTONE_ORE, Blocks.REDSTONE_BLOCK);
-        rainbowOres.put(Blocks.DEEPSLATE_REDSTONE_ORE, Blocks.REDSTONE_BLOCK);
-        rainbowOres.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERITE_BLOCK);
+        // TESTING BLOCK
+        Map<Block, TagKey<Block>> rainbowBlock = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL, Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER,
+        Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND, Blocks.EMERALD_BLOCK, Tags.Blocks.ORES_EMERALD,
+        Blocks.GOLD_BLOCK, Tags.Blocks.ORES_GOLD, Blocks.IRON_BLOCK, Tags.Blocks.ORES_IRON,
+        Blocks.LAPIS_BLOCK, Tags.Blocks.ORES_LAPIS, Blocks.REDSTONE_BLOCK, Tags.Blocks.ORES_REDSTONE,
+        Blocks.NETHERITE_BLOCK, Tags.Blocks.ORES_NETHERITE_SCRAP);
 
-        // Check if the block is in rainbowOres and has Rainbow level 1
-        if (rainbowLevel == 1 && rainbowOres.containsKey(block)) {
-            world.setBlock(blockPos, rainbowOres.get(block).defaultBlockState(), 3); // Create VALUE block
-            event.setCanceled(true); // Ore not break and replaced with block on rainbowOres
+        for (Map.Entry<Block, TagKey<Block>> rainbowEntry : rainbowBlock.entrySet()) {
+            if (rainbowLevel == 1 && blockState.is(rainbowEntry.getValue())) {
+                world.setBlock(blockPos, rainbowEntry.getKey().defaultBlockState(), 3); // Create VALUE block
+                event.setCanceled(true); // Ore not break and replaced with block on rainbowOres
+            }
         }
     }
 
@@ -360,7 +350,7 @@ public class ModEvents {
         Map<String, ChatFormatting> entityColors = Map.of("GlowingMonsterTag", ChatFormatting.RED,
         "GlowingFlyingMobTag", ChatFormatting.RED, "GlowingEnderDragonTag", ChatFormatting.RED,
         "GlowingSlimeTag", ChatFormatting.RED, "GlowingAnimalTag", ChatFormatting.BLUE,
-        "GlowingAmbientCreatureTag", ChatFormatting.DARK_BLUE, "GlowingAllayTag", ChatFormatting.DARK_BLUE,
+        "GlowingAmbientCreatureTag", ChatFormatting.BLUE, "GlowingAllayTag", ChatFormatting.BLUE,
         "GlowingWaterAnimalTag", ChatFormatting.YELLOW, "GlowingVillagerTag", ChatFormatting.DARK_PURPLE,
         "GlowingAbstractGolemTag", ChatFormatting.DARK_PURPLE); // Entities colors -> Each class represent with some color
 

@@ -7,9 +7,12 @@ import net.karen.mccourse.entity.custom.ModBoatEntity;
 import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.item.custom.*;
 import net.karen.mccourse.sound.ModSounds;
+import net.karen.mccourse.util.ModTags;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -69,7 +72,7 @@ public class ModItems {
 
     // Alexandrite Hammer
     public static final RegistryObject<Item> ALEXANDRITE_HAMMER = ITEMS.register("alexandrite_hammer",
-            () -> new HammerItem(ModToolTiers.ALEXANDRITE, 2, 3,
+            () -> new HammerItem(ModToolTiers.ALEXANDRITE, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
                     new Item.Properties().durability(2304)).setRadius(2));
 
     // Alexandrite Armor
@@ -185,7 +188,7 @@ public class ModItems {
 
     // Mining Custom Item
     public static final RegistryObject<Item> MINING_PAXEL = ITEMS.register("mining_paxel",
-            () -> new HammerItem(ModToolTiers.PINK, 2, 3,
+            () -> new HammerItem(ModToolTiers.PINK, 2, 3, ModTags.Blocks.PAXEL_MINEABLE,
                     new Item.Properties().fireResistant().durability(0)).setRadius(3));
 
     // Bouncy ball's custom Ender pearls
