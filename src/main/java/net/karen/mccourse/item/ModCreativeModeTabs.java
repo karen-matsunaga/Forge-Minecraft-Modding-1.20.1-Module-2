@@ -188,6 +188,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.BOUNCY_BALLS.get());
                         output.accept(ModItems.BOUNCY_BALLS_PARTICLES.get());
 
+                        // My custom Mining Paxel
+                        output.accept(ModItems.MINING_PAXEL.get());
+
                     }).build());
 
     // Registry Creative Mode Tab

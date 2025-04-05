@@ -175,6 +175,8 @@
   "item.mccourse.bouncy_balls": "Bouncy Balls",
   "item.mccourse.bouncy_balls_particles": "Bouncy Balls Particles",
 
-  "tooltip.mccourse.modes_pickaxe.tooltip.shift": "§l§3Pickaxe break 3x3 area\n§aauto smelt§3\n§a more ores§3\n§a magnetic§3\ndifferent speed mine",
+  "item.mccourse.mining_paxel": "Mining Paxel",
+
+  "tooltip.mccourse.modes_pickaxe.tooltip.shift": "§l§3Pickaxe break 3x3 area §aauto smelt§3, §a more ores§3 and §a magnetic§3 different speed mine",
   "tooltip.mccourse.modes_pickaxe.tooltip": "Press §eSHIFT§r for more Information"
 }

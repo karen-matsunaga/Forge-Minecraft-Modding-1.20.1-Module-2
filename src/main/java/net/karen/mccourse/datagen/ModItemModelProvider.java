@@ -120,6 +120,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         // My custom ender pearl
         simpleItem(ModItems.BOUNCY_BALLS);
         simpleItem(ModItems.BOUNCY_BALLS_PARTICLES);
+
+        // Mining Paxel
+        handheldItem(ModItems.MINING_PAXEL);
+
     }
 
     // Registry all sapling item's models

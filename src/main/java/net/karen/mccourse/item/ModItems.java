@@ -31,7 +31,7 @@ public class ModItems {
 
     // Custom Advanced Item
     public static final RegistryObject<Item> METAL_DETECTOR = ITEMS.register("metal_detector",
-            () -> new MetalDetectorItem(new Item.Properties().durability(2304)));
+            () -> new MetalDetectorItem(new Item.Properties().durability(0)));
 
     // Foods
     public static final RegistryObject<Item> KOHLRABI = ITEMS.register("kohlrabi",
@@ -43,27 +43,34 @@ public class ModItems {
 
     // Alexandrite tools - Sword, axe, pickaxe, shovel and hoe
     public static final RegistryObject<Item> ALEXANDRITE_SWORD = ITEMS.register("alexandrite_sword",
-            () -> new SlowingSwordItem(ModToolTiers.ALEXANDRITE, 2, 3, new Item.Properties().durability(2304)));
+            () -> new SlowingSwordItem(ModToolTiers.ALEXANDRITE, 2, 3,
+                    new Item.Properties().durability(2304)));
 
     public static final RegistryObject<Item> ALEXANDRITE_PICKAXE = ITEMS.register("alexandrite_pickaxe",
-            () -> new PickaxeItem(ModToolTiers.ALEXANDRITE, 1, 2, new Item.Properties().durability(2304)));
+            () -> new PickaxeItem(ModToolTiers.ALEXANDRITE, 1, 2,
+                    new Item.Properties().durability(2304)));
 
     public static final RegistryObject<Item> ALEXANDRITE_SHOVEL = ITEMS.register("alexandrite_shovel",
-            () -> new ShovelItem(ModToolTiers.ALEXANDRITE, 2, 3, new Item.Properties().durability(2304)));
+            () -> new ShovelItem(ModToolTiers.ALEXANDRITE, 2, 3,
+                    new Item.Properties().durability(2304)));
 
     public static final RegistryObject<Item> ALEXANDRITE_AXE = ITEMS.register("alexandrite_axe",
-            () -> new AxeItem(ModToolTiers.ALEXANDRITE, 2, 3, new Item.Properties().durability(2304)));
+            () -> new AxeItem(ModToolTiers.ALEXANDRITE, 2, 3,
+                    new Item.Properties().durability(2304)));
 
     public static final RegistryObject<Item> ALEXANDRITE_HOE = ITEMS.register("alexandrite_hoe",
-            () -> new HoeItem(ModToolTiers.ALEXANDRITE, 2, 3, new Item.Properties().durability(2304)));
+            () -> new HoeItem(ModToolTiers.ALEXANDRITE, 2, 3,
+                    new Item.Properties().durability(2304)));
 
     // Alexandrite Paxel
     public static final RegistryObject<Item> ALEXANDRITE_PAXEL = ITEMS.register("alexandrite_paxel",
-            () -> new PaxelItem(ModToolTiers.ALEXANDRITE, 2, 3, new Item.Properties().durability(2304)));
+            () -> new PaxelItem(ModToolTiers.ALEXANDRITE, 2, 3,
+                    new Item.Properties().durability(2304)));
 
     // Alexandrite Hammer
     public static final RegistryObject<Item> ALEXANDRITE_HAMMER = ITEMS.register("alexandrite_hammer",
-            () -> new HammerItem(ModToolTiers.ALEXANDRITE, 2, 3, new Item.Properties().durability(2304)));
+            () -> new HammerItem(ModToolTiers.ALEXANDRITE, 2, 3,
+                    new Item.Properties().durability(2304)).setRadius(2));
 
     // Alexandrite Armor
     public static final RegistryObject<Item> ALEXANDRITE_HELMET = ITEMS.register("alexandrite_helmet",
@@ -80,7 +87,8 @@ public class ModItems {
 
     // Alexandrite Horse armor
     public static final RegistryObject<Item> ALEXANDRITE_HORSE_ARMOR = ITEMS.register("alexandrite_horse_armor",
-            () -> new HorseArmorItem(12, new ResourceLocation(MCCourseMod.MOD_ID, "textures/entity/horse/armor/horse_armor_alexandrite.png"), new Item.Properties()));
+            () -> new HorseArmorItem(12, new ResourceLocation(MCCourseMod.MOD_ID,
+                    "textures/entity/horse/armor/horse_armor_alexandrite.png"), new Item.Properties()));
 
     // Data Tablet item
     public static final RegistryObject<Item> DATA_TABLET = ITEMS.register("data_tablet",
@@ -155,27 +163,37 @@ public class ModItems {
 
     // Pink's custom tool
     public static final RegistryObject<Item> PINK_SWORD = ITEMS.register("pink_sword",
-            () -> new SlowingSwordItem(ModToolTiers.PINK, 2, 3, new Item.Properties().fireResistant()));
+            () -> new SlowingSwordItem(ModToolTiers.PINK, 2, 3,
+                    new Item.Properties().fireResistant()));
 
     // Pink's custom modes pickaxe
     public static final RegistryObject<Item> PINK_PICKAXE = ITEMS.register("pink_pickaxe",
-            () -> new ModesPickaxeItem(ModToolTiers.PINK, 1, 2, new Item.Properties().fireResistant()));
+            () -> new ModesPickaxeItem(ModToolTiers.PINK, 1, 2,
+                    new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> PINK_SHOVEL = ITEMS.register("pink_shovel",
-            () -> new ShovelItem(ModToolTiers.PINK, 2, 3, new Item.Properties().fireResistant()));
+            () -> new ShovelItem(ModToolTiers.PINK, 2, 3,
+                    new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> PINK_AXE = ITEMS.register("pink_axe",
-            () -> new AxeItem(ModToolTiers.PINK, 2, 3, new Item.Properties().fireResistant()));
+            () -> new AxeItem(ModToolTiers.PINK, 2, 3,
+                    new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> PINK_HOE = ITEMS.register("pink_hoe",
-            () -> new HoeItem(ModToolTiers.PINK, 2, 3, new Item.Properties().fireResistant()));
+            () -> new HoeItem(ModToolTiers.PINK, 2, 3,
+                    new Item.Properties().fireResistant()));
+
+    // Mining Custom Item
+    public static final RegistryObject<Item> MINING_PAXEL = ITEMS.register("mining_paxel",
+            () -> new HammerItem(ModToolTiers.PINK, 2, 3,
+                    new Item.Properties().fireResistant().durability(0)).setRadius(3));
 
     // Bouncy ball's custom Ender pearls
     public static final RegistryObject<Item> BOUNCY_BALLS = ITEMS.register("bouncy_balls",
-            () -> new BouncyBallsItem(new Item.Properties().durability(1000)));
+            () -> new BouncyBallsItem(new Item.Properties().fireResistant().durability(-1)));
 
     public static final RegistryObject<Item> BOUNCY_BALLS_PARTICLES = ITEMS.register("bouncy_balls_particles",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().stacksTo(64).fireResistant()));
 
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }

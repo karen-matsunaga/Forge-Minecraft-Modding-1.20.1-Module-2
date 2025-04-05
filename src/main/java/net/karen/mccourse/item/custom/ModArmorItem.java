@@ -22,17 +22,17 @@ public class ModArmorItem extends ArmorItem {
                     // Alexandrite custom armor
                     .put(ModArmorMaterials.ALEXANDRITE, Arrays.asList(
                             // Added all custom effects or vanilla effects on player only all armor slots
-                            new MobEffectInstance(MobEffects.DAMAGE_BOOST, -1, 1, false, false, true),
-                            new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 1, false, false, true),
-                            new MobEffectInstance(ModEffects.FLY_EFFECT.get(), -1, 1, false, false, true),
-                            new MobEffectInstance(MobEffects.REGENERATION, -1, 4, false, false, true),
-                            new MobEffectInstance(MobEffects.FIRE_RESISTANCE, -1, 1, false, false, true),
-                            new MobEffectInstance(MobEffects.DIG_SPEED, -1, 1, false, false, true)))
+                            new MobEffectInstance(MobEffects.DAMAGE_BOOST, -1, 1, false, false, false),
+                            new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 1, false, false, false),
+                            new MobEffectInstance(ModEffects.FLY_EFFECT.get(), -1, 1, false, false, false),
+                            new MobEffectInstance(MobEffects.REGENERATION, -1, 4, false, false, false),
+                            new MobEffectInstance(MobEffects.FIRE_RESISTANCE, -1, 1, false, false, false),
+                            new MobEffectInstance(MobEffects.DIG_SPEED, -1, 1, false, false, false)))
                     // Pink custom armor
                     .put(ModArmorMaterials.PINK, Arrays.asList(
-                            new MobEffectInstance(MobEffects.GLOWING, -1, 1, false, false, true),
-                            new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 1, false, false, true),
-                            new MobEffectInstance(MobEffects.JUMP, -1, 1, false, false, true))).build();
+                            new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 1, false, false, false),
+                            new MobEffectInstance(MobEffects.JUMP, -1, 1, false, false, false),
+                            new MobEffectInstance(ModEffects.FLY_EFFECT.get(), -1, 1, false, false, false))).build();
 
     public ModArmorItem(ArmorMaterial material, Type type, Properties properties) { super(material, type, properties); }
 
@@ -76,23 +76,16 @@ public class ModArmorItem extends ArmorItem {
         if (hasPlayerEffect) { player.removeEffect(effect.getEffect()); } // Player remove effects
     }
 
-    // If player using same armor material (Helmet, Chestplate, Leggings and Boots)
+    // If player using same armor material (Boots, Leggings, Chestplate and Helmet)
     private boolean hasPlayerCorrectArmorOn(ArmorMaterial mapArmorMaterial, Player player) {
         for (ItemStack armorStack : player.getArmorSlots()) { if (!(armorStack.getItem() instanceof ArmorItem)) { return false; } }
-        ArmorItem boots = ((ArmorItem) player.getInventory().getArmor(0).getItem()); // Boots
-        ArmorItem leggings = ((ArmorItem) player.getInventory().getArmor(1).getItem()); // Leggings
-        ArmorItem chestplate = ((ArmorItem) player.getInventory().getArmor(2).getItem()); // Chestplate
-        ArmorItem helmet = ((ArmorItem) player.getInventory().getArmor(3).getItem()); // Helmet
-        return boots.getMaterial() == mapArmorMaterial && leggings.getMaterial() == mapArmorMaterial
-                && chestplate.getMaterial() == mapArmorMaterial && helmet.getMaterial() == mapArmorMaterial;
+        return ((ArmorItem) player.getInventory().getArmor(0).getItem()).getMaterial() == mapArmorMaterial && ((ArmorItem) player.getInventory().getArmor(1).getItem()).getMaterial() == mapArmorMaterial
+                && ((ArmorItem) player.getInventory().getArmor(2).getItem()).getMaterial() == mapArmorMaterial && ((ArmorItem) player.getInventory().getArmor(3).getItem()).getMaterial() == mapArmorMaterial;
     }
 
-    // If player using all parts (Helmet, Chestplate, Leggings and Boots)
+    // If player using all parts (Boots, Leggings, Chestplate and Helmet)
     private boolean hasFullSuitOfArmorOn(Player player) {
-        ItemStack boots = player.getInventory().getArmor(0); // Boots
-        ItemStack leggings = player.getInventory().getArmor(1); // Leggings
-        ItemStack chestplate = player.getInventory().getArmor(2); // Chestplate
-        ItemStack helmet = player.getInventory().getArmor(3); // Helmet
-        return !boots.isEmpty() && !leggings.isEmpty() && !chestplate.isEmpty() && !helmet.isEmpty();
+        return !player.getInventory().getArmor(0).isEmpty() && !player.getInventory().getArmor(1).isEmpty()
+                && !player.getInventory().getArmor(2).isEmpty() && !player.getInventory().getArmor(3).isEmpty();
     }
 }
