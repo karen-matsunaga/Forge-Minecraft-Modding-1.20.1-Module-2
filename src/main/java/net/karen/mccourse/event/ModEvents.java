@@ -209,7 +209,7 @@ public class ModEvents {
         if (!mainHandItem.isEnchanted() || rainbowLevel < 1) { return; } // Player's tool doesn't have Rainbow enchantment
 
         BlockState blockState = world.getBlockState(pos);
-        BlockPos blockPos = BlockPos.containing(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5); // Block position
+        BlockPos blockPos = BlockPos.containing(pos.getX(), pos.getY(), pos.getZ()); // Block position
 
         // TESTING BLOCK
         Map<Block, TagKey<Block>> rainbowBlock = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL, Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER,
