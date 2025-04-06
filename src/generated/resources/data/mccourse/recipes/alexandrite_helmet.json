@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "mccourse:alexandrite"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "A A",
+    "   "
+  ],
+  "result": {
+    "item": "mccourse:alexandrite_helmet"
+  },
+  "show_notification": true
+}
