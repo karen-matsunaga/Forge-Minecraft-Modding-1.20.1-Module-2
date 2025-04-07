@@ -29,7 +29,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         // Pickaxe's tag, Alexandrite hammer's tag
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(ModBlocks.ALEXANDRITE_BLOCK.get(),
+                    .add(// Blocks
+                        ModBlocks.ALEXANDRITE_BLOCK.get(),
                         ModBlocks.RAW_ALEXANDRITE_BLOCK.get(),
                         // Ores
                         ModBlocks.ALEXANDRITE_ORE.get(),
@@ -40,7 +41,10 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                         // Stairs
                         ModBlocks.ALEXANDRITE_STAIRS.get(),
                         // Slabs
-                        ModBlocks.ALEXANDRITE_SLABS.get());
+                        ModBlocks.ALEXANDRITE_SLABS.get(),
+                        // Custom blocks
+                        ModBlocks.ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.NETHER_STAR_BLOCK.get());
 
         // Iron's tool tag
         this.tag(BlockTags.NEEDS_IRON_TOOL)

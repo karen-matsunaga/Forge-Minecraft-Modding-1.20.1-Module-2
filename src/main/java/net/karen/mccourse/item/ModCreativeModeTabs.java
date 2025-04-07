@@ -191,6 +191,10 @@ public class ModCreativeModeTabs {
                         // My custom Mining Paxel
                         output.accept(ModItems.MINING_PAXEL.get());
 
+                        // My custom block
+                        output.accept(ModBlocks.ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.NETHER_STAR_BLOCK.get());
+
                     }).build());
 
     // Registry Creative Mode Tab

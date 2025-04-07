@@ -68,11 +68,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // My custom mod
         // Hammer and Pickaxe
-        swordItem(ModItems.ALEXANDRITE_SWORD.get(), ModItems.ALEXANDRITE.get(), pWriter); // Sword
-
         pickaxeHammerItem(ModItems.ALEXANDRITE_HAMMER.get(), ModBlocks.ALEXANDRITE_BLOCK.get(), pWriter); // Hammer
         pickaxeHammerItem(ModItems.ALEXANDRITE_PICKAXE.get(), ModItems.ALEXANDRITE.get(), pWriter); // Pickaxe
 
+        swordItem(ModItems.ALEXANDRITE_SWORD.get(), ModItems.ALEXANDRITE.get(), pWriter); // Sword
         axeItem(ModItems.ALEXANDRITE_AXE.get(), ModItems.ALEXANDRITE.get(), pWriter); // Axe
         shovelItem(ModItems.ALEXANDRITE_SHOVEL.get(), ModItems.ALEXANDRITE.get(), pWriter); // Shovel
 
@@ -86,6 +85,13 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         chestplateArmor(ModItems.ALEXANDRITE_CHESTPLATE.get(), ModItems.ALEXANDRITE.get(), pWriter); // Chestplate
         leggingsArmor(ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.ALEXANDRITE.get(), pWriter); // Leggings
         bootsArmor(ModItems.ALEXANDRITE_BOOTS.get(), ModItems.ALEXANDRITE.get(), pWriter); // Boots
+
+        // Block
+        itemTransformBlock(ModBlocks.ENDER_PEARL_BLOCK.get(), Items.ENDER_PEARL, pWriter);
+        blockTransformItem(Items.ENDER_PEARL, ModBlocks.ENDER_PEARL_BLOCK.get(), pWriter);
+
+        itemTransformBlock(ModBlocks.NETHER_STAR_BLOCK.get(), Items.NETHER_STAR, pWriter);
+        blockTransformItem(Items.NETHER_STAR, ModBlocks.NETHER_STAR_BLOCK.get(), pWriter);
     }
 
     // Smelting
@@ -110,6 +116,28 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                             pCookingSerializer).group(pGroup).unlockedBy(getHasName(itemlike), has(itemlike))
                     .save(pFinishedRecipeConsumer, MCCourseMod.MOD_ID + ":" + getItemName(pResult) + pRecipeName + "_" + getItemName(itemlike));
         }
+    }
+
+    // My custom Recipe methods
+    // Item transform on custom block
+    protected static void itemTransformBlock(ItemLike pResult, ItemLike item, Consumer<FinishedRecipe> pWriter) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, pResult)
+                .pattern("AAA")
+                .pattern("AAA")
+                .pattern("AAA")
+                .define('A', item)
+                .unlockedBy("has_item", inventoryTrigger(ItemPredicate.Builder.item().
+                        of(item).build()))
+                .save(pWriter);
+    }
+
+    // Custom block transform on item
+    protected static void blockTransformItem(ItemLike pResult, ItemLike item, Consumer<FinishedRecipe> pWriter) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, pResult, 9)
+                .requires(item)
+                .unlockedBy("has_item", inventoryTrigger(ItemPredicate.Builder.item().
+                        of(item).build()))
+                .save(pWriter);
     }
 
     // Custom recipe

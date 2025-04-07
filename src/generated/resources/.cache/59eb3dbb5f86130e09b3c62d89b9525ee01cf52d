@@ -1,4 +1,4 @@
-// 1.20.1	2024-11-11T08:52:15.4717305	Loot Tables
+// 1.20.1	2025-04-07T12:12:04.6833548	Loot Tables
 3c04bafc8e377b8b3a0acec4fb355ebe506bd32a data/mccourse/loot_tables/blocks/alexandrite_block.json
 5ee80a3f0dae7a738f12360934f26b319920a8a3 data/mccourse/loot_tables/blocks/alexandrite_button.json
 3cf926928d6232271016b028304beb66caa9effe data/mccourse/loot_tables/blocks/alexandrite_door.json
@@ -14,11 +14,13 @@ c46d46cedc0380bb5b61d869693cf91106bda1e7 data/mccourse/loot_tables/blocks/alexan
 721a12dfca84141982832817c5032407702d3766 data/mccourse/loot_tables/blocks/cattail_crop.json
 847f01dfdaf854700edfeefcf42e2dc0692ca81d data/mccourse/loot_tables/blocks/colored_leaves.json
 597e60e805b2690c09390fe88bc716ab26a906c0 data/mccourse/loot_tables/blocks/deepslate_alexandrite_ore.json
+52a5ed7709109ee474b384e0d5edea81ac78a45f data/mccourse/loot_tables/blocks/ender_pearl_block.json
 dd06905d885f623d5867007d612e560c34063dda data/mccourse/loot_tables/blocks/end_stone_alexandrite_ore.json
 e926ccb30e8312d3c5eaa1371adb263501f9548b data/mccourse/loot_tables/blocks/gem_empowering_station.json
 54b16c8234f89ee889ad55af6f65c029a0e32d56 data/mccourse/loot_tables/blocks/kaupen_furnace.json
 f1e02b0627adf1ecddd380ae8e3ff41d994246d4 data/mccourse/loot_tables/blocks/kohlrabi_crop.json
 b77c5c7fe17b19d017b68cf68952ff7eb071d241 data/mccourse/loot_tables/blocks/nether_alexandrite_ore.json
+f28dc78627aa96d457cb1bf427ae6d4b2ef427b4 data/mccourse/loot_tables/blocks/nether_star_block.json
 fd2d2829e5fb8bc10cc06f67a8776b311666bb5f data/mccourse/loot_tables/blocks/potted_snapdragon.json
 7b06f064286af9b42cc2af9b330255bdfc434d90 data/mccourse/loot_tables/blocks/raw_alexandrite_block.json
 a1f9c183d88e7936935541bedf3326b92709809e data/mccourse/loot_tables/blocks/ruby_block.json

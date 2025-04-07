@@ -234,6 +234,15 @@ public class ModBlocks {
     public static final RegistryObject<Block> WAXED_RUBY_BLOCK_3 = registerBlock("waxed_ruby_block_3",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
+    // Custom block
+    public static final RegistryObject<Block> ENDER_PEARL_BLOCK = registerBlock("ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> NETHER_STAR_BLOCK = registerBlock("nether_star_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
+
     // Kaupen custom furnace
     public static final RegistryObject<Block> KAUPEN_FURNACE_BLOCK = registerBlock("kaupen_furnace",
             () -> new KaupenFurnaceBlock(BlockBehaviour.Properties.copy(Blocks.STONE)));

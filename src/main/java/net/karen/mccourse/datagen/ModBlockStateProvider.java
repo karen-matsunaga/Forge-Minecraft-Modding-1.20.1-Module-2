@@ -139,6 +139,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.WAXED_RUBY_BLOCK_1);
         blockWithItem(ModBlocks.WAXED_RUBY_BLOCK_2);
         blockWithItem(ModBlocks.WAXED_RUBY_BLOCK_3);
+
+        // My custom block
+        blockWithItem(ModBlocks.ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.NETHER_STAR_BLOCK);
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json

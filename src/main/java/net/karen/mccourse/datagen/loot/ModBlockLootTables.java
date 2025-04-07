@@ -143,6 +143,10 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
         // Kaupen custom furnace
         this.dropSelf(ModBlocks.KAUPEN_FURNACE_BLOCK.get());
+
+        // My custom block
+        this.dropSelf(ModBlocks.ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.NETHER_STAR_BLOCK.get());
     }
 
     // Custom ore's drops

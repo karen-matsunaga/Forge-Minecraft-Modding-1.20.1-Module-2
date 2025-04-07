@@ -91,5 +91,30 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.DEEPSLATE_COAL_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.COAL))); // Coal ore
+
+        // My custom items - Pink Pickaxe
+        add("pink_pickaxe_from_jungle_temple", new AddItemModifier(new LootItemCondition[] {
+                new LootTableIdCondition.Builder(new ResourceLocation("chests/jungle_temple")).build() },
+                List.of(ModItems.PINK_PICKAXE.get()))); // Jungle Temple
+
+        add("pink_pickaxe_from_ancient_city", new AddItemModifier(new LootItemCondition[] {
+                new LootTableIdCondition.Builder(new ResourceLocation("chests/ancient_city")).build() },
+                List.of(ModItems.PINK_PICKAXE.get()))); // Ancient City
+
+        add("pink_pickaxe_from_bastion_bridge", new AddItemModifier(new LootItemCondition[] {
+                new LootTableIdCondition.Builder(new ResourceLocation("chests/bastion_bridge")).build() },
+                List.of(ModItems.PINK_PICKAXE.get()))); // Bastion Bridge
+
+        add("pink_pickaxe_from_bastion_hoglin_stable", new AddItemModifier(new LootItemCondition[] {
+                new LootTableIdCondition.Builder(new ResourceLocation("chests/bastion_hoglin_stable")).build() },
+                List.of(ModItems.PINK_PICKAXE.get()))); // Bastion Hoglin Stable
+
+        add("pink_pickaxe_from_bastion_bastion_other", new AddItemModifier(new LootItemCondition[] {
+                new LootTableIdCondition.Builder(new ResourceLocation("chests/bastion_bastion_other")).build() },
+                List.of(ModItems.PINK_PICKAXE.get()))); // Bastion Other
+
+        add("pink_pickaxe_from_bastion_bastion_treasure", new AddItemModifier(new LootItemCondition[] {
+                new LootTableIdCondition.Builder(new ResourceLocation("chests/bastion_treasure")).build() },
+                List.of(ModItems.PINK_PICKAXE.get()))); // Bastion Treasure
     }
 }

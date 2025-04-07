@@ -8,6 +8,8 @@
     "mccourse:nether_alexandrite_ore",
     "mccourse:sound_block",
     "mccourse:alexandrite_stairs",
-    "mccourse:alexandrite_slabs"
+    "mccourse:alexandrite_slabs",
+    "mccourse:ender_pearl_block",
+    "mccourse:nether_star_block"
   ]
 }
