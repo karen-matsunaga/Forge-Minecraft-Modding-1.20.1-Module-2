@@ -92,6 +92,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         itemTransformBlock(ModBlocks.NETHER_STAR_BLOCK.get(), Items.NETHER_STAR, pWriter);
         blockTransformItem(Items.NETHER_STAR, ModBlocks.NETHER_STAR_BLOCK.get(), pWriter);
+
+        itemTransformBlock(ModBlocks.ROTTEN_FLESH_BLOCK.get(), Items.ROTTEN_FLESH, pWriter);
+        blockTransformItem(Items.ROTTEN_FLESH, ModBlocks.ROTTEN_FLESH_BLOCK.get(), pWriter);
+
+        itemTransformBlock(ModBlocks.GUNPOWDER_BLOCK.get(), Items.GUNPOWDER, pWriter);
+        blockTransformItem(Items.GUNPOWDER, ModBlocks.GUNPOWDER_BLOCK.get(), pWriter);
     }
 
     // Smelting

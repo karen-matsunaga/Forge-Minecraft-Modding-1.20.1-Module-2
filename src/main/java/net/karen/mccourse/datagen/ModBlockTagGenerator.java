@@ -44,7 +44,9 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                         ModBlocks.ALEXANDRITE_SLABS.get(),
                         // Custom blocks
                         ModBlocks.ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.NETHER_STAR_BLOCK.get());
+                        ModBlocks.NETHER_STAR_BLOCK.get(),
+                        ModBlocks.GUNPOWDER_BLOCK.get(),
+                        ModBlocks.ROTTEN_FLESH_BLOCK.get());
 
         // Iron's tool tag
         this.tag(BlockTags.NEEDS_IRON_TOOL)
@@ -130,6 +132,13 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(Blocks.EMERALD_ORE)
                 .add(Blocks.ANCIENT_DEBRIS)
                 .add(Blocks.NETHER_QUARTZ_ORE);
+
+        // Mobs Blocks
+        this.tag(ModTags.Blocks.MOBS_BLOCKS_DROPS)
+                .add(ModBlocks.ENDER_PEARL_BLOCK.get())
+                .add(ModBlocks.NETHER_STAR_BLOCK.get())
+                .add(ModBlocks.GUNPOWDER_BLOCK.get())
+                .add(ModBlocks.ROTTEN_FLESH_BLOCK.get());
     }
 
     @Override

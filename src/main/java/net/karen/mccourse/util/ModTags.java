@@ -44,6 +44,8 @@ public class ModTags {
         // Created More Ores's alternative drops
         public static final TagKey<Block> MORE_ORES_MODES_PICKAXE_DROPS = tag("ores/more_ores_modes_pickaxe_drops"); // Modes Pickaxe's More Ores mode
 
+        public static final TagKey<Block> MOBS_BLOCKS_DROPS = tag("blocks/mobs_blocks_drops");
+
         // Pass block id
         private static TagKey<Block> tag(String name) { return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }
 

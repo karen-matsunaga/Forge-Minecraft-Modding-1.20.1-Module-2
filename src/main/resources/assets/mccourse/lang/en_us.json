@@ -181,5 +181,7 @@
   "tooltip.mccourse.modes_pickaxe.tooltip": "Press §eSHIFT§r for more Information",
 
   "block.mccourse.ender_pearl_block": "Ender Pearl Block",
-  "block.mccourse.nether_star_block": "Nether Star Block"
+  "block.mccourse.nether_star_block": "Nether Star Block",
+  "block.mccourse.gunpowder_block": "Gunpowder Block",
+  "block.mccourse.rotten_flesh_block": "Rotten Flesh Block"
 }

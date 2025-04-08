@@ -194,6 +194,8 @@ public class ModCreativeModeTabs {
                         // My custom block
                         output.accept(ModBlocks.ENDER_PEARL_BLOCK.get());
                         output.accept(ModBlocks.NETHER_STAR_BLOCK.get());
+                        output.accept(ModBlocks.GUNPOWDER_BLOCK.get());
+                        output.accept(ModBlocks.ROTTEN_FLESH_BLOCK.get());
 
                     }).build());
 
