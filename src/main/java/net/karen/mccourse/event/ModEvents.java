@@ -14,11 +14,9 @@ import net.karen.mccourse.util.ModTags;
 import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
@@ -49,6 +47,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
@@ -85,13 +84,12 @@ public class ModEvents {
     public static void onHammerUsage(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer(); // Player is using Hammer tool
         ItemStack mainHandItem = player.getMainHandItem();
+        BlockPos initalBlockPos = event.getPos();
+
+        if (HARVESTED_BLOCKS.contains(initalBlockPos)) { return; }
 
         if (mainHandItem.getItem() instanceof HammerItem hammer && player instanceof ServerPlayer serverPlayer) { // If player destroyed a block with Hammer tool
-            BlockPos initalBlockPos = event.getPos();
             int radius = hammer.getRadius(); // Radius declared on ModItems with HammerItem class
-
-            if (HARVESTED_BLOCKS.contains(initalBlockPos)) { return; }
-
             for (BlockPos pos : HammerItem.getBlocksToBeDestroyed(radius, initalBlockPos, serverPlayer)) { // Player's position to break a block with Hammer tool
                 if (pos == initalBlockPos || !hammer.isCorrectToolForDrops(mainHandItem, event.getLevel().getBlockState(pos))) { continue; }
                 // Have to add them to a Set otherwise, the same code right here will get called for each block!
@@ -220,7 +218,7 @@ public class ModEvents {
 
         for (Map.Entry<Block, TagKey<Block>> rainbowEntry : rainbowBlock.entrySet()) {
             if (rainbowLevel == 1 && blockState.is(rainbowEntry.getValue())) {
-                world.setBlock(blockPos, rainbowEntry.getKey().defaultBlockState(), 3); // Create VALUE block
+                world.setBlock(blockPos, rainbowEntry.getKey().defaultBlockState(), 3); // Create KEY block
                 event.setCanceled(true); // Ore not break and replaced with block on rainbowOres
             }
         }
@@ -368,33 +366,55 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - Custom Item Tooltip with custom enchantment description
+    // CUSTOM EVENT - Custom Enchantment's tooltips
+    private static ChatFormatting getColorForEnchantment(Enchantment enchantment) {
+        return enchantment.isCurse() ? ChatFormatting.RED :
+                switch (enchantment.category) {
+                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.YELLOW;
+                    case DIGGER -> ChatFormatting.GREEN;
+                    case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
+                    default -> ChatFormatting.GRAY;
+                };
+    }
+
     @SubscribeEvent
-    public static void enchantmentDescription(ItemTooltipEvent event) {
-        ItemStack itemStack = event.getItemStack(); // Player has a tool
-        List<Component> tooltip = event.getToolTip(); // Player has a tooltip description on tool
+    public static void onEnchantmentTooltip(ItemTooltipEvent event) {
+        ItemStack stack = event.getItemStack();
+        List<Component> tooltip = event.getToolTip();
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
 
-        if (!itemStack.isEnchanted()) { return; } // Tool is enchanted
+        if (!stack.isEmpty() && stack.isEnchanted()) {
+            if (enchantments.isEmpty()) { return; }
+            for (int i = 0; i < tooltip.size(); i++) {
+                String raw = ChatFormatting.stripFormatting(tooltip.get(i).getString()); // Detected line
+                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                    Enchantment enchantment = entry.getKey();
+                    int level = entry.getValue();
+                    String expected = Component.translatable(enchantment.getDescriptionId()).getString();
 
-        Map<Enchantment, String> enchantDesc = Map.of(
-        ModEnchantments.AUTO_SMELT.get(), "§a§lAuto Smelt = §r§aTransform all items that can be roasted on furnace",
-        ModEnchantments.GLOWING_MOBS.get(), "§e§lGlowing Mobs = §r§eAnimals and enemies detector",
-        ModEnchantments.LIGHTNING_STRIKER.get(), "§c§lLightning Striker = §r§cWhen player hit on animals or enemies appears lightning",
-        ModEnchantments.MAGNETIC.get(), "§a§lMagnetic = §r§aWhen mined blocks automatically store on Player's inventory",
-        ModEnchantments.MORE_ORES.get(), "§a§lMore Ores = §r§aIncrease amount drop of vanilla ores",
-        ModEnchantments.RAINBOW.get(), "§a§lRainbow = §r§aReplace ore turned on block ore");
+                    if (Objects.requireNonNull(raw).startsWith(expected)) {
+                        // Replace this line with custom styled version
+                        ChatFormatting color = getColorForEnchantment(enchantment);
+                        boolean isCurse = enchantment.isCurse();
 
-        if (Screen.hasShiftDown()) {
-            for (Map.Entry<Enchantment, String> enchEntry : enchantDesc.entrySet()) {
-                if (tooltip != null && itemStack.getEnchantmentLevel(enchEntry.getKey()) > 0) {
-                    tooltip.add(CommonComponents.EMPTY);
-                    tooltip.add(Component.literal(enchEntry.getValue())); // SHIFT pressed and tool has custom enchantments
+                        MutableComponent name = Component.translatable(enchantment.getDescriptionId())
+                                .withStyle(Style.EMPTY.withColor(color).withBold(!isCurse).withItalic(isCurse));
+
+                        if (level > 0 || enchantment.getMaxLevel() > 0) {
+                            name.append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level)))
+                                .append(CommonComponents.NEW_LINE);
+                        } // Enchantment Levels with Arabic numerals
+
+                        String descriptionValue = enchantment.getDescriptionId() + ".desc";
+                        if (I18n.exists(descriptionValue)) {
+                            name.append(Component.translatable(descriptionValue)
+                                    .setStyle(Style.EMPTY.withColor(color).withItalic(!isCurse).withBold(isCurse)));
+                        } // Enchantment Descriptions with JSON file -> I18n = en_us.json
+                        tooltip.set(i, name); // Number line of enchantment names and enchantment descriptions
+                        break;
+                    }
                 }
             }
-        }
-        else {
-            tooltip.add(CommonComponents.EMPTY);
-            tooltip.add(Component.literal("Press §e§lSHIFT§r to more information about enchantments")); // SHIFT not pressed
         }
     }
 
@@ -405,11 +425,10 @@ public class ModEvents {
         int h = event.getWindow().getGuiScaledHeight();
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-
         if (player != null) {
             ItemStack heldItem = player.getMainHandItem();
             if (heldItem.getItem() instanceof ModesPickaxeItem modesPickaxe) {
-                ModesPickaxe mode = modesPickaxe.getModoAtual();
+                ModesPickaxe mode = modesPickaxe.getModeActual();
 
                 // Show text mode actual on screen
                 Component modeText = Component.literal("Mode actual: ").setStyle(Style.EMPTY.withColor(0xFFAA00)
