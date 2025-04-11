@@ -58,7 +58,7 @@ public class ModesPickaxeItem extends PickaxeItem {
         boolean retval = super.mineBlock(itemstack, world, blockstate, pos, entity);
         if (!world.isClientSide) {
             // Slow mode and Fast mode logics
-            if (modeActual.equals(ModesPickaxe.SLOW) || modeActual.equals(ModesPickaxe.FAST)) {
+            if (modeActual == ModesPickaxe.SLOW || modeActual == ModesPickaxe.FAST) {
                 itemstack.hurtAndBreak(1, entity, (e) -> e.broadcastBreakEvent(entity.getUsedItemHand()));
             }
             else if (modeActual == ModesPickaxe.HAMMER) { hammerMode(itemstack, world, pos, (Player) entity); } // Hammer mode logic
@@ -192,27 +192,13 @@ public class ModesPickaxeItem extends PickaxeItem {
         if (!world.isClientSide) {
             // Trading the pickaxe mode
             switch (modeActual) {
-                case NORMAL:
-                    modeActual = ModesPickaxe.SLOW; // Normal -> Slow
-                    break;
-                case SLOW:
-                    modeActual = ModesPickaxe.FAST; // Slow -> Fast
-                    break;
-                case FAST:
-                    modeActual = ModesPickaxe.HAMMER; // Fast -> Hammer
-                    break;
-                case HAMMER:
-                    modeActual = ModesPickaxe.AUTO_SMELT; // Hammer -> Auto Smelt
-                    break;
-                case AUTO_SMELT:
-                    modeActual = ModesPickaxe.MORE_ORES; // Auto Smelt -> More Ores
-                    break;
-                case MORE_ORES:
-                    modeActual = ModesPickaxe.MAGNETIC; // More Ores -> Magnetic
-                    break;
-                case MAGNETIC:
-                    modeActual = ModesPickaxe.NORMAL; // Magnetic -> Normal
-                    break;
+                case NORMAL: modeActual = ModesPickaxe.SLOW; break; // Normal -> Slow
+                case SLOW: modeActual = ModesPickaxe.FAST; break; // Slow -> Fast
+                case FAST: modeActual = ModesPickaxe.HAMMER; break; // Fast -> Hammer
+                case HAMMER: modeActual = ModesPickaxe.AUTO_SMELT; break; // Hammer -> Auto Smelt
+                case AUTO_SMELT: modeActual = ModesPickaxe.MORE_ORES; break; // Auto Smelt -> More Ores
+                case MORE_ORES: modeActual = ModesPickaxe.MAGNETIC; break; // More Ores -> Magnetic
+                case MAGNETIC: modeActual = ModesPickaxe.NORMAL; break; // Magnetic -> Normal
             }
             // Show message on chat with mode actual
             player.displayClientMessage(Component.literal("§6§lMode actual: §c§l"
@@ -221,18 +207,12 @@ public class ModesPickaxeItem extends PickaxeItem {
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
     }
 
-    public ModesPickaxe getModoAtual() { return modeActual; } // Getter Pickaxe mode actual
+    public ModesPickaxe getModeActual() { return modeActual; } // Getter Pickaxe mode actual
 
     @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
-        if (Screen.hasShiftDown()) {
-            pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip.shift"));
-        }
-        else {
-            pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip"));
-        }
+        if (Screen.hasShiftDown()) { pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip.shift")); }
+        else { pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip")); }
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
-
-
 }
