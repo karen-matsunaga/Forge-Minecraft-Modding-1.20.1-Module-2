@@ -46,7 +46,9 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                         ModBlocks.ENDER_PEARL_BLOCK.get(),
                         ModBlocks.NETHER_STAR_BLOCK.get(),
                         ModBlocks.GUNPOWDER_BLOCK.get(),
-                        ModBlocks.ROTTEN_FLESH_BLOCK.get());
+                        ModBlocks.ROTTEN_FLESH_BLOCK.get())
+                .addTag(ModTags.Blocks.MOBS_BLOCKS_DROPS)
+                .addTag(ModTags.Blocks.PINK_ORES);
 
         // Iron's tool tag
         this.tag(BlockTags.NEEDS_IRON_TOOL)
@@ -135,10 +137,29 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         // Mobs Blocks
         this.tag(ModTags.Blocks.MOBS_BLOCKS_DROPS)
-                .add(ModBlocks.ENDER_PEARL_BLOCK.get())
-                .add(ModBlocks.NETHER_STAR_BLOCK.get())
-                .add(ModBlocks.GUNPOWDER_BLOCK.get())
-                .add(ModBlocks.ROTTEN_FLESH_BLOCK.get());
+                .add(ModBlocks.ENDER_PEARL_BLOCK.get(),
+                     ModBlocks.NETHER_STAR_BLOCK.get(),
+                     ModBlocks.GUNPOWDER_BLOCK.get(),
+                     ModBlocks.ROTTEN_FLESH_BLOCK.get());
+
+        // My custom ores tags
+        this.tag(ModTags.Blocks.PINK_ORES)
+                .add(ModBlocks.PINK_BLOCK.get(),
+                     ModBlocks.PINK_ORE.get(),
+                     ModBlocks.DEEPSLATE_PINK_ORE.get(),
+                     ModBlocks.END_STONE_PINK_ORE.get(),
+                     ModBlocks.NETHER_PINK_ORE.get());
+
+        this.tag(ModTags.Blocks.ALEXANDRITE_ORES)
+                .add(ModBlocks.ALEXANDRITE_BLOCK.get(),
+                     ModBlocks.ALEXANDRITE_ORE.get(),
+                     ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
+                     ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
+                     ModBlocks.NETHER_ALEXANDRITE_ORE.get());
+
+        this.tag(ModTags.Blocks.MCCOURSE_ORES)
+                .addTag(ModTags.Blocks.PINK_ORES)
+                .addTag(ModTags.Blocks.ALEXANDRITE_ORES);
     }
 
     @Override

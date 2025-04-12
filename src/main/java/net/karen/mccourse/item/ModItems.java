@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -189,6 +190,42 @@ public class ModItems {
     public static final RegistryObject<Item> MINING_PAXEL = ITEMS.register("mining_paxel",
             () -> new HammerItem(ModToolTiers.PINK, 2, 3, ModTags.Blocks.PAXEL_MINEABLE,
                     new Item.Properties().fireResistant().durability(0)).setRadius(3));
+
+    public static final RegistryObject<Item> COPPER_HAMMER = ITEMS.register("copper_hammer",
+            () -> new HammerItem(ModToolTiers.COPPER, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
+                    new Item.Properties().durability(0).fireResistant()).setRadius(3));
+
+    public static final RegistryObject<Item> DIAMOND_HAMMER = ITEMS.register("diamond_hammer",
+            () -> new HammerItem(Tiers.DIAMOND, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
+                    new Item.Properties().durability(0).fireResistant()).setRadius(3));
+
+    public static final RegistryObject<Item> GOLD_HAMMER = ITEMS.register("gold_hammer",
+            () -> new HammerItem(Tiers.GOLD, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
+                    new Item.Properties().durability(0).fireResistant()).setRadius(2));
+
+    public static final RegistryObject<Item> IRON_HAMMER = ITEMS.register("iron_hammer",
+            () -> new HammerItem(Tiers.IRON, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
+                    new Item.Properties().durability(0).fireResistant()).setRadius(2));
+
+    public static final RegistryObject<Item> NETHERITE_HAMMER = ITEMS.register("netherite_hammer",
+            () -> new HammerItem(Tiers.NETHERITE, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
+                    new Item.Properties().durability(0).fireResistant()).setRadius(4));
+
+    public static final RegistryObject<Item> PINK_HAMMER = ITEMS.register("pink_hammer",
+            () -> new HammerItem(ModToolTiers.PINK, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
+                    new Item.Properties().durability(0).fireResistant()).setRadius(5));
+
+    public static final RegistryObject<Item> STONE_HAMMER = ITEMS.register("stone_hammer",
+            () -> new HammerItem(Tiers.STONE, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
+                    new Item.Properties().durability(0).fireResistant()).setRadius(2));
+
+    public static final RegistryObject<Item> WOODEN_HAMMER = ITEMS.register("wooden_hammer",
+            () -> new HammerItem(Tiers.WOOD, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
+                    new Item.Properties().durability(0).fireResistant()).setRadius(2));
+
+    // Ore custom item
+    public static final RegistryObject<Item> PINK = ITEMS.register("pink",
+            () -> new Item(new Item.Properties()));
 
     // Bouncy ball's custom Ender pearls
     public static final RegistryObject<Item> BOUNCY_BALLS = ITEMS.register("bouncy_balls",

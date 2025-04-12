@@ -369,21 +369,21 @@ public class ModEvents {
     // CUSTOM EVENT - Custom Enchantment's tooltips
     private static ChatFormatting getColorForEnchantment(Enchantment enchantment) {
         return enchantment.isCurse() ? ChatFormatting.RED :
-                switch (enchantment.category) {
-                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.YELLOW;
-                    case DIGGER -> ChatFormatting.GREEN;
-                    case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
-                    default -> ChatFormatting.GRAY;
-                };
+            switch (enchantment.category) {
+                case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.YELLOW;
+                case DIGGER -> ChatFormatting.GREEN;
+                case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
+                default -> ChatFormatting.GRAY;
+            };
     }
 
     @SubscribeEvent
-    public static void onEnchantmentTooltip(ItemTooltipEvent event) {
+    public static void enchantmentTooltipDescriptions(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
         List<Component> tooltip = event.getToolTip();
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
 
-        if (!stack.isEmpty() && stack.isEnchanted()) {
+        if (!stack.isEmpty() && stack.isEnchanted() || stack.getItem() == Items.ENCHANTED_BOOK) {
             if (enchantments.isEmpty()) { return; }
             for (int i = 0; i < tooltip.size(); i++) {
                 String raw = ChatFormatting.stripFormatting(tooltip.get(i).getString()); // Detected line
@@ -393,10 +393,8 @@ public class ModEvents {
                     String expected = Component.translatable(enchantment.getDescriptionId()).getString();
 
                     if (Objects.requireNonNull(raw).startsWith(expected)) {
-                        // Replace this line with custom styled version
-                        ChatFormatting color = getColorForEnchantment(enchantment);
+                        ChatFormatting color = getColorForEnchantment(enchantment); // Replace this line with custom styled version
                         boolean isCurse = enchantment.isCurse();
-
                         MutableComponent name = Component.translatable(enchantment.getDescriptionId())
                                 .withStyle(Style.EMPTY.withColor(color).withBold(!isCurse).withItalic(isCurse));
 
@@ -407,8 +405,7 @@ public class ModEvents {
 
                         String descriptionValue = enchantment.getDescriptionId() + ".desc";
                         if (I18n.exists(descriptionValue)) {
-                            name.append(Component.translatable(descriptionValue)
-                                    .setStyle(Style.EMPTY.withColor(color).withItalic(!isCurse).withBold(isCurse)));
+                            name.append(Component.translatable(descriptionValue));
                         } // Enchantment Descriptions with JSON file -> I18n = en_us.json
                         tooltip.set(i, name); // Number line of enchantment names and enchantment descriptions
                         break;

@@ -25,6 +25,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(), ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
             ModBlocks.NETHER_ALEXANDRITE_ORE.get());
 
+    private static final List<ItemLike> PINK_SMELTABLES = List.of(ModItems.PINK.get(),
+            ModBlocks.PINK_ORE.get(), ModBlocks.DEEPSLATE_PINK_ORE.get(), ModBlocks.END_STONE_PINK_ORE.get(), ModBlocks.NETHER_PINK_ORE.get());
+
     public ModRecipeProvider(PackOutput pOutput) { super(pOutput); }
 
     // Create all recipes
@@ -69,6 +72,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         // My custom mod
         // Hammer and Pickaxe
         pickaxeHammerItem(ModItems.ALEXANDRITE_HAMMER.get(), ModBlocks.ALEXANDRITE_BLOCK.get(), pWriter); // Hammer
+        pickaxeHammerItem(ModItems.COPPER_HAMMER.get(), Items.COPPER_BLOCK, pWriter);
+        pickaxeHammerItem(ModItems.DIAMOND_HAMMER.get(), Items.DIAMOND_BLOCK, pWriter);
+        pickaxeHammerItem(ModItems.GOLD_HAMMER.get(), Items.GOLD_BLOCK, pWriter);
+        pickaxeHammerItem(ModItems.IRON_HAMMER.get(), Items.IRON_BLOCK, pWriter);
+        pickaxeHammerItem(ModItems.NETHERITE_HAMMER.get(), Items.NETHERITE_BLOCK, pWriter);
+        pickaxeHammerItem(ModItems.PINK_HAMMER.get(), Items.DIAMOND_PICKAXE, pWriter);
+        pickaxeHammerItem(ModItems.WOODEN_HAMMER.get(), Items.OAK_LOG, pWriter);
+        pickaxeHammerItem(ModItems.STONE_HAMMER.get(), Items.STONE, pWriter);
+
         pickaxeHammerItem(ModItems.ALEXANDRITE_PICKAXE.get(), ModItems.ALEXANDRITE.get(), pWriter); // Pickaxe
 
         swordItem(ModItems.ALEXANDRITE_SWORD.get(), ModItems.ALEXANDRITE.get(), pWriter); // Sword
@@ -98,6 +110,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         itemTransformBlock(ModBlocks.GUNPOWDER_BLOCK.get(), Items.GUNPOWDER, pWriter);
         blockTransformItem(Items.GUNPOWDER, ModBlocks.GUNPOWDER_BLOCK.get(), pWriter);
+
+        // Ore
+        itemTransformBlock(ModBlocks.PINK_BLOCK.get(), ModItems.PINK.get(), pWriter);
+        blockTransformItem(ModItems.PINK.get(), ModBlocks.PINK_BLOCK.get(), pWriter);
+
+        // My custom ore
+        // Items Smelting
+        oreSmelting(pWriter, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(), 0.25f, 200, "pink");
+
+        // Items Blasting
+        oreBlasting(pWriter, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(), 0.25f, 200, "pink");
     }
 
     // Smelting

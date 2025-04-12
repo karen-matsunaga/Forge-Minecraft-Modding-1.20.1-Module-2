@@ -13,6 +13,9 @@ public class ModTags {
     public static class Items {
         // Created Item's tags HERE ...
 
+        // Ores item
+        public static final TagKey<Item> MCCOURSE_ITEMS = tag("blocks/mccourse_items");
+
         // Pass item id
         private static TagKey<Item> tag(String name) { return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }
 
@@ -31,6 +34,8 @@ public class ModTags {
 
         public static final TagKey<Block> NEEDS_PINK_TOOL = tag("needs_pink_tool");
 
+        public static final TagKey<Block> NEEDS_COPPER_TOOL = tag("needs_copper_tool");
+
         // Created Alexandrite Paxel's tag
         public static final TagKey<Block> PAXEL_MINEABLE = tag("mineable/paxel");
 
@@ -45,6 +50,11 @@ public class ModTags {
         public static final TagKey<Block> MORE_ORES_MODES_PICKAXE_DROPS = tag("ores/more_ores_modes_pickaxe_drops"); // Modes Pickaxe's More Ores mode
 
         public static final TagKey<Block> MOBS_BLOCKS_DROPS = tag("blocks/mobs_blocks_drops");
+
+        // Created Pink ores tags
+        public static final TagKey<Block> PINK_ORES = tag("blocks/pink_ores");
+        public static final TagKey<Block> ALEXANDRITE_ORES = tag("blocks/alexandrite_ores");
+        public static final TagKey<Block> MCCOURSE_ORES = tag("blocks/mccourse_ores");
 
         // Pass block id
         private static TagKey<Block> tag(String name) { return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }

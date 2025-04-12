@@ -123,7 +123,17 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         // Mining Paxel
         handheldItem(ModItems.MINING_PAXEL);
+        handheldItem(ModItems.COPPER_HAMMER);
+        handheldItem(ModItems.DIAMOND_HAMMER);
+        handheldItem(ModItems.GOLD_HAMMER);
+        handheldItem(ModItems.IRON_HAMMER);
+        handheldItem(ModItems.NETHERITE_HAMMER);
+        handheldItem(ModItems.PINK_HAMMER);
+        handheldItem(ModItems.STONE_HAMMER);
+        handheldItem(ModItems.WOODEN_HAMMER);
 
+        // My custom ore
+        simpleItem(ModItems.PINK);
     }
 
     // Registry all sapling item's models

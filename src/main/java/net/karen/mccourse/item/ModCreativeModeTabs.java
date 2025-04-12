@@ -197,6 +197,23 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.GUNPOWDER_BLOCK.get());
                         output.accept(ModBlocks.ROTTEN_FLESH_BLOCK.get());
 
+                        // My custom item
+                        output.accept(ModItems.COPPER_HAMMER.get());
+                        output.accept(ModItems.DIAMOND_HAMMER.get());
+                        output.accept(ModItems.GOLD_HAMMER.get());
+                        output.accept(ModItems.IRON_HAMMER.get());
+                        output.accept(ModItems.NETHERITE_HAMMER.get());
+                        output.accept(ModItems.PINK_HAMMER.get());
+                        output.accept(ModItems.WOODEN_HAMMER.get());
+                        output.accept(ModItems.STONE_HAMMER.get());
+
+                        // My custom ore
+                        output.accept(ModItems.PINK.get());
+                        output.accept(ModBlocks.PINK_BLOCK.get());
+                        output.accept(ModBlocks.PINK_ORE.get());
+                        output.accept(ModBlocks.DEEPSLATE_PINK_ORE.get());
+                        output.accept(ModBlocks.END_STONE_PINK_ORE.get());
+                        output.accept(ModBlocks.NETHER_PINK_ORE.get());
                     }).build());
 
     // Registry Creative Mode Tab

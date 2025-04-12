@@ -12,6 +12,8 @@
     "mccourse:ender_pearl_block",
     "mccourse:nether_star_block",
     "mccourse:gunpowder_block",
-    "mccourse:rotten_flesh_block"
+    "mccourse:rotten_flesh_block",
+    "#mccourse:blocks/mobs_blocks_drops",
+    "#mccourse:blocks/pink_ores"
   ]
 }

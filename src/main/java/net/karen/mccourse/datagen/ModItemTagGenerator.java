@@ -3,6 +3,7 @@ package net.karen.mccourse.datagen;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.item.ModItems;
+import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -44,6 +45,10 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ItemTags.PLANKS)
                 .add(ModBlocks.WALNUT_PLANKS.get().asItem());
 
+        // MCCOURSE custom items
+        this.tag(ModTags.Items.MCCOURSE_ITEMS)
+                .add(ModItems.PINK.get())
+                .add(ModItems.ALEXANDRITE.get());
     }
 
     @Override
