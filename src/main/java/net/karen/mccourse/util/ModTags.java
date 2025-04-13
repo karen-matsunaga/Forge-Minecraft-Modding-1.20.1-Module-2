@@ -16,6 +16,11 @@ public class ModTags {
         // Ores item
         public static final TagKey<Item> MCCOURSE_ITEMS = tag("blocks/mccourse_items");
 
+        // Created Pink ores tags
+        public static final TagKey<Item> PINK_ORES_ITEMS = tag("blocks/pink_ores_items");
+        public static final TagKey<Item> ALEXANDRITE_ORES_ITEMS = tag("blocks/alexandrite_ores_items");
+        public static final TagKey<Item> MCCOURSE_ORES_ITEMS = tag("blocks/mccourse_ores_items");
+
         // Pass item id
         private static TagKey<Item> tag(String name) { return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }
 

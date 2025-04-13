@@ -49,6 +49,24 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ModTags.Items.MCCOURSE_ITEMS)
                 .add(ModItems.PINK.get())
                 .add(ModItems.ALEXANDRITE.get());
+
+        this.tag(ModTags.Items.MCCOURSE_ORES_ITEMS)
+                .add(ModItems.PINK.get())
+                .add(ModItems.ALEXANDRITE.get());
+
+        this.tag(ModTags.Items.ALEXANDRITE_ORES_ITEMS)
+                .add(ModBlocks.ALEXANDRITE_BLOCK.get().asItem(),
+                        ModBlocks.ALEXANDRITE_ORE.get().asItem(),
+                        ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get().asItem(),
+                        ModBlocks.END_STONE_ALEXANDRITE_ORE.get().asItem(),
+                        ModBlocks.NETHER_ALEXANDRITE_ORE.get().asItem());
+
+        this.tag(ModTags.Items.PINK_ORES_ITEMS)
+                .add(ModBlocks.PINK_BLOCK.get().asItem(),
+                     ModBlocks.PINK_ORE.get().asItem(),
+                     ModBlocks.DEEPSLATE_PINK_ORE.get().asItem(),
+                     ModBlocks.END_STONE_PINK_ORE.get().asItem(),
+                     ModBlocks.NETHER_PINK_ORE.get().asItem());
     }
 
     @Override
