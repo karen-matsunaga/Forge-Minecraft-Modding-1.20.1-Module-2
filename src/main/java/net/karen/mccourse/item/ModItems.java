@@ -7,12 +7,10 @@ import net.karen.mccourse.entity.custom.ModBoatEntity;
 import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.item.custom.*;
 import net.karen.mccourse.sound.ModSounds;
-import net.karen.mccourse.util.ModTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -164,14 +162,31 @@ public class ModItems {
     public static final RegistryObject<Item> PINK_BOOTS = ITEMS.register("pink_boots",
             () -> new ModArmorItem(ModArmorMaterials.PINK, ArmorItem.Type.BOOTS, new Item.Properties().fireResistant()));
 
+    // Copper custom armor
+    public static final RegistryObject<Item> COPPER_HELMET = ITEMS.register("copper_helmet",
+            () -> new ModArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.HELMET, new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> COPPER_CHESTPLATE = ITEMS.register("copper_chestplate",
+            () -> new ModArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.CHESTPLATE, new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> COPPER_LEGGINGS = ITEMS.register("copper_leggings",
+            () -> new ModArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> COPPER_BOOTS = ITEMS.register("copper_boots",
+            () -> new ModArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Item.Properties().fireResistant()));
+
     // Pink's custom tool
     public static final RegistryObject<Item> PINK_SWORD = ITEMS.register("pink_sword",
             () -> new SlowingSwordItem(ModToolTiers.PINK, 2, 3,
                     new Item.Properties().fireResistant()));
 
+    public static final RegistryObject<Item> PINK_PAXEL = ITEMS.register("pink_paxel",
+            () -> new PaxelItem(ModToolTiers.PINK, 1, 2,
+                    new Item.Properties().fireResistant()));
+
     // Pink's custom modes pickaxe
     public static final RegistryObject<Item> PINK_PICKAXE = ITEMS.register("pink_pickaxe",
-            () -> new ModesPickaxeItem(ModToolTiers.PINK, 1, 2,
+            () -> new PickaxeItem(ModToolTiers.PINK, 1, 2,
                     new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> PINK_SHOVEL = ITEMS.register("pink_shovel",
@@ -186,10 +201,34 @@ public class ModItems {
             () -> new HoeItem(ModToolTiers.PINK, 2, 3,
                     new Item.Properties().fireResistant()));
 
+    public static final RegistryObject<Item> COPPER_SWORD = ITEMS.register("copper_sword",
+            () -> new SwordItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> COPPER_PICKAXE = ITEMS.register("copper_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> COPPER_SHOVEL = ITEMS.register("copper_shovel",
+            () -> new ShovelItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> COPPER_AXE = ITEMS.register("copper_axe",
+            () -> new AxeItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> COPPER_HOE = ITEMS.register("copper_hoe",
+            () -> new HoeItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> COPPER_PAXEL = ITEMS.register("copper_paxel",
+            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
+
     // Mining Custom Item
-    public static final RegistryObject<Item> MINING_PAXEL = ITEMS.register("mining_paxel",
-            () -> new HammerItem(ModToolTiers.PINK, 2, 3, ModTags.Blocks.PAXEL_MINEABLE,
-                    new Item.Properties().fireResistant().durability(0)).setRadius(3));
+    public static final RegistryObject<Item> MINING_MODES = ITEMS.register("mining_modes",
+            () -> new ModesPickaxeItem(ModToolTiers.PINK, 2, 3,
+                    new Item.Properties().fireResistant().durability(0)));
 
     public static final RegistryObject<Item> COPPER_HAMMER = ITEMS.register("copper_hammer",
             () -> new HammerItem(ModToolTiers.COPPER, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,

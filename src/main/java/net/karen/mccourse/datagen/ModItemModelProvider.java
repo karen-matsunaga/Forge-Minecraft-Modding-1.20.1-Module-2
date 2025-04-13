@@ -112,17 +112,32 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.PINK_BOOTS);
 
         handheldItem(ModItems.PINK_SWORD);
+        handheldItem(ModItems.PINK_PAXEL);
         handheldItem(ModItems.PINK_PICKAXE);
         handheldItem(ModItems.PINK_SHOVEL);
         handheldItem(ModItems.PINK_AXE);
         handheldItem(ModItems.PINK_HOE);
 
+        simpleItem(ModItems.COPPER_HELMET); // Copper
+        simpleItem(ModItems.COPPER_CHESTPLATE);
+        simpleItem(ModItems.COPPER_LEGGINGS);
+        simpleItem(ModItems.COPPER_BOOTS);
+
+        handheldItem(ModItems.COPPER_SWORD);
+        handheldItem(ModItems.COPPER_PAXEL);
+        handheldItem(ModItems.COPPER_PICKAXE);
+        handheldItem(ModItems.COPPER_SHOVEL);
+        handheldItem(ModItems.COPPER_AXE);
+        handheldItem(ModItems.COPPER_HOE);
+
         // My custom ender pearl
         simpleItem(ModItems.BOUNCY_BALLS);
         simpleItem(ModItems.BOUNCY_BALLS_PARTICLES);
 
-        // Mining Paxel
-        handheldItem(ModItems.MINING_PAXEL);
+        // Mining Modes
+        handheldItem(ModItems.MINING_MODES);
+
+        // Hammer
         handheldItem(ModItems.COPPER_HAMMER);
         handheldItem(ModItems.DIAMOND_HAMMER);
         handheldItem(ModItems.GOLD_HAMMER);

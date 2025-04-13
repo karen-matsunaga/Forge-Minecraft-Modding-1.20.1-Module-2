@@ -1,5 +1,8 @@
-// 1.20.1	2025-04-11T22:19:38.4852519	Item Tags
+// 1.20.1	2025-04-12T11:19:38.8926943	Item Tags
+86562fd08aff39d08443a35e89d8fabc2114cb9b data/mccourse/tags/items/blocks/alexandrite_ores_items.json
 6a548e7595c02ec5f1b4c5b4c6c0b58ff810a1d2 data/mccourse/tags/items/blocks/mccourse_items.json
+6a548e7595c02ec5f1b4c5b4c6c0b58ff810a1d2 data/mccourse/tags/items/blocks/mccourse_ores_items.json
+5cb7d7564685ed6eebab24dad92d511b9fe8e2ae data/mccourse/tags/items/blocks/pink_ores_items.json
 46587698990f13785898e9fb4b62d6ba4212f45a data/minecraft/tags/items/logs_that_burn.json
 d223775d67e253e09434bac425eafac923c4668d data/minecraft/tags/items/music_discs.json
 e0ccd7e2e05f902bcc455bba38a3fcd126e23cce data/minecraft/tags/items/planks.json

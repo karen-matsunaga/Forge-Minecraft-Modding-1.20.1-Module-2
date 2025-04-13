@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "A": {
-      "item": "mccourse:pink_block"
+      "item": "mccourse:pink"
     },
     "B": {
       "item": "minecraft:stick"
@@ -15,7 +15,7 @@
     " B "
   ],
   "result": {
-    "item": "mccourse:pink_hammer"
+    "item": "mccourse:pink_pickaxe"
   },
   "show_notification": true
 }

@@ -179,17 +179,30 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.PINK_BOOTS.get());
 
                         output.accept(ModItems.PINK_SWORD.get());
+                        output.accept(ModItems.PINK_PAXEL.get());
                         output.accept(ModItems.PINK_PICKAXE.get());
                         output.accept(ModItems.PINK_SHOVEL.get());
                         output.accept(ModItems.PINK_AXE.get());
                         output.accept(ModItems.PINK_HOE.get());
+
+                        output.accept(ModItems.COPPER_HELMET.get()); // Copper
+                        output.accept(ModItems.COPPER_CHESTPLATE.get());
+                        output.accept(ModItems.COPPER_LEGGINGS.get());
+                        output.accept(ModItems.COPPER_BOOTS.get());
+
+                        output.accept(ModItems.COPPER_SWORD.get());
+                        output.accept(ModItems.COPPER_PAXEL.get());
+                        output.accept(ModItems.COPPER_PICKAXE.get());
+                        output.accept(ModItems.COPPER_SHOVEL.get());
+                        output.accept(ModItems.COPPER_AXE.get());
+                        output.accept(ModItems.COPPER_HOE.get());
 
                         // My custom ender pearl
                         output.accept(ModItems.BOUNCY_BALLS.get());
                         output.accept(ModItems.BOUNCY_BALLS_PARTICLES.get());
 
                         // My custom Mining Paxel
-                        output.accept(ModItems.MINING_PAXEL.get());
+                        output.accept(ModItems.MINING_MODES.get());
 
                         // My custom block
                         output.accept(ModBlocks.ENDER_PEARL_BLOCK.get());

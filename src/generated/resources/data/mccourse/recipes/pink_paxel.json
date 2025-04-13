@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "mccourse:pink_pickaxe"
+    },
+    "B": {
+      "item": "mccourse:pink_axe"
+    },
+    "C": {
+      "item": "mccourse:pink_shovel"
+    }
+  },
+  "pattern": [
+    "   ",
+    "ABC",
+    "   "
+  ],
+  "result": {
+    "item": "mccourse:pink_paxel"
+  },
+  "show_notification": true
+}

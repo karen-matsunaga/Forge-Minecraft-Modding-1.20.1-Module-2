@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-11T22:19:38.4852519	Item Models: mccourse
+// 1.20.1	2025-04-13T11:07:25.3529551	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 cfc705788577468640df77a99d391497448608d0 assets/mccourse/models/item/alexandrite_button.json
@@ -17,7 +17,17 @@ cc4ab4468ea9d286c8feaf44809a99228b853eb5 assets/mccourse/models/item/alexandrite
 d9d8556abb4f89407cf0e75dbb0df47a6e4bd113 assets/mccourse/models/item/bouncy_balls_particles.json
 d4fec10683a382af96a8b45f15f0414c193fa5da assets/mccourse/models/item/cattail.json
 aefb6b8a7b57b7d9a6980899ce5c3ec630c38e46 assets/mccourse/models/item/cattail_seeds.json
+a9659d8df478e58c0677de141875dacef44f8de9 assets/mccourse/models/item/copper_axe.json
+0b632aa6ba2f349cba8d480c4f8dfe6d288ee47d assets/mccourse/models/item/copper_boots.json
+543e07b256fc685f271a8f089bc0840ec701a5ba assets/mccourse/models/item/copper_chestplate.json
 7efc31e27581bfb437fd5b728c053e36c902e4eb assets/mccourse/models/item/copper_hammer.json
+bbd531b85ef925a59c81592d154a51a0375e2c0f assets/mccourse/models/item/copper_helmet.json
+a0a6b4fbc9c76b81a20061819b670ec646187c1b assets/mccourse/models/item/copper_hoe.json
+1a5dbfb484afbba668a5a4455955448cd374415d assets/mccourse/models/item/copper_leggings.json
+d17845eb9b4ef3b7f8d9210c28471a487efa7ab5 assets/mccourse/models/item/copper_paxel.json
+488e602f3ec4e85d8ee3c2ea82b883f84449e5a0 assets/mccourse/models/item/copper_pickaxe.json
+bb968366d50e7d7a8fa66030278ec0e58da9a465 assets/mccourse/models/item/copper_shovel.json
+8739aadeedb2c07aa07fbd19ccfde869c11678a0 assets/mccourse/models/item/copper_sword.json
 d05b6b7d8b4f3d85ee0762de2644d6dbf0397fd1 assets/mccourse/models/item/diamond_hammer.json
 eae9ea63d29bcb3e6592ee8132690be675ea7f9f assets/mccourse/models/item/dice.json
 2ab7eb05354c980c05330598767e6fb49d05ecbf assets/mccourse/models/item/gem_empowering_station.json
@@ -26,7 +36,7 @@ dca02707f240b4f62e52dcb7581ab555d004fef7 assets/mccourse/models/item/iron_hammer
 6349d1adee80001ce5a46b787665a782e5c25798 assets/mccourse/models/item/kohlrabi.json
 39b609a6c230f85321604bec3c0fbf1976247e24 assets/mccourse/models/item/kohlrabi_seeds.json
 23f99234f647aa805541635819a0a2a8b1552d81 assets/mccourse/models/item/metal_detector.json
-4ec3b3e90469d7a1c85a00b30c1434a319d55bff assets/mccourse/models/item/mining_paxel.json
+368120cccc4dd7a7bafa1bdae483653e08860578 assets/mccourse/models/item/mining_modes.json
 596fdd257bfa8c7c7df9692546761c1c5e5ff1c9 assets/mccourse/models/item/netherite_hammer.json
 69f14bc527b8fd908153ba18e4c2e2a0b027fa4f assets/mccourse/models/item/peat_brick.json
 46fb0a876ce0f22865aa5ac0b3fd61c573abab83 assets/mccourse/models/item/pink.json
@@ -37,6 +47,7 @@ e13e0b20f590347b4f11a61a164b0890387a5208 assets/mccourse/models/item/pink_chestp
 b8024de9546f5d28b61e6b63a7d942273d28b77d assets/mccourse/models/item/pink_helmet.json
 a1689d5a2cf3f30332f9050c9691e896c1245917 assets/mccourse/models/item/pink_hoe.json
 f4c2a392f1bacca451a6959db2adfd02adcf9d7d assets/mccourse/models/item/pink_leggings.json
+8d006d2d7caee2a6e0f6fd5dafb728b4585dbfd3 assets/mccourse/models/item/pink_paxel.json
 1f1e0e615478e4c69a023b05752a5f62e83c1bef assets/mccourse/models/item/pink_pickaxe.json
 73f30e89d09714ded811fe3909e3b38acfb69be4 assets/mccourse/models/item/pink_shovel.json
 66ec212a2b299974a23874dfb8ce854cce52f1fe assets/mccourse/models/item/pink_sword.json

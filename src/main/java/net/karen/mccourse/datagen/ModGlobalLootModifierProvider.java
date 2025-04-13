@@ -93,28 +93,28 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
                 List.of(Items.COAL))); // Coal ore
 
         // My custom items - Pink Pickaxe
-        add("pink_pickaxe_from_jungle_temple", new AddItemModifier(new LootItemCondition[] {
+        add("mining_modes_from_jungle_temple", new AddItemModifier(new LootItemCondition[] {
                 new LootTableIdCondition.Builder(new ResourceLocation("chests/jungle_temple")).build() },
-                List.of(ModItems.PINK_PICKAXE.get()))); // Jungle Temple
+                List.of(ModItems.MINING_MODES.get()))); // Jungle Temple
 
-        add("pink_pickaxe_from_ancient_city", new AddItemModifier(new LootItemCondition[] {
+        add("mining_modes_from_ancient_city", new AddItemModifier(new LootItemCondition[] {
                 new LootTableIdCondition.Builder(new ResourceLocation("chests/ancient_city")).build() },
-                List.of(ModItems.PINK_PICKAXE.get()))); // Ancient City
+                List.of(ModItems.MINING_MODES.get()))); // Ancient City
 
-        add("pink_pickaxe_from_bastion_bridge", new AddItemModifier(new LootItemCondition[] {
+        add("mining_modes_from_bastion_bridge", new AddItemModifier(new LootItemCondition[] {
                 new LootTableIdCondition.Builder(new ResourceLocation("chests/bastion_bridge")).build() },
-                List.of(ModItems.PINK_PICKAXE.get()))); // Bastion Bridge
+                List.of(ModItems.MINING_MODES.get()))); // Bastion Bridge
 
-        add("pink_pickaxe_from_bastion_hoglin_stable", new AddItemModifier(new LootItemCondition[] {
+        add("mining_modes_from_bastion_hoglin_stable", new AddItemModifier(new LootItemCondition[] {
                 new LootTableIdCondition.Builder(new ResourceLocation("chests/bastion_hoglin_stable")).build() },
-                List.of(ModItems.PINK_PICKAXE.get()))); // Bastion Hoglin Stable
+                List.of(ModItems.MINING_MODES.get()))); // Bastion Hoglin Stable
 
-        add("pink_pickaxe_from_bastion_bastion_other", new AddItemModifier(new LootItemCondition[] {
+        add("mining_modes_from_bastion_bastion_other", new AddItemModifier(new LootItemCondition[] {
                 new LootTableIdCondition.Builder(new ResourceLocation("chests/bastion_bastion_other")).build() },
-                List.of(ModItems.PINK_PICKAXE.get()))); // Bastion Other
+                List.of(ModItems.MINING_MODES.get()))); // Bastion Other
 
-        add("pink_pickaxe_from_bastion_bastion_treasure", new AddItemModifier(new LootItemCondition[] {
+        add("mining_modes_from_bastion_bastion_treasure", new AddItemModifier(new LootItemCondition[] {
                 new LootTableIdCondition.Builder(new ResourceLocation("chests/bastion_treasure")).build() },
-                List.of(ModItems.PINK_PICKAXE.get()))); // Bastion Treasure
+                List.of(ModItems.MINING_MODES.get()))); // Bastion Treasure
     }
 }

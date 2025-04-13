@@ -3,19 +3,16 @@
   "category": "equipment",
   "key": {
     "A": {
-      "item": "mccourse:pink_block"
-    },
-    "B": {
-      "item": "minecraft:stick"
+      "item": "mccourse:pink"
     }
   },
   "pattern": [
+    "A A",
     "AAA",
-    " B ",
-    " B "
+    "AAA"
   ],
   "result": {
-    "item": "mccourse:pink_hammer"
+    "item": "mccourse:pink_chestplate"
   },
   "show_notification": true
 }

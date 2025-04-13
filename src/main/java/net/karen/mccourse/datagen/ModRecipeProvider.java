@@ -70,27 +70,50 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_diamond", has(Items.DIAMOND)).save(pWriter);
 
         // My custom mod
-        // Hammer and Pickaxe
+        // Hammer
         pickaxeHammerItem(ModItems.ALEXANDRITE_HAMMER.get(), ModBlocks.ALEXANDRITE_BLOCK.get(), pWriter); // Hammer
         pickaxeHammerItem(ModItems.COPPER_HAMMER.get(), Items.COPPER_BLOCK, pWriter);
         pickaxeHammerItem(ModItems.DIAMOND_HAMMER.get(), Items.DIAMOND_BLOCK, pWriter);
         pickaxeHammerItem(ModItems.GOLD_HAMMER.get(), Items.GOLD_BLOCK, pWriter);
         pickaxeHammerItem(ModItems.IRON_HAMMER.get(), Items.IRON_BLOCK, pWriter);
         pickaxeHammerItem(ModItems.NETHERITE_HAMMER.get(), Items.NETHERITE_BLOCK, pWriter);
-        pickaxeHammerItem(ModItems.PINK_HAMMER.get(), Items.DIAMOND_PICKAXE, pWriter);
+        pickaxeHammerItem(ModItems.PINK_HAMMER.get(), ModBlocks.PINK_BLOCK.get(), pWriter);
         pickaxeHammerItem(ModItems.WOODEN_HAMMER.get(), Items.OAK_LOG, pWriter);
         pickaxeHammerItem(ModItems.STONE_HAMMER.get(), Items.STONE, pWriter);
 
-        pickaxeHammerItem(ModItems.ALEXANDRITE_PICKAXE.get(), ModItems.ALEXANDRITE.get(), pWriter); // Pickaxe
+        // Pickaxe
+        pickaxeHammerItem(ModItems.ALEXANDRITE_PICKAXE.get(), ModItems.ALEXANDRITE.get(), pWriter);
+        pickaxeHammerItem(ModItems.PINK_PICKAXE.get(), ModItems.PINK.get(), pWriter);
+        pickaxeHammerItem(ModItems.COPPER_PICKAXE.get(), Items.COPPER_INGOT, pWriter);
 
-        swordItem(ModItems.ALEXANDRITE_SWORD.get(), ModItems.ALEXANDRITE.get(), pWriter); // Sword
-        axeItem(ModItems.ALEXANDRITE_AXE.get(), ModItems.ALEXANDRITE.get(), pWriter); // Axe
-        shovelItem(ModItems.ALEXANDRITE_SHOVEL.get(), ModItems.ALEXANDRITE.get(), pWriter); // Shovel
+        // Sword
+        swordItem(ModItems.ALEXANDRITE_SWORD.get(), ModItems.ALEXANDRITE.get(), pWriter);
+        swordItem(ModItems.PINK_SWORD.get(), ModItems.PINK.get(), pWriter);
+        swordItem(ModItems.COPPER_SWORD.get(), Items.COPPER_INGOT, pWriter);
 
+        // Axe
+        axeItem(ModItems.ALEXANDRITE_AXE.get(), ModItems.ALEXANDRITE.get(), pWriter);
+        axeItem(ModItems.PINK_AXE.get(), ModItems.PINK.get(), pWriter);
+        axeItem(ModItems.COPPER_AXE.get(), Items.COPPER_INGOT, pWriter);
+
+        // Shovel
+        shovelItem(ModItems.ALEXANDRITE_SHOVEL.get(), ModItems.ALEXANDRITE.get(), pWriter);
+        shovelItem(ModItems.PINK_SHOVEL.get(), ModItems.PINK.get(), pWriter);
+        shovelItem(ModItems.COPPER_SHOVEL.get(), Items.COPPER_INGOT, pWriter);
+
+        // Paxel
         paxelItem(ModItems.ALEXANDRITE_PAXEL.get(), ModItems.ALEXANDRITE_PICKAXE.get(),
-                ModItems.ALEXANDRITE_AXE.get(), ModItems.ALEXANDRITE_SHOVEL.get(), pWriter); // Paxel
+                ModItems.ALEXANDRITE_AXE.get(), ModItems.ALEXANDRITE_SHOVEL.get(), pWriter);
+        paxelItem(ModItems.PINK_PAXEL.get(), ModItems.PINK_PICKAXE.get(),
+                ModItems.PINK_AXE.get(), ModItems.PINK_SHOVEL.get(), pWriter);
+        paxelItem(ModItems.COPPER_PAXEL.get(), ModItems.COPPER_PICKAXE.get(), // ADD MORE PAXEL
+                ModItems.COPPER_AXE.get(), ModItems.COPPER_SHOVEL.get(), pWriter);
 
-        hoeItem(ModItems.ALEXANDRITE_HOE.get(), ModItems.ALEXANDRITE.get(), pWriter); // Hoe
+
+        // Hoe
+        hoeItem(ModItems.ALEXANDRITE_HOE.get(), ModItems.ALEXANDRITE.get(), pWriter);
+        hoeItem(ModItems.PINK_HOE.get(), ModItems.PINK.get(), pWriter);
+        hoeItem(ModItems.COPPER_HOE.get(), Items.COPPER_INGOT, pWriter);
 
         // Armor
         helmetArmor(ModItems.ALEXANDRITE_HELMET.get(), ModItems.ALEXANDRITE.get(), pWriter); // Helmet
@@ -98,7 +121,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         leggingsArmor(ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.ALEXANDRITE.get(), pWriter); // Leggings
         bootsArmor(ModItems.ALEXANDRITE_BOOTS.get(), ModItems.ALEXANDRITE.get(), pWriter); // Boots
 
-        // Block
+        helmetArmor(ModItems.PINK_HELMET.get(), ModItems.PINK.get(), pWriter); // Helmet
+        chestplateArmor(ModItems.PINK_CHESTPLATE.get(), ModItems.PINK.get(), pWriter); // Chestplate
+        leggingsArmor(ModItems.PINK_LEGGINGS.get(), ModItems.PINK.get(), pWriter); // Leggings
+        bootsArmor(ModItems.PINK_BOOTS.get(), ModItems.PINK.get(), pWriter); // Boots
+
+        helmetArmor(ModItems.COPPER_HELMET.get(), Items.COPPER_INGOT, pWriter); // Helmet
+        chestplateArmor(ModItems.COPPER_CHESTPLATE.get(), Items.COPPER_INGOT, pWriter); // Chestplate
+        leggingsArmor(ModItems.COPPER_LEGGINGS.get(), Items.COPPER_INGOT, pWriter); // Leggings
+        bootsArmor(ModItems.COPPER_BOOTS.get(), Items.COPPER_INGOT, pWriter); // Boots
+
+        // Block -> Item and Item -> Block
         itemTransformBlock(ModBlocks.ENDER_PEARL_BLOCK.get(), Items.ENDER_PEARL, pWriter);
         blockTransformItem(Items.ENDER_PEARL, ModBlocks.ENDER_PEARL_BLOCK.get(), pWriter);
 

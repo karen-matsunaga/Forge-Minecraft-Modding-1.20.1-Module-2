@@ -161,23 +161,34 @@
 
   "block.mccourse.kaupen_furnace": "Kaupen Furnace",
 
+  "item.mccourse.mining_modes": "Mining Modes",
+
   "item.mccourse.pink_helmet": "Pink Helmet",
   "item.mccourse.pink_chestplate": "Pink Chestplate",
   "item.mccourse.pink_leggings": "Pink Leggings",
   "item.mccourse.pink_boots": "Pink Boots",
-
   "item.mccourse.pink_sword": "Pink Sword",
   "item.mccourse.pink_pickaxe": "§l§3Pink Pickaxe",
   "item.mccourse.pink_shovel": "Pink Shovel",
   "item.mccourse.pink_axe": "Pink Axe",
   "item.mccourse.pink_hoe": "Pink Hoe",
+  "item.mccourse.pink_paxel": "Pink Paxel",
+
+  "item.mccourse.copper_helmet": "Copper Helmet",
+  "item.mccourse.copper_chestplate": "Copper Chestplate",
+  "item.mccourse.copper_leggings": "Copper Leggings",
+  "item.mccourse.copper_boots": "Copper Boots",
+  "item.mccourse.copper_sword": "Copper Sword",
+  "item.mccourse.copper_pickaxe": "Copper Pickaxe",
+  "item.mccourse.copper_shovel": "Copper Shovel",
+  "item.mccourse.copper_axe": "Copper Axe",
+  "item.mccourse.copper_hoe": "Copper Hoe",
+  "item.mccourse.copper_paxel": "Copper Paxel",
 
   "item.mccourse.bouncy_balls": "Bouncy Balls",
   "item.mccourse.bouncy_balls_particles": "Bouncy Balls Particles",
 
-  "item.mccourse.mining_paxel": "Mining Paxel",
-
-  "tooltip.mccourse.modes_pickaxe.tooltip.shift": "§l§3Pickaxe break 3x3 area §aauto smelt§3, §a more ores§3 and §a magnetic§3 different speed mine",
+  "tooltip.mccourse.modes_pickaxe.tooltip.shift": "§l§3Pickaxe break 3x3 area §a auto smelt§3, §a more ores§3 and §a magnetic§3 different speed mine",
   "tooltip.mccourse.modes_pickaxe.tooltip": "Press §eSHIFT§r for more Information",
 
   "block.mccourse.ender_pearl_block": "Ender Pearl Block",
@@ -195,7 +206,7 @@
   "item.mccourse.wooden_hammer": "Wooden Hammer",
 
   "item.mccourse.pink": "Pink",
-  "item.mccourse.pink_block": "Pink Block",
+  "block.mccourse.pink_block": "Pink Block",
   "block.mccourse.pink_ore": "Pink Ore",
   "block.mccourse.deepslate_pink_ore": "Deepslate Pink Ore",
   "block.mccourse.end_stone_pink_ore": "End Stone Pink Ore",

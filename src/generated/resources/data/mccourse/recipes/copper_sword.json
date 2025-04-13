@@ -3,19 +3,19 @@
   "category": "equipment",
   "key": {
     "A": {
-      "item": "mccourse:pink_block"
+      "item": "minecraft:copper_ingot"
     },
     "B": {
       "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "AAA",
-    " B ",
+    " A ",
+    " A ",
     " B "
   ],
   "result": {
-    "item": "mccourse:pink_hammer"
+    "item": "mccourse:copper_sword"
   },
   "show_notification": true
 }

@@ -345,19 +345,19 @@ public class ModEvents {
         FlyingMob.class, "GlowingFlyingMobTag", EnderDragon.class, "GlowingEnderDragonTag",
         Slime.class, "GlowingSlimeTag"); // Entities groups -> Classes as tags
 
-        Map<String, ChatFormatting> entityColors = Map.of("GlowingMonsterTag", ChatFormatting.RED,
-        "GlowingFlyingMobTag", ChatFormatting.RED, "GlowingEnderDragonTag", ChatFormatting.RED,
-        "GlowingSlimeTag", ChatFormatting.RED, "GlowingAnimalTag", ChatFormatting.BLUE,
-        "GlowingAmbientCreatureTag", ChatFormatting.BLUE, "GlowingAllayTag", ChatFormatting.BLUE,
-        "GlowingWaterAnimalTag", ChatFormatting.YELLOW, "GlowingVillagerTag", ChatFormatting.DARK_PURPLE,
-        "GlowingAbstractGolemTag", ChatFormatting.DARK_PURPLE); // Entities colors -> Each class represent with some color
-
         for (Map.Entry<Class<? extends LivingEntity>, String> entry : entityTag.entrySet()) {
+            ChatFormatting entitiesColor = switch (entry.getValue()) {
+                case "GlowingMonsterTag", "GlowingFlyingMobTag", "GlowingEnderDragonTag", "GlowingSlimeTag" -> ChatFormatting.RED;
+                case "GlowingAnimalTag", "GlowingAmbientCreatureTag", "GlowingAllayTag" -> ChatFormatting.BLUE;
+                case "GlowingWaterAnimalTag" -> ChatFormatting.YELLOW;
+                case "GlowingVillagerTag", "GlowingAbstractGolemTag" -> ChatFormatting.DARK_PURPLE;
+                default -> ChatFormatting.WHITE; }; // Entities colors -> Each class represent with some color
+
             List<? extends LivingEntity> entities = livingEntity.level().getEntitiesOfClass(entry.getKey(), livingEntity.getBoundingBox().inflate(GLOWING_EYES));
             PlayerTeam tag = ((Player) livingEntity).getScoreboard().getPlayerTeam(entry.getValue());
             if (tag == null) { // Added each entity on group with specif tag and color on entityTag and entityColors
                 tag = ((Player) livingEntity).getScoreboard().addPlayerTeam(entry.getValue());
-                tag.setColor(entityColors.get(entry.getValue()));
+                tag.setColor(entitiesColor);
             }
             for (LivingEntity entity : entities) { // Each entity received Glowing effect with specif color on entityColors
                 entity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1, true, false, false));
@@ -367,16 +367,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Custom Enchantment's tooltips
-    private static ChatFormatting getColorForEnchantment(Enchantment enchantment) {
-        return enchantment.isCurse() ? ChatFormatting.RED :
-            switch (enchantment.category) {
-                case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.YELLOW;
-                case DIGGER -> ChatFormatting.GREEN;
-                case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
-                default -> ChatFormatting.GRAY;
-            };
-    }
-
     @SubscribeEvent
     public static void enchantmentTooltipDescriptions(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
@@ -393,21 +383,23 @@ public class ModEvents {
                     String expected = Component.translatable(enchantment.getDescriptionId()).getString();
 
                     if (Objects.requireNonNull(raw).startsWith(expected)) {
-                        ChatFormatting color = getColorForEnchantment(enchantment); // Replace this line with custom styled version
+                        ChatFormatting color = enchantment.isCurse() ? ChatFormatting.RED :
+                                switch (enchantment.category) {
+                                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.YELLOW;
+                                    case DIGGER -> ChatFormatting.GREEN;
+                                    case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
+                                    default -> ChatFormatting.GRAY; };  // Replace this line with custom styled version
                         boolean isCurse = enchantment.isCurse();
-                        MutableComponent name = Component.translatable(enchantment.getDescriptionId())
-                                .withStyle(Style.EMPTY.withColor(color).withBold(!isCurse).withItalic(isCurse));
-
-                        if (level > 0 || enchantment.getMaxLevel() > 0) {
-                            name.append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level)))
-                                .append(CommonComponents.NEW_LINE);
-                        } // Enchantment Levels with Arabic numerals
-
                         String descriptionValue = enchantment.getDescriptionId() + ".desc";
-                        if (I18n.exists(descriptionValue)) {
-                            name.append(Component.translatable(descriptionValue));
-                        } // Enchantment Descriptions with JSON file -> I18n = en_us.json
-                        tooltip.set(i, name); // Number line of enchantment names and enchantment descriptions
+
+                        if (level > 0 || enchantment.getMaxLevel() > 0 || I18n.exists(descriptionValue)) {
+                            MutableComponent name = Component.translatable(enchantment.getDescriptionId())
+                                    .withStyle(Style.EMPTY.withColor(color).withBold(!isCurse).withItalic(isCurse))
+                                    .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level)))
+                                    .append(CommonComponents.NEW_LINE)
+                                    .append(Component.translatable(descriptionValue));
+                            tooltip.set(i, name); // Number line of enchantment names and enchantment descriptions
+                        } // Enchantment Levels with Arabic numerals and Enchantment Descriptions with JSON file -> I18n = en_us.json
                         break;
                     }
                 }
@@ -422,20 +414,19 @@ public class ModEvents {
         int h = event.getWindow().getGuiScaledHeight();
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
+        int x = 10;
+        int y = h - 30;
+
         if (player != null) {
             ItemStack heldItem = player.getMainHandItem();
             if (heldItem.getItem() instanceof ModesPickaxeItem modesPickaxe) {
-                ModesPickaxe mode = modesPickaxe.getModeActual();
-
-                // Show text mode actual on screen
+                ModesPickaxe mode = modesPickaxe.getModeActual(); // Show text mode actual on screen
                 Component modeText = Component.literal("Mode actual: ").setStyle(Style.EMPTY.withColor(0xFFAA00)
                         .applyFormat(ChatFormatting.BOLD)); // Gold color
                 Component modeType = Component.literal(mode.toString().replace("_", " ")).setStyle(Style.EMPTY.withColor(0xFF5555)
                         .applyFormat(ChatFormatting.BOLD)); // Red color
 
                 // Renders text on overlay on same line
-                int x = 10;
-                int y = h - 30;
                 event.getGuiGraphics().drawString(mc.font, modeText, x, y, 0xFFAA00, false); // Mode Text
                 x += mc.font.width(modeText);
                 event.getGuiGraphics().drawString(mc.font, modeType, x, y, 0xFF5555, false); // Mode Type
