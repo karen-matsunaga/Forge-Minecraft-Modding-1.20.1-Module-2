@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-14T16:37:51.4942743	Recipes
+// 1.20.1	2025-04-14T19:22:50.2432279	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 15201a36d0ae05c11f8a82b7b43dcf940f56c7f4 data/mccourse/advancements/recipes/misc/alexandrite.json
 ee0129f24bb36d18562730a2dda377e622f5da76 data/mccourse/advancements/recipes/misc/alexandrite_block.json
@@ -54,8 +54,11 @@ ddecb7c2e312a4f450a74c08a5624b7a49d27e17 data/mccourse/advancements/recipes/tool
 2f905caeba24ffd342859f974c1637fb09123991 data/mccourse/advancements/recipes/tools/copper_shovel.json
 0212d465755affa4db92900927a311131e358179 data/mccourse/advancements/recipes/tools/copper_sword.json
 aa34734a335d70748ef4c5fff3dac34aca4115ee data/mccourse/advancements/recipes/tools/diamond_hammer.json
+13fc9f59b3439ff08902d787d29446d3adb8d240 data/mccourse/advancements/recipes/tools/diamond_paxel.json
 14af658349600c9ff65246dec39fedb05282f177 data/mccourse/advancements/recipes/tools/gold_hammer.json
+a2024e5bc202a6fcb708ff37f5592c52282afbf2 data/mccourse/advancements/recipes/tools/gold_paxel.json
 c46fae2932422a1d95a54763b095ea64cfddb93c data/mccourse/advancements/recipes/tools/iron_hammer.json
+7a047a7582c56bf1b1b13ab2892e004f53f184f3 data/mccourse/advancements/recipes/tools/iron_paxel.json
 1f3eb3e42117d091444d461e6918c4ef1035899a data/mccourse/advancements/recipes/tools/netherite_hammer.json
 9880ac16d22e50c6f0193c13979a13135bdad98c data/mccourse/advancements/recipes/tools/pink_axe.json
 d77d2af8ac0aad9df0d810ebf7a96d50d43bd062 data/mccourse/advancements/recipes/tools/pink_boots.json
@@ -69,7 +72,9 @@ f6a5c15b86ffd1b63378524e34668d2b99d6a51f data/mccourse/advancements/recipes/tool
 fab11ad1c01a4ea3b8aad0c5f0c9aa7ac457d38b data/mccourse/advancements/recipes/tools/pink_shovel.json
 8fea9efc8d26bfd81b2cb40c2ad7c16ee5046e59 data/mccourse/advancements/recipes/tools/pink_sword.json
 39c63e677b6b811769746c55b5f52d42752d7ba0 data/mccourse/advancements/recipes/tools/stone_hammer.json
+154ee8104ae805b5df06a68f40c035aa90258e21 data/mccourse/advancements/recipes/tools/stone_paxel.json
 bb1579acdba9fc8a710f90897864914d4c405c0d data/mccourse/advancements/recipes/tools/wooden_hammer.json
+1cc71df3f9358e13ddd4cb9845858c02b70e49bd data/mccourse/advancements/recipes/tools/wooden_paxel.json
 018a7b411f8a306a1248fa4ee8977258b327ce7a data/mccourse/recipes/alexandrite.json
 b334a97f33aa1e46368af421c2ab67986d7bd055 data/mccourse/recipes/alexandrite_axe.json
 989ce7b84b2cf26f12402e85b3b697ee76adf7bc data/mccourse/recipes/alexandrite_block.json
@@ -107,10 +112,13 @@ a5469a2513870a25d5e0f6319782b1849bf4d070 data/mccourse/recipes/copper_shovel.jso
 82a9be751f16c85e404eefa6c707dbc7d1e343c4 data/mccourse/recipes/copper_sword.json
 bf572bca995581b51614943d8a70e807e2609e36 data/mccourse/recipes/diamond_from_gem_empowering.json
 28864fd38b796283bed64db851c50c65c3eb4e2d data/mccourse/recipes/diamond_hammer.json
+554a58687570a8233e9447fd8e21dbecf437676e data/mccourse/recipes/diamond_paxel.json
 c9c723c0a267bb8a6db4fa7c42b50b9d8af8ca46 data/mccourse/recipes/ender_pearl_block.json
 334d4a7faeeb1befbbd989ec5baf94f373a4d48d data/mccourse/recipes/gold_hammer.json
+cac1d9408074dc678050531a6e50a004c34cfe08 data/mccourse/recipes/gold_paxel.json
 98f66b88a90b829f06ff62f33158eb8a456bef71 data/mccourse/recipes/gunpowder_block.json
 e5e732d008b6fa24c7cf0776be896352974562ce data/mccourse/recipes/iron_hammer.json
+94a3ef178b46028458d22a09905421f586ca043b data/mccourse/recipes/iron_paxel.json
 adc0df884043555a3d09686b9c3d0278935ec2d7 data/mccourse/recipes/mining_modes.json
 f607ef1b937f07d9fc52f19d17c943743a35da86 data/mccourse/recipes/netherite_hammer.json
 cc94de58809f0903e229eef667debd78793bc7ef data/mccourse/recipes/nether_star_block.json
@@ -141,7 +149,9 @@ fa966f75ced176721e85d71224f99f6c9c5951e2 data/mccourse/recipes/raw_alexandrite.j
 50de576130ce8388820e9c450b3f8cca21391b4e data/mccourse/recipes/raw_alexandrite_block.json
 8e926fb44bf263db8eadedde02c8ccd90a683d8a data/mccourse/recipes/rotten_flesh_block.json
 c24ee75081d8c74d7fb390b214950b838c881488 data/mccourse/recipes/stone_hammer.json
+65db856697e6d8371ffa1cc267009e98b048d7b8 data/mccourse/recipes/stone_paxel.json
 46f816f7cacbc71daa553a3d957469b8f75b46c1 data/mccourse/recipes/wooden_hammer.json
+6194d7a2f67e4c136b9a6aac62466ab0e8ca59e9 data/mccourse/recipes/wooden_paxel.json
 12fee3c665e7a74dcbbc44ec05da7fdc72347b81 data/minecraft/advancements/recipes/diamond.json
 755d68502edf360d43e20838b899a9140a7d2029 data/minecraft/advancements/recipes/misc/ender_pearl.json
 01658d235dc3694a6947e4e4d6dda0247ec7d532 data/minecraft/advancements/recipes/misc/gunpowder.json

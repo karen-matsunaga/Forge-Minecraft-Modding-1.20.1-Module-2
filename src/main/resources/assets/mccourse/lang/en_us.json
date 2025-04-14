@@ -185,6 +185,12 @@
   "item.mccourse.copper_hoe": "Copper Hoe",
   "item.mccourse.copper_paxel": "Copper Paxel",
 
+  "item.mccourse.diamond_paxel": "Diamond Paxel",
+  "item.mccourse.gold_paxel": "Gold Paxel",
+  "item.mccourse.iron_paxel": "Iron Paxel",
+  "item.mccourse.stone_paxel": "Stone Paxel",
+  "item.mccourse.wooden_paxel": "Wooden Paxel",
+
   "item.mccourse.bouncy_balls": "Bouncy Balls",
   "item.mccourse.bouncy_balls_particles": "Bouncy Balls Particles",
 

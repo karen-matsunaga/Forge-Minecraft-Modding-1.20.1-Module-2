@@ -225,6 +225,27 @@ public class ModItems {
             () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
                     new Item.Properties().fireResistant()));
 
+    public static final RegistryObject<Item> DIAMOND_PAXEL = ITEMS.register("diamond_paxel",
+            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> GOLD_PAXEL = ITEMS.register("gold_paxel",
+            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> IRON_PAXEL = ITEMS.register("iron_paxel",
+            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> STONE_PAXEL = ITEMS.register("stone_paxel",
+            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> WOODEN_PAXEL = ITEMS.register("wooden_paxel",
+            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
+
+
     // Mining Custom Item
     public static final RegistryObject<Item> MINING_MODES = ITEMS.register("mining_modes",
             () -> new ModesPickaxeItem(ModToolTiers.PINK, 2, 3,

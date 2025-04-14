@@ -220,6 +220,12 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.WOODEN_HAMMER.get());
                         output.accept(ModItems.STONE_HAMMER.get());
 
+                        output.accept(ModItems.DIAMOND_PAXEL.get());
+                        output.accept(ModItems.GOLD_PAXEL.get());
+                        output.accept(ModItems.IRON_PAXEL.get());
+                        output.accept(ModItems.STONE_PAXEL.get());
+                        output.accept(ModItems.WOODEN_PAXEL.get());
+
                         // My custom ore
                         output.accept(ModItems.PINK.get());
                         output.accept(ModBlocks.PINK_BLOCK.get());

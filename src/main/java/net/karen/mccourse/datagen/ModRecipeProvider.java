@@ -106,9 +106,13 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 ModItems.ALEXANDRITE_AXE.get(), ModItems.ALEXANDRITE_SHOVEL.get(), pWriter);
         paxelItem(ModItems.PINK_PAXEL.get(), ModItems.PINK_PICKAXE.get(),
                 ModItems.PINK_AXE.get(), ModItems.PINK_SHOVEL.get(), pWriter);
-        paxelItem(ModItems.COPPER_PAXEL.get(), ModItems.COPPER_PICKAXE.get(), // ADD MORE PAXEL
+        paxelItem(ModItems.COPPER_PAXEL.get(), ModItems.COPPER_PICKAXE.get(),
                 ModItems.COPPER_AXE.get(), ModItems.COPPER_SHOVEL.get(), pWriter);
-
+        paxelItem(ModItems.DIAMOND_PAXEL.get(), Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE, Items.DIAMOND_SHOVEL, pWriter);
+        paxelItem(ModItems.GOLD_PAXEL.get(), Items.GOLDEN_PICKAXE, Items.GOLDEN_AXE, Items.GOLDEN_SHOVEL, pWriter);
+        paxelItem(ModItems.IRON_PAXEL.get(), Items.IRON_PICKAXE, Items.IRON_AXE, Items.IRON_SHOVEL, pWriter);
+        paxelItem(ModItems.STONE_PAXEL.get(), Items.STONE_PICKAXE, Items.STONE_AXE, Items.STONE_SHOVEL, pWriter);
+        paxelItem(ModItems.WOODEN_PAXEL.get(), Items.WOODEN_PICKAXE, Items.WOODEN_AXE, Items.WOODEN_SHOVEL, pWriter);
 
         // Hoe
         hoeItem(ModItems.ALEXANDRITE_HOE.get(), ModItems.ALEXANDRITE.get(), pWriter);

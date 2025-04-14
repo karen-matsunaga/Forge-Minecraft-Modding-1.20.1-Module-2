@@ -67,14 +67,12 @@ public class ModesPickaxeItem extends PickaxeItem {
     public boolean mineBlock(@NotNull ItemStack itemstack, @NotNull Level world, @NotNull BlockState blockstate, @NotNull BlockPos pos, @NotNull LivingEntity entity) {
         boolean retval = super.mineBlock(itemstack, world, blockstate, pos, entity);
         if (!world.isClientSide) {
-            // Slow mode and Fast mode logics
-            if (modeActual == ModesPickaxe.SLOW || modeActual == ModesPickaxe.FAST) {
-                itemstack.hurtAndBreak(1, entity, (e) -> e.broadcastBreakEvent(entity.getUsedItemHand()));
-            }
-            else if (modeActual == ModesPickaxe.HAMMER) { hammerMode(itemstack, world, pos, (Player) entity); } // Hammer mode logic
-            else if (modeActual == ModesPickaxe.AUTO_SMELT) { autoSmeltMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity)); }
-            else if (modeActual == ModesPickaxe.MORE_ORES) { moreOresMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity)); }
-            else if (modeActual == ModesPickaxe.MAGNETIC) { magneticMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity)); }
+            switch (modeActual) {
+                case SLOW, FAST -> itemstack.hurtAndBreak(1, entity, (e) -> e.broadcastBreakEvent(entity.getUsedItemHand())); // Slow mode and Fast mode logics
+                case HAMMER -> hammerMode(itemstack, world, pos, (Player) entity); // Hammer mode logic
+                case AUTO_SMELT -> autoSmeltMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity));
+                case MORE_ORES ->  moreOresMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity));
+                case MAGNETIC -> magneticMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity));}
         }
         return retval;
     }
