@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-13T11:07:25.3379451	Recipes
+// 1.20.1	2025-04-14T16:37:51.4942743	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 15201a36d0ae05c11f8a82b7b43dcf940f56c7f4 data/mccourse/advancements/recipes/misc/alexandrite.json
 ee0129f24bb36d18562730a2dda377e622f5da76 data/mccourse/advancements/recipes/misc/alexandrite_block.json
@@ -14,6 +14,7 @@ e638de98327fcefb8ed9720908bdc58ddbdf818b data/mccourse/advancements/recipes/misc
 548f5248251721a2524e6f58cb4fb0b409fb7cd1 data/mccourse/advancements/recipes/misc/alexandrite_from_smelting_raw_alexandrite.json
 d3c788c38d8460512af52b075d307257d121f481 data/mccourse/advancements/recipes/misc/ender_pearl_block.json
 77a7598b4b9531e1b3a8d671cf9b769ad0090873 data/mccourse/advancements/recipes/misc/gunpowder_block.json
+8228acb2fefaadf72c0ed4f2361c6650d3b482f1 data/mccourse/advancements/recipes/misc/mining_modes.json
 60c9c1c462516342856cccbce2c74a2c724b1829 data/mccourse/advancements/recipes/misc/nether_star_block.json
 b25971f29548f5ceec1cbf292c9034cbc4069bf7 data/mccourse/advancements/recipes/misc/pink.json
 29af2ae5dd6647d0ad38020420bd89e366a2d740 data/mccourse/advancements/recipes/misc/pink_block.json
@@ -110,6 +111,7 @@ c9c723c0a267bb8a6db4fa7c42b50b9d8af8ca46 data/mccourse/recipes/ender_pearl_block
 334d4a7faeeb1befbbd989ec5baf94f373a4d48d data/mccourse/recipes/gold_hammer.json
 98f66b88a90b829f06ff62f33158eb8a456bef71 data/mccourse/recipes/gunpowder_block.json
 e5e732d008b6fa24c7cf0776be896352974562ce data/mccourse/recipes/iron_hammer.json
+adc0df884043555a3d09686b9c3d0278935ec2d7 data/mccourse/recipes/mining_modes.json
 f607ef1b937f07d9fc52f19d17c943743a35da86 data/mccourse/recipes/netherite_hammer.json
 cc94de58809f0903e229eef667debd78793bc7ef data/mccourse/recipes/nether_star_block.json
 674c8b4f0ac78740dabe23e43f877e20d5780585 data/mccourse/recipes/pink.json

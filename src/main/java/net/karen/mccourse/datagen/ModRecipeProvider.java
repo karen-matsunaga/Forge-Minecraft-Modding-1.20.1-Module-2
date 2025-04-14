@@ -154,6 +154,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // Items Blasting
         oreBlasting(pWriter, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(), 0.25f, 200, "pink");
+
+        // Enchantment
+        toolEnchantment(ModItems.MINING_MODES.get(), Items.NETHER_STAR, pWriter);
     }
 
     // Smelting
@@ -317,6 +320,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', item)
                 .define('B', Items.STICK)
                 .unlockedBy("has_item", has(pResult))
+                .save(pWriter);
+    }
+
+    // Custom tools enchanted
+    public static void toolEnchantment(ItemLike pResult, ItemLike item, Consumer<FinishedRecipe> pWriter) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, pResult, 1)
+                .pattern("AAA")
+                .pattern("ABA")
+                .pattern("AAA")
+                .define('A', item)
+                .define('B', Items.BOOK)
+                .unlockedBy("has_item", has(item))
                 .save(pWriter);
     }
 }

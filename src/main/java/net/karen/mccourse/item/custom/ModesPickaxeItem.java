@@ -1,5 +1,6 @@
 package net.karen.mccourse.item.custom;
 
+import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.item.ModesPickaxe;
 import net.karen.mccourse.util.ModTags;
 import net.minecraft.client.gui.screens.Screen;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -34,14 +36,22 @@ import java.util.Objects;
 // Using code with some modifications
 public class ModesPickaxeItem extends PickaxeItem {
     private ModesPickaxe modeActual = ModesPickaxe.NORMAL; // Pickaxe mode actual
+    private int level;
 
     public ModesPickaxeItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     } // Pickaxe tier, attack damage, attack speed and properties
 
+    public ModesPickaxeItem setLevel(int level) { this.level = level; return this; } // Radius declared on ModItems
+
+    public int getLevel() { return this.level; } // Declared radius activated on ModEvents
+
     // Define mine speed of pickaxe depends on the mode
     @Override
     public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
+        if (stack.getItem() == ModItems.MINING_MODES.get() && !stack.isEnchanted()) {
+            applyOverpoweredEnchantments(stack);
+        }
         return switch (modeActual) {
             case SLOW -> 2.0F; // Stone pickaxe speed
             case FAST -> 25.0F; // Pickaxe ultra speed
@@ -214,5 +224,18 @@ public class ModesPickaxeItem extends PickaxeItem {
         if (Screen.hasShiftDown()) { pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip.shift")); }
         else { pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip")); }
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+    }
+
+    @Override
+    public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level world, @NotNull Player player) {
+        super.onCraftedBy(stack, world, player);
+        applyOverpoweredEnchantments(stack);
+    }
+
+    private void applyOverpoweredEnchantments(ItemStack stack) {
+        stack.enchant(Enchantments.BLOCK_EFFICIENCY, getLevel());
+        stack.enchant(Enchantments.BLOCK_FORTUNE, getLevel());
+        stack.enchant(Enchantments.UNBREAKING, getLevel());
+        stack.enchant(Enchantments.MENDING, getLevel());
     }
 }
