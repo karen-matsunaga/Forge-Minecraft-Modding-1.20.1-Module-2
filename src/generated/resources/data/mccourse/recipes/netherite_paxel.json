@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "minecraft:netherite_pickaxe"
+    },
+    "B": {
+      "item": "minecraft:netherite_axe"
+    },
+    "C": {
+      "item": "minecraft:netherite_shovel"
+    }
+  },
+  "pattern": [
+    "   ",
+    "ABC",
+    "   "
+  ],
+  "result": {
+    "item": "mccourse:netherite_paxel"
+  },
+  "show_notification": true
+}

@@ -10,11 +10,14 @@ import net.karen.mccourse.sound.ModSounds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.List;
 
 public class ModItems {
     // Register items
@@ -245,12 +248,18 @@ public class ModItems {
             () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
                     new Item.Properties().fireResistant()));
 
+    public static final RegistryObject<Item> NETHERITE_PAXEL = ITEMS.register("netherite_paxel",
+            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
+                    new Item.Properties().fireResistant()));
 
     // Mining Custom Item
     public static final RegistryObject<Item> MINING_MODES = ITEMS.register("mining_modes",
             () -> new ModesPickaxeItem(ModToolTiers.PINK, 2, 3,
                     new Item.Properties().fireResistant().durability(0))
-                    .setLevel(10));
+                    .setLevel(10)
+                    .setEnchantment(List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
+                            Enchantments.UNBREAKING, Enchantments.MENDING)
+                    ));
 
     public static final RegistryObject<Item> COPPER_HAMMER = ITEMS.register("copper_hammer",
             () -> new HammerItem(ModToolTiers.COPPER, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,

@@ -135,6 +135,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.IRON_PAXEL);
         handheldItem(ModItems.STONE_PAXEL);
         handheldItem(ModItems.WOODEN_PAXEL);
+        handheldItem(ModItems.NETHERITE_PAXEL);
 
         // My custom ender pearl
         simpleItem(ModItems.BOUNCY_BALLS);

@@ -113,6 +113,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         paxelItem(ModItems.IRON_PAXEL.get(), Items.IRON_PICKAXE, Items.IRON_AXE, Items.IRON_SHOVEL, pWriter);
         paxelItem(ModItems.STONE_PAXEL.get(), Items.STONE_PICKAXE, Items.STONE_AXE, Items.STONE_SHOVEL, pWriter);
         paxelItem(ModItems.WOODEN_PAXEL.get(), Items.WOODEN_PICKAXE, Items.WOODEN_AXE, Items.WOODEN_SHOVEL, pWriter);
+        paxelItem(ModItems.NETHERITE_PAXEL.get(), Items.NETHERITE_PICKAXE, Items.NETHERITE_AXE, Items.NETHERITE_SHOVEL, pWriter);
 
         // Hoe
         hoeItem(ModItems.ALEXANDRITE_HOE.get(), ModItems.ALEXANDRITE.get(), pWriter);

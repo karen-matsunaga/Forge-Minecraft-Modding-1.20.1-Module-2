@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-14T19:22:50.2432279	Recipes
+// 1.20.1	2025-04-14T20:48:32.7640442	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 15201a36d0ae05c11f8a82b7b43dcf940f56c7f4 data/mccourse/advancements/recipes/misc/alexandrite.json
 ee0129f24bb36d18562730a2dda377e622f5da76 data/mccourse/advancements/recipes/misc/alexandrite_block.json
@@ -60,6 +60,7 @@ a2024e5bc202a6fcb708ff37f5592c52282afbf2 data/mccourse/advancements/recipes/tool
 c46fae2932422a1d95a54763b095ea64cfddb93c data/mccourse/advancements/recipes/tools/iron_hammer.json
 7a047a7582c56bf1b1b13ab2892e004f53f184f3 data/mccourse/advancements/recipes/tools/iron_paxel.json
 1f3eb3e42117d091444d461e6918c4ef1035899a data/mccourse/advancements/recipes/tools/netherite_hammer.json
+3644e6b325d05f5d231d6d1e8f530dd00fe43149 data/mccourse/advancements/recipes/tools/netherite_paxel.json
 9880ac16d22e50c6f0193c13979a13135bdad98c data/mccourse/advancements/recipes/tools/pink_axe.json
 d77d2af8ac0aad9df0d810ebf7a96d50d43bd062 data/mccourse/advancements/recipes/tools/pink_boots.json
 20dbce939e690534e8565f40eae5560401c84e4d data/mccourse/advancements/recipes/tools/pink_chestplate.json
@@ -121,6 +122,7 @@ e5e732d008b6fa24c7cf0776be896352974562ce data/mccourse/recipes/iron_hammer.json
 94a3ef178b46028458d22a09905421f586ca043b data/mccourse/recipes/iron_paxel.json
 adc0df884043555a3d09686b9c3d0278935ec2d7 data/mccourse/recipes/mining_modes.json
 f607ef1b937f07d9fc52f19d17c943743a35da86 data/mccourse/recipes/netherite_hammer.json
+e328d58ea430d6f9dab9c4cea45cbd647e80efe7 data/mccourse/recipes/netherite_paxel.json
 cc94de58809f0903e229eef667debd78793bc7ef data/mccourse/recipes/nether_star_block.json
 674c8b4f0ac78740dabe23e43f877e20d5780585 data/mccourse/recipes/pink.json
 285a7fead670c1062574f3356e7bbc4dcddda09e data/mccourse/recipes/pink_axe.json

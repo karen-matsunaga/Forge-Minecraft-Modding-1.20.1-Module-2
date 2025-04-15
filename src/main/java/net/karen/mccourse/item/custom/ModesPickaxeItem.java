@@ -17,7 +17,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -37,14 +37,20 @@ import java.util.Objects;
 public class ModesPickaxeItem extends PickaxeItem {
     private ModesPickaxe modeActual = ModesPickaxe.NORMAL; // Pickaxe mode actual
     private int level;
+    private List<Enchantment> enchantmentList;
 
     public ModesPickaxeItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     } // Pickaxe tier, attack damage, attack speed and properties
 
-    public ModesPickaxeItem setLevel(int level) { this.level = level; return this; } // Radius declared on ModItems
+    public ModesPickaxeItem setLevel(int level) { this.level = level; return this; } // Declared level enchantment
 
-    public int getLevel() { return this.level; } // Declared radius activated on ModEvents
+    public int getLevel() { return this.level; } // Get level enchantment
+
+    // Declared all enchantments
+    public ModesPickaxeItem setEnchantment(List<Enchantment> enchantments) { this.enchantmentList = enchantments; return this; }
+
+    public List<Enchantment> getEnchantment() { return this.enchantmentList; } // Get all enchantments
 
     // Define mine speed of pickaxe depends on the mode
     @Override
@@ -231,9 +237,8 @@ public class ModesPickaxeItem extends PickaxeItem {
     }
 
     private void applyOverpoweredEnchantments(ItemStack stack) {
-        stack.enchant(Enchantments.BLOCK_EFFICIENCY, getLevel());
-        stack.enchant(Enchantments.BLOCK_FORTUNE, getLevel());
-        stack.enchant(Enchantments.UNBREAKING, getLevel());
-        stack.enchant(Enchantments.MENDING, getLevel());
+        for (Enchantment enchantment : enchantmentList) {
+            stack.enchant(enchantment, getLevel());
+        }
     }
 }

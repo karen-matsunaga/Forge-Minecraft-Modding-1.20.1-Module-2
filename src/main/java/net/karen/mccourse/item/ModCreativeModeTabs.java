@@ -225,6 +225,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.IRON_PAXEL.get());
                         output.accept(ModItems.STONE_PAXEL.get());
                         output.accept(ModItems.WOODEN_PAXEL.get());
+                        output.accept(ModItems.NETHERITE_PAXEL.get());
 
                         // My custom ore
                         output.accept(ModItems.PINK.get());
