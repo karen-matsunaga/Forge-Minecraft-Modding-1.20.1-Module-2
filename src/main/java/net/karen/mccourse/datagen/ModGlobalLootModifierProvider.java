@@ -1,6 +1,7 @@
 package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
+import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.loot.AddItemModifier;
 import net.karen.mccourse.loot.AddSusSandItemModifier;
@@ -42,57 +43,63 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
                 ModItems.METAL_DETECTOR.get()));
 
         // Added custom ores loot modifier
-        add("iron_ore_from_iron_ore", new AddItemModifier(new LootItemCondition[] {
+        add("iron_ingot_from_iron_ore", new AddItemModifier(new LootItemCondition[] {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.IRON_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.IRON_INGOT, Items.RAW_IRON))); // Iron ore
 
-        add("gold_ore_from_gold_ore", new AddItemModifier(new LootItemCondition[] {
+        add("gold_ingot_from_gold_ore", new AddItemModifier(new LootItemCondition[] {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.GOLD_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.GOLD_INGOT, Items.RAW_GOLD))); // Gold ore
 
-        add("lapis_ore_from_lapis_ore", new AddItemModifier(new LootItemCondition[] {
+        add("lapis_lazuli_from_lapis_ore", new AddItemModifier(new LootItemCondition[] {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.LAPIS_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.LAPIS_LAZULI))); // Lapis Lazuli ore
 
-        add("coal_ore_from_coal_ore", new AddItemModifier(new LootItemCondition[] {
+        add("coal_from_coal_ore", new AddItemModifier(new LootItemCondition[] {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.COAL_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.COAL))); // Coal ore
 
-        add("nether_quartz_ore_from_nether_quartz_ore", new AddItemModifier(new LootItemCondition[] {
+        add("quartz_from_nether_quartz_ore", new AddItemModifier(new LootItemCondition[] {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.NETHER_QUARTZ_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.QUARTZ))); // Nether Quartz Ore
 
-        add("nether_gold_ore_from_nether_gold_ore", new AddItemModifier(new LootItemCondition[] {
+        add("raw_gold_from_nether_gold_ore", new AddItemModifier(new LootItemCondition[] {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.NETHER_GOLD_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.GOLD_NUGGET, Items.RAW_GOLD))); // Nether Gold Ore
 
-        add("deepslate_iron_ore_from_deepslate_iron_ore", new AddItemModifier(new LootItemCondition[] {
+        add("iron_ingot_from_deepslate_iron_ore", new AddItemModifier(new LootItemCondition[] {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.DEEPSLATE_IRON_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.IRON_INGOT, Items.RAW_IRON))); // Iron ore
 
-        add("deepslate_gold_ore_from_deepslate_gold_ore", new AddItemModifier(new LootItemCondition[] {
+        add("gold_ingot_from_deepslate_gold_ore", new AddItemModifier(new LootItemCondition[] {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.DEEPSLATE_GOLD_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.GOLD_INGOT, Items.RAW_GOLD))); // Gold ore
 
-        add("deepslate_lapis_ore_from_deepslate_lapis_ore", new AddItemModifier(new LootItemCondition[] {
+        add("lapis_lazuli_from_deepslate_lapis_ore", new AddItemModifier(new LootItemCondition[] {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.DEEPSLATE_LAPIS_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.LAPIS_LAZULI))); // Lapis Lazuli ore
 
-        add("deepslate_coal_ore_from_deepslate_coal_ore", new AddItemModifier(new LootItemCondition[] {
+        add("coal_from_deepslate_coal_ore", new AddItemModifier(new LootItemCondition[] {
                 LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.DEEPSLATE_COAL_ORE).build(),
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(Items.COAL))); // Coal ore
 
-        // My custom items - Pink Pickaxe
+        // My custom blocks - Ender Pearl's variants
+        add("ender_pearl_and_green_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.GREEN_DYE)));
+
+        // My custom items - Mining Modes Pickaxe
         add("mining_modes_from_jungle_temple", new AddItemModifier(new LootItemCondition[] {
                 new LootTableIdCondition.Builder(new ResourceLocation("chests/jungle_temple")).build() },
                 List.of(ModItems.MINING_MODES.get()))); // Jungle Temple
