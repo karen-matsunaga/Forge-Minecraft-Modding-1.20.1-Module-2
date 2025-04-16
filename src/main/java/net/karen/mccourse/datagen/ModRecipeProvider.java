@@ -160,8 +160,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         // Items Blasting
         oreBlasting(pWriter, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(), 0.25f, 200, "pink");
 
+        oreSmelting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER, 1.00f, 100, "rotten_flesh");
+        oreBlasting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER, 1.00f, 100, "rotten_flesh");
+
         // Enchantment
         toolEnchantment(ModItems.MINING_MODES.get(), Items.NETHER_STAR, pWriter);
+
+        // Colored blocks
+        coloredBlocks(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), Items.GREEN_DYE, pWriter);
     }
 
     // Smelting
@@ -178,7 +184,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 pExperience, pCookingTime, pGroup, "_from_blasting");
     }
 
-    // Cooking
+    // Cooking -> Custom method to oreSmelting and oreBlasting
     protected static void oreCooking(Consumer<FinishedRecipe> pFinishedRecipeConsumer, RecipeSerializer<? extends AbstractCookingRecipe> pCookingSerializer,
                                      List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup, String pRecipeName) {
         for(ItemLike itemlike : pIngredients) {
@@ -336,6 +342,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("AAA")
                 .define('A', item)
                 .define('B', Items.BOOK)
+                .unlockedBy("has_item", has(item))
+                .save(pWriter);
+    }
+
+    // Custom color blocks
+    public static void coloredBlocks(ItemLike pResult, ItemLike item, Consumer<FinishedRecipe> pWriter) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, pResult, 1)
+                .pattern("   ")
+                .pattern(" AB")
+                .pattern("   ")
+                .define('A', ModBlocks.ENDER_PEARL_BLOCK.get())
+                .define('B', item)
                 .unlockedBy("has_item", has(item))
                 .save(pWriter);
     }
