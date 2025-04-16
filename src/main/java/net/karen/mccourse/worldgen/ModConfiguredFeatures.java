@@ -31,10 +31,16 @@ public class ModConfiguredFeatures {
     // Adding all custom configured features
     public static final ResourceKey<ConfiguredFeature<?, ?>> WALNUT_KEY = registerKey("walnut"); // Custom trees
 
-    // Custom ores
+    // CUSTOM ORES
+    // Alexandrite
     public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_ALEXANDRITE_ORE_KEY = registerKey("alexandrite_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> NETHER_ALEXANDRITE_ORE_KEY = registerKey("nether_alexandrite_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> END_ALEXANDRITE_ORE_KEY = registerKey("end_alexandrite_ore");
+
+    // Pink
+    public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_PINK_ORE_KEY = registerKey("pink_ore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> NETHER_PINK_ORE_KEY = registerKey("nether_pink_ore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> END_PINK_ORE_KEY = registerKey("end_pink_ore");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> SNAPDRAGON_KEY = registerKey("snapdragon"); // Custom flowers
 
@@ -48,9 +54,15 @@ public class ModConfiguredFeatures {
         RuleTest endReplaceabeles = new BlockMatchTest(Blocks.END_STONE);
 
         // All custom ores generated on overworld
+        // Alexandrite
         List<OreConfiguration.TargetBlockState> overworldAlexandriteOres = List.of(OreConfiguration.target(stoneReplaceabeles,
                         ModBlocks.ALEXANDRITE_ORE.get().defaultBlockState()),
                 OreConfiguration.target(deepslateReplaceabeles, ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get().defaultBlockState()));
+
+        // Pink
+        List<OreConfiguration.TargetBlockState> overworldPinkOres = List.of(OreConfiguration.target(stoneReplaceabeles,
+                        ModBlocks.PINK_ORE.get().defaultBlockState()),
+                OreConfiguration.target(deepslateReplaceabeles, ModBlocks.DEEPSLATE_PINK_ORE.get().defaultBlockState()));
 
         // Register all custom trees
         register(context, WALNUT_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -61,11 +73,19 @@ public class ModConfiguredFeatures {
                 new TwoLayersFeatureSize(1, 0, 2)).dirt(BlockStateProvider.simple(Blocks.END_STONE)).build()); // Dirt block or End Stone block
 
         // Register all custom ores and define the amount of ores to generate on overworld
+        // Alexandrite
         register(context, OVERWORLD_ALEXANDRITE_ORE_KEY, Feature.ORE, new OreConfiguration(overworldAlexandriteOres, 9));
         register(context, NETHER_ALEXANDRITE_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceabeles,
                 ModBlocks.NETHER_ALEXANDRITE_ORE.get().defaultBlockState(), 9));
         register(context, END_ALEXANDRITE_ORE_KEY, Feature.ORE, new OreConfiguration(endReplaceabeles,
                 ModBlocks.END_STONE_ALEXANDRITE_ORE.get().defaultBlockState(), 9));
+
+        // Pink
+        register(context, OVERWORLD_PINK_ORE_KEY, Feature.ORE, new OreConfiguration(overworldPinkOres, 20));
+        register(context, NETHER_PINK_ORE_KEY, Feature.ORE, new OreConfiguration(netherrackReplaceabeles,
+                ModBlocks.NETHER_PINK_ORE.get().defaultBlockState(), 20));
+        register(context, END_PINK_ORE_KEY, Feature.ORE, new OreConfiguration(endReplaceabeles,
+                ModBlocks.END_STONE_PINK_ORE.get().defaultBlockState(), 20));
 
         // Register all custom flowers
         register(context, SNAPDRAGON_KEY, Feature.FLOWER,

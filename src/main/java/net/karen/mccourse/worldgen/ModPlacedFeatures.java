@@ -20,10 +20,16 @@ public class ModPlacedFeatures {
     // Adding all custom placed features
     public static final ResourceKey<PlacedFeature> WALNUT_PLACED_KEY = registerKey("walnut_placed"); // Custom trees
 
-    // Custom ores
+    // CUSTOM ORES
+    // Alexandrite ores
     public static final ResourceKey<PlacedFeature> ALEXANDRITE_ORE_PLACED_KEY = registerKey("alexandrite_ore_placed");
     public static final ResourceKey<PlacedFeature> NETHER_ALEXANDRITE_ORE_PLACED_KEY = registerKey("nether_alexandrite_ore_placed");
     public static final ResourceKey<PlacedFeature> END_ALEXANDRITE_ORE_PLACED_KEY = registerKey("end_alexandrite_ore_placed");
+
+    // Pink ores
+    public static final ResourceKey<PlacedFeature> PINK_ORE_PLACED_KEY = registerKey("pink_ore_placed");
+    public static final ResourceKey<PlacedFeature> NETHER_PINK_ORE_PLACED_KEY = registerKey("nether_pink_ore_placed");
+    public static final ResourceKey<PlacedFeature> END_PINK_ORE_PLACED_KEY = registerKey("end_pink_ore_placed");
 
     public static final ResourceKey<PlacedFeature> SNAPDRAGON_PLACED_KEY = registerKey("snapdragon_placed"); // Custom flowers
 
@@ -38,6 +44,7 @@ public class ModPlacedFeatures {
                         ModBlocks.WALNUT_SAPLING.get()));
 
         // Position block of custom ores to go to generate on overworld, nether, etc.
+        // Alexandrite
         register(context, ALEXANDRITE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.OVERWORLD_ALEXANDRITE_ORE_KEY),
                 ModOrePlacement.commonOrePlacement(12,
                         HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
@@ -46,6 +53,17 @@ public class ModPlacedFeatures {
                         HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
         register(context, END_ALEXANDRITE_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.END_ALEXANDRITE_ORE_KEY),
                 ModOrePlacement.commonOrePlacement(7,
+                        HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
+
+        // Pink
+        register(context, PINK_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.OVERWORLD_PINK_ORE_KEY),
+                ModOrePlacement.commonOrePlacement(20,
+                        HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
+        register(context, NETHER_PINK_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.NETHER_PINK_ORE_KEY),
+                ModOrePlacement.commonOrePlacement(15,
+                        HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
+        register(context, END_PINK_ORE_PLACED_KEY, configuredFeatures.getOrThrow(ModConfiguredFeatures.END_PINK_ORE_KEY),
+                ModOrePlacement.commonOrePlacement(10,
                         HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
 
         // Position block of custom ores to go to generate on overworld

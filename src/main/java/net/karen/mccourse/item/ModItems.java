@@ -255,11 +255,12 @@ public class ModItems {
     // Mining Custom Item
     public static final RegistryObject<Item> MINING_MODES = ITEMS.register("mining_modes",
             () -> new ModesPickaxeItem(ModToolTiers.PINK, 2, 3,
-                    new Item.Properties().fireResistant().durability(0))
-                    .setLevel(10) // Level enchantment
+                    new Item.Properties().fireResistant().durability(0)
+            )
+                    .setLevel(3) // Level enchantment
                     .setEnchantment(List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
-                            Enchantments.UNBREAKING, Enchantments.MENDING) // List of enchantments
-                    ));
+                            Enchantments.UNBREAKING, Enchantments.MENDING)) // List of enchantments
+            );
 
     public static final RegistryObject<Item> COPPER_HAMMER = ITEMS.register("copper_hammer",
             () -> new HammerItem(ModToolTiers.COPPER, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
