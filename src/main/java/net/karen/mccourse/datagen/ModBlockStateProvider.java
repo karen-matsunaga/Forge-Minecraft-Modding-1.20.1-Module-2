@@ -142,6 +142,22 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         // My custom block
         blockWithItem(ModBlocks.ENDER_PEARL_BLOCK);
+
+        blockWithItem(ModBlocks.GREEN_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.BLACK_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.MAGENTA_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.PURPLE_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.ORANGE_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.PINK_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.CYAN_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.BROWN_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.GRAY_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.RED_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.YELLOW_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.BLUE_ENDER_PEARL_BLOCK);
+        blockWithItem(ModBlocks.WHITE_ENDER_PEARL_BLOCK);
+
         blockWithItem(ModBlocks.NETHER_STAR_BLOCK);
         blockWithItem(ModBlocks.GUNPOWDER_BLOCK);
         blockWithItem(ModBlocks.ROTTEN_FLESH_BLOCK);

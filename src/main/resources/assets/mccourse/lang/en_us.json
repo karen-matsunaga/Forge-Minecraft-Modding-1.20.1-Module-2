@@ -200,6 +200,22 @@
   "tooltip.mccourse.modes_pickaxe.tooltip": "Press §eSHIFT§r for more Information",
 
   "block.mccourse.ender_pearl_block": "Ender Pearl Block",
+
+  "block.mccourse.green_ender_pearl_block": "Green Ender Pearl Block",
+  "block.mccourse.black_ender_pearl_block": "Black Ender Pearl Block",
+  "block.mccourse.magenta_ender_pearl_block": "Magenta Ender Pearl Block",
+  "block.mccourse.purple_ender_pearl_block": "Purple Ender Pearl Block",
+  "block.mccourse.orange_ender_pearl_block": "Orange Ender Pearl Block",
+  "block.mccourse.pink_ender_pearl_block": "Pink Ender Pearl Block",
+  "block.mccourse.cyan_ender_pearl_block": "Cyan Ender Pearl Block",
+  "block.mccourse.brown_ender_pearl_block": "Brown Ender Pearl Block",
+  "block.mccourse.gray_ender_pearl_block": "Gray Ender Pearl Block",
+  "block.mccourse.red_ender_pearl_block": "Red Ender Pearl Block",
+  "block.mccourse.lime_green_ender_pearl_block": "Lime Green Ender Pearl Block",
+  "block.mccourse.yellow_ender_pearl_block": "Yellow Ender Pearl Block",
+  "block.mccourse.blue_ender_pearl_block": "Blue Ender Pearl Block",
+  "block.mccourse.white_ender_pearl_block": "White Ender Pearl Block",
+
   "block.mccourse.nether_star_block": "Nether Star Block",
   "block.mccourse.gunpowder_block": "Gunpowder Block",
   "block.mccourse.rotten_flesh_block": "Rotten Flesh Block",

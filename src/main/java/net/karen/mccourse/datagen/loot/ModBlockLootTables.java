@@ -146,6 +146,22 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
         // My custom block
         this.dropSelf(ModBlocks.ENDER_PEARL_BLOCK.get());
+
+        this.dropSelf(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.BLACK_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.PURPLE_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.PINK_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.CYAN_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.BROWN_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.GRAY_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.RED_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.BLUE_ENDER_PEARL_BLOCK.get());
+        this.dropSelf(ModBlocks.WHITE_ENDER_PEARL_BLOCK.get());
+
         this.dropSelf(ModBlocks.NETHER_STAR_BLOCK.get());
         this.dropSelf(ModBlocks.GUNPOWDER_BLOCK.get());
         this.dropSelf(ModBlocks.ROTTEN_FLESH_BLOCK.get());

@@ -44,6 +44,22 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                         ModBlocks.ALEXANDRITE_SLABS.get(),
                         // Custom blocks
                         ModBlocks.ENDER_PEARL_BLOCK.get(),
+
+                        ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.BLACK_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.PURPLE_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.PINK_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.CYAN_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.BROWN_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.GRAY_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.RED_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.BLUE_ENDER_PEARL_BLOCK.get(),
+                        ModBlocks.WHITE_ENDER_PEARL_BLOCK.get(),
+
                         ModBlocks.NETHER_STAR_BLOCK.get(),
                         ModBlocks.GUNPOWDER_BLOCK.get(),
                         ModBlocks.ROTTEN_FLESH_BLOCK.get())

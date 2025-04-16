@@ -1,0 +1,17 @@
+{
+  "type": "mccourse:add_item",
+  "conditions": [
+    {
+      "block": "mccourse:cyan_ender_pearl_block",
+      "condition": "minecraft:block_state_property"
+    },
+    {
+      "chance": 1.0,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "items": [
+    "mccourse:ender_pearl_block",
+    "minecraft:cyan_dye"
+  ]
+}

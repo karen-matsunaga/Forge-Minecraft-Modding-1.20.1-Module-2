@@ -239,8 +239,124 @@ public class ModBlocks {
 
     // Custom block
     public static final RegistryObject<Block> ENDER_PEARL_BLOCK = registerBlock("ender_pearl_block",
-            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.BELL)
-                    .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> GREEN_ENDER_PEARL_BLOCK = registerBlock("green_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> LIME_GREEN_ENDER_PEARL_BLOCK = registerBlock("lime_green_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> BLACK_ENDER_PEARL_BLOCK = registerBlock("black_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> MAGENTA_ENDER_PEARL_BLOCK = registerBlock("magenta_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_MAGENTA).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> PURPLE_ENDER_PEARL_BLOCK = registerBlock("purple_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> ORANGE_ENDER_PEARL_BLOCK = registerBlock("orange_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> PINK_ENDER_PEARL_BLOCK = registerBlock("pink_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> CYAN_ENDER_PEARL_BLOCK = registerBlock("cyan_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> BROWN_ENDER_PEARL_BLOCK = registerBlock("brown_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> GRAY_ENDER_PEARL_BLOCK = registerBlock("gray_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> RED_ENDER_PEARL_BLOCK = registerBlock("red_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> YELLOW_ENDER_PEARL_BLOCK = registerBlock("yellow_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_YELLOW).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> BLUE_ENDER_PEARL_BLOCK = registerBlock("blue_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
+
+    public static final RegistryObject<Block> WHITE_ENDER_PEARL_BLOCK = registerBlock("white_ender_pearl_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GRAY).instrument(NoteBlockInstrument.BELL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 50) // Light block
+            ));
 
     public static final RegistryObject<Block> NETHER_STAR_BLOCK = registerBlock("nether_star_block",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.BELL)

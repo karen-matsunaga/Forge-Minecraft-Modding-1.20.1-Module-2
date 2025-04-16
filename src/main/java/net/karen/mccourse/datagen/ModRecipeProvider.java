@@ -168,6 +168,19 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // Colored blocks
         coloredBlocks(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), Items.GREEN_DYE, pWriter);
+        coloredBlocks(ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get(), Items.LIME_DYE, pWriter);
+        coloredBlocks(ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get(), Items.MAGENTA_DYE, pWriter);
+        coloredBlocks(ModBlocks.PINK_ENDER_PEARL_BLOCK.get(), Items.PINK_DYE, pWriter);
+        coloredBlocks(ModBlocks.PURPLE_ENDER_PEARL_BLOCK.get(), Items.PURPLE_DYE, pWriter);
+        coloredBlocks(ModBlocks.BLACK_ENDER_PEARL_BLOCK.get(), Items.BLACK_DYE, pWriter);
+        coloredBlocks(ModBlocks.BLUE_ENDER_PEARL_BLOCK.get(), Items.BLUE_DYE, pWriter);
+        coloredBlocks(ModBlocks.CYAN_ENDER_PEARL_BLOCK.get(), Items.CYAN_DYE, pWriter);
+        coloredBlocks(ModBlocks.GRAY_ENDER_PEARL_BLOCK.get(), Items.GRAY_DYE, pWriter);
+        coloredBlocks(ModBlocks.BROWN_ENDER_PEARL_BLOCK.get(), Items.BROWN_DYE, pWriter);
+        coloredBlocks(ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get(), Items.YELLOW_DYE, pWriter);
+        coloredBlocks(ModBlocks.WHITE_ENDER_PEARL_BLOCK.get(), Items.WHITE_DYE, pWriter);
+        coloredBlocks(ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get(), Items.ORANGE_DYE, pWriter);
+        coloredBlocks(ModBlocks.RED_ENDER_PEARL_BLOCK.get(), Items.RED_DYE, pWriter);
     }
 
     // Smelting

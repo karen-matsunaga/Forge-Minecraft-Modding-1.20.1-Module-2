@@ -206,6 +206,22 @@ public class ModCreativeModeTabs {
 
                         // My custom block
                         output.accept(ModBlocks.ENDER_PEARL_BLOCK.get());
+
+                        output.accept(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.BLACK_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.PURPLE_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.PINK_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.CYAN_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.BROWN_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.GRAY_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.RED_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.BLUE_ENDER_PEARL_BLOCK.get());
+                        output.accept(ModBlocks.WHITE_ENDER_PEARL_BLOCK.get());
+
                         output.accept(ModBlocks.NETHER_STAR_BLOCK.get());
                         output.accept(ModBlocks.GUNPOWDER_BLOCK.get());
                         output.accept(ModBlocks.ROTTEN_FLESH_BLOCK.get());

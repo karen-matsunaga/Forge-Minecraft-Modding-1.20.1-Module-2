@@ -99,6 +99,71 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
                 LootItemRandomChanceCondition.randomChance(1.00f).build() },
                 List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.GREEN_DYE)));
 
+        add("ender_pearl_and_lime_green_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.LIME_DYE)));
+
+        add("ender_pearl_and_magenta_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.MAGENTA_DYE)));
+
+        add("ender_pearl_and_pink_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.PINK_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.PINK_DYE)));
+
+        add("ender_pearl_and_purple_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.PURPLE_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.PURPLE_DYE)));
+
+        add("ender_pearl_and_black_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.BLACK_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.BLACK_DYE)));
+
+        add("ender_pearl_and_blue_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.BLUE_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.BLUE_DYE)));
+
+        add("ender_pearl_and_cyan_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.CYAN_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.CYAN_DYE)));
+
+        add("ender_pearl_and_gray_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.GRAY_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.GRAY_DYE)));
+
+        add("ender_pearl_and_brown_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.BROWN_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.BROWN_DYE)));
+
+        add("ender_pearl_and_yellow_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.YELLOW_DYE)));
+
+        add("ender_pearl_and_white_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.WHITE_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.WHITE_DYE)));
+
+        add("ender_pearl_and_orange_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.ORANGE_DYE)));
+
+        add("ender_pearl_and_red_dye_from_green_ender_pearl_block", new AddItemModifier(new LootItemCondition[]{
+                LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.RED_ENDER_PEARL_BLOCK.get()).build(),
+                LootItemRandomChanceCondition.randomChance(1.00f).build() },
+                List.of(ModBlocks.ENDER_PEARL_BLOCK.get().asItem(), Items.RED_DYE)));
+
         // My custom items - Mining Modes Pickaxe
         add("mining_modes_from_jungle_temple", new AddItemModifier(new LootItemCondition[] {
                 new LootTableIdCondition.Builder(new ResourceLocation("chests/jungle_temple")).build() },

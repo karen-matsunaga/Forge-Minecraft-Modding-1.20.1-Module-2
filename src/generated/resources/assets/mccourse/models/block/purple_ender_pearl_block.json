@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "mccourse:block/purple_ender_pearl_block"
+  }
+}

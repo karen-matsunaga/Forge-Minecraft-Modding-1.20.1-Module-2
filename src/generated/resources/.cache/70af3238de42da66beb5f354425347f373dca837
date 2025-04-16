@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-15T11:39:49.8670787	Block Tags
+// 1.20.1	2025-04-15T22:31:17.2767683	Block Tags
 86562fd08aff39d08443a35e89d8fabc2114cb9b data/mccourse/tags/blocks/blocks/alexandrite_ores.json
 42cc3daa7901d26fb72b8e713e9581da338312ba data/mccourse/tags/blocks/blocks/mccourse_ores.json
 3d999788d21ff5a302376497fd9d9bf9f7200cdd data/mccourse/tags/blocks/blocks/mobs_blocks_drops.json
@@ -15,7 +15,7 @@ eef1846ce59dafebcecde7d1695966be92aa8388 data/mccourse/tags/blocks/ores/more_ore
 43b621c9e36eb4c7ee0e97ecc2dd841d090c7821 data/minecraft/tags/blocks/fences.json
 c019d56ddaf7b3dec0cca0ef234845dd8a1007a7 data/minecraft/tags/blocks/fence_gates.json
 46587698990f13785898e9fb4b62d6ba4212f45a data/minecraft/tags/blocks/logs_that_burn.json
-2394d109c6b9517a55e47ac5d8b2c8e56cb3ab31 data/minecraft/tags/blocks/mineable/pickaxe.json
+eaa382b2c2403ded0cd76d32b379e3fd1976e5b1 data/minecraft/tags/blocks/mineable/pickaxe.json
 bd35710c7801d251dd374e23bfb2d9e897d62f53 data/minecraft/tags/blocks/needs_diamond_tool.json
 21fcfb8515d083d0d2d9add1d3281831cdf6424f data/minecraft/tags/blocks/needs_iron_tool.json
 e0ccd7e2e05f902bcc455bba38a3fcd126e23cce data/minecraft/tags/blocks/planks.json

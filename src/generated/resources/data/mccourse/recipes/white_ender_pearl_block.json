@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "A": {
+      "item": "mccourse:ender_pearl_block"
+    },
+    "B": {
+      "item": "minecraft:white_dye"
+    }
+  },
+  "pattern": [
+    "   ",
+    " AB",
+    "   "
+  ],
+  "result": {
+    "item": "mccourse:white_ender_pearl_block"
+  },
+  "show_notification": true
+}
