@@ -1,10 +1,10 @@
 package net.karen.mccourse.item.custom;
 
-import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.item.ModesPickaxe;
 import net.karen.mccourse.util.ModTags;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -55,7 +55,7 @@ public class ModesPickaxeItem extends PickaxeItem {
     // Define mine speed of pickaxe depends on the mode
     @Override
     public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
-        if (stack.getItem() == ModItems.MINING_MODES.get() && !stack.isEnchanted()) {
+        if (!stack.isEnchanted() && stack.getItem().hasCraftingRemainingItem(stack)) {
             applyOverpoweredEnchantments(stack);
         }
         return switch (modeActual) {
@@ -73,12 +73,13 @@ public class ModesPickaxeItem extends PickaxeItem {
     public boolean mineBlock(@NotNull ItemStack itemstack, @NotNull Level world, @NotNull BlockState blockstate, @NotNull BlockPos pos, @NotNull LivingEntity entity) {
         boolean retval = super.mineBlock(itemstack, world, blockstate, pos, entity);
         if (!world.isClientSide) {
+            // Slow mode and Fast mode logics
+            if (modeActual == ModesPickaxe.SLOW || modeActual == ModesPickaxe.FAST) { itemstack.hurtAndBreak(1, entity, (e) -> e.broadcastBreakEvent(entity.getUsedItemHand())); }
             switch (modeActual) {
-                case SLOW, FAST -> itemstack.hurtAndBreak(1, entity, (e) -> e.broadcastBreakEvent(entity.getUsedItemHand())); // Slow mode and Fast mode logics
                 case HAMMER -> hammerMode(itemstack, world, pos, (Player) entity); // Hammer mode logic
                 case AUTO_SMELT -> autoSmeltMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity));
                 case MORE_ORES ->  moreOresMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity));
-                case MAGNETIC -> magneticMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity));}
+                case MAGNETIC -> magneticMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity)); }
         }
         return retval;
     }
@@ -225,20 +226,22 @@ public class ModesPickaxeItem extends PickaxeItem {
 
     @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
-        if (Screen.hasShiftDown()) { pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip.shift")); }
+        if (Screen.hasShiftDown()) {
+            pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip.shift")
+                    .append(CommonComponents.NEW_LINE));
+        }
         else { pTooltipComponents.add(Component.translatable("tooltip.mccourse.modes_pickaxe.tooltip")); }
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 
+    // When crafted generate all enchantments on item
     @Override
     public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level world, @NotNull Player player) {
-        super.onCraftedBy(stack, world, player);
-        applyOverpoweredEnchantments(stack);
+        super.onCraftedBy(stack, world, player); applyOverpoweredEnchantments(stack);
     }
 
+    // Added all enchantments that Player chooses
     private void applyOverpoweredEnchantments(ItemStack stack) {
-        for (Enchantment enchantment : enchantmentList) {
-            stack.enchant(enchantment, getLevel());
-        }
+        for (Enchantment enchantment : enchantmentList) { stack.enchant(enchantment, getLevel()); }
     }
 }

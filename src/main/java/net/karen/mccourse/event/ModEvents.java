@@ -396,9 +396,12 @@ public class ModEvents {
                             MutableComponent name = Component.translatable(enchantment.getDescriptionId())
                                     .withStyle(Style.EMPTY.withColor(color).withBold(!isCurse).withItalic(isCurse))
                                     .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level)))
-                                    .append(CommonComponents.NEW_LINE)
-                                    .append(Component.translatable(descriptionValue));
-                            tooltip.set(i, name); // Number line of enchantment names and enchantment descriptions
+                                    .append(CommonComponents.NEW_LINE);
+
+                            MutableComponent desc = Component.translatable(descriptionValue)
+                                    .withStyle(Style.EMPTY.withColor(color).withBold(false).withItalic(false));
+
+                            tooltip.set(i, name.append(desc)); // Number line of enchantment names and enchantment descriptions
                         } // Enchantment Levels with Arabic numerals and Enchantment Descriptions with JSON file -> I18n = en_us.json
                         break;
                     }

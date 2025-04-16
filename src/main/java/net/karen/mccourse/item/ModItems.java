@@ -256,9 +256,9 @@ public class ModItems {
     public static final RegistryObject<Item> MINING_MODES = ITEMS.register("mining_modes",
             () -> new ModesPickaxeItem(ModToolTiers.PINK, 2, 3,
                     new Item.Properties().fireResistant().durability(0))
-                    .setLevel(10)
+                    .setLevel(10) // Level enchantment
                     .setEnchantment(List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
-                            Enchantments.UNBREAKING, Enchantments.MENDING)
+                            Enchantments.UNBREAKING, Enchantments.MENDING) // List of enchantments
                     ));
 
     public static final RegistryObject<Item> COPPER_HAMMER = ITEMS.register("copper_hammer",
