@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT' apply true
+    id 'org.spongepowered.mixin' version '0.7.+' apply true
 }
 
 version = mod_version
@@ -191,6 +191,13 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+    // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
+    // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
+    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
+
+    // Apply Mixin AP
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -213,6 +220,15 @@ processResources {
     filesMatching(resourceTargets) {
         expand replaceProperties
     }
+}
+
+mixin {
+    // MixinGradle Settings
+    add sourceSets.main, 'mixins.mccourse.refmap.json'
+    config 'mixins.mccourse.json'
+
+    debug.verbose = true
+    debug.export = true
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
