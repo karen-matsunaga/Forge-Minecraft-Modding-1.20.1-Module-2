@@ -113,9 +113,18 @@
 
   "item.minecraft.tipped_arrow.effect.haste_potion": "Arrow of Haste",
 
+  "effect.mccourse.nothing": "Nothing",
+
+  "item.minecraft.potion.effect.nothing_potion": "Nothing Potion",
+  "item.minecraft.splash_potion.effect.nothing_potion": "Nothing Splash Potion",
+  "item.minecraft.lingering_potion.effect.nothing_potion": "Nothing Lingering Potion",
+
+  "item.minecraft.tipped_arrow.effect.nothing_potion": "Arrow of Nothing",
+
   "entity.minecraft.villager.mccourse.soundmaster": "Soundmaster",
 
   "item.mccourse.soap_water_bucket": "Soap Water Bucket",
+  "fluid_type.mccourse.soap_water_fluid": "Soap Water Fluid",
 
   "mccourse.tooltip.liquid.amount.with.capacity": "%s / %s mB",
   "mccourse.tooltip.liquid.amount": "%s mB",

@@ -27,5 +27,9 @@ public class ModPotions {
     public static final RegistryObject<Potion> HASTE_POTION = POTIONS.register("haste_potion",
             () -> new Potion(new MobEffectInstance(MobEffects.DIG_SPEED, 2000, 0)));
 
+    // Nothing's potion register
+    public static final RegistryObject<Potion> NOTHING_POTION = POTIONS.register("nothing_potion",
+            () -> new Potion(new MobEffectInstance(ModEffects.NOTHING_EFFECT.get(), 2000, 0)));
+
     public static void register(IEventBus eventBus) { POTIONS.register(eventBus); } // Registry all potions on Forge
 }

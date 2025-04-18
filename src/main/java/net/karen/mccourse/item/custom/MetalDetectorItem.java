@@ -81,7 +81,7 @@ public class MetalDetectorItem extends Item {
         return InteractionResult.SUCCESS;
     }
 
-    // Method that created custom particles if found a ore
+    // Method that created custom particles if found an ore
     private void spawnFoundParticles(UseOnContext pContext, BlockPos positionClicked, BlockState blockState) {
         for(int i = 0; i < 20; i++) {
             ServerLevel level = (ServerLevel) pContext.getLevel();
@@ -99,7 +99,7 @@ public class MetalDetectorItem extends Item {
 
         CompoundTag data = new CompoundTag();
         data.putString("mccourse.found_ore", "Valuable Found: " + I18n.get(block.getDescriptionId())
-                + " at (" + below.getX() + ", " + below.getY() + ", " + below.getZ() + " )");
+                + " at [X: " + below.getX() + ", Y: " + below.getY() + ", Z: " + below.getZ() + "]");
 
         dataTablet.setTag(data);
     }
@@ -125,8 +125,8 @@ public class MetalDetectorItem extends Item {
 
     // Output message if found ore
     private void outputValuableCoordinates(BlockPos below, Player player, Block block) {
-        player.sendSystemMessage(Component.literal("Valuable Found: " + I18n.get(block.getDescriptionId())
-                + " at (" + below.getX() + ", " + below.getY() + ", " + below.getZ() + " )"));
+        player.sendSystemMessage(Component.literal("Valuable Found: §l§6" + I18n.get(block.getDescriptionId())
+                + "§r at [X: §l§6" + below.getX() + "§r, Y: §l§6" + below.getY() + "§r, Z: §l§6" + below.getZ() + "§r]"));
     }
 
     // Custom method that identifies all blocks added it is

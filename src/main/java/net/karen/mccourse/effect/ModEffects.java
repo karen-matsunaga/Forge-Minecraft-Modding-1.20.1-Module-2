@@ -30,6 +30,10 @@ public class ModEffects {
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf8",
                             1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
+    // Nothing's effect
+    public static final RegistryObject<MobEffect> NOTHING_EFFECT = MOB_EFFECTS.register("nothing",
+            () -> new NothingEffect(MobEffectCategory.NEUTRAL, 0xffa500));
+
     // Registry all effects on Forge
     public static void register(IEventBus eventBus) { MOB_EFFECTS.register(eventBus); }
 }

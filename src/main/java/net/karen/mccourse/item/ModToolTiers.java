@@ -21,12 +21,12 @@ public class ModToolTiers {
 
     // Modes Pickaxe and Pink level
     public static final Tier PINK = TierSortingRegistry.registerTier(
-            new ForgeTier(4, 0, 11f, 3f, 26,
+            new ForgeTier(4, 800, 11f, 3f, 30,
                     ModTags.Blocks.NEEDS_PINK_TOOL, () -> Ingredient.of(ModItems.PINK.get())),
             new ResourceLocation(MCCourseMod.MOD_ID, "pink"), List.of(Tiers.DIAMOND), List.of());
 
     public static final Tier COPPER = TierSortingRegistry.registerTier(
-            new ForgeTier(5, -1, 20f, 6f, 30,
+            new ForgeTier(3, 500, 9f, 6f, 30,
                     ModTags.Blocks.NEEDS_COPPER_TOOL, () -> Ingredient.of(Items.COBBLESTONE)),
             new ResourceLocation(MCCourseMod.MOD_ID, "cobblestone"), List.of(Tiers.IRON), List.of());
 }

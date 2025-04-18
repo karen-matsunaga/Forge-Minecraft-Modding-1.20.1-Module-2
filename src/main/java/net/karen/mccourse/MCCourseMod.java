@@ -145,6 +145,7 @@ public class MCCourseMod {
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.SLIME_BALL, ModPotions.SLIMEY_POTION.get()));
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.EMERALD, ModPotions.FLY_POTION.get()));
             BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.CARROT, ModPotions.HASTE_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.GLOWSTONE, ModPotions.NOTHING_POTION.get()));
 
             // Added custom Surface Rules
             SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MOD_ID, ModSurfaceRules.makeRules());

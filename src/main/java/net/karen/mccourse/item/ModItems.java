@@ -35,7 +35,7 @@ public class ModItems {
 
     // Custom Advanced Item
     public static final RegistryObject<Item> METAL_DETECTOR = ITEMS.register("metal_detector",
-            () -> new MetalDetectorItem(new Item.Properties().durability(0)));
+            () -> new MetalDetectorItem(new Item.Properties().fireResistant().stacksTo(1)));
 
     // Foods
     public static final RegistryObject<Item> KOHLRABI = ITEMS.register("kohlrabi",
@@ -280,27 +280,27 @@ public class ModItems {
 
     public static final RegistryObject<Item> NETHERITE_HAMMER = ITEMS.register("netherite_hammer",
             () -> new HammerItem(Tiers.NETHERITE, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().durability(0).fireResistant()).setRadius(4));
+                    new Item.Properties().fireResistant()).setRadius(4));
 
     public static final RegistryObject<Item> PINK_HAMMER = ITEMS.register("pink_hammer",
             () -> new HammerItem(ModToolTiers.PINK, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().durability(0).fireResistant()).setRadius(5));
+                    new Item.Properties().fireResistant()).setRadius(5));
 
     public static final RegistryObject<Item> STONE_HAMMER = ITEMS.register("stone_hammer",
             () -> new HammerItem(Tiers.STONE, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().durability(0).fireResistant()).setRadius(2));
+                    new Item.Properties().fireResistant()).setRadius(2));
 
     public static final RegistryObject<Item> WOODEN_HAMMER = ITEMS.register("wooden_hammer",
             () -> new HammerItem(Tiers.WOOD, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().durability(0).fireResistant()).setRadius(2));
+                    new Item.Properties().fireResistant()).setRadius(2));
 
     // Ore custom item
     public static final RegistryObject<Item> PINK = ITEMS.register("pink",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().fireResistant().stacksTo(64)));
 
     // Bouncy ball's custom Ender pearls
     public static final RegistryObject<Item> BOUNCY_BALLS = ITEMS.register("bouncy_balls",
-            () -> new BouncyBallsItem(new Item.Properties().fireResistant().durability(-1)));
+            () -> new BouncyBallsItem(new Item.Properties().fireResistant().stacksTo(1)));
 
     public static final RegistryObject<Item> BOUNCY_BALLS_PARTICLES = ITEMS.register("bouncy_balls_particles",
             () -> new Item(new Item.Properties().stacksTo(64).fireResistant()));

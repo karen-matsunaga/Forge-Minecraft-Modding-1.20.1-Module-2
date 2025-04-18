@@ -22,11 +22,19 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         // Add Block Tags here
         this.tag(ModTags.Blocks.METAL_DETECTOR_VALUABLES)
-                .add(ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
-                ModBlocks.END_STONE_ALEXANDRITE_ORE.get(), ModBlocks.NETHER_ALEXANDRITE_ORE.get()).addTag(Tags.Blocks.ORES);
+                .add(ModBlocks.ALEXANDRITE_ORE.get(),
+                        ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
+                        ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
+                        ModBlocks.NETHER_ALEXANDRITE_ORE.get(),
+                     ModBlocks.PINK_ORE.get(),
+                        ModBlocks.DEEPSLATE_PINK_ORE.get(),
+                        ModBlocks.END_STONE_PINK_ORE.get(),
+                        ModBlocks.NETHER_PINK_ORE.get()
+                )
+                .addTag(Tags.Blocks.ORES)
+                .addTag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE);
 
         // Add Mineable's tags
-
         // Pickaxe's tag, Alexandrite hammer's tag
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .add(// Blocks

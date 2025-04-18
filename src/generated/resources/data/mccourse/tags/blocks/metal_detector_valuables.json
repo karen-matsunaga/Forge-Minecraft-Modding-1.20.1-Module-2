@@ -4,6 +4,11 @@
     "mccourse:deepslate_alexandrite_ore",
     "mccourse:end_stone_alexandrite_ore",
     "mccourse:nether_alexandrite_ore",
-    "#forge:ores"
+    "mccourse:pink_ore",
+    "mccourse:deepslate_pink_ore",
+    "mccourse:end_stone_pink_ore",
+    "mccourse:nether_pink_ore",
+    "#forge:ores",
+    "#forge:ores_in_ground/deepslate"
   ]
 }
