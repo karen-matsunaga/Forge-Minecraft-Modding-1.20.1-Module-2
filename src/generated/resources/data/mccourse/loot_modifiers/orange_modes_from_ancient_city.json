@@ -3,10 +3,10 @@
   "conditions": [
     {
       "condition": "forge:loot_table_id",
-      "loot_table_id": "minecraft:chests/bastion_treasure"
+      "loot_table_id": "minecraft:chests/ancient_city"
     }
   ],
   "items": [
-    "mccourse:mining_modes"
+    "mccourse:orange_modes"
   ]
 }

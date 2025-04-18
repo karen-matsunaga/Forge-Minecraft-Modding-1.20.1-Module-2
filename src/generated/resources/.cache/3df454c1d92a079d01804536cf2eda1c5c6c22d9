@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-15T22:31:17.2987061	Block States: mccourse
+// 1.20.1	2025-04-18T11:27:43.2883374	Block States: mccourse
 9b0f59e6a967af477e6f41100bfecb754add6ea2 assets/mccourse/blockstates/alexandrite_block.json
 1fd0895b9aa0e87b67d2c4da0f567f8aa895de30 assets/mccourse/blockstates/alexandrite_button.json
 974428f15970c224b76ef992df827ba4718bb490 assets/mccourse/blockstates/alexandrite_door.json
@@ -12,6 +12,7 @@ b9268d637796a7c48986779b3e85f1fd1f922553 assets/mccourse/blockstates/alexandrite
 e4fc007d0d52690c5058dad0dd038175362c0079 assets/mccourse/blockstates/alexandrite_trapdoor.json
 aa4167edb1a90218a2772cfe5e8529a7b7a67d6d assets/mccourse/blockstates/alexandrite_wall.json
 f6379fce47961538dbbb2f75af610a6de31e848d assets/mccourse/blockstates/black_ender_pearl_block.json
+222fa505646d9303374d3513ecf4b1c0da964b99 assets/mccourse/blockstates/blaze_rod_block.json
 68e3125cd3598e76ed6b611822600d1ab521320d assets/mccourse/blockstates/blue_ender_pearl_block.json
 ac294d528620d99eab9e73c88811d53b9d11ffda assets/mccourse/blockstates/brown_ender_pearl_block.json
 8fe33b6d4af9444522d67a976b8537f861d3bd3e assets/mccourse/blockstates/cattail_crop.json
@@ -98,6 +99,7 @@ efd0676ee7481fd2bd5f4c2a93feb58be9317358 assets/mccourse/models/block/alexandrit
 c0c1c09e81640f3f4b80639ed433da25e1bd2d6a assets/mccourse/models/block/alexandrite_wall_side.json
 6424a4e9343393f300c6046691f8ba6534f83f41 assets/mccourse/models/block/alexandrite_wall_side_tall.json
 f88353df4a561979a43c317691dc9fcb559bf6d4 assets/mccourse/models/block/black_ender_pearl_block.json
+f3a94d2f14eab84bb7dfdd452504d70331762fbb assets/mccourse/models/block/blaze_rod_block.json
 3ec1c3dd5a442812c73796fc0a230a54ce76f38b assets/mccourse/models/block/blue_ender_pearl_block.json
 d355ebaa06c1049f1ff689ced3325131316175ce assets/mccourse/models/block/brown_ender_pearl_block.json
 8ab9efe7a061b2b44b06907b1c359c00f0f8cc32 assets/mccourse/models/block/cat_tail_stage0.json
@@ -175,6 +177,7 @@ c3b5e41818045223f40f65a4395c171f5a4c4141 assets/mccourse/models/item/alexandrite
 43fd7480dcf44766d8c83ef2574dd78b749f14e2 assets/mccourse/models/item/alexandrite_stairs.json
 a1e7e690537f78b97a5c7dbaf1b6f920341f0744 assets/mccourse/models/item/alexandrite_trapdoor.json
 6535723cd6f869cb52d9f2e836b290a7989e98cb assets/mccourse/models/item/black_ender_pearl_block.json
+64b9ac65eacbebb4f101510b6d32a4f6e3cd6a6e assets/mccourse/models/item/blaze_rod_block.json
 ca5a08b09c2d1580c40db3bf580a3681da2d9861 assets/mccourse/models/item/blue_ender_pearl_block.json
 2202663489f4fb86bbabdc0ecc232dbaf9f8bd0c assets/mccourse/models/item/brown_ender_pearl_block.json
 bee137067ab316ff0baae93a056e9e6f37603496 assets/mccourse/models/item/colored_leaves.json
