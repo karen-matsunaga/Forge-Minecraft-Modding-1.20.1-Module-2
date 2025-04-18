@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -55,9 +56,6 @@ public class ModesPickaxeItem extends PickaxeItem {
     // Define mine speed of pickaxe depends on the mode
     @Override
     public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
-        if (!stack.isEnchanted() && stack.getItem().hasCraftingRemainingItem(stack)) {
-            applyOverpoweredEnchantments(stack);
-        }
         return switch (modeActual) {
             case SLOW -> 2.0F; // Stone pickaxe speed
             case FAST -> 25.0F; // Pickaxe ultra speed
@@ -243,5 +241,14 @@ public class ModesPickaxeItem extends PickaxeItem {
     // Added all enchantments that Player chooses
     private void applyOverpoweredEnchantments(ItemStack stack) {
         for (Enchantment enchantment : enchantmentList) { stack.enchant(enchantment, getLevel()); }
+    }
+
+    @Override
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
+        if (!(pEntity instanceof Player player)) return;
+
+        // Only enchant if it isn't already
+        if (!pStack.isEnchanted()) { applyOverpoweredEnchantments(pStack); }
+        super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
     }
 }

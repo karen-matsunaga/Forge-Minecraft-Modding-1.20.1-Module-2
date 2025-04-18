@@ -202,8 +202,10 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.BOUNCY_BALLS_PARTICLES.get());
 
                         // My custom Mining Modes
-                        output.accept(ModItems.MINING_MODES.get());
+                        output.accept(ModItems.BLUE_MODES.get());
                         output.accept(ModItems.GREEN_MODES.get());
+                        output.accept(ModItems.PURPLE_MODES.get());
+                        output.accept(ModItems.ORANGE_MODES.get());
 
                         // My custom block
                         output.accept(ModBlocks.ENDER_PEARL_BLOCK.get());
@@ -226,6 +228,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.NETHER_STAR_BLOCK.get());
                         output.accept(ModBlocks.GUNPOWDER_BLOCK.get());
                         output.accept(ModBlocks.ROTTEN_FLESH_BLOCK.get());
+                        output.accept(ModBlocks.BLAZE_ROD_BLOCK.get());
 
                         // My custom item
                         output.accept(ModItems.COPPER_HAMMER.get());

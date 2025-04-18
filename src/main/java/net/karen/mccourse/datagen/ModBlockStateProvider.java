@@ -161,6 +161,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.NETHER_STAR_BLOCK);
         blockWithItem(ModBlocks.GUNPOWDER_BLOCK);
         blockWithItem(ModBlocks.ROTTEN_FLESH_BLOCK);
+        blockWithItem(ModBlocks.BLAZE_ROD_BLOCK);
 
         // My custom ore
         blockWithItem(ModBlocks.PINK_BLOCK);

@@ -165,6 +165,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.NETHER_STAR_BLOCK.get());
         this.dropSelf(ModBlocks.GUNPOWDER_BLOCK.get());
         this.dropSelf(ModBlocks.ROTTEN_FLESH_BLOCK.get());
+        this.dropSelf(ModBlocks.BLAZE_ROD_BLOCK.get());
 
         // My custom ores
         this.dropSelf(ModBlocks.PINK_BLOCK.get());

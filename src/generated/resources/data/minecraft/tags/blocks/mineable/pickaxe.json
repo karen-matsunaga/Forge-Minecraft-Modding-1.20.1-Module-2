@@ -1,15 +1,8 @@
 {
   "values": [
-    "mccourse:alexandrite_block",
-    "mccourse:raw_alexandrite_block",
-    "mccourse:alexandrite_ore",
-    "mccourse:deepslate_alexandrite_ore",
-    "mccourse:end_stone_alexandrite_ore",
-    "mccourse:nether_alexandrite_ore",
     "mccourse:sound_block",
     "mccourse:alexandrite_stairs",
     "mccourse:alexandrite_slabs",
-    "mccourse:ender_pearl_block",
     "mccourse:green_ender_pearl_block",
     "mccourse:black_ender_pearl_block",
     "mccourse:magenta_ender_pearl_block",
@@ -24,10 +17,8 @@
     "mccourse:yellow_ender_pearl_block",
     "mccourse:blue_ender_pearl_block",
     "mccourse:white_ender_pearl_block",
-    "mccourse:nether_star_block",
-    "mccourse:gunpowder_block",
-    "mccourse:rotten_flesh_block",
     "#mccourse:blocks/mobs_blocks_drops",
-    "#mccourse:blocks/pink_ores"
+    "#mccourse:blocks/mccourse_ores",
+    "#mccourse:blocks/mccourse_ores_block"
   ]
 }

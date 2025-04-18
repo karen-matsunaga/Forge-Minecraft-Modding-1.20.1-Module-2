@@ -1,6 +1,8 @@
 {
   "values": [
     "mccourse:deepslate_alexandrite_ore",
-    "mccourse:end_stone_alexandrite_ore"
+    "mccourse:end_stone_alexandrite_ore",
+    "mccourse:deepslate_pink_ore",
+    "mccourse:end_stone_pink_ore"
   ]
 }

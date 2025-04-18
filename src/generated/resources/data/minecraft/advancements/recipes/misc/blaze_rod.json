@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "mccourse:pink"
+              "mccourse:blaze_rod_block"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mccourse:green_modes"
+        "recipe": "minecraft:blaze_rod"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "mccourse:green_modes"
+      "minecraft:blaze_rod"
     ]
   },
   "sends_telemetry_event": false

@@ -3,19 +3,16 @@
   "category": "misc",
   "key": {
     "A": {
-      "item": "mccourse:pink"
-    },
-    "B": {
-      "item": "mccourse:blue_modes"
+      "item": "minecraft:blaze_rod"
     }
   },
   "pattern": [
     "AAA",
-    "ABA",
+    "AAA",
     "AAA"
   ],
   "result": {
-    "item": "mccourse:green_modes"
+    "item": "mccourse:blaze_rod_block"
   },
   "show_notification": true
 }

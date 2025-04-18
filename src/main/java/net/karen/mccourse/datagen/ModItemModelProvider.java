@@ -142,8 +142,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.BOUNCY_BALLS_PARTICLES);
 
         // Mining Modes
-        handheldItem(ModItems.MINING_MODES);
+        handheldItem(ModItems.BLUE_MODES);
         handheldItem(ModItems.GREEN_MODES);
+        handheldItem(ModItems.PURPLE_MODES);
+        handheldItem(ModItems.ORANGE_MODES);
 
         // Hammer
         handheldItem(ModItems.COPPER_HAMMER);

@@ -59,6 +59,8 @@ public class ModTags {
         // Created Pink ores tags
         public static final TagKey<Block> PINK_ORES = tag("blocks/pink_ores");
         public static final TagKey<Block> ALEXANDRITE_ORES = tag("blocks/alexandrite_ores");
+
+        public static final TagKey<Block> MCCOURSE_ORES_BLOCK = tag("blocks/mccourse_ores_block");
         public static final TagKey<Block> MCCOURSE_ORES = tag("blocks/mccourse_ores");
 
         // Pass block id

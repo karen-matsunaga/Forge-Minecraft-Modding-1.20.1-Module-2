@@ -170,8 +170,10 @@
 
   "block.mccourse.kaupen_furnace": "Kaupen Furnace",
 
-  "item.mccourse.mining_modes": "Mining Modes",
+  "item.mccourse.blue_modes": "Blue Modes",
   "item.mccourse.green_modes": "Green Modes",
+  "item.mccourse.purple_modes": "Purple Modes",
+  "item.mccourse.orange_modes": "Orange Modes",
 
   "item.mccourse.pink_helmet": "Pink Helmet",
   "item.mccourse.pink_chestplate": "Pink Chestplate",
@@ -228,6 +230,7 @@
   "block.mccourse.nether_star_block": "Nether Star Block",
   "block.mccourse.gunpowder_block": "Gunpowder Block",
   "block.mccourse.rotten_flesh_block": "Rotten Flesh Block",
+  "block.mccourse.blaze_rod_block": "Blaze Rod Block",
 
   "item.mccourse.copper_hammer": "Copper Hammer",
   "item.mccourse.diamond_hammer": "Diamond Hammer",

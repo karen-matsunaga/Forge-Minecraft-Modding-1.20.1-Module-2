@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "A": {
-      "item": "mccourse:pink"
+      "item": "minecraft:diamond"
     },
     "B": {
-      "item": "mccourse:blue_modes"
+      "item": "minecraft:book"
     }
   },
   "pattern": [
@@ -15,7 +15,7 @@
     "AAA"
   ],
   "result": {
-    "item": "mccourse:green_modes"
+    "item": "mccourse:blue_modes"
   },
   "show_notification": true
 }

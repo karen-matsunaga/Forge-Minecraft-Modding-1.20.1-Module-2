@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "mccourse:pink"
+              "minecraft:netherite_ingot"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mccourse:green_modes"
+        "recipe": "mccourse:purple_modes"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "mccourse:green_modes"
+      "mccourse:purple_modes"
     ]
   },
   "sends_telemetry_event": false

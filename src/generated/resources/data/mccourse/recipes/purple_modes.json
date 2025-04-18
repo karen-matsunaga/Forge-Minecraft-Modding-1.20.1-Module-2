@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "A": {
-      "item": "mccourse:pink"
+      "item": "minecraft:netherite_ingot"
     },
     "B": {
-      "item": "mccourse:blue_modes"
+      "item": "mccourse:green_modes"
     }
   },
   "pattern": [
@@ -15,7 +15,7 @@
     "AAA"
   ],
   "result": {
-    "item": "mccourse:green_modes"
+    "item": "mccourse:purple_modes"
   },
   "show_notification": true
 }

@@ -420,9 +420,7 @@ public class ModEvents {
         int x = 10;
         int y = h - 30;
 
-        if (player != null) {
-            ItemStack heldItem = player.getMainHandItem();
-            if (heldItem.getItem() instanceof ModesPickaxeItem modesPickaxe) {
+        if (player != null && player.getMainHandItem().getItem() instanceof ModesPickaxeItem modesPickaxe) {
                 ModesPickaxe mode = modesPickaxe.getModeActual(); // Show text mode actual on screen
                 Component modeText = Component.literal("Mode actual: ").setStyle(Style.EMPTY.withColor(0xFFAA00)
                         .applyFormat(ChatFormatting.BOLD)); // Gold color
@@ -441,7 +439,6 @@ public class ModEvents {
                 // - y: Y position when the text will be drawn on screen.
                 // - 0x0000FF: Text color on hexadecimal format.
                 // - false: Boolean that indicates if the text should have a shadow (false = without shadow).
-            }
         }
     }
 }

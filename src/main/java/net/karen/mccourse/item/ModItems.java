@@ -48,28 +48,28 @@ public class ModItems {
     // Alexandrite tools - Sword, axe, pickaxe, shovel and hoe
     public static final RegistryObject<Item> ALEXANDRITE_SWORD = ITEMS.register("alexandrite_sword",
             () -> new SlowingSwordItem(ModToolTiers.ALEXANDRITE, 2, 3,
-                    new Item.Properties().durability(2304)));
+                    new Item.Properties().durability(2304).fireResistant()));
 
     public static final RegistryObject<Item> ALEXANDRITE_PICKAXE = ITEMS.register("alexandrite_pickaxe",
             () -> new PickaxeItem(ModToolTiers.ALEXANDRITE, 1, 2,
-                    new Item.Properties().durability(2304)));
+                    new Item.Properties().durability(2304).fireResistant()));
 
     public static final RegistryObject<Item> ALEXANDRITE_SHOVEL = ITEMS.register("alexandrite_shovel",
             () -> new ShovelItem(ModToolTiers.ALEXANDRITE, 2, 3,
-                    new Item.Properties().durability(2304)));
+                    new Item.Properties().durability(2304).fireResistant()));
 
     public static final RegistryObject<Item> ALEXANDRITE_AXE = ITEMS.register("alexandrite_axe",
             () -> new AxeItem(ModToolTiers.ALEXANDRITE, 2, 3,
-                    new Item.Properties().durability(2304)));
+                    new Item.Properties().durability(2304).fireResistant()));
 
     public static final RegistryObject<Item> ALEXANDRITE_HOE = ITEMS.register("alexandrite_hoe",
             () -> new HoeItem(ModToolTiers.ALEXANDRITE, 2, 3,
-                    new Item.Properties().durability(2304)));
+                    new Item.Properties().durability(2304).fireResistant()));
 
     // Alexandrite Paxel
     public static final RegistryObject<Item> ALEXANDRITE_PAXEL = ITEMS.register("alexandrite_paxel",
             () -> new PaxelItem(ModToolTiers.ALEXANDRITE, 2, 3,
-                    new Item.Properties().durability(2304)));
+                    new Item.Properties().durability(2304).fireResistant()));
 
     // Alexandrite Hammer
     public static final RegistryObject<Item> ALEXANDRITE_HAMMER = ITEMS.register("alexandrite_hammer",
@@ -253,7 +253,7 @@ public class ModItems {
                     new Item.Properties().fireResistant()));
 
     // Mining Custom Item
-    public static final RegistryObject<Item> MINING_MODES = ITEMS.register("mining_modes",
+    public static final RegistryObject<Item> BLUE_MODES = ITEMS.register("blue_modes",
             () -> new ModesPickaxeItem(ModToolTiers.PINK, 2, 3,
                     new Item.Properties().fireResistant().durability(0)
             )
@@ -263,10 +263,28 @@ public class ModItems {
             );
 
     public static final RegistryObject<Item> GREEN_MODES = ITEMS.register("green_modes",
-            () -> new ModesPickaxeItem(ModToolTiers.COPPER, 2, 3,
+            () -> new ModesPickaxeItem(ModToolTiers.COPPER, 3, 4,
                     new Item.Properties().fireResistant().durability(0)
             )
                     .setLevel(5) // Level enchantment
+                    .setEnchantment(List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
+                            Enchantments.UNBREAKING, Enchantments.MENDING)) // List of enchantments
+    );
+
+    public static final RegistryObject<Item> PURPLE_MODES = ITEMS.register("purple_modes",
+            () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 4, 5,
+                    new Item.Properties().fireResistant().durability(0)
+            )
+                    .setLevel(7) // Level enchantment
+                    .setEnchantment(List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
+                            Enchantments.UNBREAKING, Enchantments.MENDING)) // List of enchantments
+    );
+
+    public static final RegistryObject<Item> ORANGE_MODES = ITEMS.register("orange_modes",
+            () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 5, 6,
+                    new Item.Properties().fireResistant().durability(0)
+            )
+                    .setLevel(10) // Level enchantment
                     .setEnchantment(List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
                             Enchantments.UNBREAKING, Enchantments.MENDING)) // List of enchantments
     );

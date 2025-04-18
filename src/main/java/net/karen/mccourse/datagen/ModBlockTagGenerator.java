@@ -22,75 +22,46 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         // Add Block Tags here
         this.tag(ModTags.Blocks.METAL_DETECTOR_VALUABLES)
-                .add(ModBlocks.ALEXANDRITE_ORE.get(),
-                        ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
-                        ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
-                        ModBlocks.NETHER_ALEXANDRITE_ORE.get(),
-                     ModBlocks.PINK_ORE.get(),
-                        ModBlocks.DEEPSLATE_PINK_ORE.get(),
-                        ModBlocks.END_STONE_PINK_ORE.get(),
-                        ModBlocks.NETHER_PINK_ORE.get()
-                )
                 .addTag(Tags.Blocks.ORES)
-                .addTag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE);
+                .addTag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE)
+                .addTag(ModTags.Blocks.MCCOURSE_ORES);
 
         // Add Mineable's tags
         // Pickaxe's tag, Alexandrite hammer's tag
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .add(// Blocks
-                        ModBlocks.ALEXANDRITE_BLOCK.get(),
-                        ModBlocks.RAW_ALEXANDRITE_BLOCK.get(),
-                        // Ores
-                        ModBlocks.ALEXANDRITE_ORE.get(),
-                        ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
-                        ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
-                        ModBlocks.NETHER_ALEXANDRITE_ORE.get(),
-                        ModBlocks.SOUND_BLOCK.get(),
-                        // Stairs
-                        ModBlocks.ALEXANDRITE_STAIRS.get(),
-                        // Slabs
-                        ModBlocks.ALEXANDRITE_SLABS.get(),
-                        // Custom blocks
-                        ModBlocks.ENDER_PEARL_BLOCK.get(),
-
-                        ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.BLACK_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.PURPLE_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.PINK_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.CYAN_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.BROWN_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.GRAY_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.RED_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.BLUE_ENDER_PEARL_BLOCK.get(),
-                        ModBlocks.WHITE_ENDER_PEARL_BLOCK.get(),
-
-                        ModBlocks.NETHER_STAR_BLOCK.get(),
-                        ModBlocks.GUNPOWDER_BLOCK.get(),
-                        ModBlocks.ROTTEN_FLESH_BLOCK.get())
+                .add(ModBlocks.SOUND_BLOCK.get(), // Blocks
+                    ModBlocks.ALEXANDRITE_STAIRS.get(), // Stairs
+                    ModBlocks.ALEXANDRITE_SLABS.get(), // Slabs
+                    ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), // Custom blocks
+                    ModBlocks.BLACK_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.PURPLE_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.PINK_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.CYAN_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.BROWN_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.GRAY_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.RED_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.BLUE_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.WHITE_ENDER_PEARL_BLOCK.get())
                 .addTag(ModTags.Blocks.MOBS_BLOCKS_DROPS)
-                .addTag(ModTags.Blocks.PINK_ORES);
+                .addTag(ModTags.Blocks.MCCOURSE_ORES)
+                .addTag(ModTags.Blocks.MCCOURSE_ORES_BLOCK);
 
         // Iron's tool tag
         this.tag(BlockTags.NEEDS_IRON_TOOL)
-                .add(ModBlocks.ALEXANDRITE_BLOCK.get(),
-                        ModBlocks.RAW_ALEXANDRITE_BLOCK.get(),
-                        // Ores
-                        ModBlocks.ALEXANDRITE_ORE.get(),
-                        // Custom Advanced Block
-                        ModBlocks.SOUND_BLOCK.get(),
-                        // Stairs
-                        ModBlocks.ALEXANDRITE_STAIRS.get(),
-                        // Slabs
-                        ModBlocks.ALEXANDRITE_SLABS.get());
+                .add(ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.PINK_ORE.get(), // Ores
+                     ModBlocks.SOUND_BLOCK.get(), // Custom Advanced Block
+                     ModBlocks.ALEXANDRITE_STAIRS.get(), // Stairs
+                     ModBlocks.ALEXANDRITE_SLABS.get()) // Slabs
+                .addTag(ModTags.Blocks.MCCOURSE_ORES_BLOCK);
 
         // Diamond's tool tag
         this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
-                .add(ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
-                        ModBlocks.END_STONE_ALEXANDRITE_ORE.get());
+                .add(ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(), ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
+                        ModBlocks.DEEPSLATE_PINK_ORE.get(), ModBlocks.END_STONE_PINK_ORE.get());
 
         // Fence's tag
         this.tag(BlockTags.FENCES)
@@ -116,74 +87,53 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         // Walnut's tag
         this.tag(BlockTags.LOGS_THAT_BURN)
-                .add(ModBlocks.WALNUT_LOG.get())
-                .add(ModBlocks.WALNUT_WOOD.get())
-                .add(ModBlocks.STRIPPED_WALNUT_LOG.get())
-                .add(ModBlocks.STRIPPED_WALNUT_WOOD.get());
+                .add(ModBlocks.WALNUT_LOG.get(), ModBlocks.WALNUT_WOOD.get(),
+                     ModBlocks.STRIPPED_WALNUT_LOG.get(), ModBlocks.STRIPPED_WALNUT_WOOD.get());
 
         this.tag(BlockTags.PLANKS)
                 .add(ModBlocks.WALNUT_PLANKS.get());
 
         // More Ores's tags
         this.tag(ModTags.Blocks.MORE_ORES_ONE_DROPS) // More Ores I
-                .add(Blocks.COAL_ORE)
-                .add(Blocks.COPPER_ORE);
+                .add(Blocks.COAL_ORE, Blocks.COPPER_ORE);
 
         this.tag(ModTags.Blocks.MORE_ORES_TWO_DROPS) // More Ores II
-                .add(Blocks.IRON_ORE)
-                .add(Blocks.LAPIS_ORE);
+                .add(Blocks.IRON_ORE, Blocks.LAPIS_ORE);
 
         this.tag(ModTags.Blocks.MORE_ORES_THREE_DROPS) // More Ores III
-                .add(Blocks.REDSTONE_ORE)
-                .add(Blocks.GOLD_ORE);
+                .add(Blocks.REDSTONE_ORE, Blocks.GOLD_ORE);
 
         this.tag(ModTags.Blocks.MORE_ORES_FOUR_DROPS) // More Ores IV
-                .add(Blocks.DIAMOND_ORE)
-                .add(Blocks.EMERALD_ORE);
+                .add(Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE);
 
         this.tag(ModTags.Blocks.MORE_ORES_FIVE_DROPS) // More Ores V
-                .add(Blocks.ANCIENT_DEBRIS)
-                .add(Blocks.NETHER_GOLD_ORE)
-                .add(Blocks.NETHER_QUARTZ_ORE);
+                .add(Blocks.ANCIENT_DEBRIS, Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE);
 
         // Modes Pickaxe's tag
         this.tag(ModTags.Blocks.MORE_ORES_MODES_PICKAXE_DROPS) // Modes Pickaxe's Mores Ores mode
-                .add(Blocks.COAL_ORE)
-                .add(Blocks.COPPER_ORE)
-                .add(Blocks.IRON_ORE)
-                .add(Blocks.LAPIS_ORE)
-                .add(Blocks.REDSTONE_ORE)
-                .add(Blocks.GOLD_ORE)
-                .add(Blocks.DIAMOND_ORE)
-                .add(Blocks.EMERALD_ORE)
-                .add(Blocks.ANCIENT_DEBRIS)
-                .add(Blocks.NETHER_QUARTZ_ORE);
+                .add(Blocks.COAL_ORE, Blocks.COPPER_ORE, Blocks.IRON_ORE, Blocks.LAPIS_ORE, Blocks.REDSTONE_ORE,
+                     Blocks.GOLD_ORE, Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE, Blocks.ANCIENT_DEBRIS, Blocks.NETHER_QUARTZ_ORE);
 
         // Mobs Blocks
         this.tag(ModTags.Blocks.MOBS_BLOCKS_DROPS)
-                .add(ModBlocks.ENDER_PEARL_BLOCK.get(),
-                     ModBlocks.NETHER_STAR_BLOCK.get(),
-                     ModBlocks.GUNPOWDER_BLOCK.get(),
-                     ModBlocks.ROTTEN_FLESH_BLOCK.get());
+                .add(ModBlocks.ENDER_PEARL_BLOCK.get(), ModBlocks.NETHER_STAR_BLOCK.get(), ModBlocks.GUNPOWDER_BLOCK.get(),
+                     ModBlocks.ROTTEN_FLESH_BLOCK.get(), ModBlocks.BLAZE_ROD_BLOCK.get());
 
         // My custom ores tags
         this.tag(ModTags.Blocks.PINK_ORES)
-                .add(ModBlocks.PINK_BLOCK.get(),
-                     ModBlocks.PINK_ORE.get(),
-                     ModBlocks.DEEPSLATE_PINK_ORE.get(),
-                     ModBlocks.END_STONE_PINK_ORE.get(),
-                     ModBlocks.NETHER_PINK_ORE.get());
+                .add(ModBlocks.PINK_ORE.get(), ModBlocks.DEEPSLATE_PINK_ORE.get(),
+                     ModBlocks.END_STONE_PINK_ORE.get(), ModBlocks.NETHER_PINK_ORE.get());
 
         this.tag(ModTags.Blocks.ALEXANDRITE_ORES)
-                .add(ModBlocks.ALEXANDRITE_BLOCK.get(),
-                     ModBlocks.ALEXANDRITE_ORE.get(),
-                     ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
-                     ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
-                     ModBlocks.NETHER_ALEXANDRITE_ORE.get());
+                .add(ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
+                     ModBlocks.END_STONE_ALEXANDRITE_ORE.get(), ModBlocks.NETHER_ALEXANDRITE_ORE.get());
 
         this.tag(ModTags.Blocks.MCCOURSE_ORES)
                 .addTag(ModTags.Blocks.PINK_ORES)
                 .addTag(ModTags.Blocks.ALEXANDRITE_ORES);
+
+        this.tag(ModTags.Blocks.MCCOURSE_ORES_BLOCK)
+                .add(ModBlocks.PINK_BLOCK.get(), ModBlocks.ALEXANDRITE_BLOCK.get(), ModBlocks.RAW_ALEXANDRITE_BLOCK.get());
     }
 
     @Override

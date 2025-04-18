@@ -9,7 +9,7 @@ public class MoreOresEnchantment extends Enchantment {
     protected MoreOresEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) { super(pRarity, pCategory, pApplicableSlots); }
 
     @Override
-    public int getMaxLevel() { return 6; } // More Ores enchantment max level
+    public int getMaxLevel() { return 5; } // More Ores enchantment max level
 
     // Magnetic, Auto Smelt, and More Ores doesn't work together
     public boolean checkCompatibility(@NotNull Enchantment pEnch) {

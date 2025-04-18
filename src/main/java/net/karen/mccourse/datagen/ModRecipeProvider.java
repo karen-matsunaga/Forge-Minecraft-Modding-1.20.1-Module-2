@@ -149,6 +149,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         itemTransformBlock(ModBlocks.GUNPOWDER_BLOCK.get(), Items.GUNPOWDER, pWriter);
         blockTransformItem(Items.GUNPOWDER, ModBlocks.GUNPOWDER_BLOCK.get(), pWriter);
 
+        itemTransformBlock(ModBlocks.BLAZE_ROD_BLOCK.get(), Items.BLAZE_ROD, pWriter);
+        blockTransformItem(Items.BLAZE_ROD, ModBlocks.BLAZE_ROD_BLOCK.get(), pWriter);
+
         // Ore
         itemTransformBlock(ModBlocks.PINK_BLOCK.get(), ModItems.PINK.get(), pWriter);
         blockTransformItem(ModItems.PINK.get(), ModBlocks.PINK_BLOCK.get(), pWriter);
@@ -164,8 +167,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         oreBlasting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER, 1.00f, 100, "rotten_flesh");
 
         // Enchantment
-        toolEnchantment(ModItems.MINING_MODES.get(), Items.NETHER_STAR, pWriter);
-        toolEnchanted(ModItems.GREEN_MODES.get(), Items.IRON_INGOT, ModItems.MINING_MODES.get(), pWriter);
+        toolEnchantment(ModItems.BLUE_MODES.get(), Items.DIAMOND, pWriter);
+        toolEnchanted(ModItems.GREEN_MODES.get(), ModItems.PINK.get(), ModItems.BLUE_MODES.get(), pWriter);
+        toolEnchanted(ModItems.PURPLE_MODES.get(), Items.NETHERITE_INGOT, ModItems.GREEN_MODES.get(), pWriter);
 
         // Colored blocks
         coloredBlocks(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), Items.GREEN_DYE, pWriter);
