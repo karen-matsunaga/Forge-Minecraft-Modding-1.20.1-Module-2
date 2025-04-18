@@ -120,13 +120,13 @@ public class MetalDetectorItem extends Item {
 
     // Output message if not found ore
     private void outputNoValuableFound(Player player) {
-        player.sendSystemMessage(Component.translatable("item.mccourse.metal_detector.no_valuable_values"));
+        player.displayClientMessage(Component.translatable("item.mccourse.metal_detector.no_valuable_values"), true);
     }
 
     // Output message if found ore
     private void outputValuableCoordinates(BlockPos below, Player player, Block block) {
-        player.sendSystemMessage(Component.literal("Valuable Found: §l§6" + I18n.get(block.getDescriptionId())
-                + "§r at [X: §l§6" + below.getX() + "§r, Y: §l§6" + below.getY() + "§r, Z: §l§6" + below.getZ() + "§r]"));
+        player.displayClientMessage(Component.literal("Valuable Found: §l§6" + I18n.get(block.getDescriptionId())
+                + "§r at [X: §l§6" + below.getX() + "§r, Y: §l§6" + below.getY() + "§r, Z: §l§6" + below.getZ() + "§r]"), true);
     }
 
     // Custom method that identifies all blocks added it is
