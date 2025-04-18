@@ -171,6 +171,7 @@
   "block.mccourse.kaupen_furnace": "Kaupen Furnace",
 
   "item.mccourse.mining_modes": "Mining Modes",
+  "item.mccourse.green_modes": "Green Modes",
 
   "item.mccourse.pink_helmet": "Pink Helmet",
   "item.mccourse.pink_chestplate": "Pink Chestplate",
@@ -200,7 +201,6 @@
   "item.mccourse.stone_paxel": "Stone Paxel",
   "item.mccourse.wooden_paxel": "Wooden Paxel",
   "item.mccourse.netherite_paxel": "Netherite Paxel",
-
 
   "item.mccourse.bouncy_balls": "Bouncy Balls",
   "item.mccourse.bouncy_balls_particles": "Bouncy Balls Particles",

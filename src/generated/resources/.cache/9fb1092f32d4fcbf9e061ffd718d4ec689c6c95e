@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-16T14:16:13.0791665	Recipes
+// 1.20.1	2025-04-17T23:03:22.8272222	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -27,6 +27,7 @@ e638de98327fcefb8ed9720908bdc58ddbdf818b data/mccourse/advancements/recipes/misc
 5bde72fe8621cd820f99a052daea489b3bbaa29e data/mccourse/advancements/recipes/misc/alexandrite_from_smelting_nether_alexandrite_ore.json
 548f5248251721a2524e6f58cb4fb0b409fb7cd1 data/mccourse/advancements/recipes/misc/alexandrite_from_smelting_raw_alexandrite.json
 d3c788c38d8460512af52b075d307257d121f481 data/mccourse/advancements/recipes/misc/ender_pearl_block.json
+e230bde0dbc71352312a0192915f86a769437885 data/mccourse/advancements/recipes/misc/green_modes.json
 77a7598b4b9531e1b3a8d671cf9b769ad0090873 data/mccourse/advancements/recipes/misc/gunpowder_block.json
 63a2622375606bbd10400d982766ec3fe4f26e3d data/mccourse/advancements/recipes/misc/leather_from_blasting_rotten_flesh.json
 abb3ba54b4fd9f450bbc55178c640d44fcc92134 data/mccourse/advancements/recipes/misc/leather_from_smelting_rotten_flesh.json
@@ -139,6 +140,7 @@ c9c723c0a267bb8a6db4fa7c42b50b9d8af8ca46 data/mccourse/recipes/ender_pearl_block
 cac1d9408074dc678050531a6e50a004c34cfe08 data/mccourse/recipes/gold_paxel.json
 a24188dca11cb7e5d3ee4fa00c988f5e56b0c4a0 data/mccourse/recipes/gray_ender_pearl_block.json
 1edbaa9514934e75ce0fc84e81ae412743a70434 data/mccourse/recipes/green_ender_pearl_block.json
+5801bf5e9f48bbce4bdfbb953e66fa1f3bb7574f data/mccourse/recipes/green_modes.json
 98f66b88a90b829f06ff62f33158eb8a456bef71 data/mccourse/recipes/gunpowder_block.json
 e5e732d008b6fa24c7cf0776be896352974562ce data/mccourse/recipes/iron_hammer.json
 94a3ef178b46028458d22a09905421f586ca043b data/mccourse/recipes/iron_paxel.json

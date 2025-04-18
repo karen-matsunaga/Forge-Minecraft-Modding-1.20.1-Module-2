@@ -165,6 +165,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // Enchantment
         toolEnchantment(ModItems.MINING_MODES.get(), Items.NETHER_STAR, pWriter);
+        toolEnchanted(ModItems.GREEN_MODES.get(), Items.IRON_INGOT, ModItems.MINING_MODES.get(), pWriter);
 
         // Colored blocks
         coloredBlocks(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), Items.GREEN_DYE, pWriter);
@@ -355,6 +356,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("AAA")
                 .define('A', item)
                 .define('B', Items.BOOK)
+                .unlockedBy("has_item", has(item))
+                .save(pWriter);
+    }
+
+    public static void toolEnchanted(ItemLike pResult, ItemLike item, ItemLike item2, Consumer<FinishedRecipe> pWriter) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, pResult, 1)
+                .pattern("AAA")
+                .pattern("ABA")
+                .pattern("AAA")
+                .define('A', item)
+                .define('B', item2)
                 .unlockedBy("has_item", has(item))
                 .save(pWriter);
     }

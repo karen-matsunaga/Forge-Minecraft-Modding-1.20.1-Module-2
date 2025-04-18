@@ -201,8 +201,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.BOUNCY_BALLS.get());
                         output.accept(ModItems.BOUNCY_BALLS_PARTICLES.get());
 
-                        // My custom Mining Paxel
+                        // My custom Mining Modes
                         output.accept(ModItems.MINING_MODES.get());
+                        output.accept(ModItems.GREEN_MODES.get());
 
                         // My custom block
                         output.accept(ModBlocks.ENDER_PEARL_BLOCK.get());

@@ -143,6 +143,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         // Mining Modes
         handheldItem(ModItems.MINING_MODES);
+        handheldItem(ModItems.GREEN_MODES);
 
         // Hammer
         handheldItem(ModItems.COPPER_HAMMER);

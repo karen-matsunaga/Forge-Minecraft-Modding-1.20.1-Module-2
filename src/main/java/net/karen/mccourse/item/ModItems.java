@@ -262,6 +262,15 @@ public class ModItems {
                             Enchantments.UNBREAKING, Enchantments.MENDING)) // List of enchantments
             );
 
+    public static final RegistryObject<Item> GREEN_MODES = ITEMS.register("green_modes",
+            () -> new ModesPickaxeItem(ModToolTiers.COPPER, 2, 3,
+                    new Item.Properties().fireResistant().durability(0)
+            )
+                    .setLevel(5) // Level enchantment
+                    .setEnchantment(List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
+                            Enchantments.UNBREAKING, Enchantments.MENDING)) // List of enchantments
+    );
+
     public static final RegistryObject<Item> COPPER_HAMMER = ITEMS.register("copper_hammer",
             () -> new HammerItem(ModToolTiers.COPPER, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
                     new Item.Properties().durability(0).fireResistant()).setRadius(3));
