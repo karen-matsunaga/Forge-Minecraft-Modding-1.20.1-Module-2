@@ -1,17 +1,25 @@
 package net.karen.mccourse.datagen;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.datagen.custom.GemEmpoweringRecipeBuilder;
 import net.karen.mccourse.item.ModItems;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.fluids.FluidStack;
@@ -166,7 +174,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         oreSmelting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER, 1.00f, 100, "rotten_flesh");
         oreBlasting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER, 1.00f, 100, "rotten_flesh");
 
-        // Enchantment
+        // My custom book enchantment - Demo
+        bookEnchantment(new ResourceLocation("mccourse",
+                        Enchantments.UNBREAKING.getDescriptionId().replace("enchantment.minecraft.", "") + "_book"),
+                Enchantments.UNBREAKING, 10, Items.OBSIDIAN, pWriter);
+
+        // My custom tool enchantment
         toolEnchantment(ModItems.BLUE_MODES.get(), Items.DIAMOND, pWriter);
         toolEnchanted(ModItems.GREEN_MODES.get(), ModItems.PINK.get(), ModItems.BLUE_MODES.get(), pWriter);
         toolEnchanted(ModItems.PURPLE_MODES.get(), Items.NETHERITE_INGOT, ModItems.GREEN_MODES.get(), pWriter);
@@ -186,6 +199,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         coloredBlocks(ModBlocks.WHITE_ENDER_PEARL_BLOCK.get(), Items.WHITE_DYE, pWriter);
         coloredBlocks(ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get(), Items.ORANGE_DYE, pWriter);
         coloredBlocks(ModBlocks.RED_ENDER_PEARL_BLOCK.get(), Items.RED_DYE, pWriter);
+
+        // My Disenchanted custom block
+        itemTransformBlock(ModBlocks.DISENCHANTED_BLOCK.get(), Blocks.OBSIDIAN, pWriter);
     }
 
     // Smelting
@@ -385,5 +401,75 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('B', item)
                 .unlockedBy("has_item", has(item))
                 .save(pWriter);
+    }
+
+    public static void bookEnchantment(ResourceLocation id, Enchantment enchantment, int level, ItemLike material, Consumer<FinishedRecipe> writer) {
+        JsonObject resultJson = new JsonObject();
+        resultJson.addProperty("item", BuiltInRegistries.ITEM.getKey(Items.ENCHANTED_BOOK).toString());
+        resultJson.addProperty("count", 1);
+
+        JsonObject nbt = new JsonObject();
+        JsonArray storedEnchantments = new JsonArray();
+        JsonObject enchantmentTag = new JsonObject();
+
+        enchantmentTag.addProperty("id", BuiltInRegistries.ENCHANTMENT.getKey(enchantment).toString());
+        enchantmentTag.add("lvl", new JsonPrimitive(enchantment.getMaxLevel() + "s" )); // força short no formato string com 's'
+
+        storedEnchantments.add(enchantmentTag);
+        nbt.add("StoredEnchantments", storedEnchantments);
+
+        resultJson.add("nbt", nbt);
+
+        JsonObject recipeJson = new JsonObject();
+        recipeJson.addProperty("type", "minecraft:crafting_shaped");
+
+        JsonArray pattern = new JsonArray();
+        pattern.add("AAA");
+        pattern.add("ABA");
+        pattern.add("AAA");
+        recipeJson.add("pattern", pattern);
+
+        JsonObject key = new JsonObject();
+
+        JsonObject aKey = new JsonObject();
+        aKey.addProperty("item", BuiltInRegistries.ITEM.getKey(material.asItem()).toString());
+        key.add("A", aKey);
+
+        JsonObject bKey = new JsonObject();
+        bKey.addProperty("item", "minecraft:book");
+        key.add("B", bKey);
+
+        recipeJson.add("key", key);
+        recipeJson.add("result", resultJson);
+
+        writer.accept(new FinishedRecipe() {
+            @Override
+            public void serializeRecipeData(JsonObject jsonObject) {
+                jsonObject.add("type", recipeJson.get("type"));
+                jsonObject.add("pattern", recipeJson.get("pattern"));
+                jsonObject.add("key", recipeJson.get("key"));
+                jsonObject.add("result", recipeJson.get("result"));
+            }
+
+            @Override
+            public ResourceLocation getId() {
+                return id;
+            }
+
+            @Override
+            public RecipeSerializer<?> getType() {
+                return RecipeSerializer.SHAPED_RECIPE;
+            }
+
+            @Override
+            public JsonObject serializeAdvancement() {
+                return null;
+            }
+
+            @Override
+            public ResourceLocation getAdvancementId() {
+                return new ResourceLocation("");
+            }
+        });
     }
 }
