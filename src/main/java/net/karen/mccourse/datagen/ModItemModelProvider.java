@@ -146,6 +146,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.GREEN_MODES);
         handheldItem(ModItems.PURPLE_MODES);
         handheldItem(ModItems.ORANGE_MODES);
+        handheldItem(ModItems.PINK_MODES);
 
         // Hammer
         handheldItem(ModItems.COPPER_HAMMER);

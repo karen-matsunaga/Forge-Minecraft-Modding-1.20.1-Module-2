@@ -289,6 +289,14 @@ public class ModItems {
                             Enchantments.UNBREAKING, Enchantments.MENDING)) // List of enchantments
     );
 
+    public static final RegistryObject<Item> PINK_MODES = ITEMS.register("pink_modes",
+            () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 6, 7,
+                    new Item.Properties().fireResistant().durability(0)
+            )
+                    .setLevel(0) // Level enchantment
+                    .setEnchantment(List.of()) // List of enchantments
+    );
+
     public static final RegistryObject<Item> COPPER_HAMMER = ITEMS.register("copper_hammer",
             () -> new HammerItem(ModToolTiers.COPPER, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
                     new Item.Properties().durability(0).fireResistant()).setRadius(3));

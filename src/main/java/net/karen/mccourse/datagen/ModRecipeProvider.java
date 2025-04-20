@@ -2,10 +2,10 @@ package net.karen.mccourse.datagen;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.datagen.custom.GemEmpoweringRecipeBuilder;
+import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,6 +25,7 @@ import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
@@ -174,10 +175,37 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         oreSmelting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER, 1.00f, 100, "rotten_flesh");
         oreBlasting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER, 1.00f, 100, "rotten_flesh");
 
-        // My custom book enchantment - Demo
-        bookEnchantment(new ResourceLocation("mccourse",
+        // My custom enchanted book and item enchanted
+        generateEnchantedRecipe(new ResourceLocation("mccourse",
                         Enchantments.UNBREAKING.getDescriptionId().replace("enchantment.minecraft.", "") + "_book"),
-                Enchantments.UNBREAKING, 10, Items.OBSIDIAN, pWriter);
+                Items.ENCHANTED_BOOK,
+                Map.of(Enchantments.UNBREAKING, 10), Items.BOOK, Items.OBSIDIAN, true, pWriter);
+
+        generateEnchantedRecipe(new ResourceLocation("mccourse",
+                        ModEnchantments.MORE_ORES.get().getDescriptionId().replace("enchantment.mccourse.", "")+ "_book"),
+                Items.ENCHANTED_BOOK,
+                Map.of(ModEnchantments.MORE_ORES.get(), 5,
+                        Enchantments.BLOCK_EFFICIENCY, 10), Items.BOOK, Items.NETHER_STAR, true, pWriter);
+
+        generateEnchantedRecipe(new ResourceLocation("mccourse",
+                        Items.DIAMOND_PICKAXE.getDescriptionId().replace("item.minecraft.", "") + "_item"),
+                Items.DIAMOND_PICKAXE,
+                Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.UNBREAKING, 10,
+                        Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1),
+                Items.DIAMOND_PICKAXE,
+                Items.COPPER_INGOT,
+                false,
+                pWriter);
+
+        generateEnchantedRecipe(new ResourceLocation("mccourse",
+                        ModItems.PINK_MODES.get().getDescriptionId().replace("item.mccourse.", "") + "_item"),
+                ModItems.PINK_MODES.get(),
+                Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.UNBREAKING, 10,
+                        Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1),
+                ModItems.PINK_MODES.get(),
+                Items.GLOWSTONE,
+                false,
+                pWriter);
 
         // My custom tool enchantment
         toolEnchantment(ModItems.BLUE_MODES.get(), Items.DIAMOND, pWriter);
@@ -403,21 +431,27 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(pWriter);
     }
 
-    public static void bookEnchantment(ResourceLocation id, Enchantment enchantment, int level, ItemLike material, Consumer<FinishedRecipe> writer) {
+    public static void generateEnchantedRecipe(ResourceLocation id, ItemLike resultItem, Map<Enchantment, Integer> enchantments,
+                                               ItemLike centerItem, ItemLike borderMaterial, boolean isBook,
+                                               Consumer<FinishedRecipe> writer) {
+
         JsonObject resultJson = new JsonObject();
-        resultJson.addProperty("item", BuiltInRegistries.ITEM.getKey(Items.ENCHANTED_BOOK).toString());
+        resultJson.addProperty("item", BuiltInRegistries.ITEM.getKey(resultItem.asItem()).toString());
         resultJson.addProperty("count", 1);
 
         JsonObject nbt = new JsonObject();
-        JsonArray storedEnchantments = new JsonArray();
-        JsonObject enchantmentTag = new JsonObject();
+        JsonArray enchantmentArray = new JsonArray();
 
-        enchantmentTag.addProperty("id", BuiltInRegistries.ENCHANTMENT.getKey(enchantment).toString());
-        enchantmentTag.add("lvl", new JsonPrimitive(enchantment.getMaxLevel() + "s" )); // força short no formato string com 's'
+        if (enchantments != null) {
+            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                JsonObject enchantmentTag = new JsonObject();
+                enchantmentTag.addProperty("id", BuiltInRegistries.ENCHANTMENT.getKey(entry.getKey()).toString());
+                enchantmentTag.addProperty("lvl", entry.getValue());
+                enchantmentArray.add(enchantmentTag);
+            }
+        }
 
-        storedEnchantments.add(enchantmentTag);
-        nbt.add("StoredEnchantments", storedEnchantments);
-
+        nbt.add(isBook ? "StoredEnchantments" : "Enchantments", enchantmentArray);
         resultJson.add("nbt", nbt);
 
         JsonObject recipeJson = new JsonObject();
@@ -432,11 +466,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         JsonObject key = new JsonObject();
 
         JsonObject aKey = new JsonObject();
-        aKey.addProperty("item", BuiltInRegistries.ITEM.getKey(material.asItem()).toString());
+        aKey.addProperty("item", BuiltInRegistries.ITEM.getKey(borderMaterial.asItem()).toString());
         key.add("A", aKey);
 
         JsonObject bKey = new JsonObject();
-        bKey.addProperty("item", "minecraft:book");
+        bKey.addProperty("item", BuiltInRegistries.ITEM.getKey(centerItem.asItem()).toString());
         key.add("B", bKey);
 
         recipeJson.add("key", key);
@@ -452,24 +486,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             }
 
             @Override
-            public ResourceLocation getId() {
-                return id;
-            }
+            public ResourceLocation getId() { return id; }
 
             @Override
-            public RecipeSerializer<?> getType() {
-                return RecipeSerializer.SHAPED_RECIPE;
-            }
+            public RecipeSerializer<?> getType() { return RecipeSerializer.SHAPED_RECIPE; }
 
             @Override
-            public JsonObject serializeAdvancement() {
-                return null;
-            }
+            public JsonObject serializeAdvancement() { return null; }
 
             @Override
-            public ResourceLocation getAdvancementId() {
-                return new ResourceLocation("");
-            }
+            public ResourceLocation getAdvancementId() { return new ResourceLocation(""); }
         });
     }
 }

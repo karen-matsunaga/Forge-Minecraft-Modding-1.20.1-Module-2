@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-18T15:53:02.4032947	Recipes
+// 1.20.1	2025-04-20T16:32:00.5922558	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -28,6 +28,7 @@ e638de98327fcefb8ed9720908bdc58ddbdf818b data/mccourse/advancements/recipes/misc
 548f5248251721a2524e6f58cb4fb0b409fb7cd1 data/mccourse/advancements/recipes/misc/alexandrite_from_smelting_raw_alexandrite.json
 9692490ef4adb1817d3b2a64a470fa1f738a0e11 data/mccourse/advancements/recipes/misc/blaze_rod_block.json
 c74e7dc97d1677e53b193e0cc6f9aefde91e47d1 data/mccourse/advancements/recipes/misc/blue_modes.json
+d8e1a096fc60f6670b3b247196b7a0ac0843d2d1 data/mccourse/advancements/recipes/misc/disenchanted.json
 d3c788c38d8460512af52b075d307257d121f481 data/mccourse/advancements/recipes/misc/ender_pearl_block.json
 35fc33bfc51bdf1837340d1c159242001159ce88 data/mccourse/advancements/recipes/misc/green_modes.json
 77a7598b4b9531e1b3a8d671cf9b769ad0090873 data/mccourse/advancements/recipes/misc/gunpowder_block.json
@@ -139,6 +140,8 @@ a5469a2513870a25d5e0f6319782b1849bf4d070 data/mccourse/recipes/copper_shovel.jso
 bf572bca995581b51614943d8a70e807e2609e36 data/mccourse/recipes/diamond_from_gem_empowering.json
 28864fd38b796283bed64db851c50c65c3eb4e2d data/mccourse/recipes/diamond_hammer.json
 554a58687570a8233e9447fd8e21dbecf437676e data/mccourse/recipes/diamond_paxel.json
+9cfdefc158284222bda96a28eb3b050ca15ea1a0 data/mccourse/recipes/diamond_pickaxe_item.json
+0a22094295d5ba6bedc52ed66ea258102b1e2230 data/mccourse/recipes/disenchanted.json
 c9c723c0a267bb8a6db4fa7c42b50b9d8af8ca46 data/mccourse/recipes/ender_pearl_block.json
 334d4a7faeeb1befbbd989ec5baf94f373a4d48d data/mccourse/recipes/gold_hammer.json
 cac1d9408074dc678050531a6e50a004c34cfe08 data/mccourse/recipes/gold_paxel.json
@@ -152,6 +155,7 @@ cfca0327ee4afe090c262e7f6a84a3d74fa64730 data/mccourse/recipes/leather_from_blas
 ca9b2dea94e33aa7da754e5135f32d3a3c41c806 data/mccourse/recipes/leather_from_smelting_rotten_flesh.json
 c0b86ce8254978a80e2ec28cb64d92297cdffeff data/mccourse/recipes/lime_green_ender_pearl_block.json
 2f7c229a6ad8bca54d1d67aaed543396ceaca3b4 data/mccourse/recipes/magenta_ender_pearl_block.json
+4203b14abd8836ebd854a9c4ea0a94ca6f5f5003 data/mccourse/recipes/more_ores_book.json
 f607ef1b937f07d9fc52f19d17c943743a35da86 data/mccourse/recipes/netherite_hammer.json
 e328d58ea430d6f9dab9c4cea45cbd647e80efe7 data/mccourse/recipes/netherite_paxel.json
 cc94de58809f0903e229eef667debd78793bc7ef data/mccourse/recipes/nether_star_block.json
@@ -176,6 +180,7 @@ f55b4ebe1bc7a8272b1b9b26c643ae56c398d940 data/mccourse/recipes/pink_from_smeltin
 3d38d2ec07002209f753bc46e9c48b2b54932e84 data/mccourse/recipes/pink_helmet.json
 ce2bb72512d0eb911acc01d92be423ab7b5d537f data/mccourse/recipes/pink_hoe.json
 26b3b31c64585f7d7abb767e9a57caf2e14fc5d9 data/mccourse/recipes/pink_leggings.json
+bfc37edf714f3aebd5f13bffe4a82474f8cbdb9e data/mccourse/recipes/pink_modes_item.json
 50834858649c8c0af233104644e72021a2f6b64f data/mccourse/recipes/pink_paxel.json
 edd828a949e10a1934df2ffcdc9268840bdf1e05 data/mccourse/recipes/pink_pickaxe.json
 ed76d4b6f6043a343ff12d6b94d9adbe5e62e752 data/mccourse/recipes/pink_shovel.json
@@ -188,6 +193,7 @@ fa966f75ced176721e85d71224f99f6c9c5951e2 data/mccourse/recipes/raw_alexandrite.j
 8e926fb44bf263db8eadedde02c8ccd90a683d8a data/mccourse/recipes/rotten_flesh_block.json
 c24ee75081d8c74d7fb390b214950b838c881488 data/mccourse/recipes/stone_hammer.json
 65db856697e6d8371ffa1cc267009e98b048d7b8 data/mccourse/recipes/stone_paxel.json
+eb9be47322b74d7417b148ca7ff35758d18221bd data/mccourse/recipes/unbreaking_book.json
 1406828f76b2ad08a3a39843850b2f7b0035794f data/mccourse/recipes/white_ender_pearl_block.json
 46f816f7cacbc71daa553a3d957469b8f75b46c1 data/mccourse/recipes/wooden_hammer.json
 6194d7a2f67e4c136b9a6aac62466ab0e8ca59e9 data/mccourse/recipes/wooden_paxel.json

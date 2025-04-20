@@ -206,6 +206,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.GREEN_MODES.get());
                         output.accept(ModItems.PURPLE_MODES.get());
                         output.accept(ModItems.ORANGE_MODES.get());
+                        output.accept(ModItems.PINK_MODES.get());
 
                         // My custom block
                         output.accept(ModBlocks.ENDER_PEARL_BLOCK.get());
@@ -254,6 +255,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.DEEPSLATE_PINK_ORE.get());
                         output.accept(ModBlocks.END_STONE_PINK_ORE.get());
                         output.accept(ModBlocks.NETHER_PINK_ORE.get());
+
+                        // My Disenchanted custom block
+                        output.accept(ModBlocks.DISENCHANTED_BLOCK.get());
                     }).build());
 
     // Registry Creative Mode Tab

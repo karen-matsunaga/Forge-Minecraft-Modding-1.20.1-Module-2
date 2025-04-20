@@ -78,6 +78,8 @@
 
   "block.mccourse.gem_empowering_station": "Gem Empowering Station",
 
+  "block.mccourse.disenchanted": "Disenchanted",
+
   "item.mccourse.radiation_staff": "Radiation Staff",
 
   "item.mccourse.alexandrite_bow": "Alexandrite Bow",
@@ -174,6 +176,7 @@
   "item.mccourse.green_modes": "Green Modes",
   "item.mccourse.purple_modes": "Purple Modes",
   "item.mccourse.orange_modes": "Orange Modes",
+  "item.mccourse.pink_modes": "Pink Modes",
 
   "item.mccourse.pink_helmet": "Pink Helmet",
   "item.mccourse.pink_chestplate": "Pink Chestplate",

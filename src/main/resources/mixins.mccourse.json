@@ -9,6 +9,8 @@
   "mixins": [
       "DiggingEnchantmentMixin",
       "LootBonusEnchantmentMixin",
-      "EnchantmentHelperMixin"
+      "EnchantmentHelperMixin",
+      "EnchantmentMixin",
+      "ItemMixin"
   ]
 }

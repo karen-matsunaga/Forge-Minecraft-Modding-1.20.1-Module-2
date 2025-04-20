@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-18T11:27:43.2722507	Item Models: mccourse
+// 1.20.1	2025-04-20T11:42:06.3702635	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 cfc705788577468640df77a99d391497448608d0 assets/mccourse/models/item/alexandrite_button.json
@@ -53,6 +53,7 @@ e13e0b20f590347b4f11a61a164b0890387a5208 assets/mccourse/models/item/pink_chestp
 b8024de9546f5d28b61e6b63a7d942273d28b77d assets/mccourse/models/item/pink_helmet.json
 a1689d5a2cf3f30332f9050c9691e896c1245917 assets/mccourse/models/item/pink_hoe.json
 f4c2a392f1bacca451a6959db2adfd02adcf9d7d assets/mccourse/models/item/pink_leggings.json
+f2a5766163270e6290e670d31fcad93939d4c145 assets/mccourse/models/item/pink_modes.json
 8d006d2d7caee2a6e0f6fd5dafb728b4585dbfd3 assets/mccourse/models/item/pink_paxel.json
 1f1e0e615478e4c69a023b05752a5f62e83c1bef assets/mccourse/models/item/pink_pickaxe.json
 73f30e89d09714ded811fe3909e3b38acfb69be4 assets/mccourse/models/item/pink_shovel.json

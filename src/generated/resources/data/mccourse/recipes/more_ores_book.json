@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "A": {
-      "item": "minecraft:obsidian"
+      "item": "minecraft:nether_star"
     },
     "B": {
       "item": "minecraft:book"
@@ -19,8 +19,12 @@
     "nbt": {
       "StoredEnchantments": [
         {
-          "id": "minecraft:unbreaking",
+          "id": "minecraft:efficiency",
           "lvl": 10
+        },
+        {
+          "id": "mccourse:more_ores",
+          "lvl": 5
         }
       ]
     }

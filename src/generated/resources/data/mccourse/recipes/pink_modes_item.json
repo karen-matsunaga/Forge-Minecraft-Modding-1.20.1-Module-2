@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:glowstone"
+    },
+    "B": {
+      "item": "mccourse:pink_modes"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "item": "mccourse:pink_modes",
+    "nbt": {
+      "Enchantments": [
+        {
+          "id": "minecraft:unbreaking",
+          "lvl": 10
+        },
+        {
+          "id": "mccourse:more_ores",
+          "lvl": 5
+        },
+        {
+          "id": "minecraft:efficiency",
+          "lvl": 10
+        },
+        {
+          "id": "minecraft:mending",
+          "lvl": 1
+        }
+      ]
+    }
+  }
+}
