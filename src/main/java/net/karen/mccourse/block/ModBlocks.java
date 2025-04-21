@@ -395,6 +395,13 @@ public class ModBlocks {
             () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.NETHERRACK)
                     .strength(5f).requiresCorrectToolForDrops(), UniformInt.of(3, 6)));
 
+    // Disenchanted custom disenchanted block
+    public static final RegistryObject<Block> DISENCHANTED_BLOCK = registerBlock("disenchanted",
+            () -> new DisenchantedBlock(BlockBehaviour.Properties.of().sound(SoundType.METAL)
+                    .strength(5f)
+                    .requiresCorrectToolForDrops()
+            ));
+
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

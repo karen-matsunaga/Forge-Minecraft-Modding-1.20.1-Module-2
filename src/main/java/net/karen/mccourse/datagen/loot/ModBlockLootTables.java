@@ -177,6 +177,9 @@ public class ModBlockLootTables extends BlockLootSubProvider {
                 block -> createOreDrop(ModBlocks.END_STONE_PINK_ORE.get(), ModItems.PINK.get()));
         this.add(ModBlocks.NETHER_PINK_ORE.get(),
                 block -> createOreDrop(ModBlocks.NETHER_PINK_ORE.get(), ModItems.PINK.get()));
+
+        // My disenchanted block
+        this.dropSelf(ModBlocks.DISENCHANTED_BLOCK.get());
     }
 
     // Custom ore's drops
