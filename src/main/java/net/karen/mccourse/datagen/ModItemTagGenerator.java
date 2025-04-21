@@ -51,8 +51,8 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.ALEXANDRITE.get());
 
         this.tag(ModTags.Items.MCCOURSE_ORES_ITEMS)
-                .add(ModItems.PINK.get())
-                .add(ModItems.ALEXANDRITE.get());
+                .addTag(ModTags.Items.PINK_ORES_ITEMS)
+                .addTag(ModTags.Items.ALEXANDRITE_ORES_ITEMS);
 
         this.tag(ModTags.Items.ALEXANDRITE_ORES_ITEMS)
                 .add(ModBlocks.ALEXANDRITE_BLOCK.get().asItem(),
