@@ -48,15 +48,13 @@ public class DisenchantedScreen extends AbstractContainerScreen<DisenchantedMenu
             EnchantmentHelper.setEnchantments(enchants, preview);
 
             // Renders the fake item (Visual)
-            guiGraphics.renderFakeItem(preview, this.leftPos + 138, this.topPos + 47);
+            guiGraphics.renderItem(preview, this.leftPos + 138, this.topPos + 47);
 
             // Checks if the mouse is on top of the slot
             if (mouseX >= this.leftPos + 138 && mouseX < this.leftPos + 138 + 16 && mouseY >= this.topPos + 47 && mouseY < this.topPos + 47 + 16) {
-                guiGraphics.renderTooltip(this.font, preview, mouseX, mouseY);
-                this.renderTooltip(guiGraphics, mouseX, mouseY); // Tooltip with enchantments!
+                guiGraphics.renderTooltip(this.font, preview, mouseX, mouseY); // Tooltip with enchantments!
             }
         }
-
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 

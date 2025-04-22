@@ -63,9 +63,6 @@ public class DisenchantedBlockEntity extends RandomizableContainerBlockEntity im
     public Component getDefaultName() { return Component.literal("disenchant"); }
 
     @Override
-    public int getMaxStackSize() { return 64; }
-
-    @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory) {
         return new DisenchantedMenu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(this.worldPosition));
     }
