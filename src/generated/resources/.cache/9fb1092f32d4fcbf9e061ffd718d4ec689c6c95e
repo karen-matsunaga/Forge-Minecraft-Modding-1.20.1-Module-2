@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-23T16:00:26.286515	Recipes
+// 1.20.1	2025-04-23T16:19:01.0086235	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -140,7 +140,7 @@ a5469a2513870a25d5e0f6319782b1849bf4d070 data/mccourse/recipes/copper_shovel.jso
 bf572bca995581b51614943d8a70e807e2609e36 data/mccourse/recipes/diamond_from_gem_empowering.json
 28864fd38b796283bed64db851c50c65c3eb4e2d data/mccourse/recipes/diamond_hammer.json
 554a58687570a8233e9447fd8e21dbecf437676e data/mccourse/recipes/diamond_paxel.json
-67409caf5983e639868fd01a46a6735bd32a93b8 data/mccourse/recipes/diamond_pickaxe_item.json
+316086c6c7b6b160dbde345d8d51e60390a37c21 data/mccourse/recipes/diamond_pickaxe_item.json
 0a22094295d5ba6bedc52ed66ea258102b1e2230 data/mccourse/recipes/disenchanted.json
 c9c723c0a267bb8a6db4fa7c42b50b9d8af8ca46 data/mccourse/recipes/ender_pearl_block.json
 334d4a7faeeb1befbbd989ec5baf94f373a4d48d data/mccourse/recipes/gold_hammer.json
@@ -155,7 +155,7 @@ cfca0327ee4afe090c262e7f6a84a3d74fa64730 data/mccourse/recipes/leather_from_blas
 ca9b2dea94e33aa7da754e5135f32d3a3c41c806 data/mccourse/recipes/leather_from_smelting_rotten_flesh.json
 c0b86ce8254978a80e2ec28cb64d92297cdffeff data/mccourse/recipes/lime_green_ender_pearl_block.json
 2f7c229a6ad8bca54d1d67aaed543396ceaca3b4 data/mccourse/recipes/magenta_ender_pearl_block.json
-4203b14abd8836ebd854a9c4ea0a94ca6f5f5003 data/mccourse/recipes/more_ores_book.json
+1f8d7cd7e231be371961d50d14296dd00bdf3a46 data/mccourse/recipes/more_ores_book.json
 f607ef1b937f07d9fc52f19d17c943743a35da86 data/mccourse/recipes/netherite_hammer.json
 e328d58ea430d6f9dab9c4cea45cbd647e80efe7 data/mccourse/recipes/netherite_paxel.json
 cc94de58809f0903e229eef667debd78793bc7ef data/mccourse/recipes/nether_star_block.json
@@ -180,7 +180,7 @@ f55b4ebe1bc7a8272b1b9b26c643ae56c398d940 data/mccourse/recipes/pink_from_smeltin
 3d38d2ec07002209f753bc46e9c48b2b54932e84 data/mccourse/recipes/pink_helmet.json
 ce2bb72512d0eb911acc01d92be423ab7b5d537f data/mccourse/recipes/pink_hoe.json
 26b3b31c64585f7d7abb767e9a57caf2e14fc5d9 data/mccourse/recipes/pink_leggings.json
-8c87fc2aef6a9008dad166081ae47b27d40b3ea3 data/mccourse/recipes/pink_modes_item.json
+d3b0e42798327fc86827a0240c1c218b9ebf8b5a data/mccourse/recipes/pink_modes_item.json
 50834858649c8c0af233104644e72021a2f6b64f data/mccourse/recipes/pink_paxel.json
 edd828a949e10a1934df2ffcdc9268840bdf1e05 data/mccourse/recipes/pink_pickaxe.json
 ed76d4b6f6043a343ff12d6b94d9adbe5e62e752 data/mccourse/recipes/pink_shovel.json

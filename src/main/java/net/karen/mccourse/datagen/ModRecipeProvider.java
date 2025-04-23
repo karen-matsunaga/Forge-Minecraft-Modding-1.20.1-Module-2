@@ -24,6 +24,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -431,29 +432,35 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(pWriter);
     }
 
+    // Custom enchanted item or enchanted book
     public static void generateEnchantedRecipe(ResourceLocation id, ItemLike resultItem, Map<Enchantment, Integer> enchantments,
                                                ItemLike centerItem, ItemLike borderMaterial, boolean isBook,
                                                Consumer<FinishedRecipe> writer) {
-
+        // Registry item
         JsonObject resultJson = new JsonObject();
         resultJson.addProperty("item", BuiltInRegistries.ITEM.getKey(resultItem.asItem()).toString());
         resultJson.addProperty("count", 1);
 
+        // Registry enchantments
         JsonObject nbt = new JsonObject();
         JsonArray enchantmentArray = new JsonArray();
 
-        if (enchantments != null) {
-            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                JsonObject enchantmentTag = new JsonObject();
-                enchantmentTag.addProperty("id", BuiltInRegistries.ENCHANTMENT.getKey(entry.getKey()).toString());
-                enchantmentTag.addProperty("lvl", entry.getValue());
-                enchantmentArray.add(enchantmentTag);
-            }
-        }
+        // Sorts enchantments by level and then by ID
+        enchantments.entrySet().stream()
+                .sorted(Comparator
+                        .comparingInt(Map.Entry<Enchantment, Integer>::getValue) // Enchantment level
+                        .thenComparing(e -> BuiltInRegistries.ENCHANTMENT.getKey(e.getKey()).toString())) // Enchantment name
+                .forEach(entry -> {
+                    JsonObject enchantmentTag = new JsonObject();
+                    enchantmentTag.addProperty("id", BuiltInRegistries.ENCHANTMENT.getKey(entry.getKey()).toString());
+                    enchantmentTag.addProperty("lvl", entry.getValue());
+                    enchantmentArray.add(enchantmentTag);
+                });
 
         nbt.add(isBook ? "StoredEnchantments" : "Enchantments", enchantmentArray);
         resultJson.add("nbt", nbt);
 
+        // Registry recipe
         JsonObject recipeJson = new JsonObject();
         recipeJson.addProperty("type", "minecraft:crafting_shaped");
 
@@ -476,6 +483,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         recipeJson.add("key", key);
         recipeJson.add("result", resultJson);
 
+        // Registry JSON file
         writer.accept(new FinishedRecipe() {
             @Override
             public void serializeRecipeData(JsonObject jsonObject) {
