@@ -3,40 +3,40 @@ package net.karen.mccourse.network;
 import net.karen.mccourse.screen.DisenchantedMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class DisenchantedGuiSlotMessage {
-    private final int slotID, x, y, z, changeType, meta;
+    private final int slotID, x, y, z, dragType;
+    private final ClickType clickType;
 
-    // DisenchantedMenu.java -> Client and Server packages communication
-    public DisenchantedGuiSlotMessage(int slotID, int x, int y, int z, int changeType, int meta) {
+    public DisenchantedGuiSlotMessage(int slotID, int x, int y, int z, int dragType, ClickType clickType) {
         this.slotID = slotID;
         this.x = x;
         this.y = y;
         this.z = z;
-        this.changeType = changeType;
-        this.meta = meta;
-    }
+        this.dragType = dragType;
+        this.clickType = clickType;
+    } // Constructor for sending the package
 
-    // MCCourse.java -> Added Network event message
     public DisenchantedGuiSlotMessage(FriendlyByteBuf buffer) {
         this.slotID = buffer.readInt();
         this.x = buffer.readInt();
         this.y = buffer.readInt();
         this.z = buffer.readInt();
-        this.changeType = buffer.readInt();
-        this.meta = buffer.readInt();
-    }
+        this.dragType = buffer.readInt();
+        this.clickType = ClickType.values()[buffer.readInt()];
+    } // Constructor that rebuilds the buffer package
 
     public void buffer(FriendlyByteBuf buffer) {
         buffer.writeInt(slotID);
         buffer.writeInt(x);
         buffer.writeInt(y);
         buffer.writeInt(z);
-        buffer.writeInt(changeType);
-        buffer.writeInt(meta);
+        buffer.writeInt(dragType);
+        buffer.writeInt(clickType.ordinal());
     }
 
     public void handler(Supplier<NetworkEvent.Context> contextSupplier) {
@@ -44,7 +44,7 @@ public class DisenchantedGuiSlotMessage {
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
             if (player == null) return;
-            DisenchantedMenu.handleSlotAction(player, slotID, changeType, meta, x, y, z);
+            DisenchantedMenu.handleSlotAction(player, slotID, dragType, clickType, x, y, z);
         });
         context.setPacketHandled(true);
     }

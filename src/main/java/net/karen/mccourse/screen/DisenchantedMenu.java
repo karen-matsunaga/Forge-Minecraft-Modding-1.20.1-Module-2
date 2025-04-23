@@ -3,6 +3,7 @@ package net.karen.mccourse.screen;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.entity.DisenchantedBlockEntity;
 import net.karen.mccourse.network.DisenchantedGuiSlotMessage;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -60,7 +61,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
                 this.boundItemMatcher = () -> itemstack == (hand == 0 ? entity.getMainHandItem() : entity.getOffhandItem());
                 bindCapability(itemstack);
             } else if (extraData.readableBytes() > 1) {
-                extraData.readByte(); // padding
+                extraData.readByte(); // Drop padding
                 boundEntity = world.getEntity(extraData.readVarInt());
                 if (boundEntity != null) bindCapability(boundEntity);
             } else {
@@ -82,9 +83,12 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
             blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(cap -> { internal = cap; bound = true; });
     }
 
+    // Added custom slots
     private void addCustomSlots() {
         customSlots.put(0, addSlot(new SlotItemHandler(internal, 0, 26, 47) {
-            @Override public boolean mayPlace(@NotNull ItemStack stack) { return stack.isEnchanted(); } // Place only enchanted item
+            @Override public boolean mayPlace(@NotNull ItemStack stack) {
+                return !stack.is(Items.ENCHANTED_BOOK) && !stack.isStackable();
+            } // Place only enchanted items expect Enchanted Book
             @Override public int getMaxStackSize() { return 1; } // Accepts only 1 item
         }));
         customSlots.put(1, addSlot(new SlotItemHandler(internal, 1, 79, 47) {
@@ -93,9 +97,11 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
         }));
         customSlots.put(2, addSlot(new SlotItemHandler(internal, 2, 138, 47) {
             @Override public boolean mayPlace(@NotNull ItemStack stack) { return false; } // Nothing is placed
-            @Override public void setChanged() { super.setChanged();
-                slotChanged(2, 2, 0);
-                slotChanged(2, 0, 0); } // If player clicked on item
+            @Override public void setChanged() {
+                super.setChanged();
+                slotChanged(2, 0, ClickType.QUICK_MOVE);
+            } // If player clicked on item with LEFT click or SHIFT + LEFT click
+            @Override public int getMaxStackSize() { return 1; } // Accepts an output contained only 1 enchanted book
         }));
     }
 
@@ -147,56 +153,61 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
     private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int pIndex) {
-        Slot sourceSlot = slots.get(pIndex);
+    public ItemStack quickMoveStack(Player playerIn, int index) {
+        Slot sourceSlot = slots.get(index);
         if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
 
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
 
-        if (pIndex == TE_INVENTORY_FIRST_SLOT_INDEX + 2) {
-            // Força a execução da lógica ao shift+clique no slot 2
-            DisenchantedMenu.execute(world, x, y, z);
-        }
-
-        if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            // Inventário do jogador -> Inventário do bloco
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;
-            }
-        } else if (pIndex < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-            // Inventário do bloco -> Inventário do jogador
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;
-            }
+        boolean moved;
+        if (index < TE_INVENTORY_FIRST_SLOT_INDEX) {
+            moved = moveItemStackTo(sourceStack,
+                    TE_INVENTORY_FIRST_SLOT_INDEX,
+                    TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT,
+                    false); // Player inventory -> Block inventory
+        } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
+            moved = moveItemStackTo(sourceStack,
+                    VANILLA_FIRST_SLOT_INDEX,
+                    VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT,
+                    false); // Block inventory -> Player inventory
         } else {
-            System.out.println("Invalid slotIndex:" + pIndex);
+            System.out.println("Invalid slotIndex:" + index); // Invalid index
             return ItemStack.EMPTY;
         }
 
-        if (sourceStack.isEmpty()) {
-            sourceSlot.set(ItemStack.EMPTY);
-        } else {
-            sourceSlot.setChanged();
-        }
+        if (!moved) return ItemStack.EMPTY;
+
+        // Upgrades the slot
+        if (sourceStack.isEmpty()) { sourceSlot.set(ItemStack.EMPTY); }
+        else { sourceSlot.setChanged(); }
 
         sourceSlot.onTake(playerIn, sourceStack);
         return copyOfSourceStack;
     }
 
-    // Only active if player clicked on item -> Send to network event message and return the output item
-    private void slotChanged(int slotid, int ctype, int meta) {
-        if (world.isClientSide()) {
-            MCCourseMod.PACKET_HANDLER.sendToServer(new DisenchantedGuiSlotMessage(slotid, x, y, z, ctype, meta));
-            DisenchantedMenu.handleSlotAction(entity, slotid, ctype, meta, x, y, z);
+    // When player clicked on OUTPUT slot call slotChanged custom method
+    @Override
+    public void clicked(int slotId, int dragType, ClickType clickType, Player player) {
+        super.clicked(slotId, dragType, clickType, player);
+        if (player.level().isClientSide()) { slotChanged(slotId, dragType, clickType); }
+    }
+
+    // Active if player CLICKED on item -> Send to network packet event message on DisenchantedGuiSlotMessage custom class
+    private void slotChanged(int slotId, int dragType, ClickType clickType) {
+        if (boundBlockEntity != null && this.world != null && world.isClientSide()) {
+            BlockPos pos = boundBlockEntity.getBlockPos();
+            MCCourseMod.PACKET_HANDLER.sendToServer(new DisenchantedGuiSlotMessage(slotId, pos.getX(), pos.getY(), pos.getZ(), dragType, clickType));
         }
     }
 
-    // Only active if player clicked on item -> After to check activated function to generate output Enchanted Book with all enchantments
-    public static void handleSlotAction(Player entity, int slot, int changeType, int meta, int x, int y, int z) {
+    // Active after checked function to generate output slot contained an ENCHANTED BOOK with all enchantments
+    public static void handleSlotAction(Player entity, int slot, int dragType, ClickType clickType, int x, int y, int z) {
         Level world = entity.level();
-        if (!world.hasChunkAt(new BlockPos(x, y, z))) return;
-        if (slot == 2 && changeType == 0) { execute(world, x, y, z); }
+        if (!world.isLoaded(new BlockPos(x, y, z))) return;
+
+        // Slot 2 clicked with PICKUP or QUICK MOVE types and clicked with left click
+        if (slot == 2 && clickType == ClickType.PICKUP || clickType == ClickType.QUICK_MOVE) { execute(world, x, y, z); }
     }
 
     public Map<Integer, Slot> get() { return customSlots; } // Return slots (0, 1, 2) -> 0 + 1 [Input Slot] = 2 [Output Slot]
@@ -222,8 +233,10 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
             }
 
             // Removed enchantments of original item
-            inputItem.getTag().remove("Enchantments");
-            if (inputItem.getTag().isEmpty()) { inputItem.setTag(null); }
+            if (inputItem.getTag() != null && inputItem.getTag().contains("Enchantments")) {
+                inputItem.getTag().remove("Enchantments");
+                if (inputItem.getTag().isEmpty()) { inputItem.setTag(null); }
+            }
 
             // Updated slots
             blockEntity.setItem(0, inputItem.copy()); // Item without enchantments
