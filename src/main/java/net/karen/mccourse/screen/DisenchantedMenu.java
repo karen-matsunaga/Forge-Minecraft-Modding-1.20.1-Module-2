@@ -84,15 +84,18 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
 
     private void addCustomSlots() {
         customSlots.put(0, addSlot(new SlotItemHandler(internal, 0, 26, 47) {
-            @Override public boolean mayPlace(@NotNull ItemStack stack) { return !stack.is(Items.BOOK); } // Place only item
-            @Override public int getMaxStackSize() { return 1; }
+            @Override public boolean mayPlace(@NotNull ItemStack stack) { return stack.isEnchanted(); } // Place only enchanted item
+            @Override public int getMaxStackSize() { return 1; } // Accepts only 1 item
         }));
         customSlots.put(1, addSlot(new SlotItemHandler(internal, 1, 79, 47) {
             @Override public boolean mayPlace(@NotNull ItemStack stack) { return stack.is(Items.BOOK); } // Place only book
+            @Override public int getMaxStackSize() { return 1; } // Accepts only 1 book
         }));
         customSlots.put(2, addSlot(new SlotItemHandler(internal, 2, 138, 47) {
             @Override public boolean mayPlace(@NotNull ItemStack stack) { return false; } // Nothing is placed
-            @Override public void setChanged() { super.setChanged(); slotChanged(2, 0, 0); } // If player clicked on item
+            @Override public void setChanged() { super.setChanged();
+                slotChanged(2, 2, 0);
+                slotChanged(2, 0, 0); } // If player clicked on item
         }));
     }
 
@@ -189,16 +192,14 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
         }
     }
 
-    public Map<Integer, Slot> get() { return customSlots; } // Return slots (0, 1, 2) -> 0 + 1 [Input Slot] = 2 [Output Slot]
-
     // Only active if player clicked on item -> After to check activated function to generate output Enchanted Book with all enchantments
     public static void handleSlotAction(Player entity, int slot, int changeType, int meta, int x, int y, int z) {
         Level world = entity.level();
         if (!world.hasChunkAt(new BlockPos(x, y, z))) return;
-        if (slot == 2 && changeType == 0) {
-            execute(world, x, y, z);
-        }
+        if (slot == 2 && changeType == 0) { execute(world, x, y, z); }
     }
+
+    public Map<Integer, Slot> get() { return customSlots; } // Return slots (0, 1, 2) -> 0 + 1 [Input Slot] = 2 [Output Slot]
 
     // When player clicked on slot 2 (Output slot) generates Enchanted book with all enchantments of item disenchanted
     public static void execute(Level world, int x, int y, int z) {
