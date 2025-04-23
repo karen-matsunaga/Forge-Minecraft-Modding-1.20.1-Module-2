@@ -1,6 +1,6 @@
 {
   "values": [
-    "mccourse:pink",
-    "mccourse:alexandrite"
+    "#mccourse:blocks/pink_ores_items",
+    "#mccourse:blocks/alexandrite_ores_items"
   ]
 }

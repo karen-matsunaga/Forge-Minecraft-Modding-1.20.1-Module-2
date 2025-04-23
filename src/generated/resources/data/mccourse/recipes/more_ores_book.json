@@ -19,12 +19,12 @@
     "nbt": {
       "StoredEnchantments": [
         {
-          "id": "mccourse:more_ores",
-          "lvl": 5
-        },
-        {
           "id": "minecraft:efficiency",
           "lvl": 10
+        },
+        {
+          "id": "mccourse:more_ores",
+          "lvl": 5
         }
       ]
     }
