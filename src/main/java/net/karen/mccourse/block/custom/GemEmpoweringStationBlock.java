@@ -84,8 +84,8 @@ public class GemEmpoweringStationBlock extends BaseEntityBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) { return new GemEmpoweringStationBlockEntity(pPos, pState); }
 
-        @Override
-        public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         if (pLevel.isClientSide()) { return null; } // Client side
 
         return createTickerHelper(pBlockEntityType, ModBlockEntities.GEM_EMPOWERING_STATION_BE.get(),
