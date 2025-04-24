@@ -71,7 +71,7 @@ public class DisenchantedScreen extends AbstractContainerScreen<DisenchantedMenu
     // Player pressed ESC or E key buttons closed Container
     @Override
     public boolean keyPressed(int key, int b, int c) {
-        if (key == 256) { this.minecraft.player.closeContainer(); return true; }
+        if (key == 256) { this.minecraft.player.closeContainer(); return true; } // Player closed GUI
         return super.keyPressed(key, b, c);
     }
 

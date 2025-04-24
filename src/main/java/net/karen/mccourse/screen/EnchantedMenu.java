@@ -1,37 +1,39 @@
 package net.karen.mccourse.screen;
 
 import net.karen.mccourse.MCCourseMod;
-import net.karen.mccourse.block.entity.DisenchantedBlockEntity;
-import net.karen.mccourse.network.DisenchantedGuiSlotMessage;
+import net.karen.mccourse.block.entity.EnchantedBlockEntity;
+import net.karen.mccourse.network.EnchantedApplyEnchantmentMessage;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Supplier;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
-public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
+public class EnchantedMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>>  {
     public Level world;
     public Player entity;
     public int x, y, z;
@@ -43,8 +45,8 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
     private Entity boundEntity = null;
     private BlockEntity boundBlockEntity = null;
 
-    public DisenchantedMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        super(ModMenuTypes.DISENCHANTED_MENU.get(), id);
+    public EnchantedMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+        super(ModMenuTypes.ENCHANTED_MENU.get(), id);
         this.entity = inv.player;
         this.world = inv.player.level();
 
@@ -74,6 +76,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
         addPlayerInventorySlots(inv);
     }
 
+
     private void bindCapability(Object target) {
         if (target instanceof ItemStack item)
             item.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(cap -> { internal = cap; bound = true; });
@@ -86,14 +89,10 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
     // Added custom slots
     private void addCustomSlots() {
         customSlots.put(0, addSlot(new SlotItemHandler(internal, 0, 26, 47) {
-            @Override public boolean mayPlace(@NotNull ItemStack stack) {
-                return !stack.is(Items.ENCHANTED_BOOK) && !stack.isStackable();
-            } // Place only enchanted items expect Enchanted Book
-            @Override public int getMaxStackSize() { return 1; } // Accepts only 1 item
+            @Override public boolean mayPlace(@NotNull ItemStack stack) { return stack.is(Items.BOOK); } // Place only book
         }));
         customSlots.put(1, addSlot(new SlotItemHandler(internal, 1, 79, 47) {
-            @Override public boolean mayPlace(@NotNull ItemStack stack) { return stack.is(Items.BOOK); } // Place only book
-//            @Override public int getMaxStackSize() { return 1; } // Accepts only 1 book
+            @Override public boolean mayPlace(@NotNull ItemStack stack) { return stack.isStackable(); } // Place stackable items
         }));
         customSlots.put(2, addSlot(new SlotItemHandler(internal, 2, 138, 47) {
             @Override public boolean mayPlace(@NotNull ItemStack stack) { return false; } // Nothing is placed
@@ -206,7 +205,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
                 ItemStack itemstack = slot.getItem();
                 if (slot.mayPlace(itemstack) && !itemstack.isEmpty() && ItemStack.isSameItemSameTags(stack, itemstack)) {
                     int j = itemstack.getCount() + stack.getCount();
-                    int maxSize = /* Math.min(slot.getMaxStackSize(), stack.getMaxStackSize())*/ 2304;
+                    int maxSize = /* Math.min(slot.getMaxStackSize(), stack.getMaxStackSize())*/ 6400;
                     if (j <= maxSize) {
                         stack.setCount(0);
                         itemstack.setCount(j);
@@ -262,7 +261,6 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
         return flag;
     }
 
-
     // When player clicked on OUTPUT slot call slotChanged custom method
     @Override
     public void clicked(int slotId, int dragType, ClickType clickType, Player player) {
@@ -274,7 +272,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
     private void slotChanged(int slotId, int dragType, ClickType clickType) {
         if (boundBlockEntity != null && this.world != null && world.isClientSide()) {
             BlockPos pos = boundBlockEntity.getBlockPos();
-            MCCourseMod.PACKET_HANDLER.sendToServer(new DisenchantedGuiSlotMessage(slotId, pos.getX(), pos.getY(), pos.getZ(), dragType, clickType));
+            MCCourseMod.PACKET_HANDLER.sendToServer(new EnchantedApplyEnchantmentMessage(slotId, pos.getX(), pos.getY(), pos.getZ(), dragType, clickType));
         }
     }
 
@@ -289,37 +287,42 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
 
     public Map<Integer, Slot> get() { return customSlots; } // Return slots (0, 1, 2) -> 0 + 1 [Input Slot] = 2 [Output Slot]
 
-    // When player clicked on slot 2 (Output slot) generates Enchanted book with all enchantments of item disenchanted
     public static void execute(Level world, int x, int y, int z) {
-        if (world.isClientSide()) return; // Ensures that it only runs on the server
+        if (world.isClientSide()) return;
 
         BlockEntity be = world.getBlockEntity(new BlockPos(x, y, z));
-        if (!(be instanceof DisenchantedBlockEntity blockEntity)) return;
+        if (!(be instanceof EnchantedBlockEntity blockEntity)) return;
 
-        ItemStack inputItem = blockEntity.getItem(0);
-        ItemStack inputBook = blockEntity.getItem(1);
+        ItemStack bookToEnchant = blockEntity.getItem(0); // Input Book
+        ItemStack requiredItem = blockEntity.getItem(1); // Input Item
+//        ItemStack outputSlot = blockEntity.getItem(2);  // Output
 
-        // Disenchanted only if slot 0 is enchanted and has a book on slot 1
-        if (!inputItem.isEmpty() && inputItem.isEnchanted() && !inputBook.isEmpty() && inputBook.getItem() == Items.BOOK) {
+        if (!bookToEnchant.isEmpty() && bookToEnchant.getItem() == Items.BOOK && !requiredItem.isEmpty()) {
+            // Sets the items needed for each enchantment
+            Map<Enchantment, Ingredient> requiredItemsMap = new HashMap<>();
+            requiredItemsMap.put(Enchantments.BLOCK_FORTUNE, Ingredient.of(Items.DIAMOND));
+            requiredItemsMap.put(Enchantments.BLOCK_EFFICIENCY, Ingredient.of(Items.EMERALD));
+            requiredItemsMap.put(Enchantments.UNBREAKING, Ingredient.of(Items.IRON_INGOT));
 
-            // Created an enchanted book with enchantments of item
-            ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
-            Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(inputItem);
-            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                EnchantedBookItem.addEnchantment(enchantedBook, new EnchantmentInstance(entry.getKey(), entry.getValue()));
+            for (Map.Entry<Enchantment, Ingredient> entry : requiredItemsMap.entrySet()) {
+                Enchantment enchantment = entry.getKey(); // Enchantment
+                Ingredient ingredient = entry.getValue(); // Ingredient
+
+                if (ingredient.test(requiredItem)) {
+                    int available = requiredItem.getCount(); // Sets the level by quantity
+                    int level = available / 64;
+
+                    if (level > 0) {
+                        // Create a book enchanted with this enchantment
+                        ItemStack resultBook = new ItemStack(Items.ENCHANTED_BOOK);
+                        EnchantedBookItem.addEnchantment(resultBook, new EnchantmentInstance(enchantment, level));
+                        bookToEnchant.shrink(1); // Consumes the base book
+                        blockEntity.setItem(1, ItemStack.EMPTY); // Consumes the required item
+                        blockEntity.setItem(2, resultBook); // Places the enchanted book in slot 2
+                        break; // Processes only one enchantment at a time
+                    }
+                }
             }
-
-            // Removed enchantments of original item
-            if (inputItem.getTag() != null && inputItem.getTag().contains("Enchantments")) {
-                inputItem.getTag().remove("Enchantments");
-                if (inputItem.getTag().isEmpty()) { inputItem.setTag(null); }
-            }
-
-            // Updated slots
-            blockEntity.setItem(0, inputItem.copy()); // Item without enchantments
-            blockEntity.setItem(1, ItemStack.EMPTY);  // Book is consumed
-            blockEntity.setItem(2, enchantedBook);    // Put the result
-
             blockEntity.setChanged();
             world.sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
         }

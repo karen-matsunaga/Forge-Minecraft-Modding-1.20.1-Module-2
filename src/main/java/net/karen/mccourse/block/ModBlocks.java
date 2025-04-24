@@ -402,6 +402,13 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
             ));
 
+    // Enchanted custom enchanted block
+    public static final RegistryObject<Block> ENCHANTED_BLOCK = registerBlock("enchanted",
+            () -> new EnchantedBlock(BlockBehaviour.Properties.of().sound(SoundType.METAL)
+                    .strength(5f)
+                    .requiresCorrectToolForDrops()
+            ));
+
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

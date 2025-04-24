@@ -172,6 +172,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         // My Disenchanted custom block
         blockWithItem(ModBlocks.DISENCHANTED_BLOCK);
+        blockWithItem(ModBlocks.ENCHANTED_BLOCK);
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json

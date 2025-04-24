@@ -16,6 +16,7 @@ import net.karen.mccourse.item.ModItemProperties;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.loot.ModLootModifiers;
 import net.karen.mccourse.network.DisenchantedGuiSlotMessage;
+import net.karen.mccourse.network.EnchantedApplyEnchantmentMessage;
 import net.karen.mccourse.painting.ModPaintings;
 import net.karen.mccourse.particle.ModParticles;
 import net.karen.mccourse.potion.BetterBrewingRecipe;
@@ -173,6 +174,7 @@ public class MCCourseMod {
 
             // Disenchanted block event network message
             MCCourseMod.addNetworkMessage(DisenchantedGuiSlotMessage.class, DisenchantedGuiSlotMessage::buffer, DisenchantedGuiSlotMessage::new, DisenchantedGuiSlotMessage::handler);
+            MCCourseMod.addNetworkMessage(EnchantedApplyEnchantmentMessage.class, EnchantedApplyEnchantmentMessage::buffer, EnchantedApplyEnchantmentMessage::new, EnchantedApplyEnchantmentMessage::handler);
         });
     }
 
@@ -228,6 +230,7 @@ public class MCCourseMod {
                 MenuScreens.register(ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringStationScreen::new);
                 MenuScreens.register(ModMenuTypes.KAUPEN_FURNACE_MENU.get(), KaupenFurnaceScreen::new);
                 MenuScreens.register(ModMenuTypes.DISENCHANTED_MENU.get(), DisenchantedScreen::new);
+                MenuScreens.register(ModMenuTypes.ENCHANTED_MENU.get(), EnchantedScreen::new);
 
                 EntityRenderers.register(ModEntities.RHINO.get(), RhinoRenderer::new); // Adding Rhino's custom entity renderer
                 EntityRenderers.register(ModEntities.DICE_PROJECTILE.get(), ThrownItemRenderer::new); // Adding Dice Projectile's custom projectile entity renderer

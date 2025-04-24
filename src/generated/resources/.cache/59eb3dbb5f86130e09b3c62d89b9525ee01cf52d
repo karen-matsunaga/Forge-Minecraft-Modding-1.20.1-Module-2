@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-18T22:57:09.9035577	Loot Tables
+// 1.20.1	2025-04-24T16:16:14.3219231	Loot Tables
 3c04bafc8e377b8b3a0acec4fb355ebe506bd32a data/mccourse/loot_tables/blocks/alexandrite_block.json
 5ee80a3f0dae7a738f12360934f26b319920a8a3 data/mccourse/loot_tables/blocks/alexandrite_button.json
 3cf926928d6232271016b028304beb66caa9effe data/mccourse/loot_tables/blocks/alexandrite_door.json
@@ -21,6 +21,7 @@ b7fb61b3f9afe40afbdb292b74b4c9dac62914ea data/mccourse/loot_tables/blocks/cyan_e
 597e60e805b2690c09390fe88bc716ab26a906c0 data/mccourse/loot_tables/blocks/deepslate_alexandrite_ore.json
 28e2ba1d4d1d4ee347fbb83010e9cc8d394f1db7 data/mccourse/loot_tables/blocks/deepslate_pink_ore.json
 766702df06b4cc4b3347eb76e49f1e9a1ba38d72 data/mccourse/loot_tables/blocks/disenchanted.json
+23af4027ba7dd23c9a03d32e7143095061e95669 data/mccourse/loot_tables/blocks/enchanted.json
 52a5ed7709109ee474b384e0d5edea81ac78a45f data/mccourse/loot_tables/blocks/ender_pearl_block.json
 dd06905d885f623d5867007d612e560c34063dda data/mccourse/loot_tables/blocks/end_stone_alexandrite_ore.json
 a55d6c7ff9158d0821522ac48f418f226e8e5c2a data/mccourse/loot_tables/blocks/end_stone_pink_ore.json

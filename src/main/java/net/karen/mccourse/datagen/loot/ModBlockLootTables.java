@@ -180,6 +180,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
         // My disenchanted block
         this.dropSelf(ModBlocks.DISENCHANTED_BLOCK.get());
+        this.dropSelf(ModBlocks.ENCHANTED_BLOCK.get());
     }
 
     // Custom ore's drops

@@ -231,6 +231,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // My Disenchanted custom block
         itemTransformBlock(ModBlocks.DISENCHANTED_BLOCK.get(), Blocks.OBSIDIAN, pWriter);
+        itemTransformBlock(ModBlocks.ENCHANTED_BLOCK.get(), Blocks.NETHERRACK, pWriter);
     }
 
     // Smelting

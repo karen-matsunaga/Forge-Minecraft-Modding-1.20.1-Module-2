@@ -258,6 +258,7 @@ public class ModCreativeModeTabs {
 
                         // My Disenchanted custom block
                         output.accept(ModBlocks.DISENCHANTED_BLOCK.get());
+                        output.accept(ModBlocks.ENCHANTED_BLOCK.get());
                     }).build());
 
     // Registry Creative Mode Tab

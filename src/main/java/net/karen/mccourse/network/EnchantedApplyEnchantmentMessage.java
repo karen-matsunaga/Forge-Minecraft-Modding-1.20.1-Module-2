@@ -1,6 +1,6 @@
 package net.karen.mccourse.network;
 
-import net.karen.mccourse.screen.DisenchantedMenu;
+import net.karen.mccourse.screen.EnchantedMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.ClickType;
@@ -8,11 +8,11 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class DisenchantedGuiSlotMessage {
+public class EnchantedApplyEnchantmentMessage {
     private final int slotID, x, y, z, dragType;
     private final ClickType clickType;
 
-    public DisenchantedGuiSlotMessage(int slotID, int x, int y, int z, int dragType, ClickType clickType) {
+    public EnchantedApplyEnchantmentMessage(int slotID, int x, int y, int z, int dragType, ClickType clickType) {
         this.slotID = slotID;
         this.x = x;
         this.y = y;
@@ -21,7 +21,7 @@ public class DisenchantedGuiSlotMessage {
         this.clickType = clickType;
     } // Constructor for sending the package
 
-    public DisenchantedGuiSlotMessage(FriendlyByteBuf buffer) {
+    public EnchantedApplyEnchantmentMessage(FriendlyByteBuf buffer) {
         this.slotID = buffer.readInt();
         this.x = buffer.readInt();
         this.y = buffer.readInt();
@@ -44,7 +44,7 @@ public class DisenchantedGuiSlotMessage {
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
             if (player == null) return;
-            DisenchantedMenu.handleSlotAction(player, slotID, dragType, clickType, x, y, z); // When activated crafted item
+            EnchantedMenu.handleSlotAction(player, slotID, dragType, clickType, x, y, z);
         });
         context.setPacketHandled(true);
     }
