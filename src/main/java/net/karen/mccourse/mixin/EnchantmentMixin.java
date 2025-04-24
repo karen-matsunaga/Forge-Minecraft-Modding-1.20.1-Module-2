@@ -10,6 +10,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class EnchantmentMixin {
     @Inject(at = @At("HEAD"), method = "getMaxLevel", cancellable = true)
     private void getMaxLevel(CallbackInfoReturnable<Integer> info) {
-        info.setReturnValue(20);
+        info.setReturnValue(1);
     }
 }

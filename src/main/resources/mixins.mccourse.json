@@ -11,6 +11,6 @@
       "LootBonusEnchantmentMixin",
       "EnchantmentHelperMixin",
       "EnchantmentMixin",
-      "ItemMixin"
+      "ProtectionEnchantmentMixin"
   ]
 }
