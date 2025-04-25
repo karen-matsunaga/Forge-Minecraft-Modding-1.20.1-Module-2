@@ -93,7 +93,6 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
         }));
         customSlots.put(1, addSlot(new SlotItemHandler(internal, 1, 79, 47) {
             @Override public boolean mayPlace(@NotNull ItemStack stack) { return stack.is(Items.BOOK); } // Place only book
-//            @Override public int getMaxStackSize() { return 1; } // Accepts only 1 book
         }));
         customSlots.put(2, addSlot(new SlotItemHandler(internal, 2, 138, 47) {
             @Override public boolean mayPlace(@NotNull ItemStack stack) { return false; } // Nothing is placed
@@ -317,7 +316,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
 
             // Updated slots
             blockEntity.setItem(0, inputItem.copy()); // Item without enchantments
-            blockEntity.setItem(1, ItemStack.EMPTY);  // Book is consumed
+            inputBook.shrink(1); // Remove 1 book
             blockEntity.setItem(2, enchantedBook);    // Put the result
 
             blockEntity.setChanged();
