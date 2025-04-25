@@ -178,36 +178,26 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         oreBlasting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER, 1.00f, 100, "rotten_flesh");
 
         // My custom enchanted book and item enchanted
-        generateEnchantedRecipe(new ResourceLocation("mccourse",
-                        Enchantments.UNBREAKING.getDescriptionId().replace("enchantment.minecraft.", "") + "_book"),
-                Items.ENCHANTED_BOOK,
-                Map.of(Enchantments.UNBREAKING, 10), Items.BOOK, Items.OBSIDIAN, true, pWriter);
+        enchantItem(List.of(Items.ENCHANTED_BOOK, Items.OBSIDIAN, Items.BOOK),
+                Map.of(Enchantments.UNBREAKING, 10), List.of("AAA", "ABA", "AAA"), List.of("A", "B"), true, pWriter);
 
-        generateEnchantedRecipe(new ResourceLocation("mccourse",
-                        ModEnchantments.MORE_ORES.get().getDescriptionId().replace("enchantment.mccourse.", "")+ "_book"),
-                Items.ENCHANTED_BOOK,
-                Map.of(ModEnchantments.MORE_ORES.get(), 5,
-                        Enchantments.BLOCK_EFFICIENCY, 10), Items.BOOK, Items.NETHER_STAR, true, pWriter);
+        enchantItem(List.of(Items.ENCHANTED_BOOK, Items.NETHER_STAR, Items.BOOK),
+                Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.BLOCK_EFFICIENCY, 10),
+                List.of("ABA", "AAA", "AAA"), List.of("A", "B"), true, pWriter);
 
-        generateEnchantedRecipe(new ResourceLocation("mccourse",
-                        Items.DIAMOND_PICKAXE.getDescriptionId().replace("item.minecraft.", "") + "_item"),
-                Items.DIAMOND_PICKAXE,
+        enchantItem(List.of(Items.DIAMOND_PICKAXE, Items.COPPER_INGOT, Items.DIAMOND_PICKAXE),
                 Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.UNBREAKING, 10,
                         Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1),
-                Items.DIAMOND_PICKAXE,
-                Items.COPPER_INGOT,
-                false,
-                pWriter);
+                List.of("AAA", "AAA", "ABA"), List.of("A", "B"), false, pWriter);
 
-        generateEnchantedRecipe(new ResourceLocation("mccourse",
-                        ModItems.PINK_MODES.get().getDescriptionId().replace("item.mccourse.", "") + "_item"),
-                ModItems.PINK_MODES.get(),
+        enchantItem(List.of(ModItems.PINK_MODES.get(), Items.GLOWSTONE, ModItems.PINK_MODES.get()), // Result + Secondary ingredient + Primary ingredient
                 Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.UNBREAKING, 10,
-                        Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1),
-                ModItems.PINK_MODES.get(),
-                Items.GLOWSTONE,
-                false,
-                pWriter);
+                        Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1), // Enchantments
+                List.of("A A", " B ", "A A"), List.of("A", "B"), false, pWriter); // 3x3 crafting recipe + letter ingredients
+
+        enchantItem(List.of(Items.IRON_PICKAXE, Items.IRON_INGOT, Items.IRON_PICKAXE),
+                Map.of(Enchantments.UNBREAKING, 3, Enchantments.BLOCK_EFFICIENCY, 7, Enchantments.BLOCK_FORTUNE, 5),
+                List.of("A A", " B ", "A A"), List.of("A", "B"), false, pWriter);
 
         // My custom tool enchantment
         toolEnchantment(ModItems.BLUE_MODES.get(), Items.DIAMOND, pWriter);
@@ -434,12 +424,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     // Custom enchanted item or enchanted book
-    public static void generateEnchantedRecipe(ResourceLocation id, ItemLike resultItem, Map<Enchantment, Integer> enchantments,
-                                               ItemLike centerItem, ItemLike borderMaterial, boolean isBook,
-                                               Consumer<FinishedRecipe> writer) {
-        // Registry item
+    public static void enchantItem(List<ItemLike> result, Map<Enchantment, Integer> enchantments,
+                                   List<String> format, List<String> letters, boolean isBook, Consumer<FinishedRecipe> writer) {
+
+        /* String path */
+
+        // Registry item = Result Index 0
         JsonObject resultJson = new JsonObject();
-        resultJson.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(resultItem.asItem())).toString());
+        resultJson.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(0).asItem())).toString());
         resultJson.addProperty("count", 1);
 
         // Registry enchantments
@@ -466,20 +458,21 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         recipeJson.addProperty("type", "minecraft:crafting_shaped");
 
         JsonArray pattern = new JsonArray();
-        pattern.add("AAA");
-        pattern.add("ABA");
-        pattern.add("AAA");
+        for (String s : format) { pattern.add(s); }
         recipeJson.add("pattern", pattern);
 
         JsonObject key = new JsonObject();
 
+        // Registry ingredients = Result Index 1 and 2
         JsonObject aKey = new JsonObject();
-        aKey.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(borderMaterial.asItem())).toString());
-        key.add("A", aKey);
-
         JsonObject bKey = new JsonObject();
-        bKey.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(centerItem.asItem())).toString());
-        key.add("B", bKey);
+
+        List<JsonObject> jsonObjectList = List.of(aKey, bKey);
+
+        for (int i = 0; i < letters.size(); i++) {
+            jsonObjectList.get(i).addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(i+1).asItem())).toString());
+            key.add(letters.get(i), jsonObjectList.get(i));
+        }
 
         recipeJson.add("key", key);
         recipeJson.add("result", resultJson);
@@ -488,14 +481,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         writer.accept(new FinishedRecipe() {
             @Override
             public void serializeRecipeData(JsonObject jsonObject) {
-                jsonObject.add("type", recipeJson.get("type"));
-                jsonObject.add("pattern", recipeJson.get("pattern"));
-                jsonObject.add("key", recipeJson.get("key"));
-                jsonObject.add("result", recipeJson.get("result"));
+                List<String> recipe = List.of("type", "pattern", "key", "result");
+                for (String rec : recipe) { jsonObject.add(rec, recipeJson.get(rec)); }
             }
 
             @Override
-            public ResourceLocation getId() { return id; }
+            public ResourceLocation getId() { return new ResourceLocation(MCCourseMod.MOD_ID, Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(1).asItem())).getPath() + "_enchanted"); }
 
             @Override
             public RecipeSerializer<?> getType() { return RecipeSerializer.SHAPED_RECIPE; }

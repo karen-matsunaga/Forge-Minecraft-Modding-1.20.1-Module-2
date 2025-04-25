@@ -2,20 +2,20 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "A": {
-      "item": "minecraft:copper_ingot"
+      "item": "minecraft:glowstone"
     },
     "B": {
-      "item": "minecraft:diamond_pickaxe"
+      "item": "mccourse:pink_modes"
     }
   },
   "pattern": [
-    "AAA",
-    "ABA",
-    "AAA"
+    "A A",
+    " B ",
+    "A A"
   ],
   "result": {
     "count": 1,
-    "item": "minecraft:diamond_pickaxe",
+    "item": "mccourse:pink_modes",
     "nbt": {
       "Enchantments": [
         {

@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "minecraft:iron_pickaxe"
+    }
+  },
+  "pattern": [
+    "A A",
+    " B ",
+    "A A"
+  ],
+  "result": {
+    "count": 1,
+    "item": "minecraft:iron_pickaxe",
+    "nbt": {
+      "Enchantments": [
+        {
+          "id": "minecraft:unbreaking",
+          "lvl": 3
+        },
+        {
+          "id": "minecraft:fortune",
+          "lvl": 5
+        },
+        {
+          "id": "minecraft:efficiency",
+          "lvl": 7
+        }
+      ]
+    }
+  }
+}
