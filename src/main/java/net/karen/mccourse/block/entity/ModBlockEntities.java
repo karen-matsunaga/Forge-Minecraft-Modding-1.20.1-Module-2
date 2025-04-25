@@ -41,11 +41,6 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(DisenchantedBlockEntity::new,
                             ModBlocks.DISENCHANTED_BLOCK.get()).build(null)); // Disenchanted
 
-    public static final RegistryObject<BlockEntityType<EnchantedBlockEntity>> ENCHANTED_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("enchanted_block_entity", () ->
-                    BlockEntityType.Builder.of(EnchantedBlockEntity::new,
-                            ModBlocks.ENCHANTED_BLOCK.get()).build(null)); // Enchanted
-
     // Register all block entities on Forge
     public static void register(IEventBus eventBus) { BLOCK_ENTITIES.register(eventBus); }
 }

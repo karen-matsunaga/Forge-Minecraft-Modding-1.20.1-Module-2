@@ -24,9 +24,6 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<DisenchantedMenu>> DISENCHANTED_MENU =
             registerMenuType(DisenchantedMenu::new, "disenchanted_menu");
 
-    public static final RegistryObject<MenuType<EnchantedMenu>> ENCHANTED_MENU =
-            registerMenuType(EnchantedMenu::new, "enchanted_menu");
-
     private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }

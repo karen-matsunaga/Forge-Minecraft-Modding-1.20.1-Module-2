@@ -8,7 +8,6 @@ import net.karen.mccourse.datagen.custom.GemEmpoweringRecipeBuilder;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -23,10 +22,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
@@ -231,7 +232,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // My Disenchanted custom block
         itemTransformBlock(ModBlocks.DISENCHANTED_BLOCK.get(), Blocks.OBSIDIAN, pWriter);
-        itemTransformBlock(ModBlocks.ENCHANTED_BLOCK.get(), Blocks.NETHERRACK, pWriter);
     }
 
     // Smelting
@@ -439,7 +439,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                                Consumer<FinishedRecipe> writer) {
         // Registry item
         JsonObject resultJson = new JsonObject();
-        resultJson.addProperty("item", BuiltInRegistries.ITEM.getKey(resultItem.asItem()).toString());
+        resultJson.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(resultItem.asItem())).toString());
         resultJson.addProperty("count", 1);
 
         // Registry enchantments
@@ -450,10 +450,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         enchantments.entrySet().stream()
                 .sorted(Comparator
                         .comparingInt(Map.Entry<Enchantment, Integer>::getValue) // Enchantment level
-                        .thenComparing(e -> BuiltInRegistries.ENCHANTMENT.getKey(e.getKey()).toString())) // Enchantment name
+                        .thenComparing(e -> Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(e.getKey())).toString())) // Enchantment name
                 .forEach(entry -> {
                     JsonObject enchantmentTag = new JsonObject();
-                    enchantmentTag.addProperty("id", BuiltInRegistries.ENCHANTMENT.getKey(entry.getKey()).toString());
+                    enchantmentTag.addProperty("id", Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(entry.getKey())).toString());
                     enchantmentTag.addProperty("lvl", entry.getValue());
                     enchantmentArray.add(enchantmentTag);
                 });
@@ -474,11 +474,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         JsonObject key = new JsonObject();
 
         JsonObject aKey = new JsonObject();
-        aKey.addProperty("item", BuiltInRegistries.ITEM.getKey(borderMaterial.asItem()).toString());
+        aKey.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(borderMaterial.asItem())).toString());
         key.add("A", aKey);
 
         JsonObject bKey = new JsonObject();
-        bKey.addProperty("item", BuiltInRegistries.ITEM.getKey(centerItem.asItem()).toString());
+        bKey.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(centerItem.asItem())).toString());
         key.add("B", bKey);
 
         recipeJson.add("key", key);
