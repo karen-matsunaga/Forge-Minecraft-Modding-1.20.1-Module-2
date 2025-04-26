@@ -200,7 +200,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 List.of("A A", " B ", "A A"), List.of("A", "B"), false, pWriter);
 
         // My custom tool enchantment
-        toolEnchantment(List.of(ModItems.BLUE_MODES.get(), Items.DIAMOND), pWriter);
+        toolEnchanted(List.of(ModItems.BLUE_MODES.get(), Items.DIAMOND, Items.BOOK), pWriter);
         toolEnchanted(List.of(ModItems.GREEN_MODES.get(), ModItems.PINK.get(), ModItems.BLUE_MODES.get()), pWriter);
         toolEnchanted(List.of(ModItems.PURPLE_MODES.get(), Items.NETHERITE_INGOT, ModItems.GREEN_MODES.get()), pWriter);
 
@@ -358,14 +358,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     // Custom tools enchanted
-    public static void toolEnchantment(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0), 1)
-                .pattern("AAA").pattern("ABA").pattern("AAA")
-                .define('A', item.get(1)).define('B', Items.BOOK)
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
-    }
-
     public static void toolEnchanted(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0), 1)
                 .pattern("AAA").pattern("ABA").pattern("AAA")
