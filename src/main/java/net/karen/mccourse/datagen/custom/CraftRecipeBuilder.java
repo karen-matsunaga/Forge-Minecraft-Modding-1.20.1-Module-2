@@ -31,7 +31,7 @@ public class CraftRecipeBuilder implements RecipeBuilder {
     private final Item result;
     private final Advancement.Builder advancement = Advancement.Builder.advancement();
 
-    public CraftRecipeBuilder(List<Ingredient> ingredient, ItemLike result, List<Integer> count) {
+    public CraftRecipeBuilder(List<Ingredient> ingredient, List<Integer> count, ItemLike result) {
         this.ingredient = new ArrayList<>(ingredient);
         this.count = new ArrayList<>(count);
         this.result = result.asItem();

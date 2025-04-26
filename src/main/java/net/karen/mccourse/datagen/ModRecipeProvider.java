@@ -225,10 +225,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         itemTransformBlock(List.of(ModBlocks.DISENCHANTED_BLOCK.get(), Blocks.OBSIDIAN), pWriter);
 
         // My custom craft builder
-        new CraftRecipeBuilder(
-                List.of(Ingredient.of(Items.BOOK), Ingredient.of(Items.DIAMOND)), // Ingredients
-                Items.ENCHANTED_BOOK, // Output
-                List.of(1, 2)) // Ingredient counts
+        new CraftRecipeBuilder(List.of(Ingredient.of(Items.BOOK), Ingredient.of(Items.DIAMOND)), // Ingredients
+                List.of(1, 2), // Ingredient counts
+                Items.ENCHANTED_BOOK) // Output
                 .unlockedBy("has_diamond", has(Items.DIAMOND))
                 .save(pWriter);
     }
