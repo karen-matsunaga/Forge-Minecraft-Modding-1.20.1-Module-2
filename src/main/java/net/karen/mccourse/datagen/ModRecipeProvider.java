@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
+import net.karen.mccourse.datagen.custom.CraftRecipeBuilder;
 import net.karen.mccourse.datagen.custom.GemEmpoweringRecipeBuilder;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
@@ -222,6 +223,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // My Disenchanted custom block
         itemTransformBlock(List.of(ModBlocks.DISENCHANTED_BLOCK.get(), Blocks.OBSIDIAN), pWriter);
+
+        // My custom craft builder
+        new CraftRecipeBuilder(
+                List.of(Ingredient.of(Items.BOOK), Ingredient.of(Items.DIAMOND)), // Ingredients
+                Items.ENCHANTED_BOOK, // Output
+                List.of(1, 2)) // Ingredient counts
+                .unlockedBy("has_diamond", has(Items.DIAMOND))
+                .save(pWriter);
     }
 
     // Smelting

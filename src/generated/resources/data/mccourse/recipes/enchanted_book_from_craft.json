@@ -1,0 +1,16 @@
+{
+  "type": "mccourse:craft",
+  "ingredients": [
+    {
+      "count": 1,
+      "item": "minecraft:book"
+    },
+    {
+      "count": 2,
+      "item": "minecraft:diamond"
+    }
+  ],
+  "output": {
+    "item": "minecraft:enchanted_book"
+  }
+}

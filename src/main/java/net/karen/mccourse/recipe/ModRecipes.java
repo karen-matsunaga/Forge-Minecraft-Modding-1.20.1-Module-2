@@ -18,6 +18,9 @@ public class ModRecipes {
     public static final RegistryObject<RecipeSerializer<KaupenFurnaceRecipe>> KAUPEN_FURNACE_SERIALIZER =
             SERIALIZERS.register("kaupen_furnace", () -> KaupenFurnaceRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<CraftRecipe>> CRAFT_SERIALIZER =
+            SERIALIZERS.register("craft", () -> CraftRecipe.Serializer.INSTANCE);
+
     // Register all recipes on Forge
     public static void register(IEventBus eventBus) { SERIALIZERS.register(eventBus); }
 }
