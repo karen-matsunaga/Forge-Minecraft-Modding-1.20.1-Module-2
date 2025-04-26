@@ -209,7 +209,7 @@ public class ModEvents {
         BlockState blockState = world.getBlockState(pos);
         BlockPos blockPos = BlockPos.containing(pos.getX(), pos.getY(), pos.getZ()); // Block position
 
-        // TESTING BLOCK
+        // Block (Key) / Block Tag (Value)
         Map<Block, TagKey<Block>> rainbowBlock = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL, Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER,
         Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND, Blocks.EMERALD_BLOCK, Tags.Blocks.ORES_EMERALD,
         Blocks.GOLD_BLOCK, Tags.Blocks.ORES_GOLD, Blocks.IRON_BLOCK, Tags.Blocks.ORES_IRON,
