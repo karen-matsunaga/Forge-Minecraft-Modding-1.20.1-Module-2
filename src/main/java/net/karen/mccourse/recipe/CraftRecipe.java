@@ -110,7 +110,7 @@ public class CraftRecipe implements Recipe<SimpleContainer> {
 
             for (int i = 0; i < recipe.getIngredients().size(); i++) {
                 recipe.getIngredients().get(i).toNetwork(buf);
-                buf.writeInt(i < recipe.inputCounts.size() ? recipe.inputCounts.get(i) : 1);
+                buf.writeInt(i < recipe.getIngredientsCounts().size() ? recipe.getIngredientsCounts().get(i) : 1);
             }
 
             buf.writeItemStack(recipe.getResultItem(null), false); // Output
