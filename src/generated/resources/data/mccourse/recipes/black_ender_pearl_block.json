@@ -1,21 +1,15 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "building",
-  "key": {
-    "A": {
-      "item": "mccourse:ender_pearl_block"
-    },
-    "B": {
+  "ingredients": [
+    {
       "item": "minecraft:black_dye"
+    },
+    {
+      "item": "mccourse:ender_pearl_block"
     }
-  },
-  "pattern": [
-    "   ",
-    " AB",
-    "   "
   ],
   "result": {
     "item": "mccourse:black_ender_pearl_block"
-  },
-  "show_notification": true
+  }
 }

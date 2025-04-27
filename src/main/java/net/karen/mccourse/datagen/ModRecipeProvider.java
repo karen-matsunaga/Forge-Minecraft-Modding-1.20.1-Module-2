@@ -340,11 +340,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     protected static void paxelItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
         // Paxel
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, item.get(0), 1)
-                .pattern("   ").pattern("ABC").pattern("   ")
-                .define('A', item.get(1)).define('B', item.get(2)).define('C', item.get(3))
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, item.get(0), 1)
+                .requires(item.get(1)).requires(item.get(2)).requires(item.get(3))
+                .unlockedBy("has_item", has(item.get(1))).save(pWriter);
     }
 
     protected static void swordItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
@@ -376,11 +374,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     // Custom color blocks
     public static void coloredBlocks(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, item.get(0), 1)
-                .pattern("   ").pattern(" AB").pattern("   ")
-                .define('A', ModBlocks.ENDER_PEARL_BLOCK.get()).define('B', item.get(1))
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, item.get(0), 1)
+                .requires(item.get(1)).requires(ModBlocks.ENDER_PEARL_BLOCK.get())
+                .unlockedBy("has_item", has(item.get(1))).save(pWriter);
     }
 
     // Custom enchanted item or enchanted book

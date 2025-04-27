@@ -1,24 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "A": {
+  "ingredients": [
+    {
       "item": "minecraft:iron_pickaxe"
     },
-    "B": {
+    {
       "item": "minecraft:iron_axe"
     },
-    "C": {
+    {
       "item": "minecraft:iron_shovel"
     }
-  },
-  "pattern": [
-    "   ",
-    "ABC",
-    "   "
   ],
   "result": {
     "item": "mccourse:iron_paxel"
-  },
-  "show_notification": true
+  }
 }

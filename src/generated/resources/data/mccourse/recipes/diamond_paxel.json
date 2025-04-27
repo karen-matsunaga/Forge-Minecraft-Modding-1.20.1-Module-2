@@ -1,24 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "A": {
+  "ingredients": [
+    {
       "item": "minecraft:diamond_pickaxe"
     },
-    "B": {
+    {
       "item": "minecraft:diamond_axe"
     },
-    "C": {
+    {
       "item": "minecraft:diamond_shovel"
     }
-  },
-  "pattern": [
-    "   ",
-    "ABC",
-    "   "
   ],
   "result": {
     "item": "mccourse:diamond_paxel"
-  },
-  "show_notification": true
+  }
 }

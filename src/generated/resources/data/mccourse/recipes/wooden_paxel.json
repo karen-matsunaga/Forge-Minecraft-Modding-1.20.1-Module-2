@@ -1,24 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "A": {
+  "ingredients": [
+    {
       "item": "minecraft:wooden_pickaxe"
     },
-    "B": {
+    {
       "item": "minecraft:wooden_axe"
     },
-    "C": {
+    {
       "item": "minecraft:wooden_shovel"
     }
-  },
-  "pattern": [
-    "   ",
-    "ABC",
-    "   "
   ],
   "result": {
     "item": "mccourse:wooden_paxel"
-  },
-  "show_notification": true
+  }
 }

@@ -1,24 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "equipment",
-  "key": {
-    "A": {
+  "ingredients": [
+    {
       "item": "mccourse:copper_pickaxe"
     },
-    "B": {
+    {
       "item": "mccourse:copper_axe"
     },
-    "C": {
+    {
       "item": "mccourse:copper_shovel"
     }
-  },
-  "pattern": [
-    "   ",
-    "ABC",
-    "   "
   ],
   "result": {
     "item": "mccourse:copper_paxel"
-  },
-  "show_notification": true
+  }
 }
