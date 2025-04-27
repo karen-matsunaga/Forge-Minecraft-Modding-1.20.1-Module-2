@@ -1,6 +1,7 @@
 package net.karen.mccourse.recipe;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.karen.mccourse.MCCourseMod;
 import net.minecraft.core.NonNullList;
@@ -11,7 +12,9 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +77,8 @@ public class CraftRecipe implements Recipe<SimpleContainer> {
         public CraftRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output")); // Output item
 
-            NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY); // Input ingredient
-            List<Integer> inputsCounts = new ArrayList<>(2); // Read Ingredient counts on JSON file
+            NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY); // Slot size -> Input ingredient
+            List<Integer> inputsCounts = new ArrayList<>(2); // Slot size -> Ingredient counts
             JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
 
             // Added each ingredient with your count
@@ -96,8 +99,8 @@ public class CraftRecipe implements Recipe<SimpleContainer> {
 
             // Added each ingredient with your count
             for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromNetwork(buf)); // Ingredients
-                inputsCounts.add(buf.readInt()); // Ingredient counts
+                inputs.set(i, Ingredient.fromNetwork(buf)); // Read Ingredients
+                inputsCounts.add(buf.readInt()); // Read Ingredient counts
             }
 
             ItemStack output = buf.readItem(); // Read Output from Network
@@ -106,14 +109,14 @@ public class CraftRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, CraftRecipe recipe) {
-            buf.writeInt(recipe.getIngredients().size()); // Write Ingredients to Network = Read integer
+            buf.writeInt(recipe.getIngredients().size()); // Write Ingredients to Network
 
             for (int i = 0; i < recipe.getIngredients().size(); i++) {
-                recipe.getIngredients().get(i).toNetwork(buf);
-                buf.writeInt(i < recipe.getIngredientsCounts().size() ? recipe.getIngredientsCounts().get(i) : 1);
+                recipe.getIngredients().get(i).toNetwork(buf); // Write Ingredients
+                buf.writeInt(i < recipe.getIngredientsCounts().size() ? recipe.getIngredientsCounts().get(i) : 1); // Write Ingredient counts
             }
 
-            buf.writeItemStack(recipe.getResultItem(null), false); // Output
+            buf.writeItemStack(recipe.getResultItem(null), false); // Write Output to Network
         }
     }
 }

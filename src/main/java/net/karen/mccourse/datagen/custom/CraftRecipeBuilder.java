@@ -87,23 +87,21 @@ public class CraftRecipeBuilder implements RecipeBuilder {
             for (int i = 0; i < ingredient.size(); i++) {
                 JsonObject ingredientObject = new JsonObject();
 
-                ItemStack[] stacks = ingredient.get(i).getItems();
-
-                if (stacks.length > 0) {
-                    ingredientObject.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(stacks[0].getItem())).toString());
-                }
-
-                int size = i < count.size() ? count.get(i) : 1; // Default 1 se faltar
+                int size = i < count.size() ? count.get(i) : 1; // Ingredient count -> If not define is default 1
                 ingredientObject.addProperty("count", size);
+
+                ItemStack[] stack = ingredient.get(i).getItems(); // Added each Ingredient
+                ingredientObject.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(stack[0].getItem())).toString());
 
                 jsonarray.add(ingredientObject);
             }
 
-            pJson.add("ingredients", jsonarray);
+            pJson.add("ingredients", jsonarray); // Ingredients: []
+
             JsonObject jsonobject = new JsonObject();
             jsonobject.addProperty("item", ForgeRegistries.ITEMS.getKey(this.result).toString());
 
-            pJson.add("output", jsonobject);
+            pJson.add("output", jsonobject); // Output: {}
         }
 
         @Override
