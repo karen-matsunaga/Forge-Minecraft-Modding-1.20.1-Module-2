@@ -305,7 +305,7 @@ public class ModEvents {
                     .map(recipe -> recipe.getResultItem(level.registryAccess()).copy())
                     .orElse(ItemStack.EMPTY);
 
-            if (!smeltResult.isEmpty()) {
+            if (!smeltResult.isEmpty()) { // Has recipe
                 int dropAmount = 1; // Only Auto Smelt enchantment
                 if (fortuneLevel > 0) { dropAmount += level.random.nextInt(fortuneLevel + 1); } // Fortune enchantment random drop amount
                 // Replaces the block with air and drops the molten item
@@ -316,7 +316,7 @@ public class ModEvents {
                     } // Auto Smelt item drops
                 }
                 level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-            } else {
+            } else { // Not have recipe
                 // Drop normal resources if there is no foundry revenue
                 Block.dropResources(world.getBlockState(blockPos), world, blockPos, null);
                 world.destroyBlock(blockPos, false);

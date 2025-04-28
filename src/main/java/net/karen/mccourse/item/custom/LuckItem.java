@@ -22,11 +22,9 @@ import java.util.stream.Collectors;
 import static net.minecraft.world.item.enchantment.EnchantmentCategory.*;
 
 public class LuckItem extends Item {
-    private final int BOOKS_TO_GENERATE; // Number of books
-    private final int ENCHANTMENTS_PER_BOOK; // Number of enchantments by book
-    private final int ENCHANTMENT_LEVEL; // Enchantments level
-    private final EnchantmentCategory ENCHANTMENT_CATEGORY; // Enchantments type
-    private final int ENCHANTMENT_TYPE;
+    // Number of books, enchantments by book, enchantment level, enchantment type
+    private final int BOOKS_TO_GENERATE, ENCHANTMENTS_PER_BOOK, ENCHANTMENT_LEVEL, ENCHANTMENT_TYPE; // Number of books
+    private final EnchantmentCategory ENCHANTMENT_CATEGORY; // Enchantments category
 
     public LuckItem(Properties pProperties, int book, int enchant, int level, EnchantmentCategory category, int type) {
         super(pProperties);
@@ -60,17 +58,11 @@ public class LuckItem extends Item {
                         break;
                         case 1: // I want some enchantments
                             Enchantment randomEnchant = enchantmentType.get(random.nextInt(enchantmentType.size()));
-                            if (randomEnchant.getMaxLevel() == 1) {
-                                enchantments.put(randomEnchant, randomEnchant.getMaxLevel());
-                            }
-                            else if (randomEnchant.getMaxLevel() > 1) {
-                                enchantments.put(randomEnchant, ENCHANTMENT_LEVEL);
-                            }
+                            if (randomEnchant.getMaxLevel() == 1) { enchantments.put(randomEnchant, randomEnchant.getMaxLevel()); }
+                            else if (randomEnchant.getMaxLevel() > 1) { enchantments.put(randomEnchant, ENCHANTMENT_LEVEL); }
                         break;
                         case 2: // I want all enchantments
-                            for (Enchantment custom : enchantmentType) {
-                                enchantments.put(custom, ENCHANTMENT_LEVEL);
-                            }
+                            for (Enchantment custom : enchantmentType) { enchantments.put(custom, ENCHANTMENT_LEVEL); }
                         break;
                     }
                 }
@@ -78,10 +70,8 @@ public class LuckItem extends Item {
                 // Applies the enchantments to the book
                 EnchantmentHelper.setEnchantments(enchantments, enchantedBook);
 
-                // Give the book to the player
-                if (!player.getInventory().add(enchantedBook)) {
-                    player.drop(enchantedBook, false); // Drop on ground
-                }
+                // Give the book to the player -> If inventory is full drop on ground
+                if (!player.getInventory().add(enchantedBook)) { player.drop(enchantedBook, false); }
             }
         }
         itemStack.shrink(1); // Consumes the used item

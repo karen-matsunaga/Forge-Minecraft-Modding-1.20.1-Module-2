@@ -37,21 +37,15 @@ import java.util.Objects;
 // Using code with some modifications
 public class ModesPickaxeItem extends PickaxeItem {
     private ModesPickaxe modeActual = ModesPickaxe.NORMAL; // Pickaxe mode actual
-    private int level;
-    private List<Enchantment> enchantmentList;
+    private final int level;
+    private final List<Enchantment> enchantmentList;
 
-    public ModesPickaxeItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
+    public ModesPickaxeItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier,
+                            Properties pProperties, int level, List<Enchantment> enchantments) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
-    } // Pickaxe tier, attack damage, attack speed and properties
-
-    public ModesPickaxeItem setLevel(int level) { this.level = level; return this; } // Declared level enchantment
-
-    public int getLevel() { return this.level; } // Get level enchantment
-
-    // Declared all enchantments
-    public ModesPickaxeItem setEnchantment(List<Enchantment> enchantments) { this.enchantmentList = enchantments; return this; }
-
-    public List<Enchantment> getEnchantment() { return this.enchantmentList; } // Get all enchantments
+        this.level = level;
+        this.enchantmentList = enchantments;
+    } // Pickaxe tier, attack damage, attack speed, properties, enchantment level and enchantments
 
     // Define mine speed of pickaxe depends on the mode
     @Override
@@ -240,7 +234,7 @@ public class ModesPickaxeItem extends PickaxeItem {
 
     // Added all enchantments that Player chooses
     private void applyOverpoweredEnchantments(ItemStack stack) {
-        for (Enchantment enchantment : enchantmentList) { stack.enchant(enchantment, getLevel()); }
+        for (Enchantment enchantment : enchantmentList) { stack.enchant(enchantment, level); }
     }
 
     @Override
