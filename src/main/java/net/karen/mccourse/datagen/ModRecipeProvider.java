@@ -230,6 +230,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 Items.ENCHANTED_BOOK) // Output
                 .unlockedBy("has_diamond", has(Items.DIAMOND))
                 .save(pWriter);
+
+        // Luck custom generator enchanted book
+        luckItem(List.of(ModItems.LUCK.get(), Items.LAPIS_LAZULI, Items.COPPER_INGOT, Items.BOOK), pWriter);
+        luckItem(List.of(ModItems.PICKAXE_LUCK.get(), Items.LAPIS_LAZULI, Items.DIAMOND, ModItems.LUCK.get()), pWriter);
+        luckItem(List.of(ModItems.WEAPON_LUCK.get(), Items.LAPIS_LAZULI, Items.REDSTONE, ModItems.LUCK.get()), pWriter);
     }
 
     // Smelting
@@ -377,6 +382,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, item.get(0), 1)
                 .requires(item.get(1)).requires(ModBlocks.ENDER_PEARL_BLOCK.get())
                 .unlockedBy("has_item", has(item.get(1))).save(pWriter);
+    }
+
+    // Luck custom items
+    public static void luckItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0), 1)
+                .pattern("ABA").pattern("BCB").pattern("ABA")
+                .define('A', item.get(1)).define('B', item.get(2)).define('C', item.get(3))
+                .unlockedBy("has_item", has(item.get(3))).save(pWriter);
     }
 
     // Custom enchanted item or enchanted book

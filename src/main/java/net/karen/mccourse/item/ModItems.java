@@ -10,6 +10,7 @@ import net.karen.mccourse.sound.ModSounds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -120,7 +121,8 @@ public class ModItems {
 
     // Soap Water Bucket custom fluid
     public static final RegistryObject<Item> SOAP_WATER_BUCKET = ITEMS.register("soap_water_bucket",
-            () -> new BucketItem(ModFluids.SOURCE_SOAP_WATER, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+            () -> new BucketItem(ModFluids.SOURCE_SOAP_WATER,
+                    new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
     // Walnut's custom sign
     public static final RegistryObject<Item> WALNUT_SIGN = ITEMS.register("walnut_sign",
@@ -131,8 +133,7 @@ public class ModItems {
 
     // Rhino's custom egg
     public static final RegistryObject<Item> RHINO_SPAWN_EGG = ITEMS.register("rhino_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntities.RHINO, 0x7e9680, 0xc5d1c5,
-                    new Item.Properties()));
+            () -> new ForgeSpawnEggItem(ModEntities.RHINO, 0x7e9680, 0xc5d1c5, new Item.Properties()));
 
     // Dice Projectile's item
     public static final RegistryObject<Item> DICE = ITEMS.register("dice",
@@ -255,47 +256,27 @@ public class ModItems {
     // Mining Custom Item
     public static final RegistryObject<Item> BLUE_MODES = ITEMS.register("blue_modes",
             () -> new ModesPickaxeItem(ModToolTiers.PINK, 2, 3,
-                    new Item.Properties().fireResistant().durability(0)
-            )
-                    .setLevel(3) // Level enchantment
-                    .setEnchantment(List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
-                            Enchantments.UNBREAKING, Enchantments.MENDING)) // List of enchantments
-            );
+                    new Item.Properties().fireResistant().durability(0), 3,
+                    List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE, Enchantments.UNBREAKING, Enchantments.MENDING)));
 
     public static final RegistryObject<Item> GREEN_MODES = ITEMS.register("green_modes",
             () -> new ModesPickaxeItem(ModToolTiers.COPPER, 3, 4,
-                    new Item.Properties().fireResistant().durability(0)
-            )
-                    .setLevel(5) // Level enchantment
-                    .setEnchantment(List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
-                            Enchantments.UNBREAKING, Enchantments.MENDING)) // List of enchantments
-    );
+                    new Item.Properties().fireResistant().durability(0), 5,
+                    List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE, Enchantments.UNBREAKING, Enchantments.MENDING)));
 
     public static final RegistryObject<Item> PURPLE_MODES = ITEMS.register("purple_modes",
             () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 4, 5,
-                    new Item.Properties().fireResistant().durability(0)
-            )
-                    .setLevel(7) // Level enchantment
-                    .setEnchantment(List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
-                            Enchantments.UNBREAKING, Enchantments.MENDING)) // List of enchantments
-    );
+                    new Item.Properties().fireResistant().durability(0), 7,
+                    List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE, Enchantments.UNBREAKING, Enchantments.MENDING)));
 
     public static final RegistryObject<Item> ORANGE_MODES = ITEMS.register("orange_modes",
             () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 5, 6,
-                    new Item.Properties().fireResistant().durability(0)
-            )
-                    .setLevel(10) // Level enchantment
-                    .setEnchantment(List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
-                            Enchantments.UNBREAKING, Enchantments.MENDING)) // List of enchantments
-    );
+                    new Item.Properties().fireResistant().durability(0), 10,
+                    List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE, Enchantments.UNBREAKING, Enchantments.MENDING)));
 
     public static final RegistryObject<Item> PINK_MODES = ITEMS.register("pink_modes",
             () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 6, 7,
-                    new Item.Properties().fireResistant().durability(0)
-            )
-                    .setLevel(0) // Level enchantment
-                    .setEnchantment(List.of()) // List of enchantments
-    );
+                    new Item.Properties().fireResistant().durability(0), 0, List.of()));
 
     public static final RegistryObject<Item> COPPER_HAMMER = ITEMS.register("copper_hammer",
             () -> new HammerItem(ModToolTiers.COPPER, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
@@ -339,6 +320,19 @@ public class ModItems {
 
     public static final RegistryObject<Item> BOUNCY_BALLS_PARTICLES = ITEMS.register("bouncy_balls_particles",
             () -> new Item(new Item.Properties().stacksTo(64).fireResistant()));
+
+    // Luck custom generator enchanted book
+    public static final RegistryObject<Item> LUCK = ITEMS.register("luck",
+            () -> new LuckItem(new Item.Properties().stacksTo(64).fireResistant(),
+                    3, 3, 0, null, 0));
+
+    public static final RegistryObject<Item> PICKAXE_LUCK = ITEMS.register("pickaxe_luck",
+            () -> new LuckItem(new Item.Properties().stacksTo(64).fireResistant(),
+                    1, 2, 30, EnchantmentCategory.DIGGER, 1));
+
+    public static final RegistryObject<Item> WEAPON_LUCK = ITEMS.register("weapon_luck",
+            () -> new LuckItem(new Item.Properties().stacksTo(64).fireResistant(),
+                    1, 1, 6, EnchantmentCategory.WEAPON, 2));
 
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }

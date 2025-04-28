@@ -160,6 +160,11 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         // My custom ore
         simpleItem(ModItems.PINK);
+
+        // Luck custom generator enchanted book
+        simpleItem(ModItems.LUCK);
+        simpleItem(ModItems.PICKAXE_LUCK);
+        simpleItem(ModItems.WEAPON_LUCK);
     }
 
     // Registry all sapling item's models

@@ -258,6 +258,11 @@ public class ModCreativeModeTabs {
 
                         // My Disenchanted custom block
                         output.accept(ModBlocks.DISENCHANTED_BLOCK.get());
+
+                        // Luck custom generator enchanted book
+                        output.accept(ModItems.LUCK.get());
+                        output.accept(ModItems.PICKAXE_LUCK.get());
+                        output.accept(ModItems.WEAPON_LUCK.get());
                     }).build());
 
     // Registry Creative Mode Tab
