@@ -266,7 +266,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     // My custom Recipe methods
 
-    // Item transform on custom block
+    // Craft Crafting Table 7x7
     protected static void craftSeven(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0))
                 .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
