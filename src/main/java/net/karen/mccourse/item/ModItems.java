@@ -328,7 +328,7 @@ public class ModItems {
 
     public static final RegistryObject<Item> PICKAXE_LUCK = ITEMS.register("pickaxe_luck",
             () -> new LuckItem(new Item.Properties().stacksTo(64).fireResistant(),
-                    1, 2, 30, EnchantmentCategory.DIGGER, 1));
+                    1, 2, 10, EnchantmentCategory.DIGGER, 1));
 
     public static final RegistryObject<Item> WEAPON_LUCK = ITEMS.register("weapon_luck",
             () -> new LuckItem(new Item.Properties().stacksTo(64).fireResistant(),
