@@ -85,7 +85,6 @@ public class MetalDetectorItem extends Item {
     private void spawnFoundParticles(UseOnContext pContext, BlockPos positionClicked, BlockState blockState) {
         for(int i = 0; i < 20; i++) {
             ServerLevel level = (ServerLevel) pContext.getLevel();
-
             // Position of block and spawn particle
             level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState),
                     positionClicked.getX() + 0.5d, positionClicked.getY() + 1, positionClicked.getZ() + 0.5d, 1,
@@ -101,29 +100,26 @@ public class MetalDetectorItem extends Item {
         data.putString("mccourse.found_ore", "Valuable Found: " + I18n.get(block.getDescriptionId())
                 + " at [X: " + below.getX() + ", Y: " + below.getY() + ", Z: " + below.getZ() + "]");
 
-        dataTablet.setTag(data);
+        dataTablet.setTag(data); // Added x, y, z coordinates on Data Tablet
     }
 
     // When player press Shift keyword appears more information about Metal Detector item
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        // If press Shift keyword
         if(Screen.hasShiftDown()) {
-            pTooltipComponents.add(Component.translatable("tooltip.mccourse.metal_detector.tooltip.shift"));
+            pTooltipComponents.add(Component.translatable("tooltip.mccourse.metal_detector.tooltip.shift")); // If press Shift keyword
         } else {
-            // If not press Shift keyword
-            pTooltipComponents.add(Component.translatable("tooltip.mccourse.metal_detector.tooltip"));
+            pTooltipComponents.add(Component.translatable("tooltip.mccourse.metal_detector.tooltip")); // If not press Shift keyword
         }
-
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 
-    // Output message if not found ore
+    // Output message if not found ore -> Screen
     private void outputNoValuableFound(Player player) {
         player.displayClientMessage(Component.translatable("item.mccourse.metal_detector.no_valuable_values"), true);
     }
 
-    // Output message if found ore
+    // Output message if found ore -> Screen
     private void outputValuableCoordinates(BlockPos below, Player player, Block block) {
         player.displayClientMessage(Component.literal("Valuable Found: §l§6" + I18n.get(block.getDescriptionId())
                 + "§r at [X: §l§6" + below.getX() + "§r, Y: §l§6" + below.getY() + "§r, Z: §l§6" + below.getZ() + "§r]"), true);
