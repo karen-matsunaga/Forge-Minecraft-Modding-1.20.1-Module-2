@@ -235,6 +235,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         luckItem(List.of(ModItems.LUCK.get(), Items.LAPIS_LAZULI, Items.COPPER_INGOT, Items.BOOK), pWriter);
         luckItem(List.of(ModItems.PICKAXE_LUCK.get(), Items.LAPIS_LAZULI, Items.DIAMOND, ModItems.LUCK.get()), pWriter);
         luckItem(List.of(ModItems.WEAPON_LUCK.get(), Items.LAPIS_LAZULI, Items.REDSTONE, ModItems.LUCK.get()), pWriter);
+
+        // Craft Crafting Table 7x7
+        craftSeven(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), pWriter);
     }
 
     // Smelting
@@ -262,6 +265,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     // My custom Recipe methods
+
+    // Item transform on custom block
+    protected static void craftSeven(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0))
+                .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
+                .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
+                .define('A', item.get(1))
+                .unlockedBy("has_item", has(item.get(1)))
+                .save(pWriter);
+    }
+
     // Item transform on custom block
     protected static void itemTransformBlock(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0))
