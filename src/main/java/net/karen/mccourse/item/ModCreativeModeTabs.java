@@ -263,6 +263,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.LUCK.get());
                         output.accept(ModItems.PICKAXE_LUCK.get());
                         output.accept(ModItems.WEAPON_LUCK.get());
+
+                        // My Craft custom crafting table
+                        output.accept(ModBlocks.CRAFT_CRAFTING_TABLE.get());
                     }).build());
 
     // Registry Creative Mode Tab

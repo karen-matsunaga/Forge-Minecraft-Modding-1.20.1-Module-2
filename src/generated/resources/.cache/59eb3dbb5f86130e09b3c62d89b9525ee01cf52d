@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-25T11:13:40.286927	Loot Tables
+// 1.20.1	2025-04-29T15:25:28.8627348	Loot Tables
 3c04bafc8e377b8b3a0acec4fb355ebe506bd32a data/mccourse/loot_tables/blocks/alexandrite_block.json
 5ee80a3f0dae7a738f12360934f26b319920a8a3 data/mccourse/loot_tables/blocks/alexandrite_button.json
 3cf926928d6232271016b028304beb66caa9effe data/mccourse/loot_tables/blocks/alexandrite_door.json
@@ -17,6 +17,7 @@ ad47e9767e40817692d3e3390f028b3e73a4f8cc data/mccourse/loot_tables/blocks/blue_e
 9e51a6f83b4acf722d36f8a6c3e7575b4051b902 data/mccourse/loot_tables/blocks/brown_ender_pearl_block.json
 721a12dfca84141982832817c5032407702d3766 data/mccourse/loot_tables/blocks/cattail_crop.json
 847f01dfdaf854700edfeefcf42e2dc0692ca81d data/mccourse/loot_tables/blocks/colored_leaves.json
+35ac2240f315e35068ae190f05349776a3b370b1 data/mccourse/loot_tables/blocks/craft_crafting_table.json
 b7fb61b3f9afe40afbdb292b74b4c9dac62914ea data/mccourse/loot_tables/blocks/cyan_ender_pearl_block.json
 597e60e805b2690c09390fe88bc716ab26a906c0 data/mccourse/loot_tables/blocks/deepslate_alexandrite_ore.json
 28e2ba1d4d1d4ee347fbb83010e9cc8d394f1db7 data/mccourse/loot_tables/blocks/deepslate_pink_ore.json

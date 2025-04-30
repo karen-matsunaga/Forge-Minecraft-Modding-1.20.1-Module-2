@@ -3,6 +3,9 @@
   "item.mccourse.pickaxe_luck": "Pickaxe Luck",
   "item.mccourse.weapon_luck": "Weapon Luck",
 
+  "block.mccourse.craft_crafting_table": "Craft Crafting Table",
+  "mccourse.container.crafting": "Craft Crafting Table",
+
   "item.mccourse.alexandrite": "Alexandrite",
   "item.mccourse.raw_alexandrite": "Raw Alexandrite",
   "item.mccourse.metal_detector": "Metal Detector",

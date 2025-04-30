@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-25T11:13:40.286927	Block States: mccourse
+// 1.20.1	2025-04-30T14:03:38.2149591	Block States: mccourse
 9b0f59e6a967af477e6f41100bfecb754add6ea2 assets/mccourse/blockstates/alexandrite_block.json
 1fd0895b9aa0e87b67d2c4da0f567f8aa895de30 assets/mccourse/blockstates/alexandrite_button.json
 974428f15970c224b76ef992df827ba4718bb490 assets/mccourse/blockstates/alexandrite_door.json
@@ -17,6 +17,7 @@ f6379fce47961538dbbb2f75af610a6de31e848d assets/mccourse/blockstates/black_ender
 ac294d528620d99eab9e73c88811d53b9d11ffda assets/mccourse/blockstates/brown_ender_pearl_block.json
 8fe33b6d4af9444522d67a976b8537f861d3bd3e assets/mccourse/blockstates/cattail_crop.json
 647acdc71f248fabd80972f5e8ec879675a5c424 assets/mccourse/blockstates/colored_leaves.json
+a3fc772fe400f0a7d40015000193110562d68568 assets/mccourse/blockstates/craft_crafting_table.json
 aa73c4798b061530473f9079204a27f5b3ec30a8 assets/mccourse/blockstates/cyan_ender_pearl_block.json
 8fcc4611978185a7f05bf9d92311c83a7c2c011f assets/mccourse/blockstates/deepslate_alexandrite_ore.json
 ddc038c4207988efb4a5c79afe19367073376a20 assets/mccourse/blockstates/deepslate_pink_ore.json
@@ -113,6 +114,7 @@ c313e5849261fe65a89e8cf0a7bf30879cd61a8d assets/mccourse/models/block/cat_tail_s
 382a73ea474aaa6434f1f89eec7bb7c4fc9761e5 assets/mccourse/models/block/cat_tail_stage7.json
 6ca31c70459b2a047862d78b2a5bcad7daa4402c assets/mccourse/models/block/cat_tail_stage8.json
 7535404ed199e6fedc9694ca965197851dbde251 assets/mccourse/models/block/colored_leaves.json
+06b16c36cd40913674646f0ef725bc1251208d3c assets/mccourse/models/block/craft_crafting_table.json
 143b23e3230d6cea9e47ffb739571107ad4bfc08 assets/mccourse/models/block/cyan_ender_pearl_block.json
 e49cc1338930db40727591c39966f4819c88a086 assets/mccourse/models/block/deepslate_alexandrite_ore.json
 1c976a64ea29e08de07868920d99030f0f0b098a assets/mccourse/models/block/deepslate_pink_ore.json
@@ -183,6 +185,7 @@ a1e7e690537f78b97a5c7dbaf1b6f920341f0744 assets/mccourse/models/item/alexandrite
 ca5a08b09c2d1580c40db3bf580a3681da2d9861 assets/mccourse/models/item/blue_ender_pearl_block.json
 2202663489f4fb86bbabdc0ecc232dbaf9f8bd0c assets/mccourse/models/item/brown_ender_pearl_block.json
 bee137067ab316ff0baae93a056e9e6f37603496 assets/mccourse/models/item/colored_leaves.json
+bab1f6b0186d01c229a29512dafa8e052bbef6cc assets/mccourse/models/item/craft_crafting_table.json
 751b282675ccbe8984fb9d0452629ab60171b2d8 assets/mccourse/models/item/cyan_ender_pearl_block.json
 9af4e0f3066301b89642002a4ebceb539fb1b4e3 assets/mccourse/models/item/deepslate_alexandrite_ore.json
 2993fed22fc5f5a6a9635c3c6e60521175102267 assets/mccourse/models/item/deepslate_pink_ore.json

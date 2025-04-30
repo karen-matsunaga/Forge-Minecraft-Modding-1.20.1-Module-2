@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-28T17:16:26.5004814	Recipes
+// 1.20.1	2025-04-30T16:25:51.6249128	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -28,6 +28,7 @@ e638de98327fcefb8ed9720908bdc58ddbdf818b data/mccourse/advancements/recipes/misc
 548f5248251721a2524e6f58cb4fb0b409fb7cd1 data/mccourse/advancements/recipes/misc/alexandrite_from_smelting_raw_alexandrite.json
 9692490ef4adb1817d3b2a64a470fa1f738a0e11 data/mccourse/advancements/recipes/misc/blaze_rod_block.json
 c74e7dc97d1677e53b193e0cc6f9aefde91e47d1 data/mccourse/advancements/recipes/misc/blue_modes.json
+51818ba7e6621546a9e2177ffd272ed3126da9b6 data/mccourse/advancements/recipes/misc/craft_crafting_table.json
 d8e1a096fc60f6670b3b247196b7a0ac0843d2d1 data/mccourse/advancements/recipes/misc/disenchanted.json
 d3c788c38d8460512af52b075d307257d121f481 data/mccourse/advancements/recipes/misc/ender_pearl_block.json
 35fc33bfc51bdf1837340d1c159242001159ce88 data/mccourse/advancements/recipes/misc/green_modes.json
@@ -140,6 +141,7 @@ c674e55ea097f23fd1d75185bdd04a93b67556a3 data/mccourse/recipes/copper_hoe.json
 f86874343fc534a6e3b354aa65259830f18dde49 data/mccourse/recipes/copper_pickaxe.json
 a5469a2513870a25d5e0f6319782b1849bf4d070 data/mccourse/recipes/copper_shovel.json
 82a9be751f16c85e404eefa6c707dbc7d1e343c4 data/mccourse/recipes/copper_sword.json
+7f333cb1a147e4aa15fc0848d571070a561624a3 data/mccourse/recipes/craft_crafting_table.json
 9414acf5f36cb9370206f2138ce5bbc5c5979536 data/mccourse/recipes/cyan_ender_pearl_block.json
 bf572bca995581b51614943d8a70e807e2609e36 data/mccourse/recipes/diamond_from_gem_empowering.json
 28864fd38b796283bed64db851c50c65c3eb4e2d data/mccourse/recipes/diamond_hammer.json

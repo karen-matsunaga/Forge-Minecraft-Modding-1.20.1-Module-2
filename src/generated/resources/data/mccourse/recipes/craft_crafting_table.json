@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:crafting_table"
+    }
+  },
+  "pattern": [
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA"
+  ],
+  "result": {
+    "item": "mccourse:craft_crafting_table"
+  },
+  "show_notification": true
+}

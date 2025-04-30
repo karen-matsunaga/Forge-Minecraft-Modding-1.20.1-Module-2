@@ -16,6 +16,7 @@ import net.karen.mccourse.item.ModItemProperties;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.loot.ModLootModifiers;
 import net.karen.mccourse.network.DisenchantedGuiSlotMessage;
+import net.karen.mccourse.network.XrayNetworkMessage;
 import net.karen.mccourse.painting.ModPaintings;
 import net.karen.mccourse.particle.ModParticles;
 import net.karen.mccourse.potion.BetterBrewingRecipe;
@@ -40,6 +41,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
@@ -154,6 +156,10 @@ public class MCCourseMod {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+
+            // Craft Crafting Table 7x7 size
+            ShapedRecipe.setCraftingSize(7, 7);
+
             // Adding all seeds, flowers, etc. on composter block
             // Adding Kohlrabi's on composter block
             ComposterBlock.COMPOSTABLES.put(ModItems.KOHLRABI.get(), 0.35f);
@@ -173,6 +179,7 @@ public class MCCourseMod {
 
             // Disenchanted block event network message
             MCCourseMod.addNetworkMessage(DisenchantedGuiSlotMessage.class, DisenchantedGuiSlotMessage::buffer, DisenchantedGuiSlotMessage::new, DisenchantedGuiSlotMessage::handler);
+            MCCourseMod.addNetworkMessage(XrayNetworkMessage.SavedDataSyncMessage.class, XrayNetworkMessage.SavedDataSyncMessage::buffer, XrayNetworkMessage.SavedDataSyncMessage::new, XrayNetworkMessage.SavedDataSyncMessage::handler);
         });
     }
 
@@ -228,6 +235,7 @@ public class MCCourseMod {
                 MenuScreens.register(ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringStationScreen::new);
                 MenuScreens.register(ModMenuTypes.KAUPEN_FURNACE_MENU.get(), KaupenFurnaceScreen::new);
                 MenuScreens.register(ModMenuTypes.DISENCHANTED_MENU.get(), DisenchantedScreen::new);
+                MenuScreens.register(ModMenuTypes.CRAFT_CRAFTING_TABLE_MENU.get(), CraftCraftingTableScreen::new);
 
                 EntityRenderers.register(ModEntities.RHINO.get(), RhinoRenderer::new); // Adding Rhino's custom entity renderer
                 EntityRenderers.register(ModEntities.DICE_PROJECTILE.get(), ThrownItemRenderer::new); // Adding Dice Projectile's custom projectile entity renderer

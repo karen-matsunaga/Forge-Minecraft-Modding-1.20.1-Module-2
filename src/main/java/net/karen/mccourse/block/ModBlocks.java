@@ -402,6 +402,10 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
             ));
 
+    // Craft custom Crafting Table
+    public static final RegistryObject<Block> CRAFT_CRAFTING_TABLE = registerBlock("craft_crafting_table",
+            () -> new CraftCraftingTableBlock(BlockBehaviour.Properties.copy(Blocks.CRAFTING_TABLE)));
+
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

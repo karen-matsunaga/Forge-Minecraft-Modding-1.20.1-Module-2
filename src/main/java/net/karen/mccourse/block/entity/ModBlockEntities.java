@@ -41,6 +41,12 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(DisenchantedBlockEntity::new,
                             ModBlocks.DISENCHANTED_BLOCK.get()).build(null)); // Disenchanted
 
+    // Register all custom crafting table
+    public static final RegistryObject<BlockEntityType<CraftCraftingTableBlockEntity>> CRAFT_CRAFTING_TABLE_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("craft_crafting_table_block_entity", () ->
+                    BlockEntityType.Builder.of(CraftCraftingTableBlockEntity::new,
+                            ModBlocks.CRAFT_CRAFTING_TABLE.get()).build(null));
+
     // Register all block entities on Forge
     public static void register(IEventBus eventBus) { BLOCK_ENTITIES.register(eventBus); }
 }

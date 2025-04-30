@@ -172,6 +172,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         // My Disenchanted custom block
         blockWithItem(ModBlocks.DISENCHANTED_BLOCK);
+
+        // My Craft custom crafting table
+        blockWithItem(ModBlocks.CRAFT_CRAFTING_TABLE);
+        registerCustomSidedCube(ModBlocks.CRAFT_CRAFTING_TABLE);
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json
@@ -261,5 +265,20 @@ public class ModBlockStateProvider extends BlockStateProvider {
     // Method to easy registry a block
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {
         simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
+    }
+
+    private void registerCustomSidedCube(RegistryObject<Block> blockRegistryObject) {
+        Block block = blockRegistryObject.get();
+        ResourceLocation key = ForgeRegistries.BLOCKS.getKey(block);
+        String baseTexture = "block/" + key.getPath();
+
+        models().withExistingParent(key.getPath(), mcLoc("block/cube"))
+                .texture("down", modLoc(baseTexture))
+                .texture("up", modLoc(baseTexture + "_top"))
+                .texture("north", modLoc(baseTexture + "_front"))
+                .texture("south", modLoc(baseTexture + "_side"))
+                .texture("west", modLoc(baseTexture + "_front"))
+                .texture("east", modLoc(baseTexture + "_side"))
+                .texture("particle", modLoc(baseTexture + "_front"));
     }
 }
