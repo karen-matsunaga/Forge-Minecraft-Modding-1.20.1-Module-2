@@ -86,6 +86,15 @@ public class LuckItem extends Item {
         allEnchantments.addAll(getEnchantmentsByCategory(WEAPON)); // Sword category
         allEnchantments.addAll(getEnchantmentsByCategory(ARMOR)); // Armor category
         allEnchantments.addAll(getEnchantmentsByCategory(DIGGER)); // Pickaxe category
+        allEnchantments.addAll(getEnchantmentsByCategory(BREAKABLE)); // Breakable category
+        allEnchantments.addAll(getEnchantmentsByCategory(FISHING_ROD)); // Fishing category
+        allEnchantments.addAll(getEnchantmentsByCategory(TRIDENT)); // Trident category
+        allEnchantments.addAll(getEnchantmentsByCategory(ARMOR_FEET)); // Armor Feet category
+        allEnchantments.addAll(getEnchantmentsByCategory(ARMOR_CHEST)); // Armor Chest category
+        allEnchantments.addAll(getEnchantmentsByCategory(ARMOR_HEAD)); // Armor Head category
+        allEnchantments.addAll(getEnchantmentsByCategory(ARMOR_LEGS)); // Armor Legs category
+        allEnchantments.addAll(getEnchantmentsByCategory(BOW)); // Bow category
+        allEnchantments.addAll(getEnchantmentsByCategory(CROSSBOW)); // Crossbow category
 
         if (allEnchantments.isEmpty()) { return null; } // If the list is empty, it ignores and returns nothing
 
