@@ -338,7 +338,7 @@ public class ModEvents {
     // CUSTOM EVENT - Glowing Mobs's custom enchantment - Using code with some modifications
     @SubscribeEvent
     public static void activatedGlowingMobsEnchantment(LivingEvent event) {
-        int GLOWING_EYES = 30; // Range of Glowing effect on mobs
+        int GLOWING_EYES = 10; // Range of Glowing effect on mobs
         LivingEntity livingEntity = event.getEntity();
 
         if (!(livingEntity instanceof Player)) { return; } // Player is an entity
@@ -597,7 +597,7 @@ public class ModEvents {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-        int hr = 5, vr = 5; // Horizontal and Vertical radius block shape
+        int hr = 3, vr = 3; // Horizontal and Vertical radius block shape
         if (XrayNetworkMessage.WorldVariables.get(level).xray) {
             for (int y = -vr; y <= vr; y++) {
                 for (int x = -hr; x <= hr; x++) {
