@@ -65,7 +65,6 @@ public class CraftCraftingTableMenu extends RecipeBookMenu<CraftingContainer> {
                     }
                 }
             }
-
             pResult.setItem(0, itemstack);
             pMenu.setRemoteSlot(0, itemstack);
             serverplayer.connection.send(new ClientboundContainerSetSlotPacket(pMenu.containerId, pMenu.incrementStateId(), 0, itemstack));
@@ -102,34 +101,22 @@ public class CraftCraftingTableMenu extends RecipeBookMenu<CraftingContainer> {
     }
 
     @Override
-    public int getResultSlotIndex() {
-        return 0;
-    }
+    public int getResultSlotIndex() { return 0; }
 
     @Override
-    public int getGridWidth() {
-        return this.craftSlots.getWidth();
-    }
+    public int getGridWidth() { return this.craftSlots.getWidth(); }
 
     @Override
-    public int getGridHeight() {
-        return this.craftSlots.getHeight();
-    }
+    public int getGridHeight() { return this.craftSlots.getHeight(); }
 
     @Override
-    public int getSize() {
-        return this.craftSlots.getWidth() * this.craftSlots.getHeight() + 1;
-    }
+    public int getSize() { return this.craftSlots.getWidth() * this.craftSlots.getHeight() + 1; }
 
     @Override
-    public RecipeBookType getRecipeBookType() {
-        return RecipeBookType.CRAFTING;
-    }
+    public RecipeBookType getRecipeBookType() { return RecipeBookType.CRAFTING; }
 
     @Override
-    public boolean shouldMoveToInventory(int pSlotIndex) {
-        return pSlotIndex != this.getResultSlotIndex();
-    }
+    public boolean shouldMoveToInventory(int pSlotIndex) { return pSlotIndex != this.getResultSlotIndex(); }
 
     private static final int RESULT_SLOT = 0;
     private static final int CRAFTING_FIRST_SLOT = 1;
@@ -189,9 +176,7 @@ public class CraftCraftingTableMenu extends RecipeBookMenu<CraftingContainer> {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return stillValid(this.access, pPlayer, ModBlocks.CRAFT_CRAFTING_TABLE.get());
-    }
+    public boolean stillValid(Player pPlayer) { return stillValid(this.access, pPlayer, ModBlocks.CRAFT_CRAFTING_TABLE.get()); }
 
     public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {
         return pSlot.container != this.resultSlots && super.canTakeItemForPickAll(pStack, pSlot);

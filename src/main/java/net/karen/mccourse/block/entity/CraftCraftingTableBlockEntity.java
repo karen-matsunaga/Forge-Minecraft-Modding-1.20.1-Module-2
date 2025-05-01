@@ -34,5 +34,5 @@ public class CraftCraftingTableBlockEntity extends RandomizableContainerBlockEnt
     }
 
     @Override
-    public int getContainerSize() { return 1000; }
+    public int getContainerSize() { return 86; }
 }
