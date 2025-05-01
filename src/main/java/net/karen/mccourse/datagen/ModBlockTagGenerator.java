@@ -32,6 +32,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.SOUND_BLOCK.get(), // Blocks
                     ModBlocks.ALEXANDRITE_STAIRS.get(), // Stairs
                     ModBlocks.ALEXANDRITE_SLABS.get(), // Slabs
+                    ModBlocks.GEM_EMPOWERING_STATION.get(),
+                    ModBlocks.KAUPEN_FURNACE_BLOCK.get(),
                     ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), // Custom blocks
                     ModBlocks.BLACK_ENDER_PEARL_BLOCK.get(),
                     ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get(),
@@ -46,7 +48,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                     ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get(),
                     ModBlocks.BLUE_ENDER_PEARL_BLOCK.get(),
                     ModBlocks.WHITE_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.DISENCHANTED_BLOCK.get())
+                    ModBlocks.DISENCHANTED_BLOCK.get(),
+                    ModBlocks.CRAFT_CRAFTING_TABLE.get())
                 .addTag(ModTags.Blocks.MOBS_BLOCKS_DROPS)
                 .addTag(ModTags.Blocks.MCCOURSE_ORES)
                 .addTag(ModTags.Blocks.MCCOURSE_ORES_BLOCK);
