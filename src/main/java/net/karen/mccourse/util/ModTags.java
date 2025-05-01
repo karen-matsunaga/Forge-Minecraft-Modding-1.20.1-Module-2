@@ -12,7 +12,6 @@ public class ModTags {
     // Items
     public static class Items {
         // Created Item's tags HERE ...
-
         // Ores item
         public static final TagKey<Item> MCCOURSE_ITEMS = tag("blocks/mccourse_items");
 
