@@ -64,6 +64,7 @@
 
   "enchantment.mccourse.lightning_striker": "Lightning Striker",
   "enchantment.mccourse.glowing_mobs": "Glowing Mobs",
+  "enchantment.mccourse.glowing_blocks": "Glowing Blocks",
   "enchantment.mccourse.more_ores": "More Ores",
   "enchantment.mccourse.magnetic": "Magnetic",
   "enchantment.mccourse.auto_smelt": "Auto Smelt",
@@ -310,6 +311,7 @@
   "enchantment.minecraft.vanishing_curse.desc": "When applied on tool or armor if player killed the item disappears of inventory.",
 
   "enchantment.mccourse.glowing_mobs.desc": "When applied on helmet armor all entities are detected with X-Ray of mobs.",
+  "enchantment.mccourse.glowing_blocks.desc": "When applied on helmet armor all ores blocks are detected with X-Ray of blocks.",
 
   "enchantment.mccourse.lightning_striker.desc": "When applied on sword when player hits on entities appears lightning, but player receive damage if attacked.",
 

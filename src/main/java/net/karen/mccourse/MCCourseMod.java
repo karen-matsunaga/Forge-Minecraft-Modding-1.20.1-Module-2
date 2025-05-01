@@ -179,6 +179,7 @@ public class MCCourseMod {
 
             // Disenchanted block event network message
             MCCourseMod.addNetworkMessage(DisenchantedGuiSlotMessage.class, DisenchantedGuiSlotMessage::buffer, DisenchantedGuiSlotMessage::new, DisenchantedGuiSlotMessage::handler);
+            // Xray Block Shape Renderer
             MCCourseMod.addNetworkMessage(XrayNetworkMessage.SavedDataSyncMessage.class, XrayNetworkMessage.SavedDataSyncMessage::buffer, XrayNetworkMessage.SavedDataSyncMessage::new, XrayNetworkMessage.SavedDataSyncMessage::handler);
         });
     }

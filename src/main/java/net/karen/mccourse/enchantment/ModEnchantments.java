@@ -26,6 +26,11 @@ public class ModEnchantments {
                     () -> new GlowingMobsEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.ARMOR_HEAD,
                             EquipmentSlot.HEAD));
 
+    public static final RegistryObject<Enchantment> GLOWING_BLOCKS =
+            ENCHANTMENTS.register("glowing_blocks",
+                    () -> new GlowingBlocksEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.ARMOR_HEAD,
+                            EquipmentSlot.HEAD));
+
     // More Ores enchantment - PICKAXE, HAMMER, PAXEL enchantment
     public static final RegistryObject<Enchantment> MORE_ORES =
             ENCHANTMENTS.register("more_ores",

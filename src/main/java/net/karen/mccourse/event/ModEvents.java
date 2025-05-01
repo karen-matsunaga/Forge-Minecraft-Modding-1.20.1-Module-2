@@ -1,5 +1,7 @@
 package net.karen.mccourse.event;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
@@ -10,10 +12,13 @@ import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.item.ModesPickaxe;
 import net.karen.mccourse.item.custom.HammerItem;
 import net.karen.mccourse.item.custom.ModesPickaxeItem;
+import net.karen.mccourse.network.XrayNetworkMessage;
 import net.karen.mccourse.util.ModTags;
 import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.*;
@@ -55,10 +60,13 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -69,8 +77,10 @@ import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.command.ConfigCommand;
+import org.joml.Matrix4f;
 
 import java.util.*;
 
@@ -439,6 +449,198 @@ public class ModEvents {
                 // - y: Y position when the text will be drawn on screen.
                 // - 0x0000FF: Text color on hexadecimal format.
                 // - false: Boolean that indicates if the text should have a shadow (false = without shadow).
+        }
+    }
+
+    // Credits by Parlack - Xray - World Renderer - https://www.youtube.com/watch?v=vT4suvo0CAs
+    // CUSTOM EVENT - Xray custom item - Using code with some modifications
+    public static void sendToPlayer(ServerPlayer player, XrayNetworkMessage.SyncedSavedData data) {
+        if (data != null) {
+            MCCourseMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new XrayNetworkMessage.SavedDataSyncMessage(data));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        var level = player.level();
+        if (!level.isClientSide()) {
+            sendToPlayer(player, XrayNetworkMessage.MapVariables.get(level));
+            sendToPlayer(player, XrayNetworkMessage.WorldVariables.get(level)); // Logged on world
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        var level = player.level();
+        if (!level.isClientSide()) {
+            sendToPlayer(player, XrayNetworkMessage.WorldVariables.get(level)); // Dimension [Overworld, Nether, End, etc.]
+        }
+    }
+
+    private static final Map<TagKey<Block>, Integer> TAG_COLORS = Map.ofEntries(
+    Map.entry(Tags.Blocks.ORES_COAL, 0xFFa9a9a9), Map.entry(Tags.Blocks.ORES_COPPER, 0xFFff8c00),
+    Map.entry(Tags.Blocks.ORES_DIAMOND, 0xFF00FEFF), Map.entry(Tags.Blocks.ORES_EMERALD, 0xFF31c831),
+    Map.entry(Tags.Blocks.ORES_GOLD, 0xFFffd700), Map.entry(Tags.Blocks.ORES_IRON, 0xFFd3d3d3),
+    Map.entry(Tags.Blocks.ORES_LAPIS, 0xFF0000ff), Map.entry(Tags.Blocks.ORES_REDSTONE, 0xFFb30000),
+    Map.entry(Tags.Blocks.ORES_NETHERITE_SCRAP, 0xFFD22CF8), Map.entry(Tags.Blocks.CHESTS, 0xFFf5f5f5),
+    Map.entry(ModTags.Blocks.PINK_ORES, 0xFFffc0eb), Map.entry(ModTags.Blocks.ALEXANDRITE_ORES, 0xFF7fe6e8));
+
+    private static BufferBuilder bufferBuilder = null;
+    private static VertexBuffer vertexBuffer = null;
+    private static VertexFormat format = null;
+    private static PoseStack poseStack = null;
+    private static Matrix4f projectionMatrix = null;
+    private static final boolean worldCoordinate = true;
+    private static final Vec3 offset = Vec3.ZERO;
+    private static int currentStage, targetStage = 0;
+    private static final int[][] cubeCoordinates = { {0,0,0},{1,0,0},{1,0,0},{1,0,1},{1,0,1},{0,0,1},{0,0,1},{0,0,0},
+                                                 {0,0,0},{0,1,0},{1,0,0},{1,1,0},{1,0,1},{1,1,1},{0,0,1},{0,1,1},
+                                                 {0,1,0},{1,1,0},{1,1,0},{1,1,1},{1,1,1},{0,1,1},{0,1,1},{0,1,0}};
+
+    private static boolean begin() { // Custom method
+        if (bufferBuilder == null || !bufferBuilder.building()) {
+            if (vertexBuffer != null) {
+                vertexBuffer.close();
+                vertexBuffer = null;
+            }
+            VertexFormat.Mode mode = VertexFormat.Mode.DEBUG_LINES;
+            format = DefaultVertexFormat.POSITION_COLOR;
+            bufferBuilder = Tesselator.getInstance().getBuilder();
+            bufferBuilder.begin(mode, format);
+            return true;
+        }
+        return false;
+    }
+
+    private static void add(double x, double y, double z, int color) { // Custom method
+        if (bufferBuilder == null || !bufferBuilder.building()) return;
+        if (format == DefaultVertexFormat.POSITION_COLOR) { bufferBuilder.vertex(x, y, z).color(color).endVertex(); }
+        else if (format == DefaultVertexFormat.POSITION_TEX_COLOR) {
+            bufferBuilder.vertex(x, y, z).uv(0.0F, 0.0F).color(color).endVertex();
+        }
+    }
+
+    private static void end() { // Custom method
+        if (bufferBuilder == null || !bufferBuilder.building()) return;
+        if (vertexBuffer != null) vertexBuffer.close();
+        vertexBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
+        vertexBuffer.bind();
+        vertexBuffer.upload(bufferBuilder.end());
+        VertexBuffer.unbind();
+    }
+
+    private static void renderShape(VertexBuffer vb, double x, double y, double z, int color) { // Custom method
+        if (currentStage == 0 || currentStage != targetStage) return;
+        if (poseStack == null || projectionMatrix == null || vb == null) return;
+        float i, j, k;
+        if (worldCoordinate) {
+            Vec3 cam = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+            i = (float) (x - cam.x());
+            j = (float) (y - cam.y());
+            k = (float) (z - cam.z());
+        } else {
+            i = (float) x;
+            j = (float) y;
+            k = (float) z;
+        }
+        poseStack.pushPose();
+        poseStack.translate(i, j, k);
+        poseStack.mulPose(com.mojang.math.Axis.YN.rotationDegrees(0));
+        poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(0));
+        poseStack.mulPose(com.mojang.math.Axis.ZN.rotationDegrees(0));
+        poseStack.scale(1, 1, 1);
+        poseStack.translate(offset.x(), offset.y(), offset.z());
+
+        RenderSystem.setShaderColor((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F,
+                (color & 255) / 255.0F, (color >>> 24) / 255.0F);
+
+        vb.bind();
+        vb.drawWithShader(poseStack.last().pose(), projectionMatrix,
+                Objects.requireNonNull(vb.getFormat().hasUV(0) ? GameRenderer.getPositionTexColorShader()
+                        : GameRenderer.getPositionColorShader()));
+        VertexBuffer.unbind();
+
+        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+        poseStack.popPose();
+    }
+
+    @SubscribeEvent
+    public static void renderLevel(RenderLevelStageEvent event) { // Block shape render world
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
+            currentStage = 1;
+            RenderSystem.depthMask(false);
+            renderShape(event);
+            RenderSystem.enableCull();
+            RenderSystem.depthMask(true);
+            currentStage = 0;
+        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+            currentStage = 2;
+            RenderSystem.depthMask(true);
+            renderShape(event);
+            RenderSystem.enableCull();
+            RenderSystem.depthMask(true);
+            currentStage = 0;
+        }
+    }
+
+    @SubscribeEvent
+    public static void renderShape(RenderLevelStageEvent event) { // Block shape render
+        Minecraft mc = Minecraft.getInstance();
+        ClientLevel level = mc.level;
+        Entity entity = mc.gameRenderer.getMainCamera().getEntity();
+        if (level == null) return;
+        poseStack = event.getPoseStack();
+        projectionMatrix = event.getProjectionMatrix();
+        Vec3 pos = entity.getPosition(event.getPartialTick());
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+        int hr = 5, vr = 5; // Horizontal and Vertical radius block shape
+        if (XrayNetworkMessage.WorldVariables.get(level).xray) {
+            for (int y = -vr; y <= vr; y++) {
+                for (int x = -hr; x <= hr; x++) {
+                    for (int z = -hr; z <= hr; z++) {
+                        double dx = Math.floor(pos.x + x);
+                        double dy = Math.floor(pos.y + y);
+                        double dz = Math.floor(pos.z + z);
+                        BlockPos blockPos = BlockPos.containing(dx, dy, dz);
+                        BlockState state = level.getBlockState(blockPos);
+                        for (Map.Entry<TagKey<Block>, Integer> entry : TAG_COLORS.entrySet()) {
+                            if (state.is(entry.getKey())) {
+                                RenderSystem.depthMask(false);
+                                RenderSystem.disableDepthTest();
+                                if (begin()) {
+                                    for (int[] c : cubeCoordinates) add(c[0], c[1], c[2], entry.getValue());
+                                    end();
+                                }
+                                if (currentStage == 2) {
+                                    targetStage = 2;
+                                    renderShape(vertexBuffer, dx, dy, dz, entry.getValue());
+                                    targetStage = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.disableBlend();
+        RenderSystem.enableDepthTest();
+    }
+
+    // Xray Item
+    @SubscribeEvent
+    public static void xrayItem(TickEvent.PlayerTickEvent event) {
+        ItemStack helmet = event.player.getItemBySlot(EquipmentSlot.HEAD); // Player has/hasn't used helmet
+        int glowingBlocksLevel = helmet.getEnchantmentLevel(ModEnchantments.GLOWING_BLOCKS.get());
+        LevelAccessor world = event.player.level();
+        if (event.phase == TickEvent.Phase.END) {
+            XrayNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() && glowingBlocksLevel > 0; // Player has/hasn't enchanted helmet with Glowing Blocks
+            XrayNetworkMessage.WorldVariables.get(world).syncData(world); // Update information player has/hasn't used enchanted helmet
         }
     }
 }
