@@ -479,13 +479,13 @@ public class ModEvents {
         }
     }
 
-    private static final Map<TagKey<Block>, Integer> TAG_COLORS = Map.ofEntries(
-    Map.entry(Tags.Blocks.ORES_COAL, 0xFFa9a9a9), Map.entry(Tags.Blocks.ORES_COPPER, 0xFFff8c00),
-    Map.entry(Tags.Blocks.ORES_DIAMOND, 0xFF00FEFF), Map.entry(Tags.Blocks.ORES_EMERALD, 0xFF31c831),
-    Map.entry(Tags.Blocks.ORES_GOLD, 0xFFffd700), Map.entry(Tags.Blocks.ORES_IRON, 0xFFd3d3d3),
-    Map.entry(Tags.Blocks.ORES_LAPIS, 0xFF0000ff), Map.entry(Tags.Blocks.ORES_REDSTONE, 0xFFb30000),
-    Map.entry(Tags.Blocks.ORES_NETHERITE_SCRAP, 0xFFD22CF8), Map.entry(Tags.Blocks.CHESTS, 0xFFf5f5f5),
-    Map.entry(ModTags.Blocks.PINK_ORES, 0xFFffc0eb), Map.entry(ModTags.Blocks.ALEXANDRITE_ORES, 0xFF7fe6e8));
+    // Blocks and colors of block shape
+    private static final Map<TagKey<Block>, Integer> TAG_COLORS = Map.ofEntries(Map.entry(Tags.Blocks.ORES_COAL, 0xFFa9a9a9),
+    Map.entry(Tags.Blocks.ORES_COPPER, 0xFFff8c00), Map.entry(Tags.Blocks.ORES_DIAMOND, 0xFF00FEFF),
+    Map.entry(Tags.Blocks.ORES_EMERALD, 0xFF31c831), Map.entry(Tags.Blocks.ORES_GOLD, 0xFFffd700),
+    Map.entry(Tags.Blocks.ORES_IRON, 0xFFd3d3d3), Map.entry(Tags.Blocks.ORES_LAPIS, 0xFF0000ff),
+    Map.entry(Tags.Blocks.ORES_REDSTONE, 0xFFb30000), Map.entry(Tags.Blocks.ORES_NETHERITE_SCRAP, 0xFFD22CF8),
+    Map.entry(ModTags.Blocks.MCCOURSE_ORES, 0xFFffc0eb));
 
     private static BufferBuilder bufferBuilder = null;
     private static VertexBuffer vertexBuffer = null;
@@ -496,22 +496,25 @@ public class ModEvents {
     private static final Vec3 offset = Vec3.ZERO;
     private static int currentStage, targetStage = 0;
     private static final int[][] cubeCoordinates = { {0,0,0},{1,0,0},{1,0,0},{1,0,1},{1,0,1},{0,0,1},{0,0,1},{0,0,0},
-                                                 {0,0,0},{0,1,0},{1,0,0},{1,1,0},{1,0,1},{1,1,1},{0,0,1},{0,1,1},
-                                                 {0,1,0},{1,1,0},{1,1,0},{1,1,1},{1,1,1},{0,1,1},{0,1,1},{0,1,0}};
+                                                     {0,0,0},{0,1,0},{1,0,0},{1,1,0},{1,0,1},{1,1,1},{0,0,1},{0,1,1},
+                                                     {0,1,0},{1,1,0},{1,1,0},{1,1,1},{1,1,1},{0,1,1},{0,1,1},{0,1,0}};
 
     private static boolean begin() { // Custom method
         if (bufferBuilder == null || !bufferBuilder.building()) {
-            if (vertexBuffer != null) {
-                vertexBuffer.close();
-                vertexBuffer = null;
+            clear();
+            if (vertexBuffer == null) {
+                VertexFormat.Mode mode = VertexFormat.Mode.DEBUG_LINES;
+                format = DefaultVertexFormat.POSITION_COLOR;
+                bufferBuilder = Tesselator.getInstance().getBuilder();
+                bufferBuilder.begin(mode, format);
+                return true;
             }
-            VertexFormat.Mode mode = VertexFormat.Mode.DEBUG_LINES;
-            format = DefaultVertexFormat.POSITION_COLOR;
-            bufferBuilder = Tesselator.getInstance().getBuilder();
-            bufferBuilder.begin(mode, format);
-            return true;
         }
         return false;
+    }
+
+    private static void clear() { // Custom method
+        if (vertexBuffer != null) { vertexBuffer.close(); vertexBuffer = null; }
     }
 
     private static void add(double x, double y, double z, int color) { // Custom method
@@ -597,7 +600,7 @@ public class ModEvents {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-        int hr = 3, vr = 3; // Horizontal and Vertical radius block shape
+        int hr = 4, vr = 4; // Horizontal and Vertical radius block shape
         if (XrayNetworkMessage.WorldVariables.get(level).xray) {
             for (int y = -vr; y <= vr; y++) {
                 for (int x = -hr; x <= hr; x++) {
@@ -635,11 +638,11 @@ public class ModEvents {
     // Xray Item
     @SubscribeEvent
     public static void xrayItem(TickEvent.PlayerTickEvent event) {
-        ItemStack helmet = event.player.getItemBySlot(EquipmentSlot.HEAD); // Player has/hasn't used helmet
-        int glowingBlocksLevel = helmet.getEnchantmentLevel(ModEnchantments.GLOWING_BLOCKS.get());
+        ItemStack helmet = event.player.getItemBySlot(EquipmentSlot.HEAD); // Player has used helmet
+        int glowingBlocksLevel = helmet.getEnchantmentLevel(ModEnchantments.GLOWING_BLOCKS.get()); // Has Glowing Blocks enchantment
         LevelAccessor world = event.player.level();
         if (event.phase == TickEvent.Phase.END) {
-            XrayNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() && glowingBlocksLevel > 0; // Player has/hasn't enchanted helmet with Glowing Blocks
+            XrayNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() && glowingBlocksLevel > 0; // Player has enchanted helmet and Glowing Blocks
             XrayNetworkMessage.WorldVariables.get(world).syncData(world); // Update information player has/hasn't used enchanted helmet
         }
     }
