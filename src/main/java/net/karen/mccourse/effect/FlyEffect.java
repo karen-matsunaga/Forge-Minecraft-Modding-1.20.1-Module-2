@@ -30,5 +30,9 @@ public class FlyEffect extends MobEffect {
     } // Fly effect ended
 
     @Override
-    public boolean isDurationEffectTick(int pDuration, int pAmplifier) { return true; } // Fly effect duration
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
+        int k = 50 >> pAmplifier;
+        if (k > 0) { return pDuration % k == 0; }
+        else { return true; }
+    } // Fly effect duration
 }
