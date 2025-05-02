@@ -75,7 +75,7 @@ public class ModItems {
     // Alexandrite Hammer
     public static final RegistryObject<Item> ALEXANDRITE_HAMMER = ITEMS.register("alexandrite_hammer",
             () -> new HammerItem(ModToolTiers.ALEXANDRITE, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().durability(2304)).setRadius(2));
+                    new Item.Properties().durability(2304), 2));
 
     // Alexandrite Armor
     public static final RegistryObject<Item> ALEXANDRITE_HELMET = ITEMS.register("alexandrite_helmet",
@@ -280,35 +280,35 @@ public class ModItems {
 
     public static final RegistryObject<Item> COPPER_HAMMER = ITEMS.register("copper_hammer",
             () -> new HammerItem(ModToolTiers.COPPER, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().durability(0).fireResistant()).setRadius(3));
+                    new Item.Properties().durability(0).fireResistant(), 3));
 
     public static final RegistryObject<Item> DIAMOND_HAMMER = ITEMS.register("diamond_hammer",
             () -> new HammerItem(Tiers.DIAMOND, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().durability(0).fireResistant()).setRadius(3));
+                    new Item.Properties().durability(0).fireResistant(), 3));
 
     public static final RegistryObject<Item> GOLD_HAMMER = ITEMS.register("gold_hammer",
             () -> new HammerItem(Tiers.GOLD, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().durability(0).fireResistant()).setRadius(2));
+                    new Item.Properties().durability(0).fireResistant(), 2));
 
     public static final RegistryObject<Item> IRON_HAMMER = ITEMS.register("iron_hammer",
             () -> new HammerItem(Tiers.IRON, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().durability(0).fireResistant()).setRadius(2));
+                    new Item.Properties().durability(0).fireResistant(), 2));
 
     public static final RegistryObject<Item> NETHERITE_HAMMER = ITEMS.register("netherite_hammer",
             () -> new HammerItem(Tiers.NETHERITE, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().fireResistant()).setRadius(4));
+                    new Item.Properties().fireResistant(), 4));
 
     public static final RegistryObject<Item> PINK_HAMMER = ITEMS.register("pink_hammer",
             () -> new HammerItem(ModToolTiers.PINK, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().fireResistant()).setRadius(5));
+                    new Item.Properties().fireResistant(), 5));
 
     public static final RegistryObject<Item> STONE_HAMMER = ITEMS.register("stone_hammer",
             () -> new HammerItem(Tiers.STONE, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().fireResistant()).setRadius(2));
+                    new Item.Properties().fireResistant(), 2));
 
     public static final RegistryObject<Item> WOODEN_HAMMER = ITEMS.register("wooden_hammer",
             () -> new HammerItem(Tiers.WOOD, 2, 3, BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().fireResistant()).setRadius(2));
+                    new Item.Properties().fireResistant(), 2));
 
     // Ore custom item
     public static final RegistryObject<Item> PINK = ITEMS.register("pink",

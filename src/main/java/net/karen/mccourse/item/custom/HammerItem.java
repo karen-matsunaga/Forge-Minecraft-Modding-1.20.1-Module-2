@@ -23,14 +23,13 @@ import java.util.List;
 // Credits by Alireza Khodakarami (Jiraiyah) - https://github.com/drkhodakarami/uio/blob/master/src/main/java/jiraiyah/uio/item/HammerItem.java
 // Distributed under MIT - Using with some modifications
 public class HammerItem extends DiggerItem implements Vanishable {
-    private int radius;
+    private final int radius;
 
-    public HammerItem(Tier pTier, float pAttackDamageModifier, float pAttackSpeedModifier, TagKey<Block> blockTags, Properties pProperties) {
+    public HammerItem(Tier pTier, float pAttackDamageModifier, float pAttackSpeedModifier, TagKey<Block> blockTags,
+                      Properties pProperties, int radius) {
         super(pAttackDamageModifier, pAttackSpeedModifier, pTier, blockTags, pProperties);
-        this.radius = radius - 1;
+        this.radius = radius - 1; // Radius declared on ModItems
     }
-
-    public HammerItem setRadius(int radius) { this.radius = radius - 1; return this; } // Radius declared on ModItems
 
     public int getRadius() { return this.radius; } // Declared radius activated on ModEvents
 
