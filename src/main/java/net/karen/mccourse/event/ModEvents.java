@@ -481,7 +481,7 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onRenderWorld(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) return;
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_SKY) return;
 
         Minecraft mc = Minecraft.getInstance();
         Level level = mc.level;
@@ -492,7 +492,6 @@ public class ModEvents {
         Vec3 playerPos = Objects.requireNonNull(mc.player).getPosition(event.getPartialTick());
         PoseStack poseStack = event.getPoseStack();
         MultiBufferSource.BufferSource buffer = mc.renderBuffers().bufferSource();
-
         poseStack.pushPose();
         poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z); // Relative Camera Render
 
@@ -505,13 +504,13 @@ public class ModEvents {
                     pos.set(playerPos.x + x, playerPos.y + y, playerPos.z + z);
                     BlockState state = level.getBlockState(pos);
                     // Blocks and colors of block shape
-                    Map<TagKey<Block>, Integer> TAG_COLORS = Map.ofEntries(Map.entry(Tags.Blocks.ORES_COAL, 0xFFa9a9a9),
+                    Map<TagKey<Block>, Integer> tagColors = Map.ofEntries(Map.entry(Tags.Blocks.ORES_COAL, 0xFFa9a9a9),
                             Map.entry(Tags.Blocks.ORES_COPPER, 0xFFff8c00), Map.entry(Tags.Blocks.ORES_DIAMOND, 0xFF00FEFF),
                             Map.entry(Tags.Blocks.ORES_EMERALD, 0xFF31c831), Map.entry(Tags.Blocks.ORES_GOLD, 0xFFffd700),
                             Map.entry(Tags.Blocks.ORES_IRON, 0xFFd3d3d3), Map.entry(Tags.Blocks.ORES_LAPIS, 0xFF0000ff),
                             Map.entry(Tags.Blocks.ORES_REDSTONE, 0xFFb30000), Map.entry(Tags.Blocks.ORES_NETHERITE_SCRAP, 0xFFD22CF8),
                             Map.entry(ModTags.Blocks.MCCOURSE_ORES, 0xFFffc0eb));
-                    for (Map.Entry<TagKey<Block>, Integer> entry : TAG_COLORS.entrySet()) {
+                    for (Map.Entry<TagKey<Block>, Integer> entry : tagColors.entrySet()) {
                         if (state.is(entry.getKey())) {
                             float r = (entry.getValue() >> 16 & 0xFF) / 255f; // Red
                             float g = (entry.getValue() >> 8 & 0xFF) / 255f; // Green
