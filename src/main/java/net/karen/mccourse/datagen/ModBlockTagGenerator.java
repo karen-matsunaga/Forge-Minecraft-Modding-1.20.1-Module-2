@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +20,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                                 @Nullable ExistingFileHelper existingFileHelper) { super(output, lookupProvider, MCCourseMod.MOD_ID, existingFileHelper); }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags(HolderLookup.@NotNull Provider provider) {
         // Add Block Tags here
         this.tag(ModTags.Blocks.METAL_DETECTOR_VALUABLES)
                 .addTag(Tags.Blocks.ORES)
@@ -32,24 +33,15 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.SOUND_BLOCK.get(), // Blocks
                     ModBlocks.ALEXANDRITE_STAIRS.get(), // Stairs
                     ModBlocks.ALEXANDRITE_SLABS.get(), // Slabs
-                    ModBlocks.GEM_EMPOWERING_STATION.get(),
-                    ModBlocks.KAUPEN_FURNACE_BLOCK.get(),
-                    ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), // Custom blocks
-                    ModBlocks.BLACK_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.PURPLE_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.PINK_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.CYAN_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.BROWN_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.GRAY_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.RED_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.BLUE_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.WHITE_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.DISENCHANTED_BLOCK.get(),
-                    ModBlocks.CRAFT_CRAFTING_TABLE.get())
+                    ModBlocks.GEM_EMPOWERING_STATION.get(), ModBlocks.KAUPEN_FURNACE_BLOCK.get(),
+                    ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), ModBlocks.BLACK_ENDER_PEARL_BLOCK.get(), // Custom blocks
+                    ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get(), ModBlocks.PURPLE_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get(), ModBlocks.PINK_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.CYAN_ENDER_PEARL_BLOCK.get(), ModBlocks.BROWN_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.GRAY_ENDER_PEARL_BLOCK.get(), ModBlocks.RED_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get(), ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.BLUE_ENDER_PEARL_BLOCK.get(), ModBlocks.WHITE_ENDER_PEARL_BLOCK.get(),
+                    ModBlocks.DISENCHANTED_BLOCK.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get())
                 .addTag(ModTags.Blocks.MOBS_BLOCKS_DROPS)
                 .addTag(ModTags.Blocks.MCCOURSE_ORES)
                 .addTag(ModTags.Blocks.MCCOURSE_ORES_BLOCK);
@@ -141,5 +133,5 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
     }
 
     @Override
-    public String getName() { return "Block Tags"; }
+    public @NotNull String getName() { return "Block Tags"; }
 }
