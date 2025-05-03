@@ -20,6 +20,12 @@ public class ModTags {
         public static final TagKey<Item> ALEXANDRITE_ORES_ITEMS = tag("blocks/alexandrite_ores_items");
         public static final TagKey<Item> MCCOURSE_ORES_ITEMS = tag("blocks/mccourse_ores_items");
 
+        // Created Fly effect item tag
+        public static final TagKey<Item> HELMET_FLY = tag("items/helmet_fly");
+        public static final TagKey<Item> CHESTPLATE_FLY = tag("items/chestplate_fly");
+        public static final TagKey<Item> LEGGINGS_FLY = tag("items/leggings_fly");
+        public static final TagKey<Item> BOOTS_FLY = tag("items/boots_fly");
+
         // Pass item id
         private static TagKey<Item> tag(String name) { return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }
 

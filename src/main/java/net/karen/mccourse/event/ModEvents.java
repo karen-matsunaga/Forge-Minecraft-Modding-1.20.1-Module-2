@@ -6,6 +6,7 @@ import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.command.ReturnHomeCommand;
 import net.karen.mccourse.command.SetHomeCommand;
+import net.karen.mccourse.effect.ModEffects;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.item.ModesPickaxe;
@@ -537,6 +538,33 @@ public class ModEvents {
         if (event.phase == TickEvent.Phase.END) {
             XrayNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() && glowingBlocksLevel > 0; // Player has enchanted helmet and Glowing Blocks
             XrayNetworkMessage.WorldVariables.get(world).syncData(world); // Update information player has/hasn't used enchanted helmet
+        }
+    }
+
+    // Active Fly with Item
+    @SubscribeEvent
+    public static void flyItem(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        Player player = event.player;
+        if (player.level().isClientSide) return;
+        boolean hasArmor = player.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.Items.HELMET_FLY) &&
+        player.getItemBySlot(EquipmentSlot.CHEST).is(ModTags.Items.CHESTPLATE_FLY) &&
+        player.getItemBySlot(EquipmentSlot.LEGS).is(ModTags.Items.LEGGINGS_FLY) &&
+        player.getItemBySlot(EquipmentSlot.FEET).is(ModTags.Items.BOOTS_FLY); // Player used FULL ARMOR
+        boolean hasFlyEffect = player.hasEffect(ModEffects.FLY_EFFECT.get()); // Player has FLY EFFECT
+        if (hasArmor || hasFlyEffect) { // Player has FULL ARMOR or FLY EFFECT
+            if (!player.getAbilities().mayfly) {
+                player.getAbilities().mayfly = true;
+                player.onUpdateAbilities();
+            }
+        }
+        else {
+            if (player.getAbilities().mayfly && !player.isCreative()) { // Player hasn't FULL ARMOR or FLY EFFECT
+                player.getAbilities().mayfly = false;
+                player.getAbilities().flying = false;
+                player.onUpdateAbilities();
+
+            }
         }
     }
 }

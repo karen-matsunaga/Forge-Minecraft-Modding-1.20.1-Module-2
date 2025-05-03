@@ -1,7 +1,6 @@
 package net.karen.mccourse.item.custom;
 
 import com.google.common.collect.ImmutableMap;
-import net.karen.mccourse.effect.ModEffects;
 import net.karen.mccourse.item.ModArmorMaterials;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -18,74 +17,53 @@ import java.util.Map;
 public class ModArmorItem extends ArmorItem {
     // Specific armor material to mob effect instance that applied in player
     private static final Map<ArmorMaterial, List<MobEffectInstance>> MATERIAL_TO_EFFECT_MAP =
-            (new ImmutableMap.Builder<ArmorMaterial, List<MobEffectInstance>>())
-                    // Alexandrite custom armor
-                    .put(ModArmorMaterials.ALEXANDRITE, Arrays.asList(
-                            // Added all custom effects or vanilla effects on player only all armor slots
-                            new MobEffectInstance(MobEffects.DAMAGE_BOOST, -1, 1, false, false, false),
-                            new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 1, false, false, false),
-                            new MobEffectInstance(ModEffects.FLY_EFFECT.get(), -1, 1, false, false, false),
-                            new MobEffectInstance(MobEffects.REGENERATION, -1, 4, false, false, false),
-                            new MobEffectInstance(MobEffects.FIRE_RESISTANCE, -1, 1, false, false, false),
-                            new MobEffectInstance(MobEffects.DIG_SPEED, -1, 1, false, false, false)))
-                    // Pink custom armor
-                    .put(ModArmorMaterials.PINK, Arrays.asList(
-                            new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 1, false, false, false),
-                            new MobEffectInstance(MobEffects.JUMP, -1, 1, false, false, false),
-                            new MobEffectInstance(ModEffects.FLY_EFFECT.get(), -1, 1, false, false, false))).build();
+    (new ImmutableMap.Builder<ArmorMaterial, List<MobEffectInstance>>())
+        .put(ModArmorMaterials.ALEXANDRITE, Arrays.asList( // ALEXANDRITE CUSTOM ARMOR
+                // Added all custom effects or vanilla effects on player only all armor slots
+                new MobEffectInstance(MobEffects.DAMAGE_BOOST, 300, 1, false, false),
+                new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false),
+                new MobEffectInstance(MobEffects.REGENERATION, 300, 4, false, false),
+                new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 300, 1, false, false),
+                new MobEffectInstance(MobEffects.DIG_SPEED, 300, 1, false, false)))
+        .put(ModArmorMaterials.PINK, Arrays.asList( // PINK CUSTOM ARMOR
+                new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false),
+                new MobEffectInstance(MobEffects.JUMP, 300, 1, false, false),
+                new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 300, 1, false, false),
+                new MobEffectInstance(MobEffects.DIG_SPEED, 300, 1, false, false),
+                new MobEffectInstance(MobEffects.DAMAGE_BOOST, 300, 1, false, false),
+                new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 300, 1, false, false))).build();
 
     public ModArmorItem(ArmorMaterial material, Type type, Properties properties) { super(material, type, properties); }
 
-    // Apply effect if player using all parts of armor
     @Override
-    public void onArmorTick(ItemStack stack, Level level, Player player) {
-        if (!level.isClientSide() && hasFullSuitOfArmorOn(player)) { evaluateArmorEffects(player); } // Add effect
-        else { removeArmorEffects(player); } // Remove effect
+    public void onArmorTick(ItemStack stack, Level level, Player player) { // Apply effect if player using all parts of armor
+        if (!level.isClientSide() && hasFullSuitOfArmorOn(player)) { evaluateArmorEffects(player); }
     }
 
-    // If player is using same armor material applies all effects
-    private void evaluateArmorEffects(Player player) {
+    private void evaluateArmorEffects(Player player) { // Player is using same armor material applies all effects
         for (Map.Entry<ArmorMaterial, List<MobEffectInstance>> entry : MATERIAL_TO_EFFECT_MAP.entrySet()) {
-            ArmorMaterial mapArmorMaterial = entry.getKey();
-            List<MobEffectInstance> effects = entry.getValue();
-            if (hasPlayerCorrectArmorOn(mapArmorMaterial, player)) { for (MobEffectInstance effect : effects) { addEffectToPlayer(player, effect); } }
+            if (hasPlayerCorrectArmorOn(entry.getKey(), player)) { addEffectToPlayer(player, entry.getValue()); }
         }
     }
 
-    // If player not using full armor effect are removed
-    private void removeArmorEffects(Player player) {
-        for (Map.Entry<ArmorMaterial, List<MobEffectInstance>> entry : MATERIAL_TO_EFFECT_MAP.entrySet()) {
-            ArmorMaterial mapArmorMaterial = entry.getKey();
-            List<MobEffectInstance> effects = entry.getValue();
-            if (!hasPlayerCorrectArmorOn(mapArmorMaterial, player)) { for (MobEffectInstance effect : effects) { removeEffectToPlayer(player, effect); } }
+    private void addEffectToPlayer(Player player, List<MobEffectInstance> effects) { // Player not to receive the effects it is adding
+        for (MobEffectInstance effect : effects) {
+            MobEffectInstance current = player.getEffect(effect.getEffect());
+            if (current == null) { player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration(), effect.getAmplifier())); }
         }
     }
 
-    // If player not to receive the effects it is adding
-    private void addEffectToPlayer(Player player, MobEffectInstance effect) {
-        // Player not has effects and used all armor slots (Helmet, Chestplate, Leggings and Boots)
-        boolean hasPlayerEffect = player.hasEffect(effect.getEffect());
-        // Player not received effects
-        if (!hasPlayerEffect) { player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration(), effect.getAmplifier())); }
-    }
-
-    // If player received effects not using armor
-    private void removeEffectToPlayer(Player player, MobEffectInstance effect) {
-        boolean hasPlayerEffect = player.hasEffect(effect.getEffect());
-        // Player has effects and not used all armor slots (Helmet, Chestplate, Leggings and Boots)
-        if (hasPlayerEffect) { player.removeEffect(effect.getEffect()); } // Player remove effects
-    }
-
-    // If player using same armor material (Boots, Leggings, Chestplate and Helmet)
+    // Player is using same armor material [Boots, Leggings, Chestplate and Helmet]
     private boolean hasPlayerCorrectArmorOn(ArmorMaterial mapArmorMaterial, Player player) {
         for (ItemStack armorStack : player.getArmorSlots()) { if (!(armorStack.getItem() instanceof ArmorItem)) { return false; } }
-        return ((ArmorItem) player.getInventory().getArmor(0).getItem()).getMaterial() == mapArmorMaterial && ((ArmorItem) player.getInventory().getArmor(1).getItem()).getMaterial() == mapArmorMaterial
-                && ((ArmorItem) player.getInventory().getArmor(2).getItem()).getMaterial() == mapArmorMaterial && ((ArmorItem) player.getInventory().getArmor(3).getItem()).getMaterial() == mapArmorMaterial;
+        return ((ArmorItem) player.getInventory().getArmor(0).getItem()).getMaterial() == mapArmorMaterial &&  // Boots
+        ((ArmorItem) player.getInventory().getArmor(1).getItem()).getMaterial() == mapArmorMaterial && // Leggings
+        ((ArmorItem) player.getInventory().getArmor(2).getItem()).getMaterial() == mapArmorMaterial && // Chestplate
+        ((ArmorItem) player.getInventory().getArmor(3).getItem()).getMaterial() == mapArmorMaterial; // Helmet
     }
 
-    // If player using all parts (Boots, Leggings, Chestplate and Helmet)
-    private boolean hasFullSuitOfArmorOn(Player player) {
-        return !player.getInventory().getArmor(0).isEmpty() && !player.getInventory().getArmor(1).isEmpty()
-                && !player.getInventory().getArmor(2).isEmpty() && !player.getInventory().getArmor(3).isEmpty();
+    private boolean hasFullSuitOfArmorOn(Player player) { // Player is using all parts [Boots, Leggings, Chestplate and Helmet]
+        return !player.getInventory().getArmor(0).isEmpty() && !player.getInventory().getArmor(1).isEmpty() // Boots | Leggings
+        && !player.getInventory().getArmor(2).isEmpty() && !player.getInventory().getArmor(3).isEmpty(); // Chestplate | Helmet
     }
 }
