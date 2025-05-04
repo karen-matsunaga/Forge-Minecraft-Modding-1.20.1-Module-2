@@ -157,6 +157,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.PINK_HAMMER);
         handheldItem(ModItems.STONE_HAMMER);
         handheldItem(ModItems.WOODEN_HAMMER);
+        handheldItem(ModItems.MCCOURSE_HAMMER);
 
         // My custom ore
         simpleItem(ModItems.PINK);

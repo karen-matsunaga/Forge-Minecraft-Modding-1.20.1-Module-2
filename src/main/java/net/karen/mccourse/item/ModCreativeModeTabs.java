@@ -266,6 +266,9 @@ public class ModCreativeModeTabs {
 
                         // My Craft custom crafting table
                         output.accept(ModBlocks.CRAFT_CRAFTING_TABLE.get());
+
+                        // Hammer
+                        output.accept(ModItems.MCCOURSE_HAMMER.get());
                     }).build());
 
     // Registry Creative Mode Tab

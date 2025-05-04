@@ -334,6 +334,10 @@ public class ModItems {
             () -> new LuckItem(new Item.Properties().stacksTo(64).fireResistant(),
                     1, 1, 6, EnchantmentCategory.WEAPON, 2));
 
+    public static final RegistryObject<Item> MCCOURSE_HAMMER = ITEMS.register("mccourse_hammer",
+            () -> new MccourseItem(ModToolTiers.PINK, 3, 1, BlockTags.MINEABLE_WITH_PICKAXE,
+                    new Item.Properties().durability(10000).fireResistant()));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }

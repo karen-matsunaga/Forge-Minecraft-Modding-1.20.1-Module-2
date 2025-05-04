@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-28T17:16:26.5004814	Item Models: mccourse
+// 1.20.1	2025-05-04T15:45:33.4046638	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 cfc705788577468640df77a99d391497448608d0 assets/mccourse/models/item/alexandrite_button.json
@@ -41,6 +41,7 @@ b27190e2df26eff5a924d16e4f2d9cf0308838f1 assets/mccourse/models/item/iron_paxel.
 6349d1adee80001ce5a46b787665a782e5c25798 assets/mccourse/models/item/kohlrabi.json
 39b609a6c230f85321604bec3c0fbf1976247e24 assets/mccourse/models/item/kohlrabi_seeds.json
 9d058e094f13da8740c0c0f6447da092d20d6345 assets/mccourse/models/item/luck.json
+faf15074e0b43be5fa09cf3411c543621e6ee3f2 assets/mccourse/models/item/mccourse_hammer.json
 23f99234f647aa805541635819a0a2a8b1552d81 assets/mccourse/models/item/metal_detector.json
 596fdd257bfa8c7c7df9692546761c1c5e5ff1c9 assets/mccourse/models/item/netherite_hammer.json
 79b240ec7ed516998ce448af32b9ba1ad9ca4dea assets/mccourse/models/item/netherite_paxel.json
