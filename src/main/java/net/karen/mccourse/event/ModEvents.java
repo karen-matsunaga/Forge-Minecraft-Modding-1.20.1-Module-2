@@ -1,5 +1,6 @@
 package net.karen.mccourse.event;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.karen.mccourse.MCCourseMod;
@@ -16,11 +17,9 @@ import net.karen.mccourse.network.XrayNetworkMessage;
 import net.karen.mccourse.util.ModTags;
 import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.*;
@@ -62,7 +61,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -83,6 +81,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.command.ConfigCommand;
+import org.joml.Matrix4f;
 
 import java.util.*;
 
@@ -454,6 +453,32 @@ public class ModEvents {
         }
     }
 
+    // Active Fly with Item
+    @SubscribeEvent
+    public static void flyEffect(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        Player player = event.player;
+        if (player.level().isClientSide) return;
+        boolean hasArmor = player.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.Items.HELMET_FLY) &&
+                player.getItemBySlot(EquipmentSlot.CHEST).is(ModTags.Items.CHESTPLATE_FLY) &&
+                player.getItemBySlot(EquipmentSlot.LEGS).is(ModTags.Items.LEGGINGS_FLY) &&
+                player.getItemBySlot(EquipmentSlot.FEET).is(ModTags.Items.BOOTS_FLY); // Player used FULL ARMOR
+        boolean hasFlyEffect = player.hasEffect(ModEffects.FLY_EFFECT.get()); // Player has FLY EFFECT
+        if (hasArmor || hasFlyEffect) { // Player has FULL ARMOR or FLY EFFECT
+            if (!player.getAbilities().mayfly) {
+                player.getAbilities().mayfly = true;
+                player.onUpdateAbilities();
+            }
+        }
+        else {
+            if (player.getAbilities().mayfly && !player.isCreative()) { // Player hasn't FULL ARMOR or FLY EFFECT
+                player.getAbilities().mayfly = false;
+                player.getAbilities().flying = false;
+                player.onUpdateAbilities();
+            }
+        }
+    }
+
     // Credits by Parlack - Xray - World Renderer - https://www.youtube.com/watch?v=vT4suvo0CAs
     // CUSTOM EVENT - Glowing Blocks xray custom enchantment - Using code with some modifications
     @SubscribeEvent
@@ -480,91 +505,159 @@ public class ModEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void onRenderWorld(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_SKY) return;
+    private static BufferBuilder bufferBuilder = null;
+    private static VertexBuffer vertexBuffer = null;
+    private static VertexFormat.Mode mode = null;
+    private static VertexFormat format = null;
+    private static PoseStack poseStack = null;
+    private static Matrix4f projectionMatrix = null;
+    private static final boolean worldCoordinate = true;
+    private static final Vec3 offset = Vec3.ZERO;
+    private static int currentStage, targetStage = 0; // NONE: 0, SKY: 1, WORLD: 2
 
-        Minecraft mc = Minecraft.getInstance();
-        Level level = mc.level;
-        if (level == null || !XrayNetworkMessage.WorldVariables.get(level).xray) return;
+    private static void add(double x, double y, double z, int color) {
+        if (bufferBuilder == null || !bufferBuilder.building()) { return; }
+        if (format == DefaultVertexFormat.POSITION_COLOR) { bufferBuilder.vertex(x, y, z).color(color).endVertex(); }
+    }
 
-        Camera camera = mc.gameRenderer.getMainCamera();
-        Vec3 cameraPos = camera.getPosition();
-        Vec3 playerPos = Objects.requireNonNull(mc.player).getPosition(event.getPartialTick());
-        PoseStack poseStack = event.getPoseStack();
-        MultiBufferSource.BufferSource buffer = mc.renderBuffers().bufferSource();
+    private static boolean begin() {
+        if (ModEvents.bufferBuilder == null || !ModEvents.bufferBuilder.building()) {
+            clear();
+            if (vertexBuffer == null) {
+                ModEvents.mode = VertexFormat.Mode.DEBUG_LINES;
+                ModEvents.format = DefaultVertexFormat.POSITION_COLOR;
+                ModEvents.bufferBuilder = Tesselator.getInstance().getBuilder();
+                ModEvents.bufferBuilder.begin(mode, format);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void clear() { if (vertexBuffer != null) { vertexBuffer.close(); vertexBuffer = null; } }
+
+    private static void end() {
+        if (bufferBuilder == null || !bufferBuilder.building()) { return; }
+        if (vertexBuffer != null) { vertexBuffer.close(); }
+        vertexBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
+        vertexBuffer.bind();
+        vertexBuffer.upload(bufferBuilder.end());
+        VertexBuffer.unbind();
+    }
+
+    private static void renderShape(VertexBuffer vertexBuffer, double x, double y, double z, int color) {
+        if (currentStage == 0 || currentStage != targetStage) { return; }
+        if (poseStack == null || projectionMatrix == null) { return; }
+        if (vertexBuffer == null) { return; }
+        float i, j, k;
+        if (worldCoordinate) {
+            Vec3 pos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+            i = (float) (x - pos.x());
+            j = (float) (y - pos.y());
+            k = (float) (z - pos.z());
+        }
+        else { i = (float) x; j = (float) y; k = (float) z; }
         poseStack.pushPose();
-        poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z); // Relative Camera Render
+        poseStack.translate(i, j, k);
+        poseStack.mulPose(com.mojang.math.Axis.YN.rotationDegrees(0));
+        poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(0));
+        poseStack.mulPose(com.mojang.math.Axis.ZN.rotationDegrees(0));
+        poseStack.scale(1, 1, 1);
+        poseStack.translate(offset.x(), offset.y(), offset.z());
+        RenderSystem.setShaderColor((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, (color >>> 24) / 255.0F);
+        vertexBuffer.bind();
+        vertexBuffer.drawWithShader(poseStack.last().pose(), projectionMatrix, Objects.requireNonNull(vertexBuffer.getFormat().hasUV(0) ? GameRenderer.getPositionTexColorShader() : GameRenderer.getPositionColorShader()));
+        VertexBuffer.unbind();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        poseStack.popPose();
+    }
 
-        int radius = 10; // Glowing Blocks Radius
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+    @SubscribeEvent
+    public static void renderLevel(RenderLevelStageEvent event) {
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
+            currentStage = 1;
+            RenderSystem.depthMask(false);
+            renderShapes(event);
+            RenderSystem.enableCull();
+            RenderSystem.depthMask(true);
+            currentStage = 0;
+        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+            currentStage = 2;
+            RenderSystem.depthMask(true);
+            renderShapes(event);
+            RenderSystem.enableCull();
+            RenderSystem.depthMask(true);
+            currentStage = 0;
+        }
+    }
 
-        for (int y = -radius; y <= radius; y++) {
-            for (int x = -radius; x <= radius; x++) {
-                for (int z = -radius; z <= radius; z++) {
-                    pos.set(playerPos.x + x, playerPos.y + y, playerPos.z + z);
-                    BlockState state = level.getBlockState(pos);
-                    // Blocks and colors of block shape
-                    Map<TagKey<Block>, Integer> tagColors = Map.ofEntries(Map.entry(Tags.Blocks.ORES_COAL, 0xFFa9a9a9),
+    private static void renderShapes(RenderLevelStageEvent event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        ClientLevel level = minecraft.level;
+        Entity entity = minecraft.gameRenderer.getMainCamera().getEntity();
+        if (level != null) {
+            poseStack = event.getPoseStack();
+            projectionMatrix = event.getProjectionMatrix();
+            Vec3 pos = entity.getPosition(event.getPartialTick());
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            int RadiusSquare = 8;
+            for (int i = -RadiusSquare; i <= RadiusSquare; i++) {
+                for (int xi = -RadiusSquare; xi <= RadiusSquare; xi++) {
+                    for (int zi = -RadiusSquare; zi <= RadiusSquare; zi++) {
+                        // Execute the desired statements within the square/cube
+                        if (XrayNetworkMessage.WorldVariables.get(level).xray) {
+                            double posX = Math.floor(pos.x + xi);
+                            double posY = Math.floor(pos.y + i);
+                            double posZ = Math.floor(pos.z + zi);
+                            BlockPos position = BlockPos.containing(posX, posY, posZ);
+                            BlockState block = level.getBlockState(position);
+                            Map<TagKey<Block>, Integer> renderColors = Map.ofEntries(Map.entry(Tags.Blocks.ORES_COAL, 0xFFa9a9a9),
                             Map.entry(Tags.Blocks.ORES_COPPER, 0xFFff8c00), Map.entry(Tags.Blocks.ORES_DIAMOND, 0xFF00FEFF),
                             Map.entry(Tags.Blocks.ORES_EMERALD, 0xFF31c831), Map.entry(Tags.Blocks.ORES_GOLD, 0xFFffd700),
                             Map.entry(Tags.Blocks.ORES_IRON, 0xFFd3d3d3), Map.entry(Tags.Blocks.ORES_LAPIS, 0xFF0000ff),
                             Map.entry(Tags.Blocks.ORES_REDSTONE, 0xFFb30000), Map.entry(Tags.Blocks.ORES_NETHERITE_SCRAP, 0xFFD22CF8),
                             Map.entry(ModTags.Blocks.MCCOURSE_ORES, 0xFFffc0eb));
-                    for (Map.Entry<TagKey<Block>, Integer> entry : tagColors.entrySet()) {
-                        if (state.is(entry.getKey())) {
-                            float r = (entry.getValue() >> 16 & 0xFF) / 255f; // Red
-                            float g = (entry.getValue() >> 8 & 0xFF) / 255f; // Green
-                            float b = (entry.getValue() & 0xFF) / 255f; // Blue
-                            float a = (entry.getValue() >>> 24) / 255f; // Alpha
-                            AABB box = new AABB(pos);
-                            LevelRenderer.renderLineBox(poseStack, buffer.getBuffer(RenderType.lines()), box, r, g, b, a);
-                            break;
+                            int[][] cubeCoordinates = { {0,0,0},{1,0,0},{1,0,0},{1,0,1},{1,0,1},{0,0,1},{0,0,1},{0,0,0},
+                                    {0,0,0},{0,1,0},{1,0,0},{1,1,0},{1,0,1},{1,1,1},{0,0,1},{0,1,1},
+                                    {0,1,0},{1,1,0},{1,1,0},{1,1,1},{1,1,1},{0,1,1},{0,1,1},{0,1,0}};
+                            for (Map.Entry<TagKey<Block>, Integer> entry : renderColors.entrySet()) {
+                                if (block.is(entry.getKey())) {
+                                    RenderSystem.depthMask(false);
+                                    RenderSystem.disableDepthTest();
+                                    if (begin()) {
+                                        for (int[] c : cubeCoordinates) { add(c[0], c[1], c[2], entry.getValue()); }
+                                        end();
+                                    }
+                                    if (currentStage == 2) {
+                                        ModEvents.targetStage = 2;
+                                        renderShape(vertexBuffer, posX, posY, posZ, entry.getValue());
+                                        targetStage = 0;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.disableBlend();
+            RenderSystem.enableDepthTest();
         }
-        poseStack.popPose();
-        buffer.endBatch(); // Finish all drawings
     }
 
-    // Glowing Blocks helmet item
+    // Xray items - Enchanted Helmet or Metal Detector
     @SubscribeEvent
     public static void activatedGlowingBlocksEnchantment(TickEvent.PlayerTickEvent event) {
-        ItemStack helmet = event.player.getItemBySlot(EquipmentSlot.HEAD); // Player has used helmet
-        int glowingBlocksLevel = helmet.getEnchantmentLevel(ModEnchantments.GLOWING_BLOCKS.get()); // Has Glowing Blocks enchantment
         LevelAccessor world = event.player.level();
-        if (event.phase == TickEvent.Phase.END) {
-            XrayNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() && glowingBlocksLevel > 0; // Player has enchanted helmet and Glowing Blocks
-            XrayNetworkMessage.WorldVariables.get(world).syncData(world); // Update information player has/hasn't used enchanted helmet
-        }
-    }
-
-    // Active Fly with Item
-    @SubscribeEvent
-    public static void flyItem(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        Player player = event.player;
-        if (player.level().isClientSide) return;
-        boolean hasArmor = player.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.Items.HELMET_FLY) &&
-        player.getItemBySlot(EquipmentSlot.CHEST).is(ModTags.Items.CHESTPLATE_FLY) &&
-        player.getItemBySlot(EquipmentSlot.LEGS).is(ModTags.Items.LEGGINGS_FLY) &&
-        player.getItemBySlot(EquipmentSlot.FEET).is(ModTags.Items.BOOTS_FLY); // Player used FULL ARMOR
-        boolean hasFlyEffect = player.hasEffect(ModEffects.FLY_EFFECT.get()); // Player has FLY EFFECT
-        if (hasArmor || hasFlyEffect) { // Player has FULL ARMOR or FLY EFFECT
-            if (!player.getAbilities().mayfly) {
-                player.getAbilities().mayfly = true;
-                player.onUpdateAbilities();
-            }
-        }
-        else {
-            if (player.getAbilities().mayfly && !player.isCreative()) { // Player hasn't FULL ARMOR or FLY EFFECT
-                player.getAbilities().mayfly = false;
-                player.getAbilities().flying = false;
-                player.onUpdateAbilities();
-
-            }
+        ItemStack metal = event.player.getItemBySlot(EquipmentSlot.MAINHAND); // Player has used Metal Detector
+        ItemStack helmet = event.player.getItemBySlot(EquipmentSlot.HEAD); // Player has used helmet
+        int glowingBlocksLevel = helmet.getEnchantmentLevel(ModEnchantments.GLOWING_BLOCKS.get()); // Player has used enchanted helmet
+        if (event.phase == TickEvent.Phase.END) { // Player has used enchanted Helmet or Metal Detector
+            XrayNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() && glowingBlocksLevel > 0 || metal.is(ModItems.METAL_DETECTOR.get());
+            XrayNetworkMessage.WorldVariables.get(world).syncData(world); // Update information player has enchanted Helmet or Metal Detector
         }
     }
 }
