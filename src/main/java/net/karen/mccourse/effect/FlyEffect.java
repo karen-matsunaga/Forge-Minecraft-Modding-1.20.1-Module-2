@@ -15,7 +15,7 @@ public class FlyEffect extends MobEffect {
     @Override
     public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {
         if (entity instanceof Player) {
-            ModEvents.flyItem(new TickEvent.PlayerTickEvent(TickEvent.Phase.END, (Player) entity));
+            ModEvents.flyEffect(new TickEvent.PlayerTickEvent(TickEvent.Phase.END, (Player) entity));
         }
         super.applyEffectTick(entity, amplifier);
     }  // Fly effect applied
@@ -23,7 +23,7 @@ public class FlyEffect extends MobEffect {
     @Override
     public void removeAttributeModifiers(@NotNull LivingEntity entity, @NotNull AttributeMap map, int amplifier) {
         if (entity instanceof Player) {
-            ModEvents.flyItem(new TickEvent.PlayerTickEvent(TickEvent.Phase.END, (Player) entity));
+            ModEvents.flyEffect(new TickEvent.PlayerTickEvent(TickEvent.Phase.END, (Player) entity));
         }
         super.removeAttributeModifiers(entity, map, amplifier);
     }  // Fly effect ended
