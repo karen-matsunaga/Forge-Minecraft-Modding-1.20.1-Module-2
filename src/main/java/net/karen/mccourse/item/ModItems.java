@@ -7,6 +7,7 @@ import net.karen.mccourse.entity.custom.ModBoatEntity;
 import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.item.custom.*;
 import net.karen.mccourse.sound.ModSounds;
+import net.karen.mccourse.util.ModTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
@@ -36,7 +37,8 @@ public class ModItems {
 
     // Custom Advanced Item
     public static final RegistryObject<Item> METAL_DETECTOR = ITEMS.register("metal_detector",
-            () -> new MetalDetectorItem(new Item.Properties().fireResistant().stacksTo(1)));
+            () -> new MetalDetectorItem(new Item.Properties().fireResistant().stacksTo(1),
+                    ModTags.Blocks.METAL_DETECTOR_VALUABLES));
 
     // Foods
     public static final RegistryObject<Item> KOHLRABI = ITEMS.register("kohlrabi",
@@ -337,6 +339,10 @@ public class ModItems {
     public static final RegistryObject<Item> MCCOURSE_HAMMER = ITEMS.register("mccourse_hammer",
             () -> new MccourseItem(ModToolTiers.PINK, 3, 1, BlockTags.MINEABLE_WITH_PICKAXE,
                     new Item.Properties().durability(10000).fireResistant()));
+
+    public static final RegistryObject<Item> SPECIAL_METAL_DETECTOR = ITEMS.register("special_metal_detector",
+            () -> new MetalDetectorItem(new Item.Properties().fireResistant().stacksTo(1),
+                    ModTags.Blocks.SPECIAL_METAL_DETECTOR_VALUABLES));
 
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }

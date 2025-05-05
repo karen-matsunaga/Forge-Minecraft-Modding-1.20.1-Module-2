@@ -27,6 +27,9 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .addTag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE)
                 .addTag(ModTags.Blocks.MCCOURSE_ORES);
 
+        this.tag(ModTags.Blocks.SPECIAL_METAL_DETECTOR_VALUABLES)
+                .add(Blocks.SPAWNER, Blocks.END_PORTAL_FRAME, Blocks.CHEST, Blocks.TRAPPED_CHEST);
+
         // Add Mineable's tags
         // Pickaxe's tag, Alexandrite hammer's tag
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)

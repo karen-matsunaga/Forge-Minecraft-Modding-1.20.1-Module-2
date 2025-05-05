@@ -39,6 +39,8 @@ public class ModTags {
         // Created METAL DETECTOR's tag
         public static final TagKey<Block> METAL_DETECTOR_VALUABLES = tag("metal_detector_valuables");
 
+        public static final TagKey<Block> SPECIAL_METAL_DETECTOR_VALUABLES = tag("special_metal_detector_valuables");
+
         // Created Alexandrite Tool Level's tag
         public static final TagKey<Block> NEEDS_ALEXANDRITE_TOOL = tag("needs_alexandrite_tool");
 

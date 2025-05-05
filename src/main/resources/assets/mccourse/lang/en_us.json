@@ -1,13 +1,4 @@
 {
-  "item.mccourse.luck": "Luck",
-  "item.mccourse.pickaxe_luck": "Pickaxe Luck",
-  "item.mccourse.weapon_luck": "Weapon Luck",
-
-  "block.mccourse.craft_crafting_table": "Craft Crafting Table",
-  "mccourse.container.crafting": "",
-
-  "item.mccourse.mccourse_hammer": "Mccourse Hammer",
-
   "item.mccourse.alexandrite": "Alexandrite",
   "item.mccourse.raw_alexandrite": "Raw Alexandrite",
   "item.mccourse.metal_detector": "Metal Detector",
@@ -125,12 +116,6 @@
 
   "item.minecraft.tipped_arrow.effect.haste_potion": "Arrow of Haste",
 
-  "effect.mccourse.nothing": "Nothing",
-
-  "item.minecraft.potion.effect.nothing_potion": "Nothing Potion",
-  "item.minecraft.splash_potion.effect.nothing_potion": "Nothing Splash Potion",
-  "item.minecraft.lingering_potion.effect.nothing_potion": "Nothing Lingering Potion",
-
   "item.minecraft.tipped_arrow.effect.nothing_potion": "Arrow of Nothing",
 
   "entity.minecraft.villager.mccourse.soundmaster": "Soundmaster",
@@ -181,6 +166,22 @@
   "block.mccourse.waxed_ruby_block_3": "Waxed Block of Ruby 3",
 
   "block.mccourse.kaupen_furnace": "Kaupen Furnace",
+
+  "item.mccourse.luck": "Luck",
+  "item.mccourse.pickaxe_luck": "Pickaxe Luck",
+  "item.mccourse.weapon_luck": "Weapon Luck",
+
+  "block.mccourse.craft_crafting_table": "Craft Crafting Table",
+  "mccourse.container.crafting": "",
+
+  "item.mccourse.mccourse_hammer": "Mccourse Hammer",
+  "item.mccourse.special_metal_detector": "Special Metal Detector",
+
+  "effect.mccourse.nothing": "Nothing",
+
+  "item.minecraft.potion.effect.nothing_potion": "Nothing Potion",
+  "item.minecraft.splash_potion.effect.nothing_potion": "Nothing Splash Potion",
+  "item.minecraft.lingering_potion.effect.nothing_potion": "Nothing Lingering Potion",
 
   "item.mccourse.blue_modes": "Blue Modes",
   "item.mccourse.green_modes": "Green Modes",

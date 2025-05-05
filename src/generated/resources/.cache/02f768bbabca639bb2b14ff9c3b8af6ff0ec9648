@@ -1,5 +1,5 @@
-// 1.20.1	2025-04-18T11:27:43.2722507	Global Loot Modifiers : mccourse
-37199e5013b68a50ef4fe52b9da82d62174f9dd3 data/forge/loot_modifiers/global_loot_modifiers.json
+// 1.20.1	2025-05-04T21:57:27.8945798	Global Loot Modifiers : mccourse
+d9159387626b3dbc7baef6e1158ffc92425db45a data/forge/loot_modifiers/global_loot_modifiers.json
 3f81591395c2c236fe34230d263d5112a7f43eb5 data/mccourse/loot_modifiers/coal_from_coal_ore.json
 2645e78430a26a193cabfb6b1163ef90a68e1360 data/mccourse/loot_modifiers/coal_from_deepslate_coal_ore.json
 3ecdf6dea18029a41ecb61323ed568b067911979 data/mccourse/loot_modifiers/ender_pearl_and_black_dye_from_green_ender_pearl_block.json
@@ -34,3 +34,4 @@ e9a2fd85c30876b1d6002b8f6f0d4f6f9ce5e346 data/mccourse/loot_modifiers/orange_mod
 1ebccd601ef164a3e6559570830ec1bf6df61f6d data/mccourse/loot_modifiers/orange_modes_from_jungle_temple.json
 427d39fd587a85e361de2f494efcb22075177948 data/mccourse/loot_modifiers/quartz_from_nether_quartz_ore.json
 938bde47f741dfcd61d9b7648f542cbac8f24f6d data/mccourse/loot_modifiers/raw_gold_from_nether_gold_ore.json
+67d2aec969e122130e364f6c5ccbfa39ea56270f data/mccourse/loot_modifiers/special_metal_detector_from_jungle_temple.json

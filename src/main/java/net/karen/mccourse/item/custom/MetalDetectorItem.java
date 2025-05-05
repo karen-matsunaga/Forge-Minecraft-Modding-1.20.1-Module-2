@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +34,13 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MetalDetectorItem extends Item {
-    public MetalDetectorItem(Properties pProperties) { super(pProperties); }
+    TagKey<Block> type;
+    public MetalDetectorItem(Properties pProperties, TagKey<Block> type) {
+        super(pProperties);
+        this.type = type;
+    }
+
+    public TagKey<Block> getType() { return type; }
 
     // Function of Metal Detector item
     @Override
@@ -129,13 +136,14 @@ public class MetalDetectorItem extends Item {
     private void outputValuableCoordinates(BlockPos pos, Player player, Block block) {
         String description = I18n.get(block.getDescriptionId());
         ChatFormatting color = ChatFormatting.WHITE;
-        Map<TagKey<Block>, ChatFormatting> ORE_COLORS = Map.ofEntries(Map.entry(Tags.Blocks.ORES_DIAMOND, ChatFormatting.AQUA),
+        Map<TagKey<Block>, ChatFormatting> oreColors = Map.ofEntries(Map.entry(Tags.Blocks.ORES_DIAMOND, ChatFormatting.AQUA),
         Map.entry(Tags.Blocks.ORES_GOLD, ChatFormatting.GOLD), Map.entry(Tags.Blocks.ORES_COPPER, ChatFormatting.GOLD),
         Map.entry(Tags.Blocks.ORES_IRON, ChatFormatting.GRAY), Map.entry(Tags.Blocks.ORES_EMERALD, ChatFormatting.DARK_GREEN),
         Map.entry(Tags.Blocks.ORES_REDSTONE, ChatFormatting.DARK_RED), Map.entry(Tags.Blocks.ORES_LAPIS, ChatFormatting.DARK_BLUE),
-        Map.entry(Tags.Blocks.ORES_COAL, ChatFormatting.BLACK), Map.entry(ModTags.Blocks.MCCOURSE_ORES, ChatFormatting.LIGHT_PURPLE));
+        Map.entry(Tags.Blocks.ORES_COAL, ChatFormatting.BLACK), Map.entry(ModTags.Blocks.MCCOURSE_ORES, ChatFormatting.LIGHT_PURPLE),
+        Map.entry(BlockTags.FEATURES_CANNOT_REPLACE, ChatFormatting.RED));
 
-        for (Map.Entry<TagKey<Block>, ChatFormatting> entry : ORE_COLORS.entrySet()) {
+        for (Map.Entry<TagKey<Block>, ChatFormatting> entry : oreColors.entrySet()) {
             if (block.defaultBlockState().is(entry.getKey())) { color = entry.getValue(); break; }
         }
 
@@ -153,5 +161,5 @@ public class MetalDetectorItem extends Item {
 
     // Custom method that identifies all blocks added it is
     // All blocks added in metal_detector_valuables.json
-    private boolean isValuableBlock(BlockState blockState) { return blockState.is(ModTags.Blocks.METAL_DETECTOR_VALUABLES); }
+    private boolean isValuableBlock(BlockState blockState) { return blockState.is(getType()); }
 }

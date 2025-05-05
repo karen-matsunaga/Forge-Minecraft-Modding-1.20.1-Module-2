@@ -188,5 +188,10 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
         add("orange_modes_from_bastion_bastion_treasure", new AddItemModifier(new LootItemCondition[] {
                 new LootTableIdCondition.Builder(new ResourceLocation("chests/bastion_treasure")).build() },
                 List.of(ModItems.ORANGE_MODES.get()))); // Bastion Treasure
+
+        // Special Metal Detector
+        add("special_metal_detector_from_jungle_temple", new AddItemModifier(new LootItemCondition[] {
+                new LootTableIdCondition.Builder(new ResourceLocation("chests/jungle_temple")).build() },
+                List.of(ModItems.SPECIAL_METAL_DETECTOR.get()))); // Jungle Temple
     }
 }

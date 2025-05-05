@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-01T15:05:05.7545399	Block Tags
+// 1.20.1	2025-05-04T21:57:27.8995839	Block Tags
 16bc8d1b9b571914b59b5fad5f245361e5bfe539 data/mccourse/tags/blocks/blocks/alexandrite_ores.json
 42cc3daa7901d26fb72b8e713e9581da338312ba data/mccourse/tags/blocks/blocks/mccourse_ores.json
 7c1b435b864bf2f014cd9012348efb836e2ee6da data/mccourse/tags/blocks/blocks/mccourse_ores_block.json
@@ -13,6 +13,7 @@ eef1846ce59dafebcecde7d1695966be92aa8388 data/mccourse/tags/blocks/ores/more_ore
 402e2ec91b2030071324095365da7c8e3573c790 data/mccourse/tags/blocks/ores/more_ores_one_drops.json
 7b9951a96f44c21b24724332c83c49c1dc358b0a data/mccourse/tags/blocks/ores/more_ores_three_drops.json
 76e1074a2f2f826c8f45cc1ab2a7d876f28710d8 data/mccourse/tags/blocks/ores/more_ores_two_drops.json
+db54a62a991dd498c37615be9aec236435b1513c data/mccourse/tags/blocks/special_metal_detector_valuables.json
 43b621c9e36eb4c7ee0e97ecc2dd841d090c7821 data/minecraft/tags/blocks/fences.json
 c019d56ddaf7b3dec0cca0ef234845dd8a1007a7 data/minecraft/tags/blocks/fence_gates.json
 46587698990f13785898e9fb4b62d6ba4212f45a data/minecraft/tags/blocks/logs_that_burn.json
