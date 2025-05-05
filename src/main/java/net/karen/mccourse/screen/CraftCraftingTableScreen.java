@@ -106,13 +106,7 @@ public class CraftCraftingTableScreen extends AbstractContainerScreen<CraftCraft
         this.recipeBookComponent.slotClicked(pSlot);
     }
 
-    public void recipesUpdated() {
-        this.recipeBookComponent.recipesUpdated();
-    }
+    public void recipesUpdated() { this.recipeBookComponent.recipesUpdated(); }
 
-    public RecipeBookComponent getRecipeBookComponent() {
-        return this.recipeBookComponent;
-    }
-
-
+    public RecipeBookComponent getRecipeBookComponent() { return this.recipeBookComponent; }
 }
