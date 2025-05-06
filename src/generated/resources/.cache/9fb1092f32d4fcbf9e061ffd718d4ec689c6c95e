@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-30T16:25:51.6249128	Recipes
+// 1.20.1	2025-05-05T18:16:16.4311947	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -36,6 +36,7 @@ d3c788c38d8460512af52b075d307257d121f481 data/mccourse/advancements/recipes/misc
 63a2622375606bbd10400d982766ec3fe4f26e3d data/mccourse/advancements/recipes/misc/leather_from_blasting_rotten_flesh.json
 abb3ba54b4fd9f450bbc55178c640d44fcc92134 data/mccourse/advancements/recipes/misc/leather_from_smelting_rotten_flesh.json
 bae4f278baf5ba8b3f580d7dbbd8b4ab48d8c424 data/mccourse/advancements/recipes/misc/luck.json
+9739cdd18d5437258d58cf9c858bdf84f683c82f data/mccourse/advancements/recipes/misc/mccourse_generator.json
 60c9c1c462516342856cccbce2c74a2c724b1829 data/mccourse/advancements/recipes/misc/nether_star_block.json
 2df371f09ba2865add7f1f87163d850014149327 data/mccourse/advancements/recipes/misc/pickaxe_luck.json
 b25971f29548f5ceec1cbf292c9034cbc4069bf7 data/mccourse/advancements/recipes/misc/pink.json
@@ -164,6 +165,7 @@ ca9b2dea94e33aa7da754e5135f32d3a3c41c806 data/mccourse/recipes/leather_from_smel
 b721733f176f2d95b8de67e5028201977d9b26cf data/mccourse/recipes/lime_green_ender_pearl_block.json
 7e7ac3f4ee55e461b51a7bce60c506047a0ffaa2 data/mccourse/recipes/luck.json
 bd8dd0b1b48bb86aafebd421ab92e43bfb917749 data/mccourse/recipes/magenta_ender_pearl_block.json
+be04199986ff4ba46fd59a5793a7b33ab73a8b8a data/mccourse/recipes/mccourse_generator.json
 f607ef1b937f07d9fc52f19d17c943743a35da86 data/mccourse/recipes/netherite_hammer.json
 dd62f96e103141096df2a018e80c9fa54997004c data/mccourse/recipes/netherite_paxel.json
 cc94de58809f0903e229eef667debd78793bc7ef data/mccourse/recipes/nether_star_block.json

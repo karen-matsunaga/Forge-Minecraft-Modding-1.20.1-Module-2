@@ -61,16 +61,16 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                      ModBlocks.NETHER_PINK_ORE.get().asItem());
 
         this.tag(ModTags.Items.HELMET_FLY)
-                .add(ModItems.ALEXANDRITE_HELMET.get(), ModItems.PINK_HELMET.get());
+                .add(ModItems.ALEXANDRITE_HELMET.get(), ModItems.PINK_HELMET.get(), ModItems.COPPER_HELMET.get());
 
         this.tag(ModTags.Items.CHESTPLATE_FLY)
-                .add(ModItems.ALEXANDRITE_CHESTPLATE.get(), ModItems.PINK_CHESTPLATE.get());
+                .add(ModItems.ALEXANDRITE_CHESTPLATE.get(), ModItems.PINK_CHESTPLATE.get(), ModItems.COPPER_CHESTPLATE.get());
 
         this.tag(ModTags.Items.LEGGINGS_FLY)
-                .add(ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.PINK_LEGGINGS.get());
+                .add(ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.PINK_LEGGINGS.get(), ModItems.COPPER_LEGGINGS.get());
 
         this.tag(ModTags.Items.BOOTS_FLY)
-                .add(ModItems.ALEXANDRITE_BOOTS.get(), ModItems.PINK_BOOTS.get());
+                .add(ModItems.ALEXANDRITE_BOOTS.get(), ModItems.PINK_BOOTS.get(), ModItems.COPPER_BOOTS.get());
     }
 
     @Override

@@ -14,6 +14,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -26,6 +27,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ModBlocks {
@@ -405,6 +407,13 @@ public class ModBlocks {
     // Craft custom Crafting Table
     public static final RegistryObject<Block> CRAFT_CRAFTING_TABLE = registerBlock("craft_crafting_table",
             () -> new CraftCraftingTableBlock(BlockBehaviour.Properties.copy(Blocks.CRAFTING_TABLE)));
+
+    // Mccourse Generator custom generator item
+    public static final RegistryObject<Block> MCCOURSE_GENERATOR = registerBlock("mccourse_generator",
+            () -> new MccourseGeneratorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .strength(5F, 3600000.0F),
+                    List.of(Items.DIAMOND, Items.ENCHANTED_BOOK)));
 
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {

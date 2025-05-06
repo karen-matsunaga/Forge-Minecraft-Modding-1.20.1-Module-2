@@ -55,6 +55,12 @@ public class ModEnchantments {
                     () -> new RainbowEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
                             EquipmentSlot.MAINHAND));
 
+    // Block Fly enchantment - PICKAXE, HAMMER, PAXEL enchantment
+    public static final RegistryObject<Enchantment> BLOCK_FLY =
+            ENCHANTMENTS.register("block_fly",
+                    () -> new BlockFlyEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
+                            EquipmentSlot.MAINHAND));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }

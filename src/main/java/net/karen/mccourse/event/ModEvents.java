@@ -25,6 +25,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -658,6 +659,96 @@ public class ModEvents {
         if (event.phase == TickEvent.Phase.END) { // Player has used enchanted Helmet or Metal Detector
             XrayNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() && glowingBlocksLevel > 0 || metal.is(ModItems.METAL_DETECTOR.get());
             XrayNetworkMessage.WorldVariables.get(world).syncData(world); // Update information player has enchanted Helmet or Metal Detector
+        }
+    }
+
+    // CUSTOM EVENT - Decapitator
+    @SubscribeEvent
+    public static void decapitatorBlock(BlockEvent.BreakEvent event) {
+        Level level = (Level) event.getLevel();
+        if (level.isClientSide) { return; }
+
+        BlockPos origin = event.getPos();
+        BlockState originState = level.getBlockState(origin);
+        Player player = event.getPlayer();
+
+        if (!isLog(originState)) { return; } // Checks if the broken block is a log
+        if (!player.getMainHandItem().getItem().isCorrectToolForDrops(originState)) { return; } // Checks if you are using the correct tool
+
+        Set<BlockPos> connected = findConnectedLogsAndLeaves(level, origin);
+
+        int logCount = 0;
+        for (BlockPos pos : connected) {
+            BlockState state = level.getBlockState(pos);
+            if (isLog(state) || isLeaf(state)) {
+                level.destroyBlock(pos, true); // Drop the blocks
+                if (isLog(state)) logCount++;
+            }
+        }
+
+        // Applies damage proportional to the amount of logs broken
+        if (logCount > 0) {
+            ItemStack tool = player.getMainHandItem();
+            tool.hurtAndBreak(logCount, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+        }
+    }
+
+    private static boolean isLog(BlockState state) { return state.is(BlockTags.LOGS); } // Check if it is a log
+
+    private static boolean isLeaf(BlockState state) { return state.is(BlockTags.LEAVES); } // Check if it's a leaf
+
+    // BFS (or DFS) search for connected logs and leaves
+    private static Set<BlockPos> findConnectedLogsAndLeaves(Level level, BlockPos start) {
+        Set<BlockPos> visited = new HashSet<>();
+        Queue<BlockPos> toVisit = new ArrayDeque<>();
+        toVisit.add(start);
+
+        int maxDistance = 50; // Maximum search distance
+        int maxHeight = 512; // Height limit (e.g. 10 blocks above and below)
+
+        while (!toVisit.isEmpty()) {
+            BlockPos pos = toVisit.poll();
+            if (!visited.add(pos)) { continue; } // Already visited
+
+            if (Math.abs(pos.getY() - start.getY()) > maxHeight) { continue; } // Check if it is within the height limit
+
+            // Check the surrounding blocks (relative to the current position)
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        BlockPos offset = pos.offset(dx, dy, dz);
+                        if (visited.contains(offset)) { continue; }
+
+                        if (offset.distManhattan(start) > maxDistance) { continue; } // Limit horizontal distance
+
+                        BlockState neighborState = level.getBlockState(offset);
+                        if (isLog(neighborState) || isLeaf(neighborState)) { toVisit.add(offset); }
+                    }
+                }
+            }
+        }
+        return visited;
+    }
+
+    // CUSTOM EVENT - Block Fly custom enchantment
+    @SubscribeEvent
+    public static void activatedBlockFlyEnchantment(PlayerEvent.BreakSpeed e) {
+        Player player = e.getEntity(); // Entity is a player
+        if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BLOCK_FLY.get(), player) > 0) { // Player has Block Fly enchantment
+            if (!player.onGround() && !player.isUnderWater()) {
+                float oldSpeed = e.getOriginalSpeed();
+                e.setNewSpeed(oldSpeed * 5);
+            }
+
+            if (player.isUnderWater()) {
+                float oldSpeed = e.getOriginalSpeed();
+                e.setNewSpeed(oldSpeed * 5);
+            }
+
+            if (player.onGround()) {
+                float oldSpeed = e.getOriginalSpeed();
+                e.setNewSpeed(oldSpeed * 5);
+            }
         }
     }
 }

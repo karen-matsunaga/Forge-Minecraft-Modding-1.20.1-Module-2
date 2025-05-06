@@ -62,6 +62,7 @@
   "enchantment.mccourse.magnetic": "Magnetic",
   "enchantment.mccourse.auto_smelt": "Auto Smelt",
   "enchantment.mccourse.rainbow": "Rainbow",
+  "enchantment.mccourse.block_fly": "Block Fly",
 
   "block.mccourse.alexandrite_lamp": "Alexandrite Lamp",
 
@@ -173,8 +174,10 @@
 
   "block.mccourse.craft_crafting_table": "Craft Crafting Table",
   "mccourse.container.crafting": "",
+  "container.inventory": "",
 
   "item.mccourse.mccourse_hammer": "Mccourse Hammer",
+  "block.mccourse.mccourse_generator": "Mccourse Generator",
   "item.mccourse.special_metal_detector": "Special Metal Detector",
 
   "effect.mccourse.nothing": "Nothing",
@@ -321,5 +324,6 @@
   "enchantment.mccourse.auto_smelt.desc": "When applied on pickaxe transform all items that can be roasted on furnace.",
   "enchantment.mccourse.magnetic.desc": "When applied on pickaxe all mined blocks automatically store on Player's inventory.",
   "enchantment.mccourse.more_ores.desc": "When applied on pickaxe if a stone block is break has a percentage to receive ores.",
-  "enchantment.mccourse.rainbow.desc": "When applied on pickaxe the broken ore is replaced and turned on an ore block."
+  "enchantment.mccourse.rainbow.desc": "When applied on pickaxe the broken ore is replaced and turned on an ore block.",
+  "enchantment.mccourse.block_fly.desc": "When applied on pickaxe if player has flying speed mining equals if player has on ground."
 }

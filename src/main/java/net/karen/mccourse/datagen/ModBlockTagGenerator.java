@@ -44,7 +44,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                     ModBlocks.GRAY_ENDER_PEARL_BLOCK.get(), ModBlocks.RED_ENDER_PEARL_BLOCK.get(),
                     ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get(), ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get(),
                     ModBlocks.BLUE_ENDER_PEARL_BLOCK.get(), ModBlocks.WHITE_ENDER_PEARL_BLOCK.get(),
-                    ModBlocks.DISENCHANTED_BLOCK.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get())
+                    ModBlocks.DISENCHANTED_BLOCK.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(), ModBlocks.MCCOURSE_GENERATOR.get())
                 .addTag(ModTags.Blocks.MOBS_BLOCKS_DROPS)
                 .addTag(ModTags.Blocks.MCCOURSE_ORES)
                 .addTag(ModTags.Blocks.MCCOURSE_ORES_BLOCK);

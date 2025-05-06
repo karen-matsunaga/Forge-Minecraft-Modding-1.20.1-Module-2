@@ -176,6 +176,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         // My Craft custom crafting table
         blockWithItem(ModBlocks.CRAFT_CRAFTING_TABLE);
         registerCustomSidedCube(ModBlocks.CRAFT_CRAFTING_TABLE);
+
+        // Block generator
+        blockWithItem(ModBlocks.MCCOURSE_GENERATOR);
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json

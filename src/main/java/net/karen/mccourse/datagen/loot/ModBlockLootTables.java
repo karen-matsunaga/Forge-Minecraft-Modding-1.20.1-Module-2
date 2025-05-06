@@ -183,6 +183,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
         // My CRAFTING TABLE block
         this.dropSelf(ModBlocks.CRAFT_CRAFTING_TABLE.get());
+        this.dropSelf(ModBlocks.MCCOURSE_GENERATOR.get());
     }
 
     // Custom ore's drops

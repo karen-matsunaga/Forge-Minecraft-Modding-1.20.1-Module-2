@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "mccourse:craft_crafting_table"
+    },
+    "B": {
+      "item": "minecraft:nether_star"
+    },
+    "C": {
+      "item": "minecraft:enchanted_golden_apple"
+    }
+  },
+  "pattern": [
+    "AAAAAAA",
+    "ABBBBBA",
+    "ABBBBBA",
+    "ABBCBBA",
+    "ABBBBBA",
+    "ABBBBBA",
+    "AAAAAAA"
+  ],
+  "result": {
+    "item": "mccourse:mccourse_generator"
+  },
+  "show_notification": true
+}

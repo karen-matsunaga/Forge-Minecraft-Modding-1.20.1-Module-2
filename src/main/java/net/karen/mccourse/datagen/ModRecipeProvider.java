@@ -238,6 +238,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // Craft Crafting Table 7x7
         craftSeven(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), pWriter);
+
+        craftSevenItems(List.of(ModBlocks.MCCOURSE_GENERATOR.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(),
+                Items.NETHER_STAR, Items.ENCHANTED_GOLDEN_APPLE), pWriter);
     }
 
     // Smelting
@@ -272,6 +275,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
                 .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
                 .define('A', item.get(1))
+                .unlockedBy("has_item", has(item.get(1)))
+                .save(pWriter);
+    }
+
+    protected static void craftSevenItems(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0))
+                .pattern("AAAAAAA").pattern("ABBBBBA").pattern("ABBBBBA")
+                .pattern("ABBCBBA").pattern("ABBBBBA").pattern("ABBBBBA").pattern("AAAAAAA")
+                .define('A', item.get(1))
+                .define('B', item.get(2))
+                .define('C', item.get(3))
                 .unlockedBy("has_item", has(item.get(1)))
                 .save(pWriter);
     }
