@@ -483,29 +483,33 @@ public class ModEvents {
     // Credits by Parlack - Xray - World Renderer - https://www.youtube.com/watch?v=vT4suvo0CAs
     // CUSTOM EVENT - Glowing Blocks xray custom enchantment - Using code with some modifications
     @SubscribeEvent
-    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) { // Player is on world
         if (!event.getEntity().level().isClientSide()) {
             XrayNetworkMessage.SyncedSavedData mapData = XrayNetworkMessage.MapVariables.get(event.getEntity().level());
             XrayNetworkMessage.SyncedSavedData worldData = XrayNetworkMessage.WorldVariables.get(event.getEntity().level());
-            if (mapData != null)
+            if (mapData != null) {
                 MCCourseMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
                         new XrayNetworkMessage.SavedDataSyncMessage(mapData));
-            if (worldData != null)
+            }
+            if (worldData != null) {
                 MCCourseMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
                         new XrayNetworkMessage.SavedDataSyncMessage(worldData));
+            }
         }
     }
 
     @SubscribeEvent
-    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) { // Player is on [Overworld, Nether, End, etc.]
         if (!event.getEntity().level().isClientSide()) {
             XrayNetworkMessage.SyncedSavedData worldData = XrayNetworkMessage.WorldVariables.get(event.getEntity().level());
-            if (worldData != null)
+            if (worldData != null) {
                 MCCourseMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
                         new XrayNetworkMessage.SavedDataSyncMessage(worldData));
+            }
         }
     }
 
+    // Render Level block shape variables
     private static BufferBuilder bufferBuilder = null;
     private static VertexBuffer vertexBuffer = null;
     private static VertexFormat.Mode mode = null;
@@ -516,11 +520,13 @@ public class ModEvents {
     private static final Vec3 offset = Vec3.ZERO;
     private static int currentStage, targetStage = 0; // NONE: 0, SKY: 1, WORLD: 2
 
+    // Added all blocks shape with respective color
     private static void add(double x, double y, double z, int color) {
         if (bufferBuilder == null || !bufferBuilder.building()) { return; }
         if (format == DefaultVertexFormat.POSITION_COLOR) { bufferBuilder.vertex(x, y, z).color(color).endVertex(); }
     }
 
+    // Building all block shape with respective mode and format
     private static boolean begin() {
         if (ModEvents.bufferBuilder == null || !ModEvents.bufferBuilder.building()) {
             clear();
@@ -535,8 +541,10 @@ public class ModEvents {
         return false;
     }
 
+    // Before creating the blocks, cleaning is done
     private static void clear() { if (vertexBuffer != null) { vertexBuffer.close(); vertexBuffer = null; } }
 
+    // After creating the block
     private static void end() {
         if (bufferBuilder == null || !bufferBuilder.building()) { return; }
         if (vertexBuffer != null) { vertexBuffer.close(); }
@@ -546,6 +554,7 @@ public class ModEvents {
         VertexBuffer.unbind();
     }
 
+    // Render block shape
     private static void renderShape(VertexBuffer vertexBuffer, double x, double y, double z, int color) {
         if (currentStage == 0 || currentStage != targetStage) { return; }
         if (poseStack == null || projectionMatrix == null) { return; }
@@ -573,6 +582,7 @@ public class ModEvents {
         poseStack.popPose();
     }
 
+    // Where render block shape on world
     @SubscribeEvent
     public static void renderLevel(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
@@ -592,6 +602,7 @@ public class ModEvents {
         }
     }
 
+    // Created block shape with all blocks and colors defined on renderColors variable
     private static void renderShapes(RenderLevelStageEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
@@ -603,7 +614,7 @@ public class ModEvents {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            int RadiusSquare = 8;
+            int RadiusSquare = 8; // Horizontal and Vertical radius square
             for (int i = -RadiusSquare; i <= RadiusSquare; i++) {
                 for (int xi = -RadiusSquare; xi <= RadiusSquare; xi++) {
                     for (int zi = -RadiusSquare; zi <= RadiusSquare; zi++) {
@@ -732,22 +743,12 @@ public class ModEvents {
 
     // CUSTOM EVENT - Block Fly custom enchantment
     @SubscribeEvent
-    public static void activatedBlockFlyEnchantment(PlayerEvent.BreakSpeed e) {
-        Player player = e.getEntity(); // Entity is a player
+    public static void activatedBlockFlyEnchantment(PlayerEvent.BreakSpeed event) {
+        Player player = event.getEntity(); // Entity is a player
         if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BLOCK_FLY.get(), player) > 0) { // Player has Block Fly enchantment
-            if (!player.onGround() && !player.isUnderWater()) {
-                float oldSpeed = e.getOriginalSpeed();
-                e.setNewSpeed(oldSpeed * 5);
-            }
-
-            if (player.isUnderWater()) {
-                float oldSpeed = e.getOriginalSpeed();
-                e.setNewSpeed(oldSpeed * 5);
-            }
-
-            if (player.onGround()) {
-                float oldSpeed = e.getOriginalSpeed();
-                e.setNewSpeed(oldSpeed * 5);
+            if ((!player.onGround() && !player.isUnderWater()) || player.isUnderWater()) {
+                float oldSpeed = event.getOriginalSpeed(); // Old speed
+                event.setNewSpeed(oldSpeed * 5); // New speed -> Fixed speed mining
             }
         }
     }
