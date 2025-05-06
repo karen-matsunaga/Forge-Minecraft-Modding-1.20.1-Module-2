@@ -1,8 +1,8 @@
 package net.karen.mccourse.screen;
 
-import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.entity.DisenchantedBlockEntity;
 import net.karen.mccourse.network.DisenchantedGuiSlotMessage;
+import net.karen.mccourse.network.ModNetworks;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Items;
@@ -111,7 +111,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         if (bound) {
             if (boundItemMatcher != null) return boundItemMatcher.get();
             if (boundBlockEntity != null) return stillValid(access, player, boundBlockEntity.getBlockState().getBlock());
@@ -122,7 +122,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
 
     // Player's GUI is closed
     @Override
-    public void removed(Player playerIn) {
+    public void removed(@NotNull Player playerIn) {
         super.removed(playerIn);
         if (!(playerIn instanceof ServerPlayer)) return;
         for (int i = 0; i < internal.getSlots(); ++i) {
@@ -135,7 +135,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
     // must assign a slot number to each of the slots used by the GUI.
-    // For this container, we can see both the tile inventory's slots as well as the player inventory slots and the hotbar.
+    // For this container, we can see both the tile inventory's slots as well the player inventory slots and the hotbar.
     // Each time we add a Slot to the container, it automatically increases the slotIndex, which means
     //  0 - 8 = hotbar slots (which will map to the InventoryPlayer slot numbers 0 - 8)
     //  9 - 35 = player inventory slots (which map to the InventoryPlayer slot numbers 9 - 35)
@@ -152,9 +152,9 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
     private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
         Slot sourceSlot = slots.get(index);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
+        if (!sourceSlot.hasItem()) return ItemStack.EMPTY;
 
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
@@ -186,7 +186,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
     }
 
     @Override
-    protected boolean moveItemStackTo(ItemStack stack, int pStartIndex, int pEndIndex, boolean pReverseDirection) {
+    protected boolean moveItemStackTo(@NotNull ItemStack stack, int pStartIndex, int pEndIndex, boolean pReverseDirection) {
         boolean flag = false;
         int i = pStartIndex;
         if (pReverseDirection) {
@@ -264,7 +264,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
 
     // When player clicked on OUTPUT slot call slotChanged custom method
     @Override
-    public void clicked(int slotId, int dragType, ClickType clickType, Player player) {
+    public void clicked(int slotId, int dragType, @NotNull ClickType clickType, @NotNull Player player) {
         super.clicked(slotId, dragType, clickType, player);
         if (player.level().isClientSide()) { slotChanged(slotId, dragType, clickType); }
     }
@@ -273,7 +273,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
     private void slotChanged(int slotId, int dragType, ClickType clickType) {
         if (boundBlockEntity != null && this.world != null && world.isClientSide()) {
             BlockPos pos = boundBlockEntity.getBlockPos();
-            MCCourseMod.PACKET_HANDLER.sendToServer(new DisenchantedGuiSlotMessage(slotId, pos.getX(), pos.getY(), pos.getZ(), dragType, clickType));
+            ModNetworks.PACKET_HANDLER.sendToServer(new DisenchantedGuiSlotMessage(slotId, pos.getX(), pos.getY(), pos.getZ(), dragType, clickType));
         }
     }
 

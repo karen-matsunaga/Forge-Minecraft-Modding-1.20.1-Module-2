@@ -13,7 +13,8 @@ import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.item.ModesPickaxe;
 import net.karen.mccourse.item.custom.HammerItem;
 import net.karen.mccourse.item.custom.ModesPickaxeItem;
-import net.karen.mccourse.network.XrayNetworkMessage;
+import net.karen.mccourse.network.ModNetworks;
+import net.karen.mccourse.network.GlowingBlocksNetworkMessage;
 import net.karen.mccourse.util.ModTags;
 import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.ChatFormatting;
@@ -485,15 +486,15 @@ public class ModEvents {
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) { // Player is on world
         if (!event.getEntity().level().isClientSide()) {
-            XrayNetworkMessage.SyncedSavedData mapData = XrayNetworkMessage.MapVariables.get(event.getEntity().level());
-            XrayNetworkMessage.SyncedSavedData worldData = XrayNetworkMessage.WorldVariables.get(event.getEntity().level());
+            GlowingBlocksNetworkMessage.SyncedSavedData mapData = GlowingBlocksNetworkMessage.MapVariables.get(event.getEntity().level());
+            GlowingBlocksNetworkMessage.SyncedSavedData worldData = GlowingBlocksNetworkMessage.WorldVariables.get(event.getEntity().level());
             if (mapData != null) {
-                MCCourseMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
-                        new XrayNetworkMessage.SavedDataSyncMessage(mapData));
+                ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
+                        new GlowingBlocksNetworkMessage.SavedDataSyncMessage(mapData));
             }
             if (worldData != null) {
-                MCCourseMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
-                        new XrayNetworkMessage.SavedDataSyncMessage(worldData));
+                ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
+                        new GlowingBlocksNetworkMessage.SavedDataSyncMessage(worldData));
             }
         }
     }
@@ -501,10 +502,10 @@ public class ModEvents {
     @SubscribeEvent
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) { // Player is on [Overworld, Nether, End, etc.]
         if (!event.getEntity().level().isClientSide()) {
-            XrayNetworkMessage.SyncedSavedData worldData = XrayNetworkMessage.WorldVariables.get(event.getEntity().level());
+            GlowingBlocksNetworkMessage.SyncedSavedData worldData = GlowingBlocksNetworkMessage.WorldVariables.get(event.getEntity().level());
             if (worldData != null) {
-                MCCourseMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
-                        new XrayNetworkMessage.SavedDataSyncMessage(worldData));
+                ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
+                        new GlowingBlocksNetworkMessage.SavedDataSyncMessage(worldData));
             }
         }
     }
@@ -619,7 +620,7 @@ public class ModEvents {
                 for (int xi = -RadiusSquare; xi <= RadiusSquare; xi++) {
                     for (int zi = -RadiusSquare; zi <= RadiusSquare; zi++) {
                         // Execute the desired statements within the square/cube
-                        if (XrayNetworkMessage.WorldVariables.get(level).xray) {
+                        if (GlowingBlocksNetworkMessage.WorldVariables.get(level).xray) {
                             double posX = Math.floor(pos.x + xi);
                             double posY = Math.floor(pos.y + i);
                             double posZ = Math.floor(pos.z + zi);
@@ -668,8 +669,8 @@ public class ModEvents {
         ItemStack helmet = event.player.getItemBySlot(EquipmentSlot.HEAD); // Player has used helmet
         int glowingBlocksLevel = helmet.getEnchantmentLevel(ModEnchantments.GLOWING_BLOCKS.get()); // Player has used enchanted helmet
         if (event.phase == TickEvent.Phase.END) { // Player has used enchanted Helmet or Metal Detector
-            XrayNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() && glowingBlocksLevel > 0 || metal.is(ModItems.METAL_DETECTOR.get());
-            XrayNetworkMessage.WorldVariables.get(world).syncData(world); // Update information player has enchanted Helmet or Metal Detector
+            GlowingBlocksNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() && glowingBlocksLevel > 0 || metal.is(ModItems.METAL_DETECTOR.get());
+            GlowingBlocksNetworkMessage.WorldVariables.get(world).syncData(world); // Update information player has enchanted Helmet or Metal Detector
         }
     }
 
