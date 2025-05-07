@@ -8,18 +8,23 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.recipe.GemEmpoweringRecipe;
 import net.karen.mccourse.recipe.KaupenFurnaceRecipe;
+import net.karen.mccourse.screen.CraftCraftingTableScreen;
 import net.karen.mccourse.screen.GemEmpoweringStationScreen;
 import net.karen.mccourse.screen.KaupenFurnaceScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 @JeiPlugin
 public class JEIMCCoursePlugin implements IModPlugin {
     @Override
-    public ResourceLocation getPluginUid() { return new ResourceLocation(MCCourseMod.MOD_ID, "jei_plugin"); }
+    public @NotNull ResourceLocation getPluginUid() { return new ResourceLocation(MCCourseMod.MOD_ID, "jei_plugin"); }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
@@ -29,11 +34,14 @@ public class JEIMCCoursePlugin implements IModPlugin {
 
         registration.addRecipeCategories(new KaupenFurnaceRecipeCategory(
                 registration.getJeiHelpers().getGuiHelper()));
+
+        registration.addRecipeCategories(new CraftCraftingTableRecipeCategory(
+                registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
+        RecipeManager recipeManager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 
         // Register all custom recipes
         List<GemEmpoweringRecipe> empoweringRecipes = recipeManager.getAllRecipesFor(GemEmpoweringRecipe.Type.INSTANCE);
@@ -41,6 +49,9 @@ public class JEIMCCoursePlugin implements IModPlugin {
 
         List<KaupenFurnaceRecipe> kaupenFurnaceRecipes = recipeManager.getAllRecipesFor(KaupenFurnaceRecipe.Type.INSTANCE);
         registration.addRecipes(KaupenFurnaceRecipeCategory.KAUPEN_FURNACE_TYPE, kaupenFurnaceRecipes);
+
+        List<CraftingRecipe> craftCraftingTableRecipes = recipeManager.getAllRecipesFor(RecipeType.CRAFTING);
+        registration.addRecipes(CraftCraftingTableRecipeCategory.CRAFT_CRAFTING_TABLE_TYPE, craftCraftingTableRecipes);
     }
 
     @Override
@@ -51,5 +62,8 @@ public class JEIMCCoursePlugin implements IModPlugin {
 
         registration.addRecipeClickArea(KaupenFurnaceScreen.class, 60, 30, 20, 30,
                 KaupenFurnaceRecipeCategory.KAUPEN_FURNACE_TYPE);
+
+        registration.addRecipeClickArea(CraftCraftingTableScreen.class, 140, 18, 18, 18,
+                CraftCraftingTableRecipeCategory.CRAFT_CRAFTING_TABLE_TYPE);
     }
 }
