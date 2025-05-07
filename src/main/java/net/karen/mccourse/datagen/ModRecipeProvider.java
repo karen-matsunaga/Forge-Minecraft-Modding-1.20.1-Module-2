@@ -170,7 +170,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         blockTransformItem(List.of(ModItems.PINK.get(), ModBlocks.PINK_BLOCK.get()), pWriter);
 
         // Block
-        blockTransformItem(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), pWriter); // Craft Crafting Table
+        itemTransformBlock(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), pWriter); // Craft Crafting Table
 
         // My custom ore
         // Items Smelting
