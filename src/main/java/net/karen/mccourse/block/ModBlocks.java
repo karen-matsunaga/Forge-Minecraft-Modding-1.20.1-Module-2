@@ -415,6 +415,12 @@ public class ModBlocks {
                     .strength(5F, 3600000.0F),
                     List.of(Items.DIAMOND, Items.ENCHANTED_BOOK)));
 
+    // Elevator block
+    public static final RegistryObject<Block> MCCOURSE_ELEVATOR = registerBlock("mccourse_elevator",
+            () -> new MccourseElevatorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOL)
+                    .sound(SoundType.WOOL)
+                    .strength(5F, 1200.F)));
+
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

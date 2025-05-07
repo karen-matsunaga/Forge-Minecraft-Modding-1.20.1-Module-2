@@ -1,5 +1,6 @@
 package net.karen.mccourse.event;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -13,6 +14,7 @@ import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.item.ModesPickaxe;
 import net.karen.mccourse.item.custom.HammerItem;
 import net.karen.mccourse.item.custom.ModesPickaxeItem;
+import net.karen.mccourse.network.MccourseElevatorKeyInputMessage;
 import net.karen.mccourse.network.ModNetworks;
 import net.karen.mccourse.network.GlowingBlocksNetworkMessage;
 import net.karen.mccourse.util.ModTags;
@@ -65,6 +67,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.common.Tags;
@@ -84,6 +87,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.command.ConfigCommand;
 import org.joml.Matrix4f;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 
@@ -751,6 +755,29 @@ public class ModEvents {
                 float oldSpeed = event.getOriginalSpeed(); // Old speed
                 event.setNewSpeed(oldSpeed * 5); // New speed -> Fixed speed mining
             }
+        }
+    }
+
+    // CUSTOM EVENT - Mccourse Elevator advanced block
+    @SubscribeEvent
+    public static void onKeyInput(InputEvent.Key event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) { return; }
+        Player player = mc.player;
+
+        // Checks if the player is over the elevator
+        BlockPos pos = BlockPos.containing(player.getX(), player.getY() - 1, player.getZ());
+        BlockState state = player.level().getBlockState(pos);
+        if (state.getBlock() != ModBlocks.MCCOURSE_ELEVATOR.get()) { return; }
+
+        // Detects jump
+        if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_SPACE)) {
+            ModNetworks.PACKET_HANDLER.sendToServer(new MccourseElevatorKeyInputMessage(true));
+        }
+
+        // Detects shift/crouch
+        if (player.isShiftKeyDown()) {
+            ModNetworks.PACKET_HANDLER.sendToServer(new MccourseElevatorKeyInputMessage(false));
         }
     }
 }

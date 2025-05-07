@@ -16,6 +16,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 public class ModBlockStateProvider extends BlockStateProvider {
@@ -174,11 +175,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.DISENCHANTED_BLOCK);
 
         // My Craft custom crafting table
-        blockWithItem(ModBlocks.CRAFT_CRAFTING_TABLE);
         registerCustomSidedCube(ModBlocks.CRAFT_CRAFTING_TABLE);
 
         // Block generator
         blockWithItem(ModBlocks.MCCOURSE_GENERATOR);
+        blockWithItem(ModBlocks.MCCOURSE_ELEVATOR);
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json
@@ -199,14 +200,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
     // Method to generate custom leaves automatically in .JSON file models/blocks/name_leaves.json
     private void leavesBlock(RegistryObject<Block> blockRegistryObject) {
         simpleBlockWithItem(blockRegistryObject.get(),
-                models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
+                models().singleTexture(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get())).getPath(),
+                        new ResourceLocation("minecraft:block/leaves"),
                         "all", blockTexture(blockRegistryObject.get())).renderType("cutout"));
     }
 
     // Method to generate custom sapling automatically in .JSON file models/blocks/name_sapling.json
     private void saplingBlock(RegistryObject<Block> blockRegistryObject) {
         simpleBlock(blockRegistryObject.get(),
-                models().cross(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));
+                models().cross(Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get())).getPath(),
+                        blockTexture(blockRegistryObject.get())).renderType("cutout"));
     }
 
     // Method to generate custom crop automatically in .JSON file models/blocks/name.json
@@ -219,22 +222,22 @@ public class ModBlockStateProvider extends BlockStateProvider {
     private ConfiguredModel[] states(BlockState state, CropBlock block, String modelName, String textureName) {
         ConfiguredModel[] models = new ConfiguredModel[1];
         models[0] = new ConfiguredModel(models().crop(modelName + state.getValue(((KohlrabiCropBlock) block).getAgeProperty()),
-                new ResourceLocation(MCCourseMod.MOD_ID, "block/" + textureName + state.getValue(((KohlrabiCropBlock) block).getAgeProperty()))).renderType("cutout"));
+                new ResourceLocation(MCCourseMod.MOD_ID, "block/" + textureName +
+                        state.getValue(((KohlrabiCropBlock) block).getAgeProperty()))).renderType("cutout"));
         return models;
     }
 
     // Cattail's crop block automatically created models/block/json.file
     public void makeCattailCrop(CropBlock block, String modelName, String textureName) {
         Function<BlockState, ConfiguredModel[]> function = state -> cattailStates(state, block, modelName, textureName);
-
         getVariantBuilder(block).forAllStates(function);
     }
 
     private ConfiguredModel[] cattailStates(BlockState state, CropBlock block, String modelName, String textureName) {
         ConfiguredModel[] models = new ConfiguredModel[1];
         models[0] = new ConfiguredModel(models().crop(modelName + state.getValue(((CattailCropBlock) block).getAgeProperty()),
-                new ResourceLocation(MCCourseMod.MOD_ID, "block/" + textureName + state.getValue(((CattailCropBlock) block).getAgeProperty()))).renderType("cutout"));
-
+                new ResourceLocation(MCCourseMod.MOD_ID, "block/" + textureName +
+                        state.getValue(((CattailCropBlock) block).getAgeProperty()))).renderType("cutout"));
         return models;
     }
 
@@ -256,13 +259,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
     // Method to use trapdoor block
     private void blockItem(RegistryObject<Block> blockRegistryObject, String appendix) {
         simpleBlockItem(blockRegistryObject.get(), new ModelFile.UncheckedModelFile("mccourse:block/"
-                + ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath() + appendix));
+                + Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get())).getPath() + appendix));
     }
 
     // Method to call the blocks
     private void blockItem(RegistryObject<Block> blockRegistryObject) {
         simpleBlockItem(blockRegistryObject.get(), new ModelFile.UncheckedModelFile("mccourse:block/"
-                + ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath()));
+                + Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get())).getPath()));
     }
 
     // Method to easy registry a block
@@ -270,11 +273,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
     }
 
+    // Method for adding a block with multiple textures
     private void registerCustomSidedCube(RegistryObject<Block> blockRegistryObject) {
-        Block block = blockRegistryObject.get();
-        ResourceLocation key = ForgeRegistries.BLOCKS.getKey(block);
-        String baseTexture = "block/" + key.getPath();
-
+        simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
+        ResourceLocation key = ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get());
+        String baseTexture = "block/" + Objects.requireNonNull(key).getPath();
         models().withExistingParent(key.getPath(), mcLoc("block/cube"))
                 .texture("down", modLoc(baseTexture))
                 .texture("up", modLoc(baseTexture + "_top"))

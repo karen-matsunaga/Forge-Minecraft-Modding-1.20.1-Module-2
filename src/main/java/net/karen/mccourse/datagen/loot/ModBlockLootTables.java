@@ -18,6 +18,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -184,10 +185,11 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         // My CRAFTING TABLE block
         this.dropSelf(ModBlocks.CRAFT_CRAFTING_TABLE.get());
         this.dropSelf(ModBlocks.MCCOURSE_GENERATOR.get());
+        this.dropSelf(ModBlocks.MCCOURSE_ELEVATOR.get());
     }
 
     // Custom ore's drops
-    protected LootTable.Builder createOreDrop(Block pBlock, Item pItem) {
+    protected LootTable.@NotNull Builder createOreDrop(@NotNull Block pBlock, @NotNull Item pItem) {
         return createSilkTouchDispatchTable(pBlock, this.applyExplosionDecay(pBlock,
                 LootItem.lootTableItem(pItem)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 5.0f)))
@@ -197,5 +199,5 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
     // Return all registries in deferred registry
     @Override
-    protected Iterable<Block> getKnownBlocks() { return ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator; }
+    protected @NotNull Iterable<Block> getKnownBlocks() { return ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator; }
 }

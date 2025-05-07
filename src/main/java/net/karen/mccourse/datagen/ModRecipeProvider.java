@@ -24,6 +24,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.List;
@@ -44,7 +45,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     // Create all recipes
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> pWriter) {
+    protected void buildRecipes(@NotNull Consumer<FinishedRecipe> pWriter) {
         // Alexandrite transforms on Alexandrite Block recipe
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ALEXANDRITE_BLOCK.get())
                 .pattern("AAA")
@@ -238,28 +239,33 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // Craft Crafting Table 7x7
         craftSeven(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), pWriter);
+        craftSeven(List.of(ModBlocks.MCCOURSE_ELEVATOR.get(), Items.WHITE_WOOL), pWriter);
 
         craftSevenItems(List.of(ModBlocks.MCCOURSE_GENERATOR.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(),
                 Items.NETHER_STAR, Items.ENCHANTED_GOLDEN_APPLE), pWriter);
     }
 
     // Smelting
-    protected static void oreSmelting(Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult,
-                                      float pExperience, int pCookingTIme, String pGroup) {
+    protected static void oreSmelting(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients,
+                                      @NotNull RecipeCategory pCategory, @NotNull ItemLike pResult, float pExperience,
+                                      int pCookingTIme, @NotNull String pGroup) {
         oreCooking(pFinishedRecipeConsumer, RecipeSerializer.SMELTING_RECIPE, pIngredients, pCategory, pResult,
                 pExperience, pCookingTIme, pGroup, "_from_smelting");
     }
 
     // Blasting
-    protected static void oreBlasting(Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult,
-                                      float pExperience, int pCookingTime, String pGroup) {
+    protected static void oreBlasting(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients,
+                                      @NotNull RecipeCategory pCategory, @NotNull ItemLike pResult, float pExperience,
+                                      int pCookingTime, @NotNull String pGroup) {
         oreCooking(pFinishedRecipeConsumer, RecipeSerializer.BLASTING_RECIPE, pIngredients, pCategory, pResult,
                 pExperience, pCookingTime, pGroup, "_from_blasting");
     }
 
     // Cooking -> Custom method to oreSmelting and oreBlasting
-    protected static void oreCooking(Consumer<FinishedRecipe> pFinishedRecipeConsumer, RecipeSerializer<? extends AbstractCookingRecipe> pCookingSerializer,
-                                     List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup, String pRecipeName) {
+    protected static void oreCooking(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer,
+                                     @NotNull RecipeSerializer<? extends AbstractCookingRecipe> pCookingSerializer,
+                                     List<ItemLike> pIngredients, @NotNull RecipeCategory pCategory, @NotNull ItemLike pResult,
+                                     float pExperience, int pCookingTime, @NotNull String pGroup, String pRecipeName) {
         for(ItemLike itemlike : pIngredients) {
             SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), pCategory, pResult, pExperience, pCookingTime,
                             pCookingSerializer).group(pGroup).unlockedBy(getHasName(itemlike), has(itemlike))
@@ -423,7 +429,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     // Custom enchanted item or enchanted book
     public static void enchantItem(List<ItemLike> result, Map<Enchantment, Integer> enchantments,
                                    List<String> format, List<String> letters, boolean isBook, Consumer<FinishedRecipe> writer) {
-
         // Registry item = Result Index 0
         JsonObject resultJson = new JsonObject();
         resultJson.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(0).asItem())).toString());
@@ -475,16 +480,19 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         // Registry JSON file
         writer.accept(new FinishedRecipe() {
             @Override
-            public void serializeRecipeData(JsonObject jsonObject) {
+            public void serializeRecipeData(@NotNull JsonObject jsonObject) {
                 List<String> recipe = List.of("type", "pattern", "key", "result");
                 for (String rec : recipe) { jsonObject.add(rec, recipeJson.get(rec)); }
             }
 
             @Override
-            public ResourceLocation getId() { return new ResourceLocation(MCCourseMod.MOD_ID, Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(1).asItem())).getPath() + "_enchanted"); }
+            public @NotNull ResourceLocation getId() {
+                return new ResourceLocation(MCCourseMod.MOD_ID,
+                        Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(1).asItem())).getPath() + "_enchanted");
+            }
 
             @Override
-            public RecipeSerializer<?> getType() { return RecipeSerializer.SHAPED_RECIPE; }
+            public @NotNull RecipeSerializer<?> getType() { return RecipeSerializer.SHAPED_RECIPE; }
 
             @Override
             public JsonObject serializeAdvancement() { return null; }

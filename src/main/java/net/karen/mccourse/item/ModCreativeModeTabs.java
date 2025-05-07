@@ -271,6 +271,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.MCCOURSE_HAMMER.get());
                         output.accept(ModItems.SPECIAL_METAL_DETECTOR.get());
                         output.accept(ModBlocks.MCCOURSE_GENERATOR.get());
+                        output.accept(ModBlocks.MCCOURSE_ELEVATOR.get());
                     }).build());
 
     // Registry Creative Mode Tab

@@ -22,6 +22,7 @@
     "mccourse:disenchanted",
     "mccourse:craft_crafting_table",
     "mccourse:mccourse_generator",
+    "mccourse:mccourse_elevator",
     "#mccourse:blocks/mobs_blocks_drops",
     "#mccourse:blocks/mccourse_ores",
     "#mccourse:blocks/mccourse_ores_block"

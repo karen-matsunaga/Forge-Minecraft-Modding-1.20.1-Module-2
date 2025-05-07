@@ -16,6 +16,7 @@ import net.karen.mccourse.item.ModItemProperties;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.loot.ModLootModifiers;
 import net.karen.mccourse.network.DisenchantedGuiSlotMessage;
+import net.karen.mccourse.network.MccourseElevatorKeyInputMessage;
 import net.karen.mccourse.network.ModNetworks;
 import net.karen.mccourse.network.GlowingBlocksNetworkMessage;
 import net.karen.mccourse.painting.ModPaintings;
@@ -157,10 +158,17 @@ public class MCCourseMod {
             // Added custom Surface Rules
             SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MOD_ID, ModSurfaceRules.makeRules());
 
+            // All ModNetwork messages
             // Disenchanted block event network message
-            ModNetworks.addNetworkMessage(DisenchantedGuiSlotMessage.class, DisenchantedGuiSlotMessage::buffer, DisenchantedGuiSlotMessage::new, DisenchantedGuiSlotMessage::handler);
-            // Xray Block Shape Renderer
-            ModNetworks.addNetworkMessage(GlowingBlocksNetworkMessage.SavedDataSyncMessage.class, GlowingBlocksNetworkMessage.SavedDataSyncMessage::buffer, GlowingBlocksNetworkMessage.SavedDataSyncMessage::new, GlowingBlocksNetworkMessage.SavedDataSyncMessage::handler);
+            ModNetworks.addNetworkMessage(DisenchantedGuiSlotMessage.class, DisenchantedGuiSlotMessage::buffer,
+                    DisenchantedGuiSlotMessage::new, DisenchantedGuiSlotMessage::handler);
+            // Glowing Blocks Block Shape Renderer
+            ModNetworks.addNetworkMessage(GlowingBlocksNetworkMessage.SavedDataSyncMessage.class,
+                    GlowingBlocksNetworkMessage.SavedDataSyncMessage::buffer,
+                    GlowingBlocksNetworkMessage.SavedDataSyncMessage::new, GlowingBlocksNetworkMessage.SavedDataSyncMessage::handler);
+            // Mccourse Elevator key input message
+            ModNetworks.addNetworkMessage(MccourseElevatorKeyInputMessage.class, MccourseElevatorKeyInputMessage::buffer,
+                    MccourseElevatorKeyInputMessage::new, MccourseElevatorKeyInputMessage::handler);
         });
     }
 
