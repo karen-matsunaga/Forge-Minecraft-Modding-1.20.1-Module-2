@@ -169,6 +169,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         itemTransformBlock(List.of(ModBlocks.PINK_BLOCK.get(), ModItems.PINK.get()), pWriter);
         blockTransformItem(List.of(ModItems.PINK.get(), ModBlocks.PINK_BLOCK.get()), pWriter);
 
+        // Block
+        blockTransformItem(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), pWriter); // Craft Crafting Table
+
         // My custom ore
         // Items Smelting
         oreSmelting(pWriter, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(), 0.25f, 200, "pink");
@@ -238,11 +241,13 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         luckItem(List.of(ModItems.WEAPON_LUCK.get(), Items.LAPIS_LAZULI, Items.REDSTONE, ModItems.LUCK.get()), pWriter);
 
         // Craft Crafting Table 7x7
-        craftSeven(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), pWriter);
+        craftSeven(List.of(ModBlocks.KAUPEN_FURNACE_BLOCK.get(), Items.FURNACE), pWriter); // Kaupen Furnace
         craftSeven(List.of(ModBlocks.MCCOURSE_ELEVATOR.get(), Items.WHITE_WOOL), pWriter);
 
         craftSevenItems(List.of(ModBlocks.MCCOURSE_GENERATOR.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(),
                 Items.NETHER_STAR, Items.ENCHANTED_GOLDEN_APPLE), pWriter);
+        craftSevenItems(List.of(ModBlocks.GEM_EMPOWERING_STATION.get(), Items.FURNACE, ModItems.ALEXANDRITE.get(),
+                Items.BOOK), pWriter); // Gem Empowering Station
     }
 
     // Smelting

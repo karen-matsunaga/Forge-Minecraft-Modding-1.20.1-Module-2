@@ -1,22 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "key": {
-    "A": {
+  "ingredients": [
+    {
       "item": "minecraft:crafting_table"
     }
-  },
-  "pattern": [
-    "AAAAAAA",
-    "AAAAAAA",
-    "AAAAAAA",
-    "AAAAAAA",
-    "AAAAAAA",
-    "AAAAAAA",
-    "AAAAAAA"
   ],
   "result": {
+    "count": 9,
     "item": "mccourse:craft_crafting_table"
-  },
-  "show_notification": true
+  }
 }
