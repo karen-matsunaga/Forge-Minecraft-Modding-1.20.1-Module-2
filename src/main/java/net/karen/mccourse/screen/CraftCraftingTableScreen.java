@@ -11,6 +11,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class CraftCraftingTableScreen extends AbstractContainerScreen<CraftCraftingTableMenu> implements RecipeUpdateListener {
     private static final ResourceLocation CRAFTING_TABLE_LOCATION = new ResourceLocation(MCCourseMod.MOD_ID, "textures/gui/container/craft_crafting_table_gui.png");
@@ -27,7 +30,7 @@ public class CraftCraftingTableScreen extends AbstractContainerScreen<CraftCraft
         this.imageWidth = 176;
         super.init();
         this.widthTooNarrow = this.width < 379;
-        this.recipeBookComponent.init(this.width, this.height, this.minecraft, this.widthTooNarrow, this.menu);
+        this.recipeBookComponent.init(this.width, this.height, Objects.requireNonNull(this.minecraft), this.widthTooNarrow, this.menu);
         this.leftPos = this.recipeBookComponent.updateScreenPosition(this.width, this.imageWidth);
         this.addRenderableWidget(new ImageButton(this.leftPos + 148, this.topPos + 70, 20, 18, 0, 0, 19, RECIPE_BUTTON_LOCATION, (p_289630_) -> {
             this.recipeBookComponent.toggleVisibility();
@@ -51,7 +54,7 @@ public class CraftCraftingTableScreen extends AbstractContainerScreen<CraftCraft
      * @param pMouseY the y-coordinate of the mouse cursor.
      * @param pPartialTick the partial tick time.
      */
-    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         this.renderBackground(pGuiGraphics);
         if (this.recipeBookComponent.isVisible() && this.widthTooNarrow) {
             this.renderBg(pGuiGraphics, pPartialTick, pMouseX, pMouseY);
@@ -101,12 +104,12 @@ public class CraftCraftingTableScreen extends AbstractContainerScreen<CraftCraft
     /**
      * Called when the mouse is clicked over a slot or outside the gui.
      */
-    protected void slotClicked(Slot pSlot, int pSlotId, int pMouseButton, ClickType pType) {
+    protected void slotClicked(@NotNull Slot pSlot, int pSlotId, int pMouseButton, @NotNull ClickType pType) {
         super.slotClicked(pSlot, pSlotId, pMouseButton, pType);
         this.recipeBookComponent.slotClicked(pSlot);
     }
 
     public void recipesUpdated() { this.recipeBookComponent.recipesUpdated(); }
 
-    public RecipeBookComponent getRecipeBookComponent() { return this.recipeBookComponent; }
+    public @NotNull RecipeBookComponent getRecipeBookComponent() { return this.recipeBookComponent; }
 }
