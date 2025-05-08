@@ -836,6 +836,14 @@ public class ModEvents {
     public static void activatedProtectedItemEnchantmentOnPlayerDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof Player player)) { return; } // Entity is player
 
+        LevelAccessor world = event.getEntity().level();
+        double x = event.getEntity().getX(); // Player X position
+        double y = event.getEntity().getY(); // Player Y position
+        double z = event.getEntity().getZ(); // Player Z position
+
+        // Mccourse Inventory Items block spawn only player death
+        world.setBlock(BlockPos.containing(x, y, z), ModBlocks.MCCOURSE_INVENTORY_ITEMS.get().defaultBlockState(), 3);
+
         UUID uuid = player.getUUID(); // Player id
         List<ItemStack> toPreserve = new ArrayList<>(); // Added all Inventory slots
         List<ItemStack> armorPreserve = new ArrayList<>(Collections.nCopies(4, ItemStack.EMPTY)); // Added all Armor slots
@@ -844,8 +852,7 @@ public class ModEvents {
         // Main inventory
         for (int i = 0; i < player.getInventory().items.size(); i++) {
             ItemStack stack = player.getInventory().items.get(i);
-            if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0
-                    || stack.isStackable() || !stack.isStackable()) {
+            if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
                 toPreserve.add(stack.copy()); // Copy of item with Protected Item enchantment
                 player.getInventory().items.set(i, ItemStack.EMPTY); // Added on toPreserve removes stack on Inventory slot
             }
@@ -854,8 +861,7 @@ public class ModEvents {
         // Armor
         for (int i = 0; i < player.getInventory().armor.size(); i++) {
             ItemStack stack = player.getInventory().armor.get(i);
-            if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0
-                    || stack.isStackable() || !stack.isStackable()) {
+            if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
                 armorPreserve.set(i, stack.copy()); // Copy of item with Protected Item enchantment
                 player.getInventory().armor.set(i, ItemStack.EMPTY); // Added on armorPreserve removes stack on Armor slot
             }
@@ -863,8 +869,7 @@ public class ModEvents {
 
         // Left hand or Offhand
         ItemStack offhand = player.getInventory().offhand.get(0);
-        if (!offhand.isEmpty() && offhand.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0
-                || offhand.isStackable() || !offhand.isStackable()) {
+        if (!offhand.isEmpty() && offhand.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
             offhandPreserve = offhand.copy(); // Copy of item with Protected Item enchantment
             player.getInventory().offhand.set(0, ItemStack.EMPTY);// Added on offhandPreserve removes stack on Offhand slot
         }
@@ -878,11 +883,7 @@ public class ModEvents {
         preservedOffhand.put(uuid, offhandPreserve);
 
         // Save Experience
-        int[] experienceData = new int[]{
-                player.experienceLevel,
-                Float.floatToIntBits(player.experienceProgress),
-                player.totalExperience
-        };
+        int[] experienceData = new int[] { player.experienceLevel, Float.floatToIntBits(player.experienceProgress), player.totalExperience };
         // Save data
         preservedExperience.put(uuid, experienceData);
 
@@ -900,10 +901,12 @@ public class ModEvents {
         UUID uuid = event.getOriginal().getUUID(); // Get Player id
         Player newPlayer = event.getEntity(); // Entity is Player
 
-        BlockPos block = new BlockPos(newPlayer.getBlockX(), newPlayer.getBlockY(), newPlayer.getBlockZ());
+        Player original = event.getOriginal(); // Player position before death
+        BlockPos blockPos = original.blockPosition(); // Player position after death
 
         // Player death message on chat
-        newPlayer.sendSystemMessage(Component.literal("You died at X: " + block.getX() + ", Y: " + block.getY() + ", Z: " + block.getZ()));
+        newPlayer.sendSystemMessage(Component.translatable(newPlayer.getGameProfile().getName() + " died at [X: " +
+                blockPos.getX() + ", Y: " + blockPos.getY() + ", Z: " + blockPos.getZ() + "]"));
 
         // Restore items
         List<ItemStack> savedItems = preservedItems.remove(uuid); // Removed all Inventory slots saved
