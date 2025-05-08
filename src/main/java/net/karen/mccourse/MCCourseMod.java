@@ -15,10 +15,7 @@ import net.karen.mccourse.item.ModCreativeModeTabs;
 import net.karen.mccourse.item.ModItemProperties;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.loot.ModLootModifiers;
-import net.karen.mccourse.network.DisenchantedGuiSlotMessage;
-import net.karen.mccourse.network.MccourseElevatorKeyInputMessage;
-import net.karen.mccourse.network.ModNetworks;
-import net.karen.mccourse.network.GlowingBlocksNetworkMessage;
+import net.karen.mccourse.network.*;
 import net.karen.mccourse.painting.ModPaintings;
 import net.karen.mccourse.particle.ModParticles;
 import net.karen.mccourse.potion.BetterBrewingRecipe;
@@ -169,6 +166,11 @@ public class MCCourseMod {
             // Mccourse Elevator key input message
             ModNetworks.addNetworkMessage(MccourseElevatorKeyInputMessage.class, MccourseElevatorKeyInputMessage::buffer,
                     MccourseElevatorKeyInputMessage::new, MccourseElevatorKeyInputMessage::handler);
+            // Hammer Preview Block
+            ModNetworks.addNetworkMessage(ClientHammerBlockRenderMessage.class, ClientHammerBlockRenderMessage::buffer,
+                    ClientHammerBlockRenderMessage::new, ClientHammerBlockRenderMessage::handler); // CLIENT
+            ModNetworks.addNetworkMessage(ServerHammerBlockRenderMessage.class, ServerHammerBlockRenderMessage::buffer,
+                    ServerHammerBlockRenderMessage::new, ServerHammerBlockRenderMessage::handler); // SERVER
         });
     }
 
