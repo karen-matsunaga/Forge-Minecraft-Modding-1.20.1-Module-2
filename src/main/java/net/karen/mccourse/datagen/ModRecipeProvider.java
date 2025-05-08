@@ -184,25 +184,26 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // My custom enchanted book and item enchanted
         enchantItem(List.of(Items.ENCHANTED_BOOK, Items.OBSIDIAN, Items.BOOK),
-                Map.of(Enchantments.UNBREAKING, 10), List.of("AAA", "ABA", "AAA"), List.of("A", "B"), true, pWriter);
+                Map.of(Enchantments.UNBREAKING, 10), List.of("AAA", "ABA", "AAA"), List.of("A", "B"),
+                true, false, 1, pWriter);
 
         enchantItem(List.of(Items.ENCHANTED_BOOK, Items.NETHER_STAR, Items.BOOK),
                 Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.BLOCK_EFFICIENCY, 10),
-                List.of("ABA", "AAA", "AAA"), List.of("A", "B"), true, pWriter);
+                List.of("ABA", "AAA", "AAA"), List.of("A", "B"), true, false, 2, pWriter);
 
         enchantItem(List.of(Items.DIAMOND_PICKAXE, Items.COPPER_INGOT, Items.DIAMOND_PICKAXE),
                 Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.UNBREAKING, 10,
                         Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1),
-                List.of("AAA", "AAA", "ABA"), List.of("A", "B"), false, pWriter);
+                List.of("AAA", "AAA", "ABA"), List.of("A", "B"), false, true, 3, pWriter);
 
         enchantItem(List.of(ModItems.PINK_MODES.get(), Items.GLOWSTONE, ModItems.PINK_MODES.get()), // Result + Secondary ingredient + Primary ingredient
                 Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.UNBREAKING, 10,
                         Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1), // Enchantments
-                List.of("A A", " B ", "A A"), List.of("A", "B"), false, pWriter); // 3x3 crafting recipe + letter ingredients
+                List.of("A A", " B ", "A A"), List.of("A", "B"), false, true, 4, pWriter); // 3x3 crafting recipe + letter ingredients
 
         enchantItem(List.of(Items.IRON_PICKAXE, Items.IRON_INGOT, Items.IRON_PICKAXE),
                 Map.of(Enchantments.UNBREAKING, 3, Enchantments.BLOCK_EFFICIENCY, 7, Enchantments.BLOCK_FORTUNE, 5),
-                List.of("A A", " B ", "A A"), List.of("A", "B"), false, pWriter);
+                List.of("A A", " B ", "A A"), List.of("A", "B"), false, true, 5, pWriter);
 
         // My custom tool enchantment
         toolEnchanted(List.of(ModItems.BLUE_MODES.get(), Items.DIAMOND, Items.BOOK), pWriter);
@@ -433,7 +434,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     // Custom enchanted item or enchanted book
     public static void enchantItem(List<ItemLike> result, Map<Enchantment, Integer> enchantments,
-                                   List<String> format, List<String> letters, boolean isBook, Consumer<FinishedRecipe> writer) {
+                                   List<String> format, List<String> letters, boolean isBook,
+                                   boolean unbreakable, int number, Consumer<FinishedRecipe> writer) {
         // Registry item = Result Index 0
         JsonObject resultJson = new JsonObject();
         resultJson.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(0).asItem())).toString());
@@ -456,6 +458,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 });
 
         nbt.add(isBook ? "StoredEnchantments" : "Enchantments", enchantmentArray);
+
+        // Unbreakable tag
+        if (unbreakable) {
+            nbt.addProperty("Unbreakable", 1);
+        }
+
         resultJson.add("nbt", nbt);
 
         // Registry recipe
@@ -492,8 +500,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
             @Override
             public @NotNull ResourceLocation getId() {
-                return new ResourceLocation(MCCourseMod.MOD_ID,
-                        Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(1).asItem())).getPath() + "_enchanted");
+                return new ResourceLocation(MCCourseMod.MOD_ID, number + "_enchanted");
             }
 
             @Override

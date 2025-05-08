@@ -30,7 +30,8 @@
           "id": "minecraft:efficiency",
           "lvl": 7
         }
-      ]
+      ],
+      "Unbreakable": 1
     }
   }
 }

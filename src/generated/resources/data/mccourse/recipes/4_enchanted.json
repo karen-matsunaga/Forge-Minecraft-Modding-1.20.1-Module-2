@@ -34,7 +34,8 @@
           "id": "minecraft:unbreaking",
           "lvl": 10
         }
-      ]
+      ],
+      "Unbreakable": 1
     }
   }
 }
