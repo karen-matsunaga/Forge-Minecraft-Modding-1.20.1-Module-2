@@ -63,6 +63,7 @@
   "enchantment.mccourse.auto_smelt": "Auto Smelt",
   "enchantment.mccourse.rainbow": "Rainbow",
   "enchantment.mccourse.block_fly": "Block Fly",
+  "enchantment.mccourse.protected_item": "Protected Item",
 
   "block.mccourse.alexandrite_lamp": "Alexandrite Lamp",
 
@@ -326,5 +327,6 @@
   "enchantment.mccourse.magnetic.desc": "When applied on pickaxe all mined blocks automatically store on Player's inventory.",
   "enchantment.mccourse.more_ores.desc": "When applied on pickaxe if a stone block is break has a percentage to receive ores.",
   "enchantment.mccourse.rainbow.desc": "When applied on pickaxe the broken ore is replaced and turned on an ore block.",
-  "enchantment.mccourse.block_fly.desc": "When applied on pickaxe if player has flying speed mining equals if player has on ground."
+  "enchantment.mccourse.block_fly.desc": "When applied on pickaxe if player has flying speed mining equals if player has on ground.",
+  "enchantment.mccourse.protected_item.desc": "When applied on pickaxe if player death all items enchanted with Protected Item enchantment back into Player inventory."
 }

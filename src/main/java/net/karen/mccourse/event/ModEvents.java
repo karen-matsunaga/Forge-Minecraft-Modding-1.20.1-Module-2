@@ -17,12 +17,14 @@ import net.karen.mccourse.item.custom.ModesPickaxeItem;
 import net.karen.mccourse.network.MccourseElevatorKeyInputMessage;
 import net.karen.mccourse.network.ModNetworks;
 import net.karen.mccourse.network.GlowingBlocksNetworkMessage;
+import net.karen.mccourse.network.ServerHammerBlockRenderMessage;
 import net.karen.mccourse.util.ModTags;
 import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.*;
@@ -65,6 +67,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.client.event.InputEvent;
@@ -74,6 +78,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -115,6 +120,45 @@ public class ModEvents {
                 HARVESTED_BLOCKS.remove(pos);
             }
         }
+    }
+
+    // Hammer Tick
+    private static BlockPos lastSentPos = null;
+    private static int tickDelay = 0;
+
+    @SubscribeEvent
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END || Minecraft.getInstance().player == null) { return; }
+        Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
+        ItemStack held = player.getMainHandItem();
+        HammerItem.clientTick();
+
+        if (!(held.getItem() instanceof HammerItem)) {
+            lastSentPos = null;
+            return;
+        }
+
+        HitResult hit = mc.hitResult;
+        if (hit == null || hit.getType() != HitResult.Type.BLOCK) { return; }
+
+        BlockPos pos = ((BlockHitResult) hit).getBlockPos();
+
+        if (!pos.equals(lastSentPos) && tickDelay-- <= 0) {
+            lastSentPos = pos;
+            tickDelay = 5;
+            ModNetworks.PACKET_HANDLER.sendToServer(new ServerHammerBlockRenderMessage(pos));
+        }
+    }
+
+    // Hammer Highlight Renderer blocks
+    @SubscribeEvent
+    public static void onRenderLevel(RenderLevelStageEvent event) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
+        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
+
+        HammerItem.renderHighlight(event.getPoseStack(), event.getCamera(), bufferSource);
+        bufferSource.endBatch(); // Finish the drawing!
     }
 
     // CUSTOM EVENT - Home's commands
@@ -760,7 +804,7 @@ public class ModEvents {
 
     // CUSTOM EVENT - Mccourse Elevator advanced block
     @SubscribeEvent
-    public static void onKeyInput(InputEvent.Key event) {
+    public static void activatedMccourseElevatorOnKeyInput(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) { return; }
         Player player = mc.player;
@@ -778,6 +822,116 @@ public class ModEvents {
         // Detects shift/crouch
         if (player.isShiftKeyDown()) {
             ModNetworks.PACKET_HANDLER.sendToServer(new MccourseElevatorKeyInputMessage(false));
+        }
+    }
+
+    // CUSTOM EVENT - Protected Item custom enchantment
+    private static final Map<UUID, List<ItemStack>> preservedItems = new HashMap<>(); // Map of Main hand + Items
+    private static final Map<UUID, List<ItemStack>> preservedArmor = new HashMap<>(); // Map of Armor
+    private static final Map<UUID, ItemStack> preservedOffhand = new HashMap<>(); // Map of Offhand
+    private static final Map<UUID, int[]> preservedExperience = new HashMap<>(); // Map of Experience
+
+    @SubscribeEvent
+    public static void onPlayerDeath(LivingDeathEvent event) {
+        if (!(event.getEntity() instanceof Player player)) { return; } // Entity is player
+
+        UUID uuid = player.getUUID(); // Player id
+        List<ItemStack> toPreserve = new ArrayList<>(); // Added all Inventory slots
+        List<ItemStack> armorPreserve = new ArrayList<>(Collections.nCopies(4, ItemStack.EMPTY)); // Added all Armor slots
+        ItemStack offhandPreserve = ItemStack.EMPTY; // Added Offhand slot
+
+        // Main inventory
+        for (int i = 0; i < player.getInventory().items.size(); i++) {
+            ItemStack stack = player.getInventory().items.get(i);
+            if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0
+                    || stack.isStackable() || !stack.isStackable()) {
+                toPreserve.add(stack.copy()); // Copy of item with Protected Item enchantment
+                player.getInventory().items.set(i, ItemStack.EMPTY); // Added on toPreserve removes stack on Inventory slot
+            }
+        }
+
+        // Armor
+        for (int i = 0; i < player.getInventory().armor.size(); i++) {
+            ItemStack stack = player.getInventory().armor.get(i);
+            if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0
+                    || stack.isStackable() || !stack.isStackable()) {
+                armorPreserve.set(i, stack.copy()); // Copy of item with Protected Item enchantment
+                player.getInventory().armor.set(i, ItemStack.EMPTY); // Added on armorPreserve removes stack on Armor slot
+            }
+        }
+
+        // Left hand or Offhand
+        ItemStack offhand = player.getInventory().offhand.get(0);
+        if (!offhand.isEmpty() && offhand.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0
+                || offhand.isStackable() || !offhand.isStackable()) {
+            offhandPreserve = offhand.copy(); // Copy of item with Protected Item enchantment
+            player.getInventory().offhand.set(0, ItemStack.EMPTY);// Added on offhandPreserve removes stack on Offhand slot
+        }
+
+        // Drop the rest
+        player.getInventory().dropAll();
+
+        // Save data
+        preservedItems.put(uuid, toPreserve);
+        preservedArmor.put(uuid, armorPreserve);
+        preservedOffhand.put(uuid, offhandPreserve);
+
+        // Save Experience
+        int[] experienceData = new int[]{
+                player.experienceLevel,
+                Float.floatToIntBits(player.experienceProgress),
+                player.totalExperience
+        };
+        // Save data
+        preservedExperience.put(uuid, experienceData);
+
+        // Reset to prevent drop
+        player.experienceLevel = 0;
+        player.experienceProgress = 0;
+        player.totalExperience = 0;
+    }
+
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        if (!event.isWasDeath()) { return; } // Ensures that it only runs after death
+
+        UUID uuid = event.getOriginal().getUUID(); // Get Player id
+        Player newPlayer = event.getEntity(); // Entity is Player
+
+        // Player death message on chat
+        newPlayer.sendSystemMessage(Component.literal(newPlayer + "death on [X, Y, Z]:" +
+                newPlayer.getBlockX() + newPlayer.getBlockY() + newPlayer.getBlockZ() + newPlayer.deathTime));
+
+        // Restore items
+        List<ItemStack> savedItems = preservedItems.remove(uuid); // Removed all Inventory slots saved
+        if (savedItems != null) {
+            for (ItemStack stack : savedItems) {
+                newPlayer.getInventory().add(stack); // Added all items on Player inventory
+            }
+        }
+
+        // Restore Armor
+        List<ItemStack> savedArmor = preservedArmor.remove(uuid); // Removed all Armor slots saved
+        if (savedArmor != null) {
+            for (int i = 0; i < savedArmor.size(); i++) {
+                if (!savedArmor.get(i).isEmpty()) {
+                    newPlayer.getInventory().armor.set(i, savedArmor.get(i)); // Added all items on Armor slots
+                }
+            }
+        }
+
+        // Restore Offhand
+        ItemStack offhand = preservedOffhand.remove(uuid); // Removed Offhand slot saved
+        if (offhand != null && !offhand.isEmpty()) {
+            newPlayer.getInventory().offhand.set(0, offhand); // Added item on Offhand slot
+        }
+
+        // Restore Experience
+        int[] experienceData = preservedExperience.remove(uuid); // Removed all experience saved
+        if (experienceData != null) {
+            newPlayer.experienceLevel = experienceData[0]; // Restored experience level
+            newPlayer.experienceProgress = Float.intBitsToFloat(experienceData[1]); // Restored experience progress
+            newPlayer.totalExperience = experienceData[2]; // Restored total experience
         }
     }
 }

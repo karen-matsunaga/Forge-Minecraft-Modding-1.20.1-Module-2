@@ -61,6 +61,12 @@ public class ModEnchantments {
                     () -> new BlockFlyEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
                             EquipmentSlot.MAINHAND));
 
+    // Protected Item enchantment - Armor and Tools enchantment
+    public static final RegistryObject<Enchantment> PROTECTED_ITEM =
+            ENCHANTMENTS.register("protected_item",
+                    () -> new ProtectedItemEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE,
+                            EquipmentSlot.values()));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }
