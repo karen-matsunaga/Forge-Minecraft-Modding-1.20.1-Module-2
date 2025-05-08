@@ -238,10 +238,8 @@ public class ModesPickaxeItem extends PickaxeItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
-        if (!(pEntity instanceof Player player)) return;
-
-        // Only enchant if it isn't already
+    public void inventoryTick(ItemStack pStack, @NotNull Level pLevel, @NotNull Entity pEntity, int pSlotId, boolean pIsSelected) {
+        // Enchant only if the item is not enchanted
         if (!pStack.isEnchanted()) { applyOverpoweredEnchantments(pStack); }
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
     }
