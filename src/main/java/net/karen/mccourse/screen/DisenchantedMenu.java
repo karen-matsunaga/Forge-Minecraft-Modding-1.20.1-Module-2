@@ -316,7 +316,7 @@ public class DisenchantedMenu extends AbstractContainerMenu implements Supplier<
 
             // Updated slots
             blockEntity.setItem(0, inputItem.copy()); // Item without enchantments
-            inputBook.shrink(1); // Remove 1 book
+            blockEntity.removeItem(1, 1); // Remove 1 book
             blockEntity.setItem(2, enchantedBook);    // Put the result
 
             blockEntity.setChanged();

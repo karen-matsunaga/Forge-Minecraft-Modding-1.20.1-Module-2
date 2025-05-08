@@ -12,8 +12,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class DisenchantedScreen extends AbstractContainerScreen<DisenchantedMenu> {
     private static final ResourceLocation texture = new ResourceLocation("mccourse:textures/gui/disenchanted_gui.png");
@@ -34,7 +36,7 @@ public class DisenchantedScreen extends AbstractContainerScreen<DisenchantedMenu
 
     // Render item before player received enchanted book
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
@@ -71,7 +73,7 @@ public class DisenchantedScreen extends AbstractContainerScreen<DisenchantedMenu
     // Player pressed ESC or E key buttons closed Container
     @Override
     public boolean keyPressed(int key, int b, int c) {
-        if (key == 256) { this.minecraft.player.closeContainer(); return true; } // Player closed GUI
+        if (key == 256) { Objects.requireNonNull(Objects.requireNonNull(this.minecraft).player).closeContainer(); return true; } // Player closed GUI
         return super.keyPressed(key, b, c);
     }
 
