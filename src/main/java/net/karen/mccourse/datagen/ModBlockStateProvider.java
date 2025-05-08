@@ -5,10 +5,12 @@ import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.block.custom.AlexandriteLampBlock;
 import net.karen.mccourse.block.custom.CattailCropBlock;
 import net.karen.mccourse.block.custom.KohlrabiCropBlock;
+import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -16,6 +18,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -180,6 +183,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         // Block generator
         blockWithItem(ModBlocks.MCCOURSE_GENERATOR);
         blockWithItem(ModBlocks.MCCOURSE_ELEVATOR);
+
+        // Furnace
+        registerFurnace(ModBlocks.KAUPEN_FURNACE_BLOCK);
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json
@@ -249,11 +255,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
                         new ResourceLocation(MCCourseMod.MOD_ID, "block/" + "alexandrite_lamp_on")))};
             } else {
                 return new ConfiguredModel[]{new ConfiguredModel(models().cubeAll("alexandrite_lamp_off",
-                        new ResourceLocation(MCCourseMod.MOD_ID, "block/" +"alexandrite_lamp_off")))};
+                        new ResourceLocation(MCCourseMod.MOD_ID, "block/" + "alexandrite_lamp_off")))};
             }
         });
         simpleBlockItem(ModBlocks.ALEXANDRITE_LAMP.get(), models().cubeAll("alexandrite_lamp_on",
-                new ResourceLocation(MCCourseMod.MOD_ID, "block/" +"alexandrite_lamp_on")));
+                new ResourceLocation(MCCourseMod.MOD_ID, "block/" + "alexandrite_lamp_on")));
     }
 
     // Method to use trapdoor block
@@ -275,9 +281,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     // Method for adding a block with multiple textures
     private void registerCustomSidedCube(RegistryObject<Block> blockRegistryObject) {
-        simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
         ResourceLocation key = ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get());
         String baseTexture = "block/" + Objects.requireNonNull(key).getPath();
+
+        // Models item folder
+        simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
+
+        // Models block folder
         models().withExistingParent(key.getPath(), mcLoc("block/cube"))
                 .texture("down", modLoc(baseTexture))
                 .texture("up", modLoc(baseTexture + "_top"))
@@ -286,5 +296,41 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .texture("west", modLoc(baseTexture + "_front"))
                 .texture("east", modLoc(baseTexture + "_side"))
                 .texture("particle", modLoc(baseTexture + "_front"));
+    }
+
+    private void registerFurnace(RegistryObject<Block> blockRegistryObject) {
+        Block block = blockRegistryObject.get();
+        ResourceLocation key = ForgeRegistries.BLOCKS.getKey(block);
+        String name = Objects.requireNonNull(key).getPath();
+
+        // Paths to the "on" and "off" block templates
+        // Models block folder
+        ModelFile model = models().orientable(name,
+                modLoc("block/" + name + "_side"),
+                modLoc("block/" + name + "_front"),
+                modLoc("block/" + name + "_top")); // Furnace
+
+        ModelFile modelOn = models().orientable(name + "_on",
+                modLoc("block/" + name + "_side"),
+                modLoc("block/" + name + "_front_on"),
+                modLoc("block/" + name + "_top")); // Furnace on
+
+        // Models item folder
+        simpleBlockItem(blockRegistryObject.get(), new ModelFile.UncheckedModelFile("mccourse:block/" + name)); // Furnace
+
+        // Block state folder
+        getVariantBuilder(block)
+                .forAllStates(state -> {
+                    Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING); // All directions
+                    boolean lit = state.getValue(BlockStateProperties.LIT); // Lit true and false
+                    Map<Direction, Integer> directions = Map.of(Direction.NORTH, 0, Direction.EAST, 90,
+                            Direction.SOUTH, 180, Direction.WEST, 270); // Direction keys and Y values
+                    int yRot = directions.getOrDefault(direction, 0); // yRot used each Direction and Y integer
+                    // Create model file
+                    return ConfiguredModel.builder()
+                            .modelFile(lit ? modelOn : model) // FurnaceOn and Furnace
+                            .rotationY(yRot) // Direction key and Y value
+                            .build();
+                });
     }
 }

@@ -2,7 +2,7 @@
   "parent": "minecraft:block/orientable",
   "textures": {
     "front": "mccourse:block/kaupen_furnace_front",
-    "side": "minecraft:block/furnace_side",
-    "top": "minecraft:block/furnace_top"
+    "side": "mccourse:block/kaupen_furnace_side",
+    "top": "mccourse:block/kaupen_furnace_top"
   }
 }

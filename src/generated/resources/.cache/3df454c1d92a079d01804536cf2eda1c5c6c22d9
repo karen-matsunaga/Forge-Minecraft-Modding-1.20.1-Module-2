@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-06T11:59:05.6795017	Block States: mccourse
+// 1.20.1	2025-05-08T15:53:10.9860871	Block States: mccourse
 9b0f59e6a967af477e6f41100bfecb754add6ea2 assets/mccourse/blockstates/alexandrite_block.json
 1fd0895b9aa0e87b67d2c4da0f567f8aa895de30 assets/mccourse/blockstates/alexandrite_button.json
 974428f15970c224b76ef992df827ba4718bb490 assets/mccourse/blockstates/alexandrite_door.json
@@ -29,6 +29,7 @@ d511c1d368c4ab450de3fae647599fde8d804015 assets/mccourse/blockstates/end_stone_p
 bb53c9eccc5cf983a6528e07773375afec5f9921 assets/mccourse/blockstates/gray_ender_pearl_block.json
 81a8c8be5b85ee44c98736bcc0b758e1f925cc59 assets/mccourse/blockstates/green_ender_pearl_block.json
 275ff10f27284ed255c0fd275be7af5f4b803b0f assets/mccourse/blockstates/gunpowder_block.json
+a3e033c1df134f254e3e240d3db0e732145e3628 assets/mccourse/blockstates/kaupen_furnace.json
 574337a5b62bd23c3411a7fec137f920354e8d79 assets/mccourse/blockstates/kaupen_portal.json
 98de054e3d7b91ae136d74698f9bf9b2e9f93841 assets/mccourse/blockstates/kohlrabi_crop.json
 67e7166c44ff56637e80c8fd3ea3931e8cc7ac17 assets/mccourse/blockstates/lime_green_ender_pearl_block.json
@@ -127,6 +128,8 @@ fe918efb440e6d7d6ab5af56e750e32a0adb117f assets/mccourse/models/block/end_stone_
 07972be02b74886a734f49189c4a8a1ded746e2d assets/mccourse/models/block/gray_ender_pearl_block.json
 6b77e39dae41be72765ff1b036d9b05a4b458cee assets/mccourse/models/block/green_ender_pearl_block.json
 7e468365b5d0cab328288a7bf5bc402413435789 assets/mccourse/models/block/gunpowder_block.json
+5bef0e2699f76e64483afe4a97f8cc3d63db7cc5 assets/mccourse/models/block/kaupen_furnace.json
+b9e5197a4ac8d25f176d97236cd6ace52dd2c340 assets/mccourse/models/block/kaupen_furnace_on.json
 e855e1833f2579ace9e3ecf38b0b8d657366d5ee assets/mccourse/models/block/kaupen_portal.json
 b1526ed257a6bb5a027c47c8ebe5a7eb2c2b25a5 assets/mccourse/models/block/kohlrabi_stage0.json
 af5bf27644a275bb44597cc49c5472618ce728f2 assets/mccourse/models/block/kohlrabi_stage1.json
@@ -200,6 +203,7 @@ f0a94a401e77a08cf969f8061b69dd445dac853d assets/mccourse/models/item/end_stone_a
 b5a3a6d0bffe819c20d913e88f0d60c994b2ec00 assets/mccourse/models/item/gray_ender_pearl_block.json
 5d7c31b793007d8dfe0a4b17d471371456d62ca2 assets/mccourse/models/item/green_ender_pearl_block.json
 62dc937cc9db18a03f359f12d7454db19e60c438 assets/mccourse/models/item/gunpowder_block.json
+b816e5ab19f204e5190c3de82396aa3062a3273d assets/mccourse/models/item/kaupen_furnace.json
 e2c652badaabef25685206753ab614caa83d00dc assets/mccourse/models/item/kaupen_portal.json
 2f24f22d92d6c7afc137a6846cccb850ca2ede5c assets/mccourse/models/item/lime_green_ender_pearl_block.json
 ea96d51d7dad8570080b8c0036e443ec0c22281d assets/mccourse/models/item/magenta_ender_pearl_block.json
