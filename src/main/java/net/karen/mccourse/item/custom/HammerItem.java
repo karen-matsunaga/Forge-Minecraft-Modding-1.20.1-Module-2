@@ -130,12 +130,8 @@ public class HammerItem extends DiggerItem implements Vanishable {
     public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
         super.onCraftedBy(stack, level, player);
         if (infinite) {
-            ItemStack itemStack = new ItemStack(stack.getItem()); // Get item
-            CompoundTag tag = itemStack.getOrCreateTag(); // Added Unbreakable tag
+            CompoundTag tag = stack.getOrCreateTag(); // Added Unbreakable tag
             tag.putBoolean("Unbreakable", true);
-            if (!player.getInventory().add(itemStack)) {
-                player.drop(itemStack, false);  // If the inventory is full, drop to the ground
-            }
         }
     }
 }
