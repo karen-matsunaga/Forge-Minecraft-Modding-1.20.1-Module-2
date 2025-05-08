@@ -831,8 +831,9 @@ public class ModEvents {
     private static final Map<UUID, ItemStack> preservedOffhand = new HashMap<>(); // Map of Offhand
     private static final Map<UUID, int[]> preservedExperience = new HashMap<>(); // Map of Experience
 
+    // Player normally drop all items when death
     @SubscribeEvent
-    public static void onPlayerDeath(LivingDeathEvent event) {
+    public static void activatedProtectedItemEnchantmentOnPlayerDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof Player player)) { return; } // Entity is player
 
         UUID uuid = player.getUUID(); // Player id
@@ -891,16 +892,18 @@ public class ModEvents {
         player.totalExperience = 0;
     }
 
+    // Player receives items after death
     @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event) {
+    public static void activatedProtectedItemEnchantmentOnPlayerClone(PlayerEvent.Clone event) {
         if (!event.isWasDeath()) { return; } // Ensures that it only runs after death
 
         UUID uuid = event.getOriginal().getUUID(); // Get Player id
         Player newPlayer = event.getEntity(); // Entity is Player
 
+        BlockPos block = new BlockPos(newPlayer.getBlockX(), newPlayer.getBlockY(), newPlayer.getBlockZ());
+
         // Player death message on chat
-        newPlayer.sendSystemMessage(Component.literal(newPlayer + "death on [X, Y, Z]:" +
-                newPlayer.getBlockX() + newPlayer.getBlockY() + newPlayer.getBlockZ() + newPlayer.deathTime));
+        newPlayer.sendSystemMessage(Component.literal("You died at X: " + block.getX() + ", Y: " + block.getY() + ", Z: " + block.getZ()));
 
         // Restore items
         List<ItemStack> savedItems = preservedItems.remove(uuid); // Removed all Inventory slots saved
