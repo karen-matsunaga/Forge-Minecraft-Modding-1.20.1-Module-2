@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class CraftCraftingTableScreen extends AbstractContainerScreen<CraftCraftingTableMenu> implements RecipeUpdateListener {
-    private static final ResourceLocation CRAFTING_TABLE_LOCATION = new ResourceLocation(MCCourseMod.MOD_ID, "textures/gui/container/craft_crafting_table_gui.png");
+    private static final ResourceLocation CRAFTING_TABLE_LOCATION = new ResourceLocation(MCCourseMod.MOD_ID, "textures/gui/craft_crafting_table_gui.png");
     private static final ResourceLocation RECIPE_BUTTON_LOCATION = new ResourceLocation("textures/gui/recipe_button.png");
     private final RecipeBookComponent recipeBookComponent = new RecipeBookComponent();
     private boolean widthTooNarrow;

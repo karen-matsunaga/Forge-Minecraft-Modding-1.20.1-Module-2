@@ -132,7 +132,7 @@ public class CraftCraftingTableMenu extends RecipeBookMenu<CraftingContainer> {
     public @NotNull ItemStack quickMoveStack(@NotNull Player pPlayer, int pIndex) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(pIndex);
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
 
