@@ -3,6 +3,7 @@ package net.karen.mccourse.event;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
@@ -64,8 +65,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -618,9 +618,9 @@ public class ModEvents {
         else { i = (float) x; j = (float) y; k = (float) z; }
         poseStack.pushPose();
         poseStack.translate(i, j, k);
-        poseStack.mulPose(com.mojang.math.Axis.YN.rotationDegrees(0));
-        poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(0));
-        poseStack.mulPose(com.mojang.math.Axis.ZN.rotationDegrees(0));
+        poseStack.mulPose(Axis.YN.rotationDegrees(0));
+        poseStack.mulPose(Axis.XP.rotationDegrees(0));
+        poseStack.mulPose(Axis.ZN.rotationDegrees(0));
         poseStack.scale(1, 1, 1);
         poseStack.translate(offset.x(), offset.y(), offset.z());
         RenderSystem.setShaderColor((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, (color >>> 24) / 255.0F);
@@ -835,17 +835,10 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedProtectedItemEnchantmentOnPlayerDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof Player player)) { return; } // Entity is player
-
-        LevelAccessor world = event.getEntity().level();
-        double x = event.getEntity().getX(); // Player X position
-        double y = event.getEntity().getY(); // Player Y position
-        double z = event.getEntity().getZ(); // Player Z position
-
-        // Mccourse Inventory Items block spawn only player death
-        world.setBlock(BlockPos.containing(x, y, z), ModBlocks.MCCOURSE_INVENTORY_ITEMS.get().defaultBlockState(), 3);
-
         UUID uuid = player.getUUID(); // Player id
-        List<ItemStack> toPreserve = new ArrayList<>(); // Added all Inventory slots
+        int[] experienceData = new int[] { player.experienceLevel, Float.floatToIntBits(player.experienceProgress),
+                player.totalExperience }; // Player experience
+        List<ItemStack> inventoryPreserve = new ArrayList<>(); // Added all Inventory slots
         List<ItemStack> armorPreserve = new ArrayList<>(Collections.nCopies(4, ItemStack.EMPTY)); // Added all Armor slots
         ItemStack offhandPreserve = ItemStack.EMPTY; // Added Offhand slot
 
@@ -853,7 +846,7 @@ public class ModEvents {
         for (int i = 0; i < player.getInventory().items.size(); i++) {
             ItemStack stack = player.getInventory().items.get(i);
             if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
-                toPreserve.add(stack.copy()); // Copy of item with Protected Item enchantment
+                inventoryPreserve.add(stack.copy()); // Copy of item with Protected Item enchantment
                 player.getInventory().items.set(i, ItemStack.EMPTY); // Added on toPreserve removes stack on Inventory slot
             }
         }
@@ -874,17 +867,12 @@ public class ModEvents {
             player.getInventory().offhand.set(0, ItemStack.EMPTY);// Added on offhandPreserve removes stack on Offhand slot
         }
 
-        // Drop the rest
-        player.getInventory().dropAll();
+        player.getInventory().dropAll(); // Drop the rest
 
         // Save data
-        preservedItems.put(uuid, toPreserve);
+        preservedItems.put(uuid, inventoryPreserve);
         preservedArmor.put(uuid, armorPreserve);
         preservedOffhand.put(uuid, offhandPreserve);
-
-        // Save Experience
-        int[] experienceData = new int[] { player.experienceLevel, Float.floatToIntBits(player.experienceProgress), player.totalExperience };
-        // Save data
         preservedExperience.put(uuid, experienceData);
 
         // Reset to prevent drop
@@ -901,7 +889,7 @@ public class ModEvents {
         UUID uuid = event.getOriginal().getUUID(); // Get Player id
         Player newPlayer = event.getEntity(); // Entity is Player
 
-        Player original = event.getOriginal(); // Player position before death
+        Player original = event.getOriginal(); // Old player
         BlockPos blockPos = original.blockPosition(); // Player position after death
 
         // Player death message on chat
