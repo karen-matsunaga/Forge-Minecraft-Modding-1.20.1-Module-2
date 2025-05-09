@@ -35,7 +35,7 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(KaupenFurnaceBlockEntity::new,
                             ModBlocks.KAUPEN_FURNACE_BLOCK.get()).build(null));
 
-    // Register all enchantment
+    // Register all custom enchant
     public static final RegistryObject<BlockEntityType<DisenchantedBlockEntity>> DISENCHANTED_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("disenchanted_block_entity", () ->
                     BlockEntityType.Builder.of(DisenchantedBlockEntity::new,
