@@ -401,8 +401,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> DISENCHANTED_BLOCK = registerBlock("disenchanted",
             () -> new DisenchantedBlock(BlockBehaviour.Properties.of().sound(SoundType.METAL)
                     .strength(5f)
-                    .requiresCorrectToolForDrops()
-            ));
+                    .requiresCorrectToolForDrops()));
 
     // Craft custom Crafting Table
     public static final RegistryObject<Block> CRAFT_CRAFTING_TABLE = registerBlock("craft_crafting_table",
