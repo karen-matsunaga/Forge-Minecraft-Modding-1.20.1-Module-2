@@ -1010,7 +1010,7 @@ public class ModEvents {
                 damageToolIfHoe(heldItem, player);
             }
         }
-
+        // Mushroom, etc.
         else if (block == Blocks.RED_MUSHROOM || block == Blocks.BROWN_MUSHROOM ||
                 block == Blocks.CRIMSON_FUNGUS || block == Blocks.WARPED_FUNGUS) {
 
