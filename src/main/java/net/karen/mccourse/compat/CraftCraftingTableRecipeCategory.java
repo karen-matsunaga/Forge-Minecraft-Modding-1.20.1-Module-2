@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public class CraftCraftingTableRecipeCategory implements IRecipeCategory<CraftingRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MCCourseMod.MOD_ID, "craft_crafting_table");
     public static final ResourceLocation TEXTURE = new ResourceLocation(MCCourseMod.MOD_ID,
-            "textures/gui/container/craft_crafting_table_gui.png");
+            "textures/gui/craft_crafting_table_gui.png");
 
     public static final RecipeType<CraftingRecipe> CRAFT_CRAFTING_TABLE_TYPE =
             new RecipeType<>(UID, ShapedRecipe.class);
