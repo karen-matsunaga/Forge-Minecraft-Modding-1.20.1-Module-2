@@ -56,6 +56,7 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -926,6 +927,106 @@ public class ModEvents {
             newPlayer.experienceLevel = experienceData[0]; // Restored experience level
             newPlayer.experienceProgress = Float.intBitsToFloat(experienceData[1]); // Restored experience progress
             newPlayer.totalExperience = experienceData[2]; // Restored total experience
+        }
+    }
+
+    // CUSTOM EVENT - Crop replant
+    // Custom method - Damage tool
+    private static void damageToolIfHoe(ItemStack tool, Player player) {
+        if (tool.getItem() instanceof HoeItem) {
+            tool.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+        }
+    }
+
+    // Crop automatically replant
+    @SubscribeEvent
+    public static void cropReplant(BlockEvent.BreakEvent event) {
+        Level level = (Level) event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState state = level.getBlockState(pos);
+        Player player = event.getPlayer();
+
+        // Only on server side and if player is not in creative mode
+        if (level.isClientSide() || player.isCreative()) { return; }
+
+        ItemStack heldItem = player.getMainHandItem();
+        boolean isAllowed = heldItem.isEmpty() || heldItem.getItem() instanceof HoeItem;
+
+        if (!isAllowed) { return; }
+
+        Block block = state.getBlock();
+
+        // Check if it is a plantation that can be replanted
+        // Wheat, Carrot, Potato, Beet, etc.
+        if (block instanceof CropBlock crop) {
+            // Check if it is ripe
+            if (crop.isMaxAge(state)) {
+                // Cancels pattern break
+                event.setCanceled(true);
+                // Drops items as if they had broken normally
+                Block.dropResources(state, level, pos, null, player, heldItem);
+                // Replants the initial stage of the plantation
+                level.setBlock(pos, crop.defaultBlockState(), 3);
+                // Spend tool durability
+                damageToolIfHoe(heldItem, player);
+            }
+        }
+        // Nether Wart
+        else if (block == Blocks.NETHER_WART) {
+            if (state.getValue(NetherWartBlock.AGE) == 3) {
+                event.setCanceled(true);
+                Block.dropResources(state, level, pos, null, player, heldItem);
+                level.setBlock(pos, Blocks.NETHER_WART.defaultBlockState(), 3);
+                damageToolIfHoe(heldItem, player);
+            }
+        }
+        // Sugar cane, Bamboo or Cactus
+        else if (block == Blocks.SUGAR_CANE || block == Blocks.BAMBOO || block == Blocks.CACTUS) {
+            BlockPos basePos = pos.below();
+            BlockState baseState = level.getBlockState(basePos);
+            // Only replant if there is correct soil below
+            boolean canReplant = ((block == Blocks.SUGAR_CANE && (baseState.is(Blocks.GRASS_BLOCK)
+                            || baseState.is(Blocks.DIRT) || baseState.is(Blocks.SAND))) ||
+                            (block == Blocks.BAMBOO && baseState.is(Blocks.GRASS_BLOCK)) ||
+                            (block == Blocks.CACTUS && baseState.is(Blocks.SAND)));
+
+            if (canReplant) {
+                // Check if the bottom block is the same and only break the top one
+                BlockPos topPos = pos;
+                while (level.getBlockState(topPos.above()).is(block)) { topPos = topPos.above(); }
+
+                event.setCanceled(true);
+
+                // Break everything from top to bottom, except the base (to replant)
+                BlockPos current = topPos;
+                while (!current.equals(basePos)) {
+                    BlockState bState = level.getBlockState(current);
+                    Block.dropResources(bState, level, current, null, player, heldItem);
+                    level.setBlock(current, Blocks.AIR.defaultBlockState(), 3);
+                    current = current.below();
+                }
+                // Replant the original block
+                level.setBlock(pos, block.defaultBlockState(), 3);
+                damageToolIfHoe(heldItem, player);
+            }
+        }
+
+        else if (block == Blocks.RED_MUSHROOM || block == Blocks.BROWN_MUSHROOM ||
+                block == Blocks.CRIMSON_FUNGUS || block == Blocks.WARPED_FUNGUS) {
+
+            BlockPos basePos = pos.below();
+            BlockState baseState = level.getBlockState(basePos);
+
+            // Check if the soil is suitable
+            boolean validSoil = baseState.is(Blocks.MYCELIUM) || baseState.is(Blocks.NETHERRACK) ||
+                    baseState.is(Blocks.WARPED_NYLIUM) || baseState.is(Blocks.CRIMSON_NYLIUM);
+
+            if (validSoil) {
+                event.setCanceled(true);
+                Block.dropResources(state, level, pos, null, player, heldItem);
+                level.setBlock(pos, block.defaultBlockState(), 3);
+                damageToolIfHoe(heldItem, player);
+            }
         }
     }
 }
