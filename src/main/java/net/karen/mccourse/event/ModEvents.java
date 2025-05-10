@@ -440,6 +440,7 @@ public class ModEvents {
         // Player has a helmet inputted on slot and Glowing Mobs enchantment level
         if (!helmet.isEnchanted() || glowingMobsLevel < 1) { return; }
 
+        // Key - Class || Value - Group tag name
         Map<Class<? extends LivingEntity>, String> entityTag = Map.of(Monster.class, "GlowingMonsterTag",
         Animal.class, "GlowingAnimalTag", AbstractVillager.class, "GlowingVillagerTag",
         WaterAnimal.class, "GlowingWaterAnimalTag", AmbientCreature.class, "GlowingAmbientCreatureTag",
@@ -449,10 +450,14 @@ public class ModEvents {
 
         for (Map.Entry<Class<? extends LivingEntity>, String> entry : entityTag.entrySet()) {
             ChatFormatting entitiesColor = switch (entry.getValue()) {
+                // Monsters
                 case "GlowingMonsterTag", "GlowingFlyingMobTag", "GlowingEnderDragonTag",
                      "GlowingSlimeTag" -> ChatFormatting.RED;
+                // Flying entities
                 case "GlowingAnimalTag", "GlowingAmbientCreatureTag", "GlowingAllayTag" -> ChatFormatting.BLUE;
+                // Water animals
                 case "GlowingWaterAnimalTag" -> ChatFormatting.YELLOW;
+                // Villagers
                 case "GlowingVillagerTag", "GlowingAbstractGolemTag" -> ChatFormatting.DARK_PURPLE;
                 default -> ChatFormatting.WHITE; }; // Entities colors -> Each class represent with some color
 
