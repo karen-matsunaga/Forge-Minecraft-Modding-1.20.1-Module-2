@@ -97,6 +97,8 @@ import net.minecraftforge.server.command.ConfigCommand;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Mod.EventBusSubscriber(modid = MCCourseMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -848,31 +850,31 @@ public class ModEvents {
         ItemStack offhandPreserve = ItemStack.EMPTY; // Added Offhand slot
 
         int[] experienceData = new int[] { player.experienceLevel, Float.floatToIntBits(player.experienceProgress),
-                player.totalExperience }; // Player experience
+                player.totalExperience }; // Added player experience
 
         // Main inventory
         for (int i = 0; i < player.getInventory().items.size(); i++) {
-            ItemStack stack = player.getInventory().items.get(i);
-            if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
-                inventoryPreserve.add(stack.copy()); // Copy of item with Protected Item enchantment
-                player.getInventory().items.set(i, ItemStack.EMPTY); // Added on toPreserve removes stack on Inventory slot
+            ItemStack inventory = player.getInventory().items.get(i);
+            if (!inventory.isEmpty() && inventory.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
+                inventoryPreserve.add(inventory.copy()); // Copy of item with Protected Item enchantment
+                player.getInventory().items.set(i, ItemStack.EMPTY); // Added on inventoryPreserve removes stack on Inventory slot
             }
             else {
-                vaultItems.add(stack.copy());
-                player.getInventory().items.set(i, ItemStack.EMPTY);
+                vaultItems.add(inventory.copy()); // Copy of item without Protected Item enchantment
+                player.getInventory().items.set(i, ItemStack.EMPTY); // Added on vaultItems removes stack on Inventory slot
             }
         }
 
         // Armor
         for (int i = 0; i < player.getInventory().armor.size(); i++) {
-            ItemStack stack = player.getInventory().armor.get(i);
-            if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
-                armorPreserve.set(i, stack.copy()); // Copy of item with Protected Item enchantment
+            ItemStack armor = player.getInventory().armor.get(i);
+            if (!armor.isEmpty() && armor.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
+                armorPreserve.set(i, armor.copy()); // Copy of item with Protected Item enchantment
                 player.getInventory().armor.set(i, ItemStack.EMPTY); // Added on armorPreserve removes stack on Armor slot
             }
             else {
-                vaultItems.add(stack.copy());
-                player.getInventory().armor.set(i, ItemStack.EMPTY);
+                vaultItems.add(armor.copy()); // Copy of item without Protected Item enchantment
+                player.getInventory().armor.set(i, ItemStack.EMPTY); // Added on vaultItems removes stack on Inventory slot
             }
         }
 
@@ -883,8 +885,8 @@ public class ModEvents {
             player.getInventory().offhand.set(0, ItemStack.EMPTY);// Added on offhandPreserve removes stack on Offhand slot
         }
         else {
-            vaultItems.add(offhand.copy());
-            player.getInventory().offhand.set(0, ItemStack.EMPTY);
+            vaultItems.add(offhand.copy()); // Copy of item without Protected Item enchantment
+            player.getInventory().offhand.set(0, ItemStack.EMPTY); // Added on vaultItems removes stack on Inventory slot
         }
 
         // Save data
@@ -898,6 +900,13 @@ public class ModEvents {
         player.experienceProgress = 0;
         player.totalExperience = 0;
 
+        // Get position and time
+        BlockPos pos = player.blockPosition(); // Player X, Y and Z positions
+        // Display PLAYER NAME, death (X, Y and Z) positions and TIME showing (Hours::Minutes::Seconds)
+        String displayName = "Vault of " + player.getGameProfile().getName() +
+                " [X: " + pos.getX() + ", Y: " + pos.getY() + ", Z: " + pos.getZ() + "] - " +
+                LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
         // Saves items from the Vault
         if (!vaultItems.isEmpty()) {
             ItemStack vaultItem = new ItemStack(ModItems.VAULT.get());
@@ -905,16 +914,21 @@ public class ModEvents {
             ListTag itemListTag = new ListTag();
             // Create VaultItem with the items data
             for (ItemStack item : vaultItems) {
-                if (!item.isEmpty()) {
-                    CompoundTag itemTag = new CompoundTag();
-                    item.save(itemTag);
-                    itemListTag.add(itemTag);
-                }
+                CompoundTag itemTag = new CompoundTag();
+                item.save(itemTag);
+                itemListTag.add(itemTag);
             }
+
+            // Added information on Vault item
             vaultTag.put("VaultItems", itemListTag);
+            vaultTag.putString("DisplayName", displayName); // Save custom name in NBT
             vaultItem.setTag(vaultTag);
+            vaultItem.setHoverName(Component.literal(displayName));
+
             // Temporarily saved for the clone event
-            preservedVault.put(playerUUID, List.of(vaultItem));
+            // Add directly to the new player's inventory in onClone()
+            // Try adding to a free inventory slot
+            preservedVault.computeIfAbsent(playerUUID, k -> new ArrayList<>()).add(vaultItem);
         }
     }
 
@@ -969,7 +983,7 @@ public class ModEvents {
         List<ItemStack> savedVault = preservedVault.remove(playerUUID); // Remove all items without Protected Item saved on Vault
         if (savedVault != null) {
             for (ItemStack item : savedVault) {
-                newPlayer.getInventory().add(item.copy()); // Added item on Inventory slot
+                newPlayer.getInventory().add(item); // Added item on Inventory slot
             }
         }
     }
