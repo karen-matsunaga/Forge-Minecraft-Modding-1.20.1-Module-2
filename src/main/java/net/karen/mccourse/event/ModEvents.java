@@ -495,15 +495,20 @@ public class ModEvents {
                     Enchantment enchantment = entry.getKey();
                     int level = entry.getValue();
                     String expected = Component.translatable(enchantment.getDescriptionId()).getString();
-
-                    if (Objects.requireNonNull(raw).startsWith(expected)) {
+                    // Raw equals expected line replace old tooltip to new tooltip
+                    if (raw != null && raw.startsWith(expected)) {
                         ChatFormatting color = enchantment.isCurse() ? ChatFormatting.RED :
                                 switch (enchantment.category) {
                                     case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS,
-                                         ARMOR_FEET -> ChatFormatting.YELLOW;
-                                    case DIGGER -> ChatFormatting.GREEN;
+                                         ARMOR_FEET -> ChatFormatting.GOLD;
+                                    case DIGGER -> ChatFormatting.DARK_PURPLE;
                                     case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
-                                    default -> ChatFormatting.GRAY; }; // Replace this line with custom styled version
+                                    case TRIDENT -> ChatFormatting.AQUA;
+                                    case WEARABLE -> ChatFormatting.GREEN;
+                                    case BREAKABLE -> ChatFormatting.DARK_GREEN;
+                                    case VANISHABLE -> ChatFormatting.RED;
+                                    case FISHING_ROD -> ChatFormatting.YELLOW;
+                                }; // Replace this line with custom styled version
                         boolean isCurse = enchantment.isCurse();
                         String descriptionValue = enchantment.getDescriptionId() + ".desc";
 
