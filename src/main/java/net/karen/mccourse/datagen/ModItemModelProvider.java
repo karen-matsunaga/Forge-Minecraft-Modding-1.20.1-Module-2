@@ -167,6 +167,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.PICKAXE_LUCK);
         simpleItem(ModItems.WEAPON_LUCK);
         simpleItem(ModItems.SPECIAL_METAL_DETECTOR);
+        simpleItem(ModItems.VAULT);
     }
 
     // Registry all sapling item's models

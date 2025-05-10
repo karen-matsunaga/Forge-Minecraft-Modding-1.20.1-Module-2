@@ -28,6 +28,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -831,17 +833,22 @@ public class ModEvents {
     private static final Map<UUID, List<ItemStack>> preservedArmor = new HashMap<>(); // Map of Armor
     private static final Map<UUID, ItemStack> preservedOffhand = new HashMap<>(); // Map of Offhand
     private static final Map<UUID, int[]> preservedExperience = new HashMap<>(); // Map of Experience
+    private static final Map<UUID, List<ItemStack>> preservedVault = new HashMap<>(); // Map of Vault items
 
     // Player normally drop all items when death
     @SubscribeEvent
     public static void activatedProtectedItemEnchantmentOnPlayerDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof Player player)) { return; } // Entity is player
-        UUID uuid = player.getUUID(); // Player id
-        int[] experienceData = new int[] { player.experienceLevel, Float.floatToIntBits(player.experienceProgress),
-                player.totalExperience }; // Player experience
-        List<ItemStack> inventoryPreserve = new ArrayList<>(); // Added all Inventory slots
+
+        UUID playerUUID = player.getUUID(); // Player id
+        List<ItemStack> vaultItems = new ArrayList<>(); // Added rest items on Vault item
+
+        List<ItemStack> inventoryPreserve = new ArrayList<>(Collections.nCopies(36, ItemStack.EMPTY)); // Added all Inventory slots
         List<ItemStack> armorPreserve = new ArrayList<>(Collections.nCopies(4, ItemStack.EMPTY)); // Added all Armor slots
         ItemStack offhandPreserve = ItemStack.EMPTY; // Added Offhand slot
+
+        int[] experienceData = new int[] { player.experienceLevel, Float.floatToIntBits(player.experienceProgress),
+                player.totalExperience }; // Player experience
 
         // Main inventory
         for (int i = 0; i < player.getInventory().items.size(); i++) {
@@ -849,6 +856,10 @@ public class ModEvents {
             if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
                 inventoryPreserve.add(stack.copy()); // Copy of item with Protected Item enchantment
                 player.getInventory().items.set(i, ItemStack.EMPTY); // Added on toPreserve removes stack on Inventory slot
+            }
+            else {
+                vaultItems.add(stack.copy());
+                player.getInventory().items.set(i, ItemStack.EMPTY);
             }
         }
 
@@ -859,6 +870,10 @@ public class ModEvents {
                 armorPreserve.set(i, stack.copy()); // Copy of item with Protected Item enchantment
                 player.getInventory().armor.set(i, ItemStack.EMPTY); // Added on armorPreserve removes stack on Armor slot
             }
+            else {
+                vaultItems.add(stack.copy());
+                player.getInventory().armor.set(i, ItemStack.EMPTY);
+            }
         }
 
         // Left hand or Offhand
@@ -867,19 +882,40 @@ public class ModEvents {
             offhandPreserve = offhand.copy(); // Copy of item with Protected Item enchantment
             player.getInventory().offhand.set(0, ItemStack.EMPTY);// Added on offhandPreserve removes stack on Offhand slot
         }
-
-        player.getInventory().dropAll(); // Drop the rest
+        else {
+            vaultItems.add(offhand.copy());
+            player.getInventory().offhand.set(0, ItemStack.EMPTY);
+        }
 
         // Save data
-        preservedItems.put(uuid, inventoryPreserve);
-        preservedArmor.put(uuid, armorPreserve);
-        preservedOffhand.put(uuid, offhandPreserve);
-        preservedExperience.put(uuid, experienceData);
+        preservedItems.put(playerUUID, inventoryPreserve);
+        preservedArmor.put(playerUUID, armorPreserve);
+        preservedOffhand.put(playerUUID, offhandPreserve);
+        preservedExperience.put(playerUUID, experienceData);
 
         // Reset to prevent drop
         player.experienceLevel = 0;
         player.experienceProgress = 0;
         player.totalExperience = 0;
+
+        // Saves items from the Vault
+        if (!vaultItems.isEmpty()) {
+            ItemStack vaultItem = new ItemStack(ModItems.VAULT.get());
+            CompoundTag vaultTag = new CompoundTag();
+            ListTag itemListTag = new ListTag();
+            // Create VaultItem with the items data
+            for (ItemStack item : vaultItems) {
+                if (!item.isEmpty()) {
+                    CompoundTag itemTag = new CompoundTag();
+                    item.save(itemTag);
+                    itemListTag.add(itemTag);
+                }
+            }
+            vaultTag.put("VaultItems", itemListTag);
+            vaultItem.setTag(vaultTag);
+            // Temporarily saved for the clone event
+            preservedVault.put(playerUUID, List.of(vaultItem));
+        }
     }
 
     // Player receives items after death
@@ -887,7 +923,7 @@ public class ModEvents {
     public static void activatedProtectedItemEnchantmentOnPlayerClone(PlayerEvent.Clone event) {
         if (!event.isWasDeath()) { return; } // Ensures that it only runs after death
 
-        UUID uuid = event.getOriginal().getUUID(); // Get Player id
+        UUID playerUUID = event.getOriginal().getUUID(); // Get Player id
         Player newPlayer = event.getEntity(); // Entity is Player
 
         Player original = event.getOriginal(); // Old player
@@ -898,7 +934,7 @@ public class ModEvents {
                 blockPos.getX() + ", Y: " + blockPos.getY() + ", Z: " + blockPos.getZ() + "]"));
 
         // Restore items
-        List<ItemStack> savedItems = preservedItems.remove(uuid); // Removed all Inventory slots saved
+        List<ItemStack> savedItems = preservedItems.remove(playerUUID); // Removed all Inventory slots saved
         if (savedItems != null) {
             for (ItemStack stack : savedItems) {
                 newPlayer.getInventory().add(stack); // Added all items on Player inventory
@@ -906,7 +942,7 @@ public class ModEvents {
         }
 
         // Restore Armor
-        List<ItemStack> savedArmor = preservedArmor.remove(uuid); // Removed all Armor slots saved
+        List<ItemStack> savedArmor = preservedArmor.remove(playerUUID); // Removed all Armor slots saved
         if (savedArmor != null) {
             for (int i = 0; i < savedArmor.size(); i++) {
                 if (!savedArmor.get(i).isEmpty()) {
@@ -916,17 +952,25 @@ public class ModEvents {
         }
 
         // Restore Offhand
-        ItemStack offhand = preservedOffhand.remove(uuid); // Removed Offhand slot saved
+        ItemStack offhand = preservedOffhand.remove(playerUUID); // Removed Offhand slot saved
         if (offhand != null && !offhand.isEmpty()) {
             newPlayer.getInventory().offhand.set(0, offhand); // Added item on Offhand slot
         }
 
         // Restore Experience
-        int[] experienceData = preservedExperience.remove(uuid); // Removed all experience saved
+        int[] experienceData = preservedExperience.remove(playerUUID); // Removed all experience saved
         if (experienceData != null) {
             newPlayer.experienceLevel = experienceData[0]; // Restored experience level
             newPlayer.experienceProgress = Float.intBitsToFloat(experienceData[1]); // Restored experience progress
             newPlayer.totalExperience = experienceData[2]; // Restored total experience
+        }
+
+        // Restores items with Vault Item
+        List<ItemStack> savedVault = preservedVault.remove(playerUUID); // Remove all items without Protected Item saved on Vault
+        if (savedVault != null) {
+            for (ItemStack item : savedVault) {
+                newPlayer.getInventory().add(item.copy()); // Added item on Inventory slot
+            }
         }
     }
 

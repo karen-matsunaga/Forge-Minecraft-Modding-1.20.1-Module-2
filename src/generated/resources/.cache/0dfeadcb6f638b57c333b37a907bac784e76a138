@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-09T19:43:15.7388524	Item Models: mccourse
+// 1.20.1	2025-05-10T10:38:02.3517438	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 cfc705788577468640df77a99d391497448608d0 assets/mccourse/models/item/alexandrite_button.json
@@ -69,6 +69,7 @@ d890745bc92e5639d4db062935218a0ef60c01fa assets/mccourse/models/item/raw_alexand
 8c4f2c3efca28e19d2e4d844a3df06a592f509eb assets/mccourse/models/item/special_metal_detector.json
 47d43cc15bf0c44cbca7be9f3fcca852f46227cb assets/mccourse/models/item/stone_hammer.json
 a35ec07586fc0b01f05633aab534110c9fbb1079 assets/mccourse/models/item/stone_paxel.json
+70097c9e1582a493e11101db7cf6b0365165a514 assets/mccourse/models/item/vault.json
 af50337a6cb7109bcdc346b62b5f5d2bf677155c assets/mccourse/models/item/walnut_boat.json
 f94888843406d428c917702cf4e79920f451fd83 assets/mccourse/models/item/walnut_chest_boat.json
 78cbe0f31d389163f8cfd2138aa1822cc534e8f5 assets/mccourse/models/item/walnut_hanging_sign.json

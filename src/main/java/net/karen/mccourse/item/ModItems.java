@@ -344,6 +344,9 @@ public class ModItems {
             () -> new MetalDetectorItem(new Item.Properties().fireResistant().stacksTo(1),
                     ModTags.Blocks.SPECIAL_METAL_DETECTOR_VALUABLES));
 
+    public static final RegistryObject<Item> VAULT = ITEMS.register("vault",
+            () -> new VaultItem(new Item.Properties().fireResistant().stacksTo(1)));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }
