@@ -40,9 +40,14 @@ public class EnchantedRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public boolean matches(@NotNull SimpleContainer container, Level level) {
-        if (level.isClientSide()) { return false; }
-        return inputItems.get(0).test(container.getItem(0));
+    public boolean matches(@NotNull SimpleContainer container, @NotNull Level world) {
+        for (int i = 0; i < inputItems.size(); i++) {
+            ItemStack stack = container.getItem(i);
+            if (!inputItems.get(i).test(stack) || stack.getCount() < inputCounts.get(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -82,10 +87,10 @@ public class EnchantedRecipe implements Recipe<SimpleContainer> {
                 new ResourceLocation(MCCourseMod.MOD_ID, "enchanted");
 
         @Override
-        public EnchantedRecipe fromJson(ResourceLocation id, JsonObject json) {
+        public @NotNull EnchantedRecipe fromJson(@NotNull ResourceLocation id, @NotNull JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output")); // Output item
-            NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY); // Slot size -> Input ingredient
-            List<Integer> inputsCounts = new ArrayList<>(1); // Slot size -> Ingredient counts
+            NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY); // Slot size -> Input ingredient
+            List<Integer> inputsCounts = new ArrayList<>(2); // Slot size -> Ingredient counts
             JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
 
             // Added each ingredient with your count
@@ -101,7 +106,7 @@ public class EnchantedRecipe implements Recipe<SimpleContainer> {
         }
 
         @Override
-        public @Nullable EnchantedRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+        public @Nullable EnchantedRecipe fromNetwork(@NotNull ResourceLocation id, FriendlyByteBuf buf) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY); // Read Ingredients from Network
             List<Integer> inputsCounts = new ArrayList<>(buf.readInt()); // Read Ingredient counts from Network
 

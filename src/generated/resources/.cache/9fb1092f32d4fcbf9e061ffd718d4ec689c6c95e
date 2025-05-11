@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-10T21:36:15.6691963	Recipes
+// 1.20.1	2025-05-10T22:12:04.7790159	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -156,7 +156,7 @@ bf572bca995581b51614943d8a70e807e2609e36 data/mccourse/recipes/diamond_from_gem_
 26d266baaf615e8c772514da4ce3a8056adbd7e3 data/mccourse/recipes/diamond_paxel.json
 0a22094295d5ba6bedc52ed66ea258102b1e2230 data/mccourse/recipes/disenchanted.json
 224b021cb415498ba204fc0049ea005a0a431335 data/mccourse/recipes/enchanted_book_from_craft.json
-7a948c4587ff2f999be92476562be2cb45d89d1a data/mccourse/recipes/enchanted_book_from_enchanted_2.json
+a3c8bac1415163278113547cce874174f48f683f data/mccourse/recipes/enchanted_book_from_enchanted_2.json
 c9c723c0a267bb8a6db4fa7c42b50b9d8af8ca46 data/mccourse/recipes/ender_pearl_block.json
 d99f34263a3ad822101bf313ea22e27a213a0cc9 data/mccourse/recipes/gem_empowering_station.json
 334d4a7faeeb1befbbd989ec5baf94f373a4d48d data/mccourse/recipes/gold_hammer.json

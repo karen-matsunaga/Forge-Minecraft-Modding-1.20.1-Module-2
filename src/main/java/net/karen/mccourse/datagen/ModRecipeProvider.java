@@ -237,8 +237,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_diamond", has(Items.DIAMOND))
                 .save(pWriter);
 
-        new EnchantedRecipeBuilder(Enchantments.BLOCK_EFFICIENCY, 10, List.of(Ingredient.of(Items.DIAMOND)),
-                List.of(512), Items.ENCHANTED_BOOK).save(pWriter);
+        new EnchantedRecipeBuilder(Enchantments.BLOCK_EFFICIENCY, 10, List.of(Ingredient.of(Items.DIAMOND),
+                Ingredient.of(Items.BOOK)),
+                List.of(512, 1), Items.ENCHANTED_BOOK).save(pWriter);
 
         // Luck custom generator enchanted book
         luckItem(List.of(ModItems.LUCK.get(), Items.LAPIS_LAZULI, Items.COPPER_INGOT, Items.BOOK), pWriter);
