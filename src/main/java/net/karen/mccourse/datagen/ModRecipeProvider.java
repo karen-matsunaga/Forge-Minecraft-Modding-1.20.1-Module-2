@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.datagen.custom.CraftRecipeBuilder;
+import net.karen.mccourse.datagen.custom.EnchantedRecipeBuilder;
 import net.karen.mccourse.datagen.custom.GemEmpoweringRecipeBuilder;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
@@ -229,12 +230,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         // My Disenchanted custom block
         itemTransformBlock(List.of(ModBlocks.DISENCHANTED_BLOCK.get(), Blocks.OBSIDIAN), pWriter);
 
-        // My custom craft builder
+        // My custom recipe builders (DEMO)
         new CraftRecipeBuilder(List.of(Ingredient.of(Items.BOOK), Ingredient.of(Items.DIAMOND)), // Ingredients
                 List.of(1, 2), // Ingredient counts
                 Items.ENCHANTED_BOOK) // Output
                 .unlockedBy("has_diamond", has(Items.DIAMOND))
                 .save(pWriter);
+
+        new EnchantedRecipeBuilder(Enchantments.BLOCK_EFFICIENCY, 10, List.of(Ingredient.of(Items.DIAMOND)),
+                List.of(512), Items.ENCHANTED_BOOK).save(pWriter);
 
         // Luck custom generator enchanted book
         luckItem(List.of(ModItems.LUCK.get(), Items.LAPIS_LAZULI, Items.COPPER_INGOT, Items.BOOK), pWriter);

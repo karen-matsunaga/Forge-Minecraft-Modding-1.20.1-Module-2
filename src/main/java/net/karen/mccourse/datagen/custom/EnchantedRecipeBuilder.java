@@ -3,7 +3,7 @@ package net.karen.mccourse.datagen.custom;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.karen.mccourse.MCCourseMod;
-import net.karen.mccourse.recipe.CraftRecipe;
+import net.karen.mccourse.recipe.EnchantedRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
@@ -16,23 +16,26 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
-public class CraftRecipeBuilder implements RecipeBuilder {
+public class EnchantedRecipeBuilder implements RecipeBuilder {
+    private final Enchantment enchantment;
+    private final int enchantLevel;
     private final List<Ingredient> ingredient;
     private final List<Integer> count;
     private final Item result;
     private final Advancement.Builder advancement = Advancement.Builder.advancement();
 
-    public CraftRecipeBuilder(List<Ingredient> ingredient, List<Integer> count, ItemLike result) {
+    public EnchantedRecipeBuilder(Enchantment enchantment, int enchantLevel, List<Ingredient> ingredient, List<Integer> count, ItemLike result) {
+        this.enchantment = enchantment;
+        this.enchantLevel = enchantLevel;
         this.ingredient = new ArrayList<>(ingredient);
         this.count = new ArrayList<>(count);
         this.result = result.asItem();
@@ -51,20 +54,20 @@ public class CraftRecipeBuilder implements RecipeBuilder {
     @Override
     public @NotNull Item getResult() { return result; }
 
-    // Save all Craft recipe custom recipes
     @Override
     public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, @NotNull ResourceLocation pRecipeId) {
         this.advancement.parent(new ResourceLocation("recipes/root"))
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pRecipeId))
                 .rewards(AdvancementRewards.Builder.recipe(pRecipeId)).requirements(RequirementsStrategy.OR);
 
-        pFinishedRecipeConsumer.accept(new Result(pRecipeId, this.result, this.count, this.ingredient,
+        pFinishedRecipeConsumer.accept(new Result(this.enchantment, this.enchantLevel, pRecipeId, this.result, this.count, this.ingredient,
                 this.advancement, new ResourceLocation(pRecipeId.getNamespace(), "recipes/"
                 + pRecipeId.getPath())));
     }
 
-    // WRITE Craft Recipe JSON custom recipes
     public static class Result implements FinishedRecipe {
+        private final Enchantment enchantment;
+        private final int enchantLevel;
         private final ResourceLocation id;
         private final Item result;
         private final List<Ingredient> ingredient;
@@ -72,8 +75,10 @@ public class CraftRecipeBuilder implements RecipeBuilder {
         private final Advancement.Builder advancement;
         private final ResourceLocation advancementId;
 
-        public Result(ResourceLocation pId, Item pResult, List<Integer> pCount, List<Ingredient> ingredient,
+        public Result(Enchantment enchantment, int enchantLevel, ResourceLocation pId, Item pResult, List<Integer> pCount, List<Ingredient> ingredient,
                       Advancement.Builder pAdvancement, ResourceLocation pAdvancementId) {
+            this.enchantment = enchantment;
+            this.enchantLevel = enchantLevel;
             this.id = pId;
             this.result = pResult;
             this.count = pCount;
@@ -85,7 +90,6 @@ public class CraftRecipeBuilder implements RecipeBuilder {
         @Override
         public void serializeRecipeData(@NotNull JsonObject pJson) {
             JsonArray jsonarray = new JsonArray();
-
             for (int i = 0; i < ingredient.size(); i++) {
                 JsonObject ingredientObject = new JsonObject();
 
@@ -101,21 +105,38 @@ public class CraftRecipeBuilder implements RecipeBuilder {
 
             pJson.add("ingredients", jsonarray); // Ingredients: []
 
-            JsonObject jsonobject = new JsonObject();
-            jsonobject.addProperty("item",
-                    Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.result)).toString());
+            // Enchantment
+            JsonObject outputJson = new JsonObject();
+            outputJson.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.result)).toString());
+            JsonArray enchantments = new JsonArray();
 
-            pJson.add("output", jsonobject); // Output: {}
+            JsonObject enchJson = new JsonObject();
+            enchJson.addProperty("id", Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(this.enchantment)).toString());
+            enchJson.addProperty("lvl", enchantLevel);
+            enchantments.add(enchJson);
+
+            JsonObject nbtJson = new JsonObject();
+            nbtJson.add("StoredEnchantments", enchantments);
+
+            outputJson.add("nbt", nbtJson);
+            pJson.add("output", outputJson); // Output: {}
         }
+
+        // File with numbers
+        private static final Map<ResourceLocation, Integer> counters = new HashMap<>();
 
         @Override
         public @NotNull ResourceLocation getId() {
+            ResourceLocation baseId = this.id;
+            int count = counters.getOrDefault(baseId, 0) + 1;
+            counters.put(baseId, count);
+
             return new ResourceLocation(MCCourseMod.MOD_ID,
-                    this.id.getPath() + "_from_craft");
+                    baseId.getPath() + "_from_enchanted_" + count);
         }
 
         @Override
-        public @NotNull RecipeSerializer<?> getType() { return CraftRecipe.Serializer.INSTANCE; }
+        public @NotNull RecipeSerializer<?> getType() { return EnchantedRecipe.Serializer.INSTANCE; }
 
         @Nullable
         public JsonObject serializeAdvancement() { return this.advancement.serializeToJson(); }

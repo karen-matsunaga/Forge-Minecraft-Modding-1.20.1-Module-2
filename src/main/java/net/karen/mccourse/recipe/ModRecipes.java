@@ -1,7 +1,6 @@
 package net.karen.mccourse.recipe;
 
 import net.karen.mccourse.MCCourseMod;
-import net.karen.mccourse.screen.CraftCraftingTableMenu;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -22,8 +21,8 @@ public class ModRecipes {
     public static final RegistryObject<RecipeSerializer<CraftRecipe>> CRAFT_SERIALIZER =
             SERIALIZERS.register("craft", () -> CraftRecipe.Serializer.INSTANCE);
 
-//    public static final RegistryObject<RecipeSerializer<CraftCraftingTableRecipe>> CRAFT_CRAFTING_TABLE_SERIALIZER =
-//            SERIALIZERS.register("craft_crafting_table", () -> CraftCraftingTableRecipe.Serializer.INSTANCE);
+        public static final RegistryObject<RecipeSerializer<EnchantedRecipe>> ENCHANTED_SERIALIZER =
+            SERIALIZERS.register("enchanted", () -> EnchantedRecipe.Serializer.INSTANCE);
 
     // Register all recipes on Forge
     public static void register(IEventBus eventBus) { SERIALIZERS.register(eventBus); }
