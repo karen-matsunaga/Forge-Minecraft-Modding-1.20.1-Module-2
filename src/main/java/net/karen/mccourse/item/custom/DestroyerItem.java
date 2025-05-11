@@ -1,6 +1,5 @@
 package net.karen.mccourse.item.custom;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -22,18 +21,23 @@ public class DestroyerItem extends Item {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player,
                                                            @NotNull InteractionHand hand) {
+        // Player has Destroyer item on Main hand
         if (level.isClientSide()) {
             return InteractionResultHolder.pass(player.getItemInHand(hand));
         }
 
-        BlockPos pos = player.blockPosition();
-        BlockState state = level.getBlockState(pos.below()); // Block below the player
+        // Block below the player
+        BlockState state = level.getBlockState(player.blockPosition().below());
+
+        // Items received according to the block clicked
         ItemStack targetItem = new ItemStack(state.getBlock().asItem());
 
+        // All recipes from Crafting Recipe
         List<Recipe<?>> matchingRecipes = level.getRecipeManager().getRecipes().stream()
                 .filter(recipe -> recipe.getResultItem(level.registryAccess()).getItem()
                         == targetItem.getItem()).toList();
 
+        // If not has recipe display on screen message
         if (matchingRecipes.isEmpty()) {
             player.displayClientMessage(Component.literal("No recipes found for this item."), true);
             return InteractionResultHolder.success(player.getItemInHand(hand));
@@ -43,18 +47,16 @@ public class DestroyerItem extends Item {
         for (Recipe<?> recipe : matchingRecipes) {
             NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
+            // Drop all input ingredients also variants to Player's inventory
             for (Ingredient ingredient : ingredients) {
-                ItemStack[] matchingStacks = ingredient.getItems();
-
-                if (matchingStacks.length > 0) {
-                    ItemStack ingredientStack = matchingStacks[0].copy(); // Only the first matching item
-
-                    // Give 1 of the item to the player (you can upgrade this to support larger quantities)
-                    player.getInventory().add(ingredientStack);
+                for (ItemStack possibleMatch : ingredient.getItems()) {
+                    ItemStack stackToGive = possibleMatch.copy();
+                    player.getInventory().add(stackToGive);
                 }
             }
         }
 
+        // Display on screen message when has recipe and Player received items on inventory
         player.displayClientMessage(Component.literal("Ingredients returned from " +
                 matchingRecipes.size() + " recipes."), true);
         return InteractionResultHolder.success(player.getItemInHand(hand));
