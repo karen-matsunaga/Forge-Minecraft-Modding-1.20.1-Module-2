@@ -76,9 +76,7 @@ public class CraftCraftingTableMenu extends RecipeBookMenu<CraftingContainer> {
     }
 
     public void slotsChanged(@NotNull Container pInventory) {
-        this.access.execute((p_39386_, p_39387_) -> {
-            slotChangedCraftingGrid(this, p_39386_, this.player, this.craftSlots, this.resultSlots);
-        });
+        this.access.execute((p_39386_, p_39387_) -> slotChangedCraftingGrid(this, p_39386_, this.player, this.craftSlots, this.resultSlots));
     }
 
     @Override
@@ -99,9 +97,7 @@ public class CraftCraftingTableMenu extends RecipeBookMenu<CraftingContainer> {
 
     public void removed(@NotNull Player pPlayer) {
         super.removed(pPlayer);
-        this.access.execute((p_39371_, p_39372_) -> {
-            this.clearContainer(pPlayer, this.craftSlots);
-        });
+        this.access.execute((p_39371_, p_39372_) -> this.clearContainer(pPlayer, this.craftSlots));
     }
 
     @Override
@@ -137,9 +133,7 @@ public class CraftCraftingTableMenu extends RecipeBookMenu<CraftingContainer> {
             itemstack = itemstack1.copy();
 
             if (pIndex == RESULT_SLOT) {
-                this.access.execute((level, pos) -> {
-                    itemstack1.getItem().onCraftedBy(itemstack1, level, pPlayer);
-                });
+                this.access.execute((level, pos) -> itemstack1.getItem().onCraftedBy(itemstack1, level, pPlayer));
                 // Result -> Player Inventory
                 if (!this.moveItemStackTo(itemstack1, PLAYER_INV_FIRST_SLOT, PLAYER_INV_LAST_SLOT + 1, true)) {
                     return ItemStack.EMPTY;
