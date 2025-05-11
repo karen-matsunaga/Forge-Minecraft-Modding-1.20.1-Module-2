@@ -21,6 +21,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.IntStream;
@@ -34,7 +35,7 @@ public class DisenchantedBlockEntity extends RandomizableContainerBlockEntity im
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void load(@NotNull CompoundTag compound) {
         super.load(compound);
         if (!this.tryLoadLootTable(compound))
             this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
@@ -42,7 +43,7 @@ public class DisenchantedBlockEntity extends RandomizableContainerBlockEntity im
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
+    public void saveAdditional(@NotNull CompoundTag compound) {
         super.saveAdditional(compound);
         if (!this.trySaveLootTable(compound)) { ContainerHelper.saveAllItems(compound, this.stacks); }
     }
@@ -51,7 +52,7 @@ public class DisenchantedBlockEntity extends RandomizableContainerBlockEntity im
     public ClientboundBlockEntityDataPacket getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
 
     @Override
-    public CompoundTag getUpdateTag() { return this.saveWithFullMetadata(); }
+    public @NotNull CompoundTag getUpdateTag() { return this.saveWithFullMetadata(); }
 
     @Override
     public int getContainerSize() { return stacks.size(); }
@@ -60,41 +61,38 @@ public class DisenchantedBlockEntity extends RandomizableContainerBlockEntity im
     public boolean isEmpty() { for (ItemStack itemstack : this.stacks) { if (!itemstack.isEmpty()) { return false; } } return true; }
 
     @Override
-    public Component getDefaultName() { return Component.literal("disenchant"); }
+    public @NotNull Component getDefaultName() { return Component.literal("disenchant"); }
 
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory inventory) {
+    public @NotNull AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory) {
         return new DisenchantedMenu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(this.worldPosition));
     }
 
     @Override
-    public int getMaxStackSize() { return 2304; }
+    public @NotNull Component getDisplayName() { return Component.literal("Disenchant"); }
 
     @Override
-    public Component getDisplayName() { return Component.literal("Disenchant"); }
+    protected @NotNull NonNullList<ItemStack> getItems() { return this.stacks; }
 
     @Override
-    protected NonNullList<ItemStack> getItems() { return this.stacks; }
+    protected void setItems(@NotNull NonNullList<ItemStack> stacks) { this.stacks = stacks; }
 
     @Override
-    protected void setItems(NonNullList<ItemStack> stacks) { this.stacks = stacks; }
+    public boolean canPlaceItem(int index, @NotNull ItemStack stack) { return index != 2; }
 
     @Override
-    public boolean canPlaceItem(int index, ItemStack stack) { if (index == 2) { return false; } return true; }
+    public int @NotNull [] getSlotsForFace(@NotNull Direction side) { return IntStream.range(0, this.getContainerSize()).toArray(); }
 
     @Override
-    public int[] getSlotsForFace(Direction side) { return IntStream.range(0, this.getContainerSize()).toArray(); }
-
-    @Override
-    public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction direction) {
+    public boolean canPlaceItemThroughFace(int index, @NotNull ItemStack stack, @Nullable Direction direction) {
         return this.canPlaceItem(index, stack);
     }
 
     @Override
-    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) { return true; }
+    public boolean canTakeItemThroughFace(int index, @NotNull ItemStack stack, @NotNull Direction direction) { return true; }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction facing) {
         if (!this.remove && facing != null && capability == ForgeCapabilities.ITEM_HANDLER)
             return handlers[facing.ordinal()].cast();
         return super.getCapability(capability, facing);
