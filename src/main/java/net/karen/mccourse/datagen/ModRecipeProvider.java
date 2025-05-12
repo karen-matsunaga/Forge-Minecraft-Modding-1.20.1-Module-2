@@ -254,6 +254,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 Items.NETHER_STAR, Items.ENCHANTED_GOLDEN_APPLE), pWriter);
         craftSevenItems(List.of(ModBlocks.GEM_EMPOWERING_STATION.get(), Items.FURNACE, ModItems.ALEXANDRITE.get(),
                 Items.BOOK), pWriter); // Gem Empowering Station
+        craftSevenItems(List.of(ModBlocks.MAGIC_BLOCK.get(), Items.ENCHANTING_TABLE, Items.ANVIL,
+                Items.BOOK), pWriter);
     }
 
     // Smelting

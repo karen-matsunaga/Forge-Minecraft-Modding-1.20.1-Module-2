@@ -183,6 +183,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         // Block generator
         blockWithItem(ModBlocks.MCCOURSE_GENERATOR);
         blockWithItem(ModBlocks.MCCOURSE_ELEVATOR);
+        blockWithItem(ModBlocks.MAGIC_BLOCK);
 
         // Furnace
         registerFurnace(ModBlocks.KAUPEN_FURNACE_BLOCK);

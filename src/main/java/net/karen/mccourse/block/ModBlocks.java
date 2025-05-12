@@ -420,6 +420,13 @@ public class ModBlocks {
                     .sound(SoundType.WOOL)
                     .strength(5F, 1200.F)));
 
+    // Magic block
+    public static final RegistryObject<Block> MAGIC_BLOCK = registerBlock("magic",
+            () -> new MagicBlock(BlockBehaviour.Properties.of()
+                    .lightLevel(state -> 15)
+                    .sound(SoundType.LARGE_AMETHYST_BUD)
+                    .strength(5F, 1200.F)));
+
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
