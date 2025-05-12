@@ -30,6 +30,8 @@
       "ArrowDamageEnchantmentMixin",
       "TridentImpalerEnchantmentMixin",
       "TridentLoyaltyEnchantmentMixin",
-      "TridentRiptideEnchantmentMixin"
+      "TridentRiptideEnchantmentMixin",
+      "AnvilMenuMixin",
+      "AnvilScreenMixin"
   ]
 }
