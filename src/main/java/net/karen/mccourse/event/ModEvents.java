@@ -1196,6 +1196,7 @@ public class ModEvents {
                         if (!anvils.contains(state.getBlock())) { continue; }
 
                         BlockPos blockBelow = pos.below(); // The item is below the anvil
+
                         // Pick up the items on the ground below the anvil - small area below the anvil
                         List<ItemEntity> itemsBelow = world.getEntitiesOfClass(ItemEntity.class,
                                 new AABB(pos.below()).inflate(0.25));
@@ -1206,14 +1207,11 @@ public class ModEvents {
                             // Get all enchantments of the item
                             Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
 
-                            // Real item is an enchanted book
-                            boolean isBook = item.getItem() instanceof EnchantedBookItem;
-
                             // Ignore if item has no enchantments
                             if (enchantments.isEmpty()) { return; }
 
                             // Only process if it's not a previously split book (to avoid infinite loop)
-                            if (isBook && enchantments.size() == 1) { return; }
+                            if (item.is(Items.ENCHANTED_BOOK) && enchantments.size() == 1) { return; }
 
                             // Drop an enchanted book with the enchantments of tool, armor, etc.
                             if (!item.is(Items.ENCHANTED_BOOK)) {
@@ -1227,7 +1225,6 @@ public class ModEvents {
                                 // Drop enchanted book
                                 world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
                                         blockBelow.getY() + 1, blockBelow.getZ() + 0.5, enchantedBook));
-
 
                                 // Drop the base item without enchantments
                                 ItemStack baseItem = item.copy();
