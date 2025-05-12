@@ -51,6 +51,7 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Slime;
@@ -58,18 +59,21 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -1172,6 +1176,92 @@ public class ModEvents {
                 Block.dropResources(state, level, pos, null, player, heldItem);
                 level.setBlock(pos, block.defaultBlockState(), 3);
                 damageToolIfHoe(heldItem, player);
+            }
+        }
+    }
+
+    // CUSTOM EVENT - Anvil disenchanted event
+    @SubscribeEvent
+    public static void anvilDisenchant(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            for (ServerLevel world : event.getServer().getAllLevels()) {
+                for (Entity entity : world.getAllEntities()) {
+                    if (entity instanceof FallingBlockEntity fallingBlockEntity) {
+                        BlockState state = fallingBlockEntity.getBlockState(); // Anvil state
+                        BlockPos pos = fallingBlockEntity.blockPosition(); // Anvil position
+                        // List of blocks that accept disenchanted items
+                        List<Block> anvils = List.of(Blocks.ANVIL, Blocks.CHIPPED_ANVIL, Blocks.DAMAGED_ANVIL);
+
+                        // Check if the dropped block is an anvil
+                        if (!anvils.contains(state.getBlock())) { continue; }
+
+                        BlockPos blockBelow = pos.below(); // The item is below the anvil
+                        // Pick up the items on the ground below the anvil - small area below the anvil
+                        List<ItemEntity> itemsBelow = world.getEntitiesOfClass(ItemEntity.class,
+                                new AABB(pos.below()).inflate(0.25));
+
+                        // Armors, tools or enchanted books drops
+                        for (ItemEntity itemEntity : itemsBelow) {
+                            ItemStack item = itemEntity.getItem(); // Get real item
+                            // Get all enchantments of the item
+                            Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
+
+                            // Real item is an enchanted book
+                            boolean isBook = item.getItem() instanceof EnchantedBookItem;
+
+                            // Ignore if item has no enchantments
+                            if (enchantments.isEmpty()) { return; }
+
+                            // Only process if it's not a previously split book (to avoid infinite loop)
+                            if (isBook && enchantments.size() == 1) { return; }
+
+                            // Drop an enchanted book with the enchantments of tool, armor, etc.
+                            if (!item.is(Items.ENCHANTED_BOOK)) {
+                                // It's a tool/armor/etc.
+                                ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
+                                // Added each enchantment found on tool, armor, etc.
+                                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                                    EnchantedBookItem.addEnchantment(enchantedBook,
+                                            new EnchantmentInstance(entry.getKey(), entry.getValue()));
+                                }
+                                // Drop enchanted book
+                                world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
+                                        blockBelow.getY() + 1, blockBelow.getZ() + 0.5, enchantedBook));
+
+
+                                // Drop the base item without enchantments
+                                ItemStack baseItem = item.copy();
+
+                                // Set original item without enchantments
+                                EnchantmentHelper.setEnchantments(Map.of(), baseItem);
+                                baseItem.removeTagKey("StoredEnchantments");
+
+                                // Clean up tag if empty
+                                if (baseItem.hasTag() && Objects.requireNonNull(baseItem.getTag()).isEmpty()) {
+                                    baseItem.setTag(null);
+                                }
+
+                                // Drop the original item
+                                world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
+                                        blockBelow.getY() + 1, blockBelow.getZ() + 0.5, baseItem));
+                            }
+                            // Split each enchantment into individual books
+                            else {
+                                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                                    ItemStack singleBook = new ItemStack(Items.ENCHANTED_BOOK);
+                                    // Added an enchantment found on enchanted book
+                                    EnchantedBookItem.addEnchantment(singleBook,
+                                            new EnchantmentInstance(entry.getKey(), entry.getValue()));
+                                    // Drop individual enchanted book
+                                    world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
+                                            blockBelow.getY() + 1, blockBelow.getZ() + 0.5, singleBook));
+                                }
+                            }
+                            // Remove the original item (to avoid reprocessing)
+                            itemEntity.discard();
+                        }
+                    }
+                }
             }
         }
     }
