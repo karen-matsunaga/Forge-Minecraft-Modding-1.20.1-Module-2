@@ -12,30 +12,24 @@
   "block.mccourse.nether_alexandrite_ore": "Nether Alexandrite Ore",
 
   "block.mccourse.sound_block": "Sound Block",
-
   "block.mccourse.alexandrite_stairs": "Alexandrite Stairs",
   "block.mccourse.alexandrite_slabs": "Alexandrite Slab",
   "block.mccourse.alexandrite_pressure_plate": "Alexandrite Pressure Plate",
   "block.mccourse.alexandrite_button": "Alexandrite Button",
-
   "block.mccourse.alexandrite_fence": "Alexandrite Fence",
   "block.mccourse.alexandrite_fence_gate": "Alexandrite Fence Gate",
   "block.mccourse.alexandrite_wall": "Alexandrite Wall",
-
   "block.mccourse.alexandrite_door": "Alexandrite Door",
   "block.mccourse.alexandrite_trapdoor": "Alexandrite Trapdoor",
 
   "creativetab.course_tab": "Course Tab",
 
   "item.mccourse.metal_detector.no_valuable_values": "No Valuables Found!",
-
   "item.mccourse.kohlrabi": "Kohlrabi",
-
   "item.mccourse.peat_brick": "Peat Brick",
 
   "tooltip.mccourse.metal_detector.tooltip.shift": "Right Click on Blocks to find Valuables!",
   "tooltip.mccourse.metal_detector.tooltip": "Press §eSHIFT§r for more Information",
-
   "tooltip.mccourse.sound_block": "Plays nice sounds when walking or right-clicking.",
 
   "item.mccourse.alexandrite_sword": "Alexandrite Sword",
@@ -43,16 +37,12 @@
   "item.mccourse.alexandrite_shovel": "Alexandrite Shovel",
   "item.mccourse.alexandrite_axe": "Alexandrite Axe",
   "item.mccourse.alexandrite_hoe": "Alexandrite Hoe",
-
   "item.mccourse.alexandrite_paxel": "Alexandrite Paxel",
-
   "item.mccourse.alexandrite_hammer": "Alexandrite Hammer",
-
   "item.mccourse.alexandrite_helmet": "Alexandrite Helmet",
   "item.mccourse.alexandrite_chestplate": "Alexandrite Chestplate",
   "item.mccourse.alexandrite_leggings": "Alexandrite Leggings",
   "item.mccourse.alexandrite_boots": "Alexandrite Boots",
-
   "item.mccourse.alexandrite_horse_armor": "Alexandrite Horse Armor",
 
   "enchantment.mccourse.lightning_striker": "Lightning Striker",
@@ -68,7 +58,6 @@
   "block.mccourse.alexandrite_lamp": "Alexandrite Lamp",
 
   "item.mccourse.data_tablet": "Data Tablet",
-
   "item.mccourse.kohlrabi_seeds": "Kohlrabi Seeds",
 
   "block.mccourse.snapdragon": "Snapdragon",
@@ -80,13 +69,10 @@
   "item.mccourse.bar_brawl_record.desc": "Bryan Tech - Bar Brawl (CC0)",
 
   "block.mccourse.gem_empowering_station": "Gem Empowering Station",
-
   "block.mccourse.disenchanted": "Disenchanted",
 
   "item.mccourse.radiation_staff": "Radiation Staff",
-
   "item.mccourse.alexandrite_bow": "Alexandrite Bow",
-
   "item.mccourse.alexandrite_shield": "Alexandrite Shield",
 
   "painting.mccourse.world.title": "World",
@@ -97,28 +83,21 @@
   "painting.mccourse.saw_them.author": "NanoAttack",
 
   "effect.mccourse.slimey": "Slimey",
-
   "item.minecraft.potion.effect.slimey_potion": "Slimey Potion",
   "item.minecraft.splash_potion.effect.slimey_potion": "Slimey Splash Potion",
   "item.minecraft.lingering_potion.effect.slimey_potion": "Slimey Lingering Potion",
-
   "item.minecraft.tipped_arrow.effect.slimey_potion": "Arrow of Slimey",
 
   "effect.mccourse.fly": "Fly",
-
   "item.minecraft.potion.effect.fly_potion": "Fly Potion",
   "item.minecraft.splash_potion.effect.fly_potion": "Fly Splash Potion",
   "item.minecraft.lingering_potion.effect.fly_potion": "Fly Lingering Potion",
-
   "item.minecraft.tipped_arrow.effect.fly_potion": "Arrow of Fly",
 
   "item.minecraft.potion.effect.haste_potion": "Haste Potion",
   "item.minecraft.splash_potion.effect.haste_potion": "Haste Splash Potion",
   "item.minecraft.lingering_potion.effect.haste_potion": "Haste Lingering Potion",
-
   "item.minecraft.tipped_arrow.effect.haste_potion": "Arrow of Haste",
-
-  "item.minecraft.tipped_arrow.effect.nothing_potion": "Arrow of Nothing",
 
   "entity.minecraft.villager.mccourse.soundmaster": "Soundmaster",
 
@@ -135,18 +114,16 @@
   "block.mccourse.stripped_walnut_wood": "Stripped Walnut Wood",
   "block.mccourse.walnut_leaves": "Walnut Leaves",
   "block.mccourse.walnut_sapling": "Walnut Sapling",
-
   "block.mccourse.walnut_sign": "Walnut Sign",
   "block.mccourse.walnut_hanging_sign": "Walnut Hanging Sign",
 
   "item.mccourse.rhino_spawn_egg": "Rhino Spawn Egg",
-
   "entity.mccourse.rhino": "Rhino",
   "entity.mccourse.white_rhino": "White Rhino",
-  "entity.mccourse.mod_chest_boat": "Chest Boat",
 
   "item.mccourse.dice": "Dice",
 
+  "entity.mccourse.mod_chest_boat": "Chest Boat",
   "item.mccourse.walnut_boat": "Walnut Boat",
   "item.mccourse.walnut_chest_boat": "Walnut Chest Boat",
 
@@ -189,10 +166,16 @@
   "item.mccourse.farmer": "Farmer",
 
   "effect.mccourse.nothing": "Nothing",
-
   "item.minecraft.potion.effect.nothing_potion": "Nothing Potion",
   "item.minecraft.splash_potion.effect.nothing_potion": "Nothing Splash Potion",
   "item.minecraft.lingering_potion.effect.nothing_potion": "Nothing Lingering Potion",
+  "item.minecraft.tipped_arrow.effect.nothing_potion": "Arrow of Nothing",
+
+  "effect.mccourse.overpower_fly": "Overpower Fly",
+  "item.minecraft.potion.effect.overpower_fly_potion": "Overpower Fly Potion",
+  "item.minecraft.splash_potion.effect.overpower_fly_potion": "Overpower Fly Splash Potion",
+  "item.minecraft.lingering_potion.effect.overpower_fly_potion": "Overpower Fly Lingering Potion",
+  "item.minecraft.tipped_arrow.effect.overpower_fly_potion": "Arrow of Overpower Fly",
 
   "item.mccourse.blue_modes": "Blue Modes",
   "item.mccourse.green_modes": "Green Modes",

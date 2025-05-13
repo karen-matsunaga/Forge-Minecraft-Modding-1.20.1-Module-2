@@ -197,11 +197,14 @@ public class ModEvents {
         if (event.getEntity() instanceof Sheep) {
             if (event.getSource().getDirectEntity() instanceof Player player) {
                 if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == ModItems.ALEXANDRITE_AXE.get()) {
-                    MCCourseMod.LOGGER.info("Sheep was hit with Alexandrite Axe by {}", player.getName().getString());
+                    MCCourseMod.LOGGER.info("Sheep was hit with Alexandrite Axe by {}",
+                            player.getName().getString());
                 } else if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == Items.DIAMOND) {
-                    MCCourseMod.LOGGER.info("Sheep was hit with DIAMOND by {}", player.getName().getString());
+                    MCCourseMod.LOGGER.info("Sheep was hit with DIAMOND by {}",
+                            player.getName().getString());
                 } else {
-                    MCCourseMod.LOGGER.info("Sheep was hit with something else by {}", player.getName().getString());
+                    MCCourseMod.LOGGER.info("Sheep was hit with something else by {}",
+                            player.getName().getString());
                 }
             }
         }
@@ -402,7 +405,8 @@ public class ModEvents {
         if (world instanceof Level level) {
             ItemStack smeltResult = level.getRecipeManager()
                     .getRecipeFor(RecipeType.SMELTING,
-                            new SimpleContainer(new ItemStack(world.getBlockState(blockPos).getBlock())), level)
+                            new SimpleContainer(
+                                    new ItemStack(world.getBlockState(blockPos).getBlock())), level)
                     .map(recipe -> recipe.getResultItem(level.registryAccess()).copy())
                     .orElse(ItemStack.EMPTY);
 
@@ -584,7 +588,8 @@ public class ModEvents {
                 player.getItemBySlot(EquipmentSlot.CHEST).is(ModTags.Items.CHESTPLATE_FLY) &&
                 player.getItemBySlot(EquipmentSlot.LEGS).is(ModTags.Items.LEGGINGS_FLY) &&
                 player.getItemBySlot(EquipmentSlot.FEET).is(ModTags.Items.BOOTS_FLY); // Player used FULL ARMOR
-        boolean hasFlyEffect = player.hasEffect(ModEffects.FLY_EFFECT.get()); // Player has FLY EFFECT
+        boolean hasFlyEffect = player.hasEffect(ModEffects.FLY_EFFECT.get()) ||
+                player.hasEffect(ModEffects.OVERPOWER_FLY_EFFECT.get()); // Player has FLY EFFECT
         if (hasArmor || hasFlyEffect) { // Player has FULL ARMOR or FLY EFFECT
             if (!player.getAbilities().mayfly) {
                 player.getAbilities().mayfly = true;
@@ -610,11 +615,13 @@ public class ModEvents {
             GlowingBlocksNetworkMessage.SyncedSavedData worldData =
                     GlowingBlocksNetworkMessage.WorldVariables.get(event.getEntity().level());
             if (mapData != null) {
-                ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
+                ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() ->
+                                (ServerPlayer) event.getEntity()),
                         new GlowingBlocksNetworkMessage.SavedDataSyncMessage(mapData));
             }
             if (worldData != null) {
-                ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
+                ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() ->
+                                (ServerPlayer) event.getEntity()),
                         new GlowingBlocksNetworkMessage.SavedDataSyncMessage(worldData));
             }
         }
@@ -627,7 +634,8 @@ public class ModEvents {
             GlowingBlocksNetworkMessage.SyncedSavedData worldData =
                     GlowingBlocksNetworkMessage.WorldVariables.get(event.getEntity().level());
             if (worldData != null) {
-                ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()),
+                ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() ->
+                                (ServerPlayer) event.getEntity()),
                         new GlowingBlocksNetworkMessage.SavedDataSyncMessage(worldData));
             }
         }
@@ -672,7 +680,9 @@ public class ModEvents {
     }
 
     // Before creating the blocks, cleaning is done
-    private static void clear() { if (vertexBuffer != null) { vertexBuffer.close(); vertexBuffer = null; } }
+    private static void clear() { if (vertexBuffer != null) {
+        vertexBuffer.close(); vertexBuffer = null; }
+    }
 
     // After creating the block
     private static void end() {
@@ -685,7 +695,8 @@ public class ModEvents {
     }
 
     // Render block shape
-    private static void renderShape(VertexBuffer vertexBuffer, double x, double y, double z, int color) {
+    private static void renderShape(VertexBuffer vertexBuffer,
+                                    double x, double y, double z, int color) {
         if (currentStage == 0 || currentStage != targetStage) { return; }
         if (poseStack == null || projectionMatrix == null) { return; }
         if (vertexBuffer == null) { return; }
@@ -839,9 +850,11 @@ public class ModEvents {
         }
     }
 
-    private static boolean isLog(BlockState state) { return state.is(BlockTags.LOGS); } // Check if it is a log
+    // Check if it is a log
+    private static boolean isLog(BlockState state) { return state.is(BlockTags.LOGS); }
 
-    private static boolean isLeaf(BlockState state) { return state.is(BlockTags.LEAVES); } // Check if it's a leaf
+    // Check if it's a leaf
+    private static boolean isLeaf(BlockState state) { return state.is(BlockTags.LEAVES); }
 
     // BFS (or DFS) search for connected logs and leaves
     private static Set<BlockPos> findConnectedLogsAndLeaves(Level level, BlockPos start) {
