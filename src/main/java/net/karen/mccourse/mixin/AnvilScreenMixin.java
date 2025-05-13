@@ -7,9 +7,9 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(AnvilScreen.class)
 public class AnvilScreenMixin {
-    // Remove Too Expensive! message only Client side
+    // Remove Too Expensive! message only CLIENT side -> i >= 40
     @ModifyConstant(method = "renderLabels", constant = @Constant(intValue = 40))
-    private int mixinLimitInt(int i) {
+    private int renderLabelsLimitInt(int value) {
         return Integer.MAX_VALUE;
     }
 }
