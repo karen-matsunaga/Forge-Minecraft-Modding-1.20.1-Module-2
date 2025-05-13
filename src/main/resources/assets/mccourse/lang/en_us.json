@@ -45,16 +45,6 @@
   "item.mccourse.alexandrite_boots": "Alexandrite Boots",
   "item.mccourse.alexandrite_horse_armor": "Alexandrite Horse Armor",
 
-  "enchantment.mccourse.lightning_striker": "Lightning Striker",
-  "enchantment.mccourse.glowing_mobs": "Glowing Mobs",
-  "enchantment.mccourse.glowing_blocks": "Glowing Blocks",
-  "enchantment.mccourse.more_ores": "More Ores",
-  "enchantment.mccourse.magnetic": "Magnetic",
-  "enchantment.mccourse.auto_smelt": "Auto Smelt",
-  "enchantment.mccourse.rainbow": "Rainbow",
-  "enchantment.mccourse.block_fly": "Block Fly",
-  "enchantment.mccourse.protected_item": "Protected Item",
-
   "block.mccourse.alexandrite_lamp": "Alexandrite Lamp",
 
   "item.mccourse.data_tablet": "Data Tablet",
@@ -256,11 +246,22 @@
   "block.mccourse.end_stone_pink_ore": "End Stone Pink Ore",
   "block.mccourse.nether_pink_ore": "Nether Pink Ore",
 
+  "enchantment.mccourse.lightning_striker": "Lightning Striker",
+  "enchantment.mccourse.glowing_mobs": "Glowing Mobs",
+  "enchantment.mccourse.glowing_blocks": "Glowing Blocks",
+  "enchantment.mccourse.more_ores": "More Ores",
+  "enchantment.mccourse.magnetic": "Magnetic",
+  "enchantment.mccourse.auto_smelt": "Auto Smelt",
+  "enchantment.mccourse.rainbow": "Rainbow",
+  "enchantment.mccourse.block_fly": "Block Fly",
+  "enchantment.mccourse.protected_item": "Protected Item",
+  "enchantment.mccourse.overpower_mending": "Overpower Mending",
+
   "enchantment.minecraft.efficiency.desc": "When applied on axe, pickaxe, shovel or hoe increases mining speed.",
   "enchantment.minecraft.silk_touch.desc": "When applied on axe, pickaxe, shovel or hoe receives the broken block.",
   "enchantment.minecraft.fortune.desc": "When applied on axe, pickaxe, shovel or hoe receives bonus loot drops of ores.",
 
-  "enchantment.minecraft.mending.desc": "When applied on tools or armor regenerates tools, equipments, etc.",
+  "enchantment.minecraft.mending.desc": "When applied on tools or armor regenerates tools, equipments, etc. only player received XP.",
   "enchantment.minecraft.unbreaking.desc": "When applied on tools or armor increases durability of tools, equipments, etc.",
 
   "enchantment.minecraft.protection.desc": "When applied on armor add bonus damage reduction.",
@@ -317,5 +318,6 @@
   "enchantment.mccourse.more_ores.desc": "When applied on pickaxe if a stone block is break has a percentage to receive ores.",
   "enchantment.mccourse.rainbow.desc": "When applied on pickaxe the broken ore is replaced and turned on an ore block.",
   "enchantment.mccourse.block_fly.desc": "When applied on pickaxe if player has flying speed mining equals if player has on ground.",
-  "enchantment.mccourse.protected_item.desc": "When applied on pickaxe if player death all items enchanted with Protected Item enchantment back into Player inventory."
+  "enchantment.mccourse.protected_item.desc": "When applied to tools, armor, etc. remain in the Player's inventory upon death.",
+  "enchantment.mccourse.overpower_mending.desc": "When applied to tools, armor, etc. are regenerate on Player's inventory."
 }

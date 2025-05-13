@@ -67,6 +67,12 @@ public class ModEnchantments {
                     () -> new ProtectedItemEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE,
                             EquipmentSlot.values()));
 
+    // Overpower mending enchantment - Armor and Tools enchantment
+    public static final RegistryObject<Enchantment> OVERPOWER_MENDING =
+            ENCHANTMENTS.register("overpower_mending",
+                    () -> new OverpowerMendingEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE,
+                            EquipmentSlot.values()));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }

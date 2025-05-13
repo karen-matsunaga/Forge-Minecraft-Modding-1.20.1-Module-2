@@ -1227,52 +1227,78 @@ public class ModEvents {
                             if (item.is(Items.ENCHANTED_BOOK) && enchantments.size() == 1) { return; }
 
                             // Drop an enchanted book with the enchantments of tool, armor, etc.
-                            if (!item.is(Items.ENCHANTED_BOOK)) {
-                                // It's a tool/armor/etc.
-                                ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
-                                // Added each enchantment found on tool, armor, etc.
-                                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                                    EnchantedBookItem.addEnchantment(enchantedBook,
-                                            new EnchantmentInstance(entry.getKey(), entry.getValue()));
-                                }
-                                // Drop enchanted book
+                            // It's a tool/armor/etc.
+                            ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
+                            // Added each enchantment found on tool, armor, etc.
+
+                            // Split each enchantment into individual books
+                            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                                // Added an enchantment found on enchanted book
+                                EnchantedBookItem.addEnchantment(enchantedBook,
+                                        new EnchantmentInstance(entry.getKey(), entry.getValue()));
+                                // Drop individual enchanted book
                                 world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
                                         blockBelow.getY() + 1, blockBelow.getZ() + 0.5, enchantedBook));
-
-                                // Drop the base item without enchantments
-                                ItemStack baseItem = item.copy();
-
-                                // Set original item without enchantments
-                                EnchantmentHelper.setEnchantments(Map.of(), baseItem);
-                                baseItem.removeTagKey("StoredEnchantments");
-
-                                // Clean up tag if empty
-                                if (baseItem.hasTag() && Objects.requireNonNull(baseItem.getTag()).isEmpty()) {
-                                    baseItem.setTag(null);
-                                }
-
-                                // Drop the original item
-                                world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
-                                        blockBelow.getY() + 1, blockBelow.getZ() + 0.5, baseItem));
                             }
-                            // Split each enchantment into individual books
-                            else {
-                                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                                    ItemStack singleBook = new ItemStack(Items.ENCHANTED_BOOK);
-                                    // Added an enchantment found on enchanted book
-                                    EnchantedBookItem.addEnchantment(singleBook,
-                                            new EnchantmentInstance(entry.getKey(), entry.getValue()));
-                                    // Drop individual enchanted book
-                                    world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
-                                            blockBelow.getY() + 1, blockBelow.getZ() + 0.5, singleBook));
-                                }
+
+                            // Drop the base item without enchantments
+                            ItemStack baseItem = item.copy();
+
+                            // Set original item without enchantments
+                            EnchantmentHelper.setEnchantments(Map.of(), baseItem);
+                            baseItem.removeTagKey("StoredEnchantments");
+
+                            // Clean up tag if empty
+                            if (baseItem.hasTag() && Objects.requireNonNull(baseItem.getTag()).isEmpty()) {
+                                baseItem.setTag(null);
                             }
+
+                            // Drop the original item
+                            world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
+                                    blockBelow.getY() + 1, blockBelow.getZ() + 0.5, baseItem));
+
                             // Remove the original item (to avoid reprocessing)
                             itemEntity.discard();
                         }
                     }
                 }
             }
+        }
+    }
+
+    // CUSTOM EVENT - Overpower Mending custom enchantment
+    private static void repairTool(ItemStack stack) {
+        if (stack.getEnchantmentLevel(ModEnchantments.OVERPOWER_MENDING.get()) > 0) {
+            int currentDamage = stack.getDamageValue();
+            // Repairs 5 point of damage at a time
+            int repairAmount = Math.min(currentDamage, 5);
+            stack.setDamageValue(currentDamage - repairAmount);
+        }
+    }
+
+    @SubscribeEvent
+    public static void activatedOverpowerMending(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END || event.player.level().isClientSide()) { return; }
+        Player player = event.player;
+        Level level = player.level();
+
+        // Desired value for level.getGameTime() % X != 0 (1 second = 20 ticks)
+        // Once every [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks
+        if (level.getGameTime() % 100 != 0) { return; }
+
+        for (ItemStack stack : player.getInventory().items) {
+            if (stack.isEmpty() || !stack.isDamaged()) { continue; }
+            repairTool(stack);
+        }
+
+        for (ItemStack stack : player.getInventory().armor) {
+            if (stack.isEmpty() || !stack.isDamaged()) { continue; }
+            repairTool(stack);
+        }
+
+        for (ItemStack stack : player.getInventory().offhand) {
+            if (stack.isEmpty() || !stack.isDamaged()) { continue; }
+            repairTool(stack);
         }
     }
 }
