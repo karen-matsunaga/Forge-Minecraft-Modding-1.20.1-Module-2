@@ -59,8 +59,22 @@ public class MagicBlock extends Block {
                 }
                 pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX() + 0.5,
                         pPos.getY() + 1, pPos.getZ() + 0.5, enchantedBook));
-            } else {
-                // Split each enchantment into individual books
+
+                // Drop the base item without enchantments
+                ItemStack baseItem = item.copy();
+                baseItem.removeTagKey("Enchantments");
+                baseItem.removeTagKey("StoredEnchantments");
+
+                // Clean up tag if empty
+                if (baseItem.hasTag() && Objects.requireNonNull(baseItem.getTag()).isEmpty()) {
+                    baseItem.setTag(null);
+                }
+
+                pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX() + 0.5,
+                        pPos.getY() + 1, pPos.getZ() + 0.5, baseItem));
+            }
+            // Split each enchantment into individual books
+            else {
                 for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
                     ItemStack singleBook = new ItemStack(Items.ENCHANTED_BOOK);
                     EnchantedBookItem.addEnchantment(singleBook,
@@ -70,19 +84,6 @@ public class MagicBlock extends Block {
                             pPos.getY() + 1, pPos.getZ() + 0.5, singleBook));
                 }
             }
-
-            // Drop the base item without enchantments
-            ItemStack baseItem = item.copy();
-            baseItem.removeTagKey("Enchantments");
-            baseItem.removeTagKey("StoredEnchantments");
-
-            // Clean up tag if empty
-            if (baseItem.hasTag() && Objects.requireNonNull(baseItem.getTag()).isEmpty()) {
-                baseItem.setTag(null);
-            }
-
-            pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX() + 0.5,
-                    pPos.getY() + 1, pPos.getZ() + 0.5, baseItem));
 
             // Remove the original item (to avoid reprocessing)
             itemEntity.discard();
