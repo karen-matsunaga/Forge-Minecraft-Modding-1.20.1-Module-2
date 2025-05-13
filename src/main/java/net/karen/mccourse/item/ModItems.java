@@ -12,14 +12,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.List;
 
 public class ModItems {
     // Register items
@@ -271,31 +268,23 @@ public class ModItems {
     // Modes's custom pickaxes
     public static final RegistryObject<Item> BLUE_MODES = ITEMS.register("blue_modes",
             () -> new ModesPickaxeItem(ModToolTiers.PINK, 2, 3,
-                    new Item.Properties().fireResistant().durability(0), 3,
-                    List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
-                            Enchantments.UNBREAKING, Enchantments.MENDING)));
+                    new Item.Properties().fireResistant().durability(0)));
 
     public static final RegistryObject<Item> GREEN_MODES = ITEMS.register("green_modes",
             () -> new ModesPickaxeItem(ModToolTiers.COPPER, 3, 4,
-                    new Item.Properties().fireResistant().durability(0), 5,
-                    List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
-                            Enchantments.UNBREAKING, Enchantments.MENDING)));
-
-    public static final RegistryObject<Item> PURPLE_MODES = ITEMS.register("purple_modes",
-            () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 4, 5,
-                    new Item.Properties().fireResistant().durability(0), 7,
-                    List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
-                            Enchantments.UNBREAKING, Enchantments.MENDING)));
+                    new Item.Properties().fireResistant().durability(0)));
 
     public static final RegistryObject<Item> ORANGE_MODES = ITEMS.register("orange_modes",
             () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 5, 6,
-                    new Item.Properties().fireResistant().durability(0), 10,
-                    List.of(Enchantments.BLOCK_EFFICIENCY, Enchantments.BLOCK_FORTUNE,
-                            Enchantments.UNBREAKING, Enchantments.MENDING)));
+                    new Item.Properties().fireResistant().durability(0)));
 
     public static final RegistryObject<Item> PINK_MODES = ITEMS.register("pink_modes",
             () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 6, 7,
-                    new Item.Properties().fireResistant().durability(0), 0, List.of()));
+                    new Item.Properties().fireResistant().durability(0)));
+
+    public static final RegistryObject<Item> PURPLE_MODES = ITEMS.register("purple_modes",
+            () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 4, 5,
+                    new Item.Properties().fireResistant().durability(0)));
 
     // Custom hammer
     public static final RegistryObject<Item> COPPER_HAMMER = ITEMS.register("copper_hammer",

@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:diamond_block"
+    },
+    "B": {
+      "item": "mccourse:pink_modes"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "item": "mccourse:green_modes",
+    "nbt": {
+      "Enchantments": [
+        {
+          "id": "minecraft:mending",
+          "lvl": 1
+        },
+        {
+          "id": "minecraft:efficiency",
+          "lvl": 5
+        },
+        {
+          "id": "minecraft:fortune",
+          "lvl": 5
+        },
+        {
+          "id": "minecraft:unbreaking",
+          "lvl": 5
+        }
+      ],
+      "Unbreakable": 1
+    }
+  }
+}

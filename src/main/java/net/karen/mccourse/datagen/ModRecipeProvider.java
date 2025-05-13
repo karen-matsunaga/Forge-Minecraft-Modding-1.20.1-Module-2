@@ -206,10 +206,26 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 Map.of(Enchantments.UNBREAKING, 3, Enchantments.BLOCK_EFFICIENCY, 7, Enchantments.BLOCK_FORTUNE, 5),
                 List.of("A A", " B ", "A A"), List.of("A", "B"), false, true, 5, pWriter);
 
-        // My custom tool enchantment
-        toolEnchanted(List.of(ModItems.BLUE_MODES.get(), Items.DIAMOND, Items.BOOK), pWriter);
-        toolEnchanted(List.of(ModItems.GREEN_MODES.get(), ModItems.PINK.get(), ModItems.BLUE_MODES.get()), pWriter);
-        toolEnchanted(List.of(ModItems.PURPLE_MODES.get(), Items.NETHERITE_INGOT, ModItems.GREEN_MODES.get()), pWriter);
+        // Modes Pickaxes custom recipes
+        enchantItem(List.of(ModItems.BLUE_MODES.get(), Items.LAPIS_BLOCK, Items.NETHERITE_PICKAXE),
+                Map.of(Enchantments.BLOCK_EFFICIENCY, 1, Enchantments.UNBREAKING, 1,
+                        Enchantments.BLOCK_FORTUNE, 1, Enchantments.MENDING, 1),
+                List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 6, pWriter);
+
+        enchantItem(List.of(ModItems.PINK_MODES.get(), ModBlocks.PINK_BLOCK.get(), ModItems.BLUE_MODES.get()),
+                Map.of(Enchantments.BLOCK_EFFICIENCY, 3, Enchantments.UNBREAKING, 3,
+                        Enchantments.BLOCK_FORTUNE, 3, Enchantments.MENDING, 1),
+                List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 7, pWriter);
+
+        enchantItem(List.of(ModItems.GREEN_MODES.get(), Items.DIAMOND_BLOCK, ModItems.PINK_MODES.get()),
+                Map.of(Enchantments.BLOCK_EFFICIENCY, 5, Enchantments.UNBREAKING, 5,
+                        Enchantments.BLOCK_FORTUNE, 5, Enchantments.MENDING, 1),
+                List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 8, pWriter);
+
+        enchantItem(List.of(ModItems.PURPLE_MODES.get(), Items.NETHERITE_BLOCK, ModItems.GREEN_MODES.get()),
+                Map.of(Enchantments.BLOCK_EFFICIENCY, 7, Enchantments.UNBREAKING, 7,
+                        Enchantments.BLOCK_FORTUNE, 7, Enchantments.MENDING, 1),
+                List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 9, pWriter);
 
         // Colored blocks
         coloredBlocks(List.of(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), Items.GREEN_DYE), pWriter);
@@ -411,15 +427,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, item.get(0), 1)
                 .pattern("AA ").pattern(" B ").pattern(" B ")
                 .define('A', item.get(1)).define('B', Items.STICK)
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
-    }
-
-    // Custom tools enchanted
-    public static void toolEnchanted(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0), 1)
-                .pattern("AAA").pattern("ABA").pattern("AAA")
-                .define('A', item.get(1)).define('B', item.get(2))
                 .unlockedBy("has_item", has(item.get(1)))
                 .save(pWriter);
     }

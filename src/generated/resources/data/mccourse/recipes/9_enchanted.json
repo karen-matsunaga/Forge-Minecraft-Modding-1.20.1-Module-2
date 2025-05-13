@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:netherite_block"
+    },
+    "B": {
+      "item": "mccourse:green_modes"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "item": "mccourse:purple_modes",
+    "nbt": {
+      "Enchantments": [
+        {
+          "id": "minecraft:mending",
+          "lvl": 1
+        },
+        {
+          "id": "minecraft:efficiency",
+          "lvl": 7
+        },
+        {
+          "id": "minecraft:fortune",
+          "lvl": 7
+        },
+        {
+          "id": "minecraft:unbreaking",
+          "lvl": 7
+        }
+      ],
+      "Unbreakable": 1
+    }
+  }
+}
