@@ -1,9 +1,11 @@
 package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
+import net.karen.mccourse.entity.ModEntitiesTagGenerator;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
@@ -42,6 +44,11 @@ public class DataGenerators {
 
         // Item Model Provider
         generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, existingFileHelper));
+
+        // Entity Tag Generator
+        EntityTypeTagsProvider entityTypeTagsProvider = new ModEntitiesTagGenerator(packOutput, lookupProvider, existingFileHelper);
+        generator.addProvider(event.includeServer(), entityTypeTagsProvider);
+
         // Block State Provider
         generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, existingFileHelper));
 

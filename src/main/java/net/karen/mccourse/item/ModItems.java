@@ -370,6 +370,9 @@ public class ModItems {
     public static final RegistryObject<Item> DESTROYER = ITEMS.register("destroyer",
             () -> new DestroyerItem(new Item.Properties().fireResistant().stacksTo(1)));
 
+    public static final RegistryObject<Item> FARMER = ITEMS.register("farmer",
+            () -> new FarmerItem(new Item.Properties().fireResistant()));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }

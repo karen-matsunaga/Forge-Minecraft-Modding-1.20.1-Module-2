@@ -17,7 +17,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagGenerator extends BlockTagsProvider {
     public ModBlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
-                                @Nullable ExistingFileHelper existingFileHelper) { super(output, lookupProvider, MCCourseMod.MOD_ID, existingFileHelper); }
+                                @Nullable ExistingFileHelper existingFileHelper) {
+        super(output, lookupProvider, MCCourseMod.MOD_ID, existingFileHelper);
+    }
 
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
@@ -113,12 +115,14 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         // Modes Pickaxe's tag
         this.tag(ModTags.Blocks.MORE_ORES_MODES_PICKAXE_DROPS) // Modes Pickaxe's Mores Ores mode
                 .add(Blocks.COAL_ORE, Blocks.COPPER_ORE, Blocks.IRON_ORE, Blocks.LAPIS_ORE, Blocks.REDSTONE_ORE,
-                     Blocks.GOLD_ORE, Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE, Blocks.ANCIENT_DEBRIS, Blocks.NETHER_QUARTZ_ORE);
+                     Blocks.GOLD_ORE, Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE, Blocks.ANCIENT_DEBRIS,
+                     Blocks.NETHER_QUARTZ_ORE);
 
         // Mobs Blocks
         this.tag(ModTags.Blocks.MOBS_BLOCKS_DROPS)
-                .add(ModBlocks.ENDER_PEARL_BLOCK.get(), ModBlocks.NETHER_STAR_BLOCK.get(), ModBlocks.GUNPOWDER_BLOCK.get(),
-                     ModBlocks.ROTTEN_FLESH_BLOCK.get(), ModBlocks.BLAZE_ROD_BLOCK.get());
+                .add(ModBlocks.ENDER_PEARL_BLOCK.get(), ModBlocks.NETHER_STAR_BLOCK.get(),
+                     ModBlocks.GUNPOWDER_BLOCK.get(), ModBlocks.ROTTEN_FLESH_BLOCK.get(),
+                     ModBlocks.BLAZE_ROD_BLOCK.get());
 
         // My custom ores tags
         this.tag(ModTags.Blocks.PINK_ORES)
@@ -134,7 +138,14 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .addTag(ModTags.Blocks.ALEXANDRITE_ORES);
 
         this.tag(ModTags.Blocks.MCCOURSE_ORES_BLOCK)
-                .add(ModBlocks.PINK_BLOCK.get(), ModBlocks.ALEXANDRITE_BLOCK.get(), ModBlocks.RAW_ALEXANDRITE_BLOCK.get());
+                .add(ModBlocks.PINK_BLOCK.get(), ModBlocks.ALEXANDRITE_BLOCK.get(),
+                     ModBlocks.RAW_ALEXANDRITE_BLOCK.get());
+
+        this.tag(ModTags.Blocks.FARMER_INSTANT_GROWABLES)
+                .add(Blocks.SUGAR_CANE, Blocks.CACTUS, Blocks.NETHER_WART, Blocks.TWISTING_VINES,
+                     Blocks.WEEPING_VINES, Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS, ModBlocks.KOHLRABI_CROP.get())
+                .addTag(BlockTags.SAPLINGS)
+                .addTag(BlockTags.CROPS);
     }
 
     @Override

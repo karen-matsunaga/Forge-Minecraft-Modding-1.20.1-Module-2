@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:bone_meal"
+    }
+  },
+  "pattern": [
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA"
+  ],
+  "result": {
+    "item": "mccourse:farmer"
+  },
+  "show_notification": true
+}

@@ -1,10 +1,12 @@
 package net.karen.mccourse.util;
 
 import net.karen.mccourse.MCCourseMod;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -70,10 +72,31 @@ public class ModTags {
         public static final TagKey<Block> MCCOURSE_ORES_BLOCK = tag("blocks/mccourse_ores_block");
         public static final TagKey<Block> MCCOURSE_ORES = tag("blocks/mccourse_ores");
 
+        // Created Farmer tag
+        public static final TagKey<Block> FARMER_INSTANT_GROWABLES = tag("blocks/farmer_instant_growables");
+
         // Pass block id
         private static TagKey<Block> tag(String name) { return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }
 
         // Pass block id in Forge
         private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
+    }
+
+    // Entities
+    public static class Entities {
+        // Created Entities's tags HERE
+        public static final TagKey<EntityType<?>> MCCOURSE_ENTITIES = tag("entities/mccourse_entities");
+
+        public static final TagKey<EntityType<?>> MCCOURSE_BOSSES = tag("entities/mccourse_bosses");
+
+        // Pass entities id
+        private static TagKey<EntityType<?>> tag(String name) {
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(MCCourseMod.MOD_ID, name));
+        }
+
+        // Pass entities id in Forge
+        private static TagKey<EntityType<?>> forgeTag(String name) {
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge", name));
+        }
     }
 }

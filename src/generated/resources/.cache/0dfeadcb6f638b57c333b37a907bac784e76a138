@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-12T23:17:34.796196	Item Models: mccourse
+// 1.20.1	2025-05-13T12:00:50.1614598	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 cfc705788577468640df77a99d391497448608d0 assets/mccourse/models/item/alexandrite_button.json
@@ -33,6 +33,7 @@ a567576897ca2ce8cebbb3e1456a450af9c98f17 assets/mccourse/models/item/destroyer.j
 d05b6b7d8b4f3d85ee0762de2644d6dbf0397fd1 assets/mccourse/models/item/diamond_hammer.json
 60df385743dd097d8534a513f066ada5ded41c14 assets/mccourse/models/item/diamond_paxel.json
 eae9ea63d29bcb3e6592ee8132690be675ea7f9f assets/mccourse/models/item/dice.json
+dfdfaf73bb76407598831fd08286f34dee722aa8 assets/mccourse/models/item/farmer.json
 2ab7eb05354c980c05330598767e6fb49d05ecbf assets/mccourse/models/item/gem_empowering_station.json
 adde97377356ebe6f2897fc806b87e8f185023a3 assets/mccourse/models/item/gold_hammer.json
 6489ee36ab9f348d0fc05d6bea95383f7b18cf27 assets/mccourse/models/item/gold_paxel.json

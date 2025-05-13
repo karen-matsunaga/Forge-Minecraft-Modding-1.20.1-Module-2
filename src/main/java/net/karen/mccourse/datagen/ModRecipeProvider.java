@@ -265,6 +265,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         // Craft Crafting Table 7x7
         craftSeven(List.of(ModBlocks.KAUPEN_FURNACE_BLOCK.get(), Items.FURNACE), pWriter); // Kaupen Furnace
         craftSeven(List.of(ModBlocks.MCCOURSE_ELEVATOR.get(), Items.WHITE_WOOL), pWriter);
+        craftSeven(List.of(ModItems.FARMER.get(), Items.BONE_MEAL), pWriter);
 
         craftSevenItems(List.of(ModBlocks.MCCOURSE_GENERATOR.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(),
                 Items.NETHER_STAR, Items.ENCHANTED_GOLDEN_APPLE), pWriter);
