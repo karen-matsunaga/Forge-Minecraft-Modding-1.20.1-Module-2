@@ -338,6 +338,9 @@ public class ModItems {
                     BlockTags.MINEABLE_WITH_PICKAXE,
                     new Item.Properties().fireResistant(), 2, false));
 
+    public static final RegistryObject<Item> MAGNET = ITEMS.register("magnet",
+            () -> new MagnetItem(new Item.Properties().fireResistant().stacksTo(1), 10));
+
     // Ore custom item
     public static final RegistryObject<Item> PINK = ITEMS.register("pink",
             () -> new Item(new Item.Properties().fireResistant().stacksTo(64)));

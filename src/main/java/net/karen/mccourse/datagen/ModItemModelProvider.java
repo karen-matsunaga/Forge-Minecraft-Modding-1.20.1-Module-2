@@ -169,6 +169,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.SPECIAL_METAL_DETECTOR);
         simpleItem(ModItems.VAULT);
         simpleItem(ModItems.DESTROYER);
+        simpleItem(ModItems.MAGNET);
     }
 
     // Registry all sapling item's models

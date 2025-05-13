@@ -276,6 +276,7 @@ public class ModCreativeModeTabs {
                         // Destroyer
                         output.accept(ModItems.DESTROYER.get());
                         output.accept(ModBlocks.MAGIC_BLOCK.get());
+                        output.accept(ModItems.MAGNET.get());
                     }).build());
 
     // Registry Creative Mode Tab
