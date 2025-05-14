@@ -144,16 +144,24 @@ public class MCCourseMod {
             ComposterBlock.COMPOSTABLES.put(ModItems.KOHLRABI_SEEDS.get(), 0.20f);
 
             // Snapdragon's potted flower
-            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.SNAPDRAGON.getId(), ModBlocks.POTTED_SNAPDRAGON);
+            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.SNAPDRAGON.getId(),
+                    ModBlocks.POTTED_SNAPDRAGON);
 
             // Slimey's, Fly's, etc. custom potion recipes
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.SLIME_BALL, ModPotions.SLIMEY_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.EMERALD, ModPotions.FLY_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.CARROT, ModPotions.HASTE_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.GLOWSTONE, ModPotions.NOTHING_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(
+                    Potions.AWKWARD, Items.SLIME_BALL, ModPotions.SLIMEY_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(
+                    Potions.AWKWARD, Items.EMERALD, ModPotions.FLY_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(
+                    Potions.AWKWARD, Items.CARROT, ModPotions.HASTE_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(
+                    Potions.AWKWARD, Items.GLOWSTONE, ModPotions.NOTHING_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(
+                    Potions.AWKWARD, Items.PHANTOM_MEMBRANE, ModPotions.OVERPOWER_FLY_POTION.get()));
 
             // Added custom Surface Rules
-            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MOD_ID, ModSurfaceRules.makeRules());
+            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MOD_ID,
+                    ModSurfaceRules.makeRules());
 
             // All ModNetwork messages
             // Disenchanted block event network message
@@ -162,10 +170,12 @@ public class MCCourseMod {
             // Glowing Blocks Block Shape Renderer
             ModNetworks.addNetworkMessage(GlowingBlocksNetworkMessage.SavedDataSyncMessage.class,
                     GlowingBlocksNetworkMessage.SavedDataSyncMessage::buffer,
-                    GlowingBlocksNetworkMessage.SavedDataSyncMessage::new, GlowingBlocksNetworkMessage.SavedDataSyncMessage::handler);
+                    GlowingBlocksNetworkMessage.SavedDataSyncMessage::new,
+                    GlowingBlocksNetworkMessage.SavedDataSyncMessage::handler);
             // Mccourse Elevator key input message
-            ModNetworks.addNetworkMessage(MccourseElevatorKeyInputMessage.class, MccourseElevatorKeyInputMessage::buffer,
-                    MccourseElevatorKeyInputMessage::new, MccourseElevatorKeyInputMessage::handler);
+            ModNetworks.addNetworkMessage(MccourseElevatorKeyInputMessage.class,
+                    MccourseElevatorKeyInputMessage::buffer, MccourseElevatorKeyInputMessage::new,
+                    MccourseElevatorKeyInputMessage::handler);
             // Hammer Preview Block
             ModNetworks.addNetworkMessage(ClientHammerBlockRenderMessage.class, ClientHammerBlockRenderMessage::buffer,
                     ClientHammerBlockRenderMessage::new, ClientHammerBlockRenderMessage::handler); // CLIENT
@@ -206,7 +216,8 @@ public class MCCourseMod {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) { }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
+    // You can use EventBusSubscriber to automatically register all static methods
+    // in the class annotated with @SubscribeEvent
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
@@ -229,12 +240,20 @@ public class MCCourseMod {
                 MenuScreens.register(ModMenuTypes.CRAFT_CRAFTING_TABLE_MENU.get(), CraftCraftingTableScreen::new);
 
                 // Added all custom entity renderers
-                EntityRenderers.register(ModEntities.RHINO.get(), RhinoRenderer::new); // Adding Rhino's custom entity renderer
-                EntityRenderers.register(ModEntities.DICE_PROJECTILE.get(), ThrownItemRenderer::new); // Adding Dice Projectile's custom projectile entity renderer
-                EntityRenderers.register(ModEntities.MAGIC_PROJECTILE.get(), MagicProjectileRenderer::new); // Adding Magic Projectile's custom projectile entity renderer
-                EntityRenderers.register(ModEntities.BOUNCY_BALLS_PROJECTILE.get(), ThrownItemRenderer::new); // Adding Bouncy Balls Projectile's custom projectile entity renderer
-                EntityRenderers.register(ModEntities.MOD_BOAT.get(), pContext -> new ModBoatRenderer(pContext, false)); // Adding Boat's custom projectile entity renderer
-                EntityRenderers.register(ModEntities.MOD_CHEST_BOAT.get(), pContext -> new ModBoatRenderer(pContext, true)); // Adding Chest Boat's custom projectile entity renderer
+                // Adding Rhino's custom entity renderer
+                EntityRenderers.register(ModEntities.RHINO.get(), RhinoRenderer::new);
+                // Adding Dice Projectile's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.DICE_PROJECTILE.get(), ThrownItemRenderer::new);
+                // Adding Magic Projectile's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.MAGIC_PROJECTILE.get(), MagicProjectileRenderer::new);
+                // Adding Bouncy Balls Projectile's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.BOUNCY_BALLS_PROJECTILE.get(), ThrownItemRenderer::new);
+                // Adding Boat's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.MOD_BOAT.get(), pContext ->
+                        new ModBoatRenderer(pContext, false));
+                // Adding Chest Boat's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.MOD_CHEST_BOAT.get(), pContext ->
+                        new ModBoatRenderer(pContext, true));
             });
         }
     }

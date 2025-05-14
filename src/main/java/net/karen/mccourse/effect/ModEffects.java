@@ -36,10 +36,13 @@ public class ModEffects {
 
     // Overpower Fly's effect
     public static final RegistryObject<MobEffect> OVERPOWER_FLY_EFFECT = MOB_EFFECTS.register("overpower_fly",
-            () -> new OverpowerFlyEffect(MobEffectCategory.BENEFICIAL, 0x4682b4)
+            () -> new OverpowerFlyEffect(MobEffectCategory.BENEFICIAL, 0xffa500)
                     // Overpower Fly's effect
                     .addAttributeModifier(Attributes.FLYING_SPEED,
-                            "f81d4fae-7dec-11d0-a765-00a0c91e6bf8", 50.00f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                            "f81d4fae-7dec-11d0-a765-00a0c91e6bf7", 50.00f, AttributeModifier.Operation.MULTIPLY_TOTAL)
+                    .addAttributeModifier(Attributes.MOVEMENT_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf8", 5.00f,
+                            AttributeModifier.Operation.MULTIPLY_TOTAL)
+    );
 
     // Registry all effects on Forge
     public static void register(IEventBus eventBus) { MOB_EFFECTS.register(eventBus); }

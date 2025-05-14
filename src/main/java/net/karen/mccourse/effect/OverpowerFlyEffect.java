@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class OverpowerFlyEffect extends MobEffect {
     protected OverpowerFlyEffect(MobEffectCategory pCategory, int pColor) { super(pCategory, pColor); }
 
-    // Overpower Fly effect applied
+    // Overpower Fly effect to apply call flyEffect custom event (hasFlyEffect == true)
     @Override
     public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {
         if (entity instanceof Player) {
@@ -21,7 +21,7 @@ public class OverpowerFlyEffect extends MobEffect {
         super.applyEffectTick(entity, amplifier);
     }
 
-    // Overpower Fly effect ended
+    // Overpower Fly effect to end call flyEffect custom event (hasFlyEffect == false)
     @Override
     public void removeAttributeModifiers(@NotNull LivingEntity entity, @NotNull AttributeMap map, int amplifier) {
         if (entity instanceof Player) {
