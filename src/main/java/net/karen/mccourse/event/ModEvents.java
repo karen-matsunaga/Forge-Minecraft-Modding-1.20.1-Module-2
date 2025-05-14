@@ -1227,35 +1227,46 @@ public class ModEvents {
                             if (item.is(Items.ENCHANTED_BOOK) && enchantments.size() == 1) { return; }
 
                             // Drop an enchanted book with the enchantments of tool, armor, etc.
-                            // It's a tool/armor/etc.
-                            ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
-                            // Added each enchantment found on tool, armor, etc.
-
-                            // Split each enchantment into individual books
-                            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                                // Added an enchantment found on enchanted book
-                                EnchantedBookItem.addEnchantment(enchantedBook,
-                                        new EnchantmentInstance(entry.getKey(), entry.getValue()));
-                                // Drop individual enchanted book
+                            if (!item.is(Items.ENCHANTED_BOOK) ) {
+                                // It's a tool/armor/etc.
+                                ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
+                                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                                    // Added each enchantment found on tool, armor, etc.
+                                    EnchantedBookItem.addEnchantment(enchantedBook,
+                                            new EnchantmentInstance(entry.getKey(), entry.getValue()));
+                                }
+                                // Drop enchanted book
                                 world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
                                         blockBelow.getY() + 1, blockBelow.getZ() + 0.5, enchantedBook));
+
+                                // Drop the base item without enchantments
+                                ItemStack baseItem = item.copy();
+
+                                // Set original item without enchantments
+                                EnchantmentHelper.setEnchantments(Map.of(), baseItem);
+                                baseItem.removeTagKey("StoredEnchantments");
+
+                                // Clean up tag if empty
+                                if (baseItem.hasTag() && Objects.requireNonNull(baseItem.getTag()).isEmpty()) {
+                                    baseItem.setTag(null);
+                                }
+
+                                // Drop the original item
+                                world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
+                                        blockBelow.getY() + 1, blockBelow.getZ() + 0.5, baseItem));
                             }
-
-                            // Drop the base item without enchantments
-                            ItemStack baseItem = item.copy();
-
-                            // Set original item without enchantments
-                            EnchantmentHelper.setEnchantments(Map.of(), baseItem);
-                            baseItem.removeTagKey("StoredEnchantments");
-
-                            // Clean up tag if empty
-                            if (baseItem.hasTag() && Objects.requireNonNull(baseItem.getTag()).isEmpty()) {
-                                baseItem.setTag(null);
+                            else {
+                                // Split each enchantment into individual books
+                                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                                    ItemStack singleBook = new ItemStack(Items.ENCHANTED_BOOK);
+                                    // Added an enchantment found on enchanted book
+                                    EnchantedBookItem.addEnchantment(singleBook,
+                                            new EnchantmentInstance(entry.getKey(), entry.getValue()));
+                                    // Drop individual enchanted book
+                                    world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
+                                            blockBelow.getY() + 1, blockBelow.getZ() + 0.5, singleBook));
+                                }
                             }
-
-                            // Drop the original item
-                            world.addFreshEntity(new ItemEntity(world, blockBelow.getX() + 0.5,
-                                    blockBelow.getY() + 1, blockBelow.getZ() + 0.5, baseItem));
 
                             // Remove the original item (to avoid reprocessing)
                             itemEntity.discard();
