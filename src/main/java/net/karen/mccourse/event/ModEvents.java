@@ -40,10 +40,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.FlyingMob;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ambient.AmbientCreature;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.animal.Animal;
@@ -55,6 +52,7 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -84,6 +82,7 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -1310,6 +1309,22 @@ public class ModEvents {
         for (ItemStack stack : player.getInventory().offhand) {
             if (stack.isEmpty() || !stack.isDamaged()) { continue; }
             repairTool(stack);
+        }
+    }
+
+    // CUSTOM EVENT - NOTHING EFFECT
+    @SubscribeEvent
+    public static void activatedNothingEffect(EntityJoinLevelEvent event) {
+        if (event.getEntity() instanceof Warden wardenEntity) {
+            Level level = wardenEntity.level();
+            // Checks if there is a player with the effect active nearby
+            List<Player> players = level.getEntitiesOfClass(Player.class, wardenEntity.getBoundingBox().inflate(32));
+            for (Player player : players) {
+                if (player.hasEffect(ModEffects.NOTHING_EFFECT.get())) {
+                    event.setCanceled(true); // Prevents the Warden from spawning
+                    break;
+                }
+            }
         }
     }
 }

@@ -32,11 +32,11 @@ public class ModEffects {
 
     // Nothing's effect
     public static final RegistryObject<MobEffect> NOTHING_EFFECT = MOB_EFFECTS.register("nothing",
-            () -> new NothingEffect(MobEffectCategory.NEUTRAL, 0xffa500));
+            () -> new NothingEffect(MobEffectCategory.NEUTRAL, 0x333366));
 
     // Overpower Fly's effect
     public static final RegistryObject<MobEffect> OVERPOWER_FLY_EFFECT = MOB_EFFECTS.register("overpower_fly",
-            () -> new OverpowerFlyEffect(MobEffectCategory.BENEFICIAL, 0xffa500)
+            () -> new OverpowerFlyEffect(MobEffectCategory.BENEFICIAL, 0x4682b4)
                     // Overpower Fly's effect
                     .addAttributeModifier(Attributes.FLYING_SPEED,
                             "f81d4fae-7dec-11d0-a765-00a0c91e6bf7", 50.00f, AttributeModifier.Operation.MULTIPLY_TOTAL)

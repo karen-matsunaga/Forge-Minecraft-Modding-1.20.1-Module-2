@@ -32,6 +32,8 @@
       "TridentLoyaltyEnchantmentMixin",
       "TridentRiptideEnchantmentMixin",
       "AnvilMenuMixin",
-      "AnvilScreenMixin"
+      "AnvilScreenMixin",
+      "SculkShriekerBlockEntityMixin",
+      "VibrationListenerMixin"
   ]
 }
