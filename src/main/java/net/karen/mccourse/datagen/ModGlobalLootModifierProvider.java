@@ -34,7 +34,7 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
 
         // Added item or block on structure
         addDropOnStructure("metal_detector_from_jungle_temple", "chests/jungle_temple",
-                List.of(ModItems.METAL_DETECTOR.get()));
+                0.25f, List.of(ModItems.METAL_DETECTOR.get()));
 
         // Added custom suspicious sand
         add("metal_detector_from_suspicious_sand", new AddSusSandItemModifier(new LootItemCondition[] {
@@ -50,7 +50,13 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
 
         // Special Metal Detector
         addDropOnStructure("special_metal_detector_from_jungle_temple", "chests/jungle_temple",
-                List.of(ModItems.SPECIAL_METAL_DETECTOR.get())); // Jungle Temple
+                0.25f, List.of(ModItems.SPECIAL_METAL_DETECTOR.get())); // Jungle Temple
+
+        // Orange Modes
+        addDropOnStructure("orange_modes_from_ancient_city", "chests/ancient_city",
+                0.50f, List.of(ModItems.ORANGE_MODES.get())); // Jungle Temple
+        addDropOnStructure("orange_modes_from_jungle_temple", "chests/jungle_temple",
+                0.25f, List.of(ModItems.ORANGE_MODES.get())); // Jungle Temple
     }
 
     // CUSTOM METHOD - Global Loot Modifiers
@@ -65,9 +71,10 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
     }
 
     // Item on structure
-    private void addDropOnStructure(String name, String location, List<Item> drops) {
+    private void addDropOnStructure(String name, String location, float chance, List<Item> drops) {
         LootItemCondition[] conditions = new LootItemCondition[] {
-                new LootTableIdCondition.Builder(new ResourceLocation(location)).build()
+                new LootTableIdCondition.Builder(new ResourceLocation(location)).build(),
+                LootItemRandomChanceCondition.randomChance(chance).build()
         };
         add(name, new AddItemModifier(conditions, drops));
     }

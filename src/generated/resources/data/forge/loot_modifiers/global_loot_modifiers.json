@@ -2,11 +2,13 @@
   "entries": [
     "mccourse:metal_detector_from_jungle_temple",
     "mccourse:coal_from_coal_ore",
+    "mccourse:orange_modes_from_jungle_temple",
     "mccourse:metal_detector_from_suspicious_sand",
     "mccourse:kohlrabi_seeds_from_grass",
     "mccourse:kohlrabi_seeds_from_fern",
     "mccourse:special_metal_detector_from_jungle_temple",
-    "mccourse:coal_from_deepslate_coal_ore"
+    "mccourse:coal_from_deepslate_coal_ore",
+    "mccourse:orange_modes_from_ancient_city"
   ],
   "replace": false
 }

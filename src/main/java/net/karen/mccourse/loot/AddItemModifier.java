@@ -4,6 +4,8 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.karen.mccourse.enchantment.ModEnchantments;
+import net.karen.mccourse.item.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -21,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class AddItemModifier extends LootModifier {
@@ -94,7 +97,19 @@ public class AddItemModifier extends LootModifier {
 
         // No enchantment add item on the list normally, update the data, and return the list
         for (Item item : items) {
-            generatedLoot.add(new ItemStack(item));
+            ItemStack itemStack = new ItemStack(item);
+            if (itemStack.is(ModItems.ORANGE_MODES.get())) {
+                Map<Enchantment, Integer> enchantment = Map.of(Enchantments.BLOCK_EFFICIENCY, 10,
+                        Enchantments.BLOCK_FORTUNE, 10, ModEnchantments.OVERPOWER_MENDING.get(), 1,
+                        Enchantments.UNBREAKING, 10);
+                for (Map.Entry<Enchantment, Integer> all : enchantment.entrySet()) {
+                    itemStack.enchant(all.getKey(), all.getValue());
+                }
+                generatedLoot.add(itemStack);
+            }
+            else {
+                generatedLoot.add(new ItemStack(item));
+            }
         }
 
         // Return normal loot modifier even if to exist 1000 items

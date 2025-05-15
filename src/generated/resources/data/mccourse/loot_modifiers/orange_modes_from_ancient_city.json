@@ -3,14 +3,14 @@
   "conditions": [
     {
       "condition": "forge:loot_table_id",
-      "loot_table_id": "minecraft:chests/jungle_temple"
+      "loot_table_id": "minecraft:chests/ancient_city"
     },
     {
-      "chance": 0.25,
+      "chance": 0.5,
       "condition": "minecraft:random_chance"
     }
   ],
   "items": [
-    "mccourse:metal_detector"
+    "mccourse:orange_modes"
   ]
 }
