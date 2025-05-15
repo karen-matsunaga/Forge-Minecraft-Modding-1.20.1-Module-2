@@ -559,10 +559,45 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             public @NotNull RecipeSerializer<?> getType() { return RecipeSerializer.SHAPED_RECIPE; }
 
             @Override
-            public JsonObject serializeAdvancement() { return null; }
+            public JsonObject serializeAdvancement() {
+                JsonObject advancement = new JsonObject();
+
+                advancement.addProperty("parent", "minecraft:recipes/root");
+
+                JsonObject criteria = new JsonObject();
+                JsonObject trigger = new JsonObject();
+                trigger.addProperty("trigger", "minecraft:inventory_changed");
+
+                JsonObject conditions = new JsonObject();
+                JsonArray items = new JsonArray();
+                JsonObject itemObject = new JsonObject();
+
+                // Item to unlock on Recipe Book
+                itemObject.addProperty("item",
+                        Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(2).asItem())).toString());
+
+                items.add(itemObject);
+                conditions.add("items", items);
+
+                trigger.add("conditions", conditions);
+                criteria.add("has_item", trigger);
+
+                advancement.add("criteria", criteria);
+
+                JsonObject rewards = new JsonObject();
+                JsonArray recipes = new JsonArray();
+                recipes.add(getId().toString());
+                rewards.add("recipes", recipes);
+
+                advancement.add("rewards", rewards);
+
+                return advancement;
+            }
 
             @Override
-            public ResourceLocation getAdvancementId() { return new ResourceLocation(""); }
+            public ResourceLocation getAdvancementId() {
+                return new ResourceLocation(MCCourseMod.MOD_ID, "recipes/custom/" + number + "_enchanted");
+            }
         });
     }
 }

@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-15T14:43:44.1968462	Recipes
+// 1.20.1	2025-05-15T15:10:44.9445923	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -14,6 +14,15 @@ f2e9155826ca7bc86765f9a06d2ce1a5d8597490 data/mccourse/advancements/recipes/buil
 88d5bcb115e7039a9549cbf1da1967e51c1454fb data/mccourse/advancements/recipes/building_blocks/red_ender_pearl_block.json
 6c997e0b233fb7e9ceabd08010fcc17c3183a039 data/mccourse/advancements/recipes/building_blocks/white_ender_pearl_block.json
 870745c6c16f57204f5826684936ef2463fe368b data/mccourse/advancements/recipes/building_blocks/yellow_ender_pearl_block.json
+f59844b56157b0e6ac93b56857f2c05413264b73 data/mccourse/advancements/recipes/custom/1_enchanted.json
+6708ef9ad8da0998bd68b83e41886852f8ddb686 data/mccourse/advancements/recipes/custom/2_enchanted.json
+5e1b9fa7dce6ead3849ea7b56cb54f12b26c4c63 data/mccourse/advancements/recipes/custom/3_enchanted.json
+9cbeed4088fcbbac176abe602813858f502d233a data/mccourse/advancements/recipes/custom/4_enchanted.json
+f27a04d3f1504e989cea5ae65b81434b0cc68270 data/mccourse/advancements/recipes/custom/5_enchanted.json
+4960e7a21ba98d3d4bbfe99c60c55da3b27c89ec data/mccourse/advancements/recipes/custom/6_enchanted.json
+579b1ac6995ee536505c163260a13bdc2df386ad data/mccourse/advancements/recipes/custom/7_enchanted.json
+897e09024f8e9f62ff58ece2a9101a03a92450e0 data/mccourse/advancements/recipes/custom/8_enchanted.json
+6c1ef6df3879ffbf91bd818d640cd595e7890958 data/mccourse/advancements/recipes/custom/9_enchanted.json
 15201a36d0ae05c11f8a82b7b43dcf940f56c7f4 data/mccourse/advancements/recipes/misc/alexandrite.json
 ee0129f24bb36d18562730a2dda377e622f5da76 data/mccourse/advancements/recipes/misc/alexandrite_block.json
 dd5a91ec30075c1c76c05ae8ef370e9c43497f0d data/mccourse/advancements/recipes/misc/alexandrite_from_blasting_alexandrite_ore.json
