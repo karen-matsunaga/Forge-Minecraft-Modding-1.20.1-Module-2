@@ -278,6 +278,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.MAGIC_BLOCK.get());
                         output.accept(ModItems.MAGNET.get());
                         output.accept(ModItems.FARMER.get());
+                        output.accept(ModItems.RESTORE.get());
                     }).build());
 
     // Registry Creative Mode Tab

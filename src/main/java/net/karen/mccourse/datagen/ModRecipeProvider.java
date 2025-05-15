@@ -36,11 +36,12 @@ import java.util.function.Consumer;
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
     // All items smelting and blasting
     private static final List<ItemLike> ALEXANDRITE_SMELTABLES = List.of(ModItems.RAW_ALEXANDRITE.get(),
-            ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(), ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
-            ModBlocks.NETHER_ALEXANDRITE_ORE.get());
+            ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
+            ModBlocks.END_STONE_ALEXANDRITE_ORE.get(), ModBlocks.NETHER_ALEXANDRITE_ORE.get());
 
     private static final List<ItemLike> PINK_SMELTABLES = List.of(ModItems.PINK.get(),
-            ModBlocks.PINK_ORE.get(), ModBlocks.DEEPSLATE_PINK_ORE.get(), ModBlocks.END_STONE_PINK_ORE.get(), ModBlocks.NETHER_PINK_ORE.get());
+            ModBlocks.PINK_ORE.get(), ModBlocks.DEEPSLATE_PINK_ORE.get(),
+            ModBlocks.END_STONE_PINK_ORE.get(), ModBlocks.NETHER_PINK_ORE.get());
 
     public ModRecipeProvider(PackOutput pOutput) { super(pOutput); }
 
@@ -65,17 +66,22 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(pWriter);
 
         // Raw Alexandrite
-        nineBlockStorageRecipes(pWriter, RecipeCategory.MISC, ModItems.RAW_ALEXANDRITE.get(), RecipeCategory.MISC, ModBlocks.ALEXANDRITE_BLOCK.get(),
-                "mccourse:raw_alexandrite", "alexandrite", "mccourse:raw_alexandrite_block", null);
+        nineBlockStorageRecipes(pWriter, RecipeCategory.MISC, ModItems.RAW_ALEXANDRITE.get(),
+                RecipeCategory.MISC, ModBlocks.ALEXANDRITE_BLOCK.get(),
+                "mccourse:raw_alexandrite", "alexandrite",
+                "mccourse:raw_alexandrite_block", null);
 
         // Items Smelting
-        oreSmelting(pWriter, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(), 0.25f, 200, "alexandrite");
+        oreSmelting(pWriter, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(),
+                0.25f, 200, "alexandrite");
 
         // Items Blasting
-        oreBlasting(pWriter, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(), 0.25f, 200, "alexandrite");
+        oreBlasting(pWriter, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(),
+                0.25f, 200, "alexandrite");
 
         // Gem Empowering Station custom recipes
-        new GemEmpoweringRecipeBuilder(ModItems.RAW_ALEXANDRITE.get(), ModItems.ALEXANDRITE.get(), 3, 160, 50,
+        new GemEmpoweringRecipeBuilder(ModItems.RAW_ALEXANDRITE.get(), ModItems.ALEXANDRITE.get(),
+                3, 160, 50,
                 new FluidStack(Fluids.WATER, 2000))
                 .unlockedBy("has_raw_alexandrite", has(ModItems.RAW_ALEXANDRITE.get())).save(pWriter);
 
@@ -85,7 +91,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // My custom mod
         // Hammer
-        pickaxeHammerItem(List.of(ModItems.ALEXANDRITE_HAMMER.get(), ModBlocks.ALEXANDRITE_BLOCK.get()), pWriter); // Hammer
+        pickaxeHammerItem(List.of(ModItems.ALEXANDRITE_HAMMER.get(), ModBlocks.ALEXANDRITE_BLOCK.get()), pWriter);
         pickaxeHammerItem(List.of(ModItems.COPPER_HAMMER.get(), Items.COPPER_BLOCK), pWriter);
         pickaxeHammerItem(List.of(ModItems.DIAMOND_HAMMER.get(), Items.DIAMOND_BLOCK), pWriter);
         pickaxeHammerItem(List.of(ModItems.GOLD_HAMMER.get(), Items.GOLD_BLOCK), pWriter);
@@ -122,12 +128,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 ModItems.PINK_AXE.get(), ModItems.PINK_SHOVEL.get()), pWriter);
         paxelItem(List.of(ModItems.COPPER_PAXEL.get(), ModItems.COPPER_PICKAXE.get(),
                 ModItems.COPPER_AXE.get(), ModItems.COPPER_SHOVEL.get()), pWriter);
-        paxelItem(List.of(ModItems.DIAMOND_PAXEL.get(), Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE, Items.DIAMOND_SHOVEL), pWriter);
-        paxelItem(List.of(ModItems.GOLD_PAXEL.get(), Items.GOLDEN_PICKAXE, Items.GOLDEN_AXE, Items.GOLDEN_SHOVEL), pWriter);
-        paxelItem(List.of(ModItems.IRON_PAXEL.get(), Items.IRON_PICKAXE, Items.IRON_AXE, Items.IRON_SHOVEL), pWriter);
-        paxelItem(List.of(ModItems.STONE_PAXEL.get(), Items.STONE_PICKAXE, Items.STONE_AXE, Items.STONE_SHOVEL), pWriter);
-        paxelItem(List.of(ModItems.WOODEN_PAXEL.get(), Items.WOODEN_PICKAXE, Items.WOODEN_AXE, Items.WOODEN_SHOVEL), pWriter);
-        paxelItem(List.of(ModItems.NETHERITE_PAXEL.get(), Items.NETHERITE_PICKAXE, Items.NETHERITE_AXE, Items.NETHERITE_SHOVEL), pWriter);
+        paxelItem(List.of(ModItems.DIAMOND_PAXEL.get(), Items.DIAMOND_PICKAXE,
+                Items.DIAMOND_AXE, Items.DIAMOND_SHOVEL), pWriter);
+        paxelItem(List.of(ModItems.GOLD_PAXEL.get(), Items.GOLDEN_PICKAXE,
+                Items.GOLDEN_AXE, Items.GOLDEN_SHOVEL), pWriter);
+        paxelItem(List.of(ModItems.IRON_PAXEL.get(), Items.IRON_PICKAXE,
+                Items.IRON_AXE, Items.IRON_SHOVEL), pWriter);
+        paxelItem(List.of(ModItems.STONE_PAXEL.get(), Items.STONE_PICKAXE,
+                Items.STONE_AXE, Items.STONE_SHOVEL), pWriter);
+        paxelItem(List.of(ModItems.WOODEN_PAXEL.get(), Items.WOODEN_PICKAXE,
+                Items.WOODEN_AXE, Items.WOODEN_SHOVEL), pWriter);
+        paxelItem(List.of(ModItems.NETHERITE_PAXEL.get(), Items.NETHERITE_PICKAXE,
+                Items.NETHERITE_AXE, Items.NETHERITE_SHOVEL), pWriter);
 
         // Hoe
         hoeItem(List.of(ModItems.ALEXANDRITE_HOE.get(), ModItems.ALEXANDRITE.get()), pWriter);
@@ -151,7 +163,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         bootsArmor(List.of(ModItems.COPPER_BOOTS.get(), Items.COPPER_INGOT), pWriter); // Boots
 
         // Block -> Item and Item -> Block
-        itemTransformBlock(List.of(ModBlocks.ENDER_PEARL_BLOCK.get(), Items.ENDER_PEARL), pWriter); // 0 -> Result / 1 -> Ingredient
+        // 0 -> Result / 1 -> Ingredient
+        itemTransformBlock(List.of(ModBlocks.ENDER_PEARL_BLOCK.get(), Items.ENDER_PEARL), pWriter);
         blockTransformItem(List.of(Items.ENDER_PEARL, ModBlocks.ENDER_PEARL_BLOCK.get()), pWriter);
 
         itemTransformBlock(List.of(ModBlocks.NETHER_STAR_BLOCK.get(), Items.NETHER_STAR), pWriter);
@@ -170,18 +183,22 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         itemTransformBlock(List.of(ModBlocks.PINK_BLOCK.get(), ModItems.PINK.get()), pWriter);
         blockTransformItem(List.of(ModItems.PINK.get(), ModBlocks.PINK_BLOCK.get()), pWriter);
 
-        // Block
-        itemTransformBlock(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), pWriter); // Craft Crafting Table
+        // Block -> Craft Crafting Table
+        itemTransformBlock(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), pWriter);
 
         // My custom ore
         // Items Smelting
-        oreSmelting(pWriter, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(), 0.25f, 200, "pink");
+        oreSmelting(pWriter, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(),
+                0.25f, 200, "pink");
 
         // Items Blasting
-        oreBlasting(pWriter, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(), 0.25f, 200, "pink");
+        oreBlasting(pWriter, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(),
+                0.25f, 200, "pink");
 
-        oreSmelting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER, 1.00f, 100, "rotten_flesh");
-        oreBlasting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER, 1.00f, 100, "rotten_flesh");
+        oreSmelting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER,
+                1.00f, 100, "rotten_flesh");
+        oreBlasting(pWriter, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER,
+                1.00f, 100, "rotten_flesh");
 
         // My custom enchanted book and item enchanted
         enchantItem(List.of(Items.ENCHANTED_BOOK, Items.OBSIDIAN, Items.BOOK),
@@ -197,13 +214,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                         Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1),
                 List.of("AAA", "AAA", "ABA"), List.of("A", "B"), false, true, 3, pWriter);
 
-        enchantItem(List.of(ModItems.PINK_MODES.get(), Items.GLOWSTONE, ModItems.PINK_MODES.get()), // Result + Secondary ingredient + Primary ingredient
+        // Result + Secondary ingredient + Primary ingredient
+        enchantItem(List.of(ModItems.PINK_MODES.get(), Items.GLOWSTONE, ModItems.PINK_MODES.get()),
+                // Enchantments
                 Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.UNBREAKING, 10,
-                        Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1), // Enchantments
-                List.of("A A", " B ", "A A"), List.of("A", "B"), false, true, 4, pWriter); // 3x3 crafting recipe + letter ingredients
+                        Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1),
+                // 3x3 crafting recipe + letter ingredients
+                List.of("A A", " B ", "A A"), List.of("A", "B"), false, true, 4, pWriter);
 
         enchantItem(List.of(Items.IRON_PICKAXE, Items.IRON_INGOT, Items.IRON_PICKAXE),
-                Map.of(Enchantments.UNBREAKING, 3, Enchantments.BLOCK_EFFICIENCY, 7, Enchantments.BLOCK_FORTUNE, 5),
+                Map.of(Enchantments.UNBREAKING, 3, Enchantments.BLOCK_EFFICIENCY, 7,
+                        Enchantments.BLOCK_FORTUNE, 5),
                 List.of("A A", " B ", "A A"), List.of("A", "B"), false, true, 5, pWriter);
 
         // Modes Pickaxes custom recipes
@@ -253,19 +274,23 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_diamond", has(Items.DIAMOND))
                 .save(pWriter);
 
-        new EnchantedRecipeBuilder(Enchantments.BLOCK_EFFICIENCY, 10, List.of(Ingredient.of(Items.DIAMOND),
+        new EnchantedRecipeBuilder(Enchantments.BLOCK_EFFICIENCY, 10,
+                List.of(Ingredient.of(Items.DIAMOND),
                 Ingredient.of(Items.BOOK)),
                 List.of(512, 1), Items.ENCHANTED_BOOK).save(pWriter);
 
         // Luck custom generator enchanted book
         luckItem(List.of(ModItems.LUCK.get(), Items.LAPIS_LAZULI, Items.COPPER_INGOT, Items.BOOK), pWriter);
-        luckItem(List.of(ModItems.PICKAXE_LUCK.get(), Items.LAPIS_LAZULI, Items.DIAMOND, ModItems.LUCK.get()), pWriter);
-        luckItem(List.of(ModItems.WEAPON_LUCK.get(), Items.LAPIS_LAZULI, Items.REDSTONE, ModItems.LUCK.get()), pWriter);
+        luckItem(List.of(ModItems.PICKAXE_LUCK.get(), Items.LAPIS_LAZULI, Items.DIAMOND,
+                ModItems.LUCK.get()), pWriter);
+        luckItem(List.of(ModItems.WEAPON_LUCK.get(), Items.LAPIS_LAZULI, Items.REDSTONE,
+                ModItems.LUCK.get()), pWriter);
 
         // Craft Crafting Table 7x7
         craftSeven(List.of(ModBlocks.KAUPEN_FURNACE_BLOCK.get(), Items.FURNACE), pWriter); // Kaupen Furnace
         craftSeven(List.of(ModBlocks.MCCOURSE_ELEVATOR.get(), Items.WHITE_WOOL), pWriter);
         craftSeven(List.of(ModItems.FARMER.get(), Items.BONE_MEAL), pWriter);
+        craftSeven(List.of(ModItems.RESTORE.get(), Items.BOOK), pWriter); // Restore item
 
         craftSevenItems(List.of(ModBlocks.MCCOURSE_GENERATOR.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(),
                 Items.NETHER_STAR, Items.ENCHANTED_GOLDEN_APPLE), pWriter);
@@ -276,16 +301,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     // Smelting
-    protected static void oreSmelting(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients,
-                                      @NotNull RecipeCategory pCategory, @NotNull ItemLike pResult, float pExperience,
+    protected static void oreSmelting(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer,
+                                      List<ItemLike> pIngredients, @NotNull RecipeCategory pCategory,
+                                      @NotNull ItemLike pResult, float pExperience,
                                       int pCookingTIme, @NotNull String pGroup) {
         oreCooking(pFinishedRecipeConsumer, RecipeSerializer.SMELTING_RECIPE, pIngredients, pCategory, pResult,
                 pExperience, pCookingTIme, pGroup, "_from_smelting");
     }
 
     // Blasting
-    protected static void oreBlasting(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients,
-                                      @NotNull RecipeCategory pCategory, @NotNull ItemLike pResult, float pExperience,
+    protected static void oreBlasting(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer,
+                                      List<ItemLike> pIngredients, @NotNull RecipeCategory pCategory,
+                                      @NotNull ItemLike pResult, float pExperience,
                                       int pCookingTime, @NotNull String pGroup) {
         oreCooking(pFinishedRecipeConsumer, RecipeSerializer.BLASTING_RECIPE, pIngredients, pCategory, pResult,
                 pExperience, pCookingTime, pGroup, "_from_blasting");
@@ -294,12 +321,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     // Cooking -> Custom method to oreSmelting and oreBlasting
     protected static void oreCooking(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer,
                                      @NotNull RecipeSerializer<? extends AbstractCookingRecipe> pCookingSerializer,
-                                     List<ItemLike> pIngredients, @NotNull RecipeCategory pCategory, @NotNull ItemLike pResult,
-                                     float pExperience, int pCookingTime, @NotNull String pGroup, String pRecipeName) {
+                                     List<ItemLike> pIngredients, @NotNull RecipeCategory pCategory,
+                                     @NotNull ItemLike pResult, float pExperience, int pCookingTime,
+                                     @NotNull String pGroup, String pRecipeName) {
         for(ItemLike itemlike : pIngredients) {
             SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), pCategory, pResult, pExperience, pCookingTime,
                             pCookingSerializer).group(pGroup).unlockedBy(getHasName(itemlike), has(itemlike))
-                    .save(pFinishedRecipeConsumer, MCCourseMod.MOD_ID + ":" + getItemName(pResult) + pRecipeName + "_" + getItemName(itemlike));
+                    .save(pFinishedRecipeConsumer, MCCourseMod.MOD_ID + ":" + getItemName(pResult) +
+                            pRecipeName + "_" + getItemName(itemlike));
         }
     }
 
@@ -309,7 +338,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     protected static void craftSeven(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0))
                 .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
-                .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
+                .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
+                .pattern("AAAAAAA")
                 .define('A', item.get(1))
                 .unlockedBy("has_item", has(item.get(1)))
                 .save(pWriter);
@@ -318,7 +348,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     protected static void craftSevenItems(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0))
                 .pattern("AAAAAAA").pattern("ABBBBBA").pattern("ABBBBBA")
-                .pattern("ABBCBBA").pattern("ABBBBBA").pattern("ABBBBBA").pattern("AAAAAAA")
+                .pattern("ABBCBBA").pattern("ABBBBBA").pattern("ABBBBBA")
+                .pattern("AAAAAAA")
                 .define('A', item.get(1))
                 .define('B', item.get(2))
                 .define('C', item.get(3))
@@ -453,7 +484,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                    boolean unbreakable, int number, Consumer<FinishedRecipe> writer) {
         // Registry item = Result Index 0
         JsonObject resultJson = new JsonObject();
-        resultJson.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(0).asItem())).toString());
+        resultJson.addProperty("item",
+                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(0).asItem())).toString());
         resultJson.addProperty("count", 1);
 
         // Registry enchantments
@@ -462,12 +494,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // Sorts enchantments by level and then by ID
         enchantments.entrySet().stream()
-                .sorted(Comparator
-                        .comparingInt(Map.Entry<Enchantment, Integer>::getValue) // Enchantment level
-                        .thenComparing(e -> Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(e.getKey())).toString())) // Enchantment name
+
+                .sorted(// Enchantment level
+                        Comparator.comparingInt(Map.Entry<Enchantment, Integer>::getValue)
+                        // Enchantment name
+                        .thenComparing(e ->
+                                Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(e.getKey())).toString()))
                 .forEach(entry -> {
                     JsonObject enchantmentTag = new JsonObject();
-                    enchantmentTag.addProperty("id", Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(entry.getKey())).toString());
+                    enchantmentTag.addProperty("id",
+                            Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(entry.getKey())).toString());
                     enchantmentTag.addProperty("lvl", entry.getValue());
                     enchantmentArray.add(enchantmentTag);
                 });
@@ -498,7 +534,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         List<JsonObject> jsonObjectList = List.of(aKey, bKey);
 
         for (int i = 0; i < letters.size(); i++) {
-            jsonObjectList.get(i).addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(i+1).asItem())).toString());
+            jsonObjectList.get(i).addProperty("item",
+                    Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(i+1).asItem())).toString());
             key.add(letters.get(i), jsonObjectList.get(i));
         }
 

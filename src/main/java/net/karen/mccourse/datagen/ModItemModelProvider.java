@@ -171,6 +171,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.DESTROYER);
         simpleItem(ModItems.MAGNET);
         simpleItem(ModItems.FARMER);
+        simpleItem(ModItems.RESTORE);
     }
 
     // Registry all sapling item's models

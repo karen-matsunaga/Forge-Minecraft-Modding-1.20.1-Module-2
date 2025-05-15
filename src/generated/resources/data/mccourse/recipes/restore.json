@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:book"
+    }
+  },
+  "pattern": [
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA"
+  ],
+  "result": {
+    "item": "mccourse:restore"
+  },
+  "show_notification": true
+}

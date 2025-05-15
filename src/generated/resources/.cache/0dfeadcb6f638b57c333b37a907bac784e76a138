@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-13T12:00:50.1614598	Item Models: mccourse
+// 1.20.1	2025-05-14T10:24:56.2923602	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 cfc705788577468640df77a99d391497448608d0 assets/mccourse/models/item/alexandrite_button.json
@@ -66,6 +66,7 @@ f2a5766163270e6290e670d31fcad93939d4c145 assets/mccourse/models/item/pink_modes.
 66ec212a2b299974a23874dfb8ce854cce52f1fe assets/mccourse/models/item/pink_sword.json
 d7f19e088d03d5c8604184c9f07dbf28097bd71e assets/mccourse/models/item/purple_modes.json
 d890745bc92e5639d4db062935218a0ef60c01fa assets/mccourse/models/item/raw_alexandrite.json
+2fdb8bf8768964a44adba1747af7af0970c2bb81 assets/mccourse/models/item/restore.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/mccourse/models/item/rhino_spawn_egg.json
 0981f1d23408e1a7285dc9417be5d8c98dedf614 assets/mccourse/models/item/snapdragon.json
 9162be05041084f0ff9d57b044480250101a8449 assets/mccourse/models/item/soap_water_bucket.json

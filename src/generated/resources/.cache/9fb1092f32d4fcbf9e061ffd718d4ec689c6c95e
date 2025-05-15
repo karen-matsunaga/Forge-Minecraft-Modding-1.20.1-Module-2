@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-13T12:00:50.1574628	Recipes
+// 1.20.1	2025-05-15T14:43:44.1968462	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -56,6 +56,7 @@ d54d3836d1080826937be61efa8939320b72d64f data/mccourse/advancements/recipes/misc
 7a7bafbc434e80db912d91a0d3fdf0325a6fdabf data/mccourse/advancements/recipes/misc/pink_from_smelting_pink_ore.json
 e73e936ffd0b7189e92d0e3ee64b131a5231a4c2 data/mccourse/advancements/recipes/misc/raw_alexandrite.json
 763c9ab68f9fa4e33d0336584d47f3a188a3b839 data/mccourse/advancements/recipes/misc/raw_alexandrite_block.json
+94489ab55e7b80445c4e06ebab4d75ef596a0c72 data/mccourse/advancements/recipes/misc/restore.json
 e8c9e77bc776affb2fb3317f3b2f915118c06b54 data/mccourse/advancements/recipes/misc/rotten_flesh_block.json
 d8dbc61219c5ecb34ff15cd237fcbdd9a024ca2b data/mccourse/advancements/recipes/misc/weapon_luck.json
 f5713031f2e7cc4ee59223814c795841ae03fd49 data/mccourse/advancements/recipes/tools/alexandrite_axe.json
@@ -211,6 +212,7 @@ fe00d933026de933c871f958616be1dee7725f11 data/mccourse/recipes/pink_sword.json
 fa966f75ced176721e85d71224f99f6c9c5951e2 data/mccourse/recipes/raw_alexandrite.json
 50de576130ce8388820e9c450b3f8cca21391b4e data/mccourse/recipes/raw_alexandrite_block.json
 ed7e1e703b335a576c29367cb0d452916bfe336d data/mccourse/recipes/red_ender_pearl_block.json
+0f86e715b66b4fdff4e96a2b79da22eee6c2d76a data/mccourse/recipes/restore.json
 8e926fb44bf263db8eadedde02c8ccd90a683d8a data/mccourse/recipes/rotten_flesh_block.json
 c24ee75081d8c74d7fb390b214950b838c881488 data/mccourse/recipes/stone_hammer.json
 27098bfb381b21a84ebf55f7fe5ebc207bf65dbd data/mccourse/recipes/stone_paxel.json
