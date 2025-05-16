@@ -21,7 +21,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class MagicBlock extends Block {
     public MagicBlock(Properties pProperties) { super(pProperties); }
@@ -35,30 +34,29 @@ public class MagicBlock extends Block {
     }
 
     @Override
-    public void stepOn(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @NotNull Entity pEntity) {
-        if (pEntity instanceof ItemEntity itemEntity) {
+    public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
+        if (entity instanceof ItemEntity itemEntity) {
             // Get real item
             ItemStack item = itemEntity.getItem();
 
             // Get all enchantments of the item
             Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
 
-            // Skip if item has no enchantments
-            if (enchantments.isEmpty()) return;
+            boolean isBook = item.is(Items.ENCHANTED_BOOK);
 
+            // Skip if item has no enchantments
             // Only process if it's not a previously split book (to avoid infinite loop)
-            if (item.is(Items.ENCHANTED_BOOK) && enchantments.size() == 1) return;
+            if (enchantments.isEmpty() || (isBook && enchantments.size() == 1)) { return; }
 
             // Drop enchanted books with the enchantments
-            if (!item.is(Items.ENCHANTED_BOOK)) {
+            if (!isBook) {
                 // It's a tool/armor/etc.
                 ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
                 for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
                     EnchantedBookItem.addEnchantment(enchantedBook,
                             new EnchantmentInstance(entry.getKey(), entry.getValue()));
                 }
-                pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX() + 0.5,
-                        pPos.getY() + 1, pPos.getZ() + 0.5, enchantedBook));
+                dropItem(level, pos, enchantedBook);
 
                 // Drop the base item without enchantments
                 ItemStack baseItem = item.copy();
@@ -66,12 +64,11 @@ public class MagicBlock extends Block {
                 baseItem.removeTagKey("StoredEnchantments");
 
                 // Clean up tag if empty
-                if (baseItem.hasTag() && Objects.requireNonNull(baseItem.getTag()).isEmpty()) {
+                if (baseItem.getTag() != null && baseItem.hasTag() && baseItem.getTag().isEmpty()) {
                     baseItem.setTag(null);
                 }
 
-                pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX() + 0.5,
-                        pPos.getY() + 1, pPos.getZ() + 0.5, baseItem));
+                dropItem(level, pos, baseItem);
             }
             // Split each enchantment into individual books
             else {
@@ -79,15 +76,19 @@ public class MagicBlock extends Block {
                     ItemStack singleBook = new ItemStack(Items.ENCHANTED_BOOK);
                     EnchantedBookItem.addEnchantment(singleBook,
                             new EnchantmentInstance(entry.getKey(), entry.getValue()));
-
-                    pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX() + 0.5,
-                            pPos.getY() + 1, pPos.getZ() + 0.5, singleBook));
+                    dropItem(level, pos, singleBook);
                 }
             }
 
             // Remove the original item (to avoid reprocessing)
             itemEntity.discard();
         }
-        super.stepOn(pLevel, pPos, pState, pEntity);
+        super.stepOn(level, pos, state, entity);
+    }
+
+    // CUSTOM METHOD - Drop enchanted book and base item on ground
+    private static void dropItem(Level world, BlockPos pos, ItemStack stack) {
+        world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5,
+                pos.getY() + 1, pos.getZ() + 0.5, stack));
     }
 }
