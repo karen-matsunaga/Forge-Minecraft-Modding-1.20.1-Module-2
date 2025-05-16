@@ -97,16 +97,11 @@ public class AddItemModifier extends LootModifier {
 
         // No enchantment add item on the list normally, update the data, and return the list
         for (Item item : items) {
-            ItemStack itemStack = new ItemStack(item);
-            if (itemStack.is(ModItems.ORANGE_MODES.get())) {
-                Map<Enchantment, Integer> enchantment = Map.of(Enchantments.BLOCK_EFFICIENCY, 10,
-                        Enchantments.BLOCK_FORTUNE, 10, ModEnchantments.OVERPOWER_MENDING.get(), 1,
-                        Enchantments.UNBREAKING, 10);
-                for (Map.Entry<Enchantment, Integer> all : enchantment.entrySet()) {
-                    itemStack.enchant(all.getKey(), all.getValue());
-                }
-                generatedLoot.add(itemStack);
+            // All tools, armors and enchanted books
+            if (itemEnchantments.containsKey(item)) {
+                generatedLoot.add(createEnchantedItem(item));
             }
+            // Items WITHOUT enchantment
             else {
                 generatedLoot.add(new ItemStack(item));
             }
@@ -114,6 +109,27 @@ public class AddItemModifier extends LootModifier {
 
         // Return normal loot modifier even if to exist 1000 items
         return generatedLoot;
+    }
+
+    // All tools, armors and enchanted books - KEY = Items || VALUE = MAP (Enchantment, Enchantment level)
+    private final Map<Item, Map<Enchantment, Integer>> itemEnchantments = Map.of(
+            Items.DIAMOND_SWORD, Map.of(Enchantments.SHARPNESS, 3, Enchantments.UNBREAKING, 2),
+            Items.BOOK, Map.of(Enchantments.MOB_LOOTING, 2),
+            Items.IRON_PICKAXE, Map.of(Enchantments.BLOCK_EFFICIENCY, 4),
+            ModItems.ORANGE_MODES.get(), Map.of(Enchantments.BLOCK_EFFICIENCY, 10,
+                    Enchantments.BLOCK_FORTUNE, 10, ModEnchantments.OVERPOWER_MENDING.get(), 1,
+                    Enchantments.UNBREAKING, 10));
+
+    // Custom method to
+    private ItemStack createEnchantedItem(Item item) {
+        ItemStack stack = new ItemStack(item);
+        Map<Enchantment, Integer> enchantments = itemEnchantments.get(item);
+        if (enchantments != null) {
+            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                stack.enchant(entry.getKey(), entry.getValue());
+            }
+        }
+        return stack;
     }
 
     @Override
