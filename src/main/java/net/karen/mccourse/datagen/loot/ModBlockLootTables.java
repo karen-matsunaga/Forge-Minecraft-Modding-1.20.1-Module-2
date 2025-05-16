@@ -187,6 +187,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.MCCOURSE_GENERATOR.get());
         this.dropSelf(ModBlocks.MCCOURSE_ELEVATOR.get());
         this.dropSelf(ModBlocks.MAGIC_BLOCK.get());
+        this.dropSelf(ModBlocks.MAGIC_BOOK_BLOCK.get());
     }
 
     // Custom ore's drops

@@ -425,7 +425,14 @@ public class ModBlocks {
             () -> new MagicBlock(BlockBehaviour.Properties.of()
                     .lightLevel(state -> 15)
                     .sound(SoundType.LARGE_AMETHYST_BUD)
-                    .strength(5F, 1200.F)));
+                    .strength(5F, 3600000.0F)));
+
+    // Magic Book block
+    public static final RegistryObject<Block> MAGIC_BOOK_BLOCK = registerBlock("magic_book",
+            () -> new MagicBookBlock(BlockBehaviour.Properties.of()
+                    .lightLevel(state -> 15)
+                    .sound(SoundType.ANVIL)
+                    .strength(5F, 3600000.0F)));
 
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {

@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-11T21:05:58.3592058	Block States: mccourse
+// 1.20.1	2025-05-16T20:12:29.2951621	Block States: mccourse
 9b0f59e6a967af477e6f41100bfecb754add6ea2 assets/mccourse/blockstates/alexandrite_block.json
 1fd0895b9aa0e87b67d2c4da0f567f8aa895de30 assets/mccourse/blockstates/alexandrite_button.json
 974428f15970c224b76ef992df827ba4718bb490 assets/mccourse/blockstates/alexandrite_door.json
@@ -35,6 +35,7 @@ a3e033c1df134f254e3e240d3db0e732145e3628 assets/mccourse/blockstates/kaupen_furn
 67e7166c44ff56637e80c8fd3ea3931e8cc7ac17 assets/mccourse/blockstates/lime_green_ender_pearl_block.json
 648c19c046c7a47a1001276e43da73e977b6e727 assets/mccourse/blockstates/magenta_ender_pearl_block.json
 8f9799af3b5badd38dd1db44371e61ff540e4cdb assets/mccourse/blockstates/magic.json
+d1cd33f3107577f0630298044275ecdcdaa4ac1a assets/mccourse/blockstates/magic_book.json
 cce9dc431858456ca7ad95d1f208eac23dab14a5 assets/mccourse/blockstates/mccourse_elevator.json
 e79aeae7abf28172ffdcd15ebf2a31efa753abf3 assets/mccourse/blockstates/mccourse_generator.json
 64817565a0fa2c6f960c783edeb5fa2a8dc966ac assets/mccourse/blockstates/nether_alexandrite_ore.json
@@ -142,6 +143,7 @@ e6cf91fb064d00898b49d21f7d5952ab31755144 assets/mccourse/models/block/kohlrabi_s
 56e19c37299b4a0057d2ad90ec3c35fec69bd9f4 assets/mccourse/models/block/lime_green_ender_pearl_block.json
 488e402d67e9d2a88330437d785cfb010dd1c483 assets/mccourse/models/block/magenta_ender_pearl_block.json
 875c58477fe20f358a0fc40a344be32e39e624c0 assets/mccourse/models/block/magic.json
+be96d99ff041ca8916f793e053c11375d46b9078 assets/mccourse/models/block/magic_book.json
 784cf6624dc12291631d9068d905dd93a143664c assets/mccourse/models/block/mccourse_elevator.json
 d086207eaa975401323a72c449685581f0226c76 assets/mccourse/models/block/mccourse_generator.json
 26c88ba8251903cdb06561366aed91eb6259767c assets/mccourse/models/block/nether_alexandrite_ore.json
@@ -210,6 +212,7 @@ e2c652badaabef25685206753ab614caa83d00dc assets/mccourse/models/item/kaupen_port
 2f24f22d92d6c7afc137a6846cccb850ca2ede5c assets/mccourse/models/item/lime_green_ender_pearl_block.json
 ea96d51d7dad8570080b8c0036e443ec0c22281d assets/mccourse/models/item/magenta_ender_pearl_block.json
 1a44267bb684f1a031226f03f590c260056a2e65 assets/mccourse/models/item/magic.json
+2895b75697b45eff3c04dad733c25552c517a26c assets/mccourse/models/item/magic_book.json
 27269403011d128ee25b8b988b902c8244d501d5 assets/mccourse/models/item/mccourse_elevator.json
 b769a93bf3229841d9c996c367ad57bc88dbd638 assets/mccourse/models/item/mccourse_generator.json
 9279bb61d216f91c2724f131cbf7b373e63aa547 assets/mccourse/models/item/nether_alexandrite_ore.json

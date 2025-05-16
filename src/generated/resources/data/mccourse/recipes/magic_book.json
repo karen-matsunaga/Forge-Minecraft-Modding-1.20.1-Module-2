@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "mccourse:magic"
+    }
+  },
+  "pattern": [
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA",
+    "AAAAAAA"
+  ],
+  "result": {
+    "item": "mccourse:magic_book"
+  },
+  "show_notification": true
+}

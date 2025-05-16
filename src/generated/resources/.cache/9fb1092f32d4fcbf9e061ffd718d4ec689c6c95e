@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-15T15:10:44.9445923	Recipes
+// 1.20.1	2025-05-16T20:26:16.2517216	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -47,6 +47,7 @@ d3c788c38d8460512af52b075d307257d121f481 data/mccourse/advancements/recipes/misc
 abb3ba54b4fd9f450bbc55178c640d44fcc92134 data/mccourse/advancements/recipes/misc/leather_from_smelting_rotten_flesh.json
 bae4f278baf5ba8b3f580d7dbbd8b4ab48d8c424 data/mccourse/advancements/recipes/misc/luck.json
 0e7f4e53973e0acca11f1ce139de3638c1ea735f data/mccourse/advancements/recipes/misc/magic.json
+5aec1e0d6be369a5524dcd7a9ec3fac754132ff1 data/mccourse/advancements/recipes/misc/magic_book.json
 a2677ea9556e824a85376ffed402752500f95829 data/mccourse/advancements/recipes/misc/mccourse_elevator.json
 9739cdd18d5437258d58cf9c858bdf84f683c82f data/mccourse/advancements/recipes/misc/mccourse_generator.json
 60c9c1c462516342856cccbce2c74a2c724b1829 data/mccourse/advancements/recipes/misc/nether_star_block.json
@@ -186,6 +187,7 @@ b721733f176f2d95b8de67e5028201977d9b26cf data/mccourse/recipes/lime_green_ender_
 7e7ac3f4ee55e461b51a7bce60c506047a0ffaa2 data/mccourse/recipes/luck.json
 bd8dd0b1b48bb86aafebd421ab92e43bfb917749 data/mccourse/recipes/magenta_ender_pearl_block.json
 8940a65c3c5eae1047a7e4c1fbd41d7deb4bbc13 data/mccourse/recipes/magic.json
+77b417b6d1ed37c9aadd44cb1cb9bac670c07419 data/mccourse/recipes/magic_book.json
 f9af0941a13b6c1f8a5339dbc386efb817fbfa05 data/mccourse/recipes/mccourse_elevator.json
 be04199986ff4ba46fd59a5793a7b33ab73a8b8a data/mccourse/recipes/mccourse_generator.json
 f607ef1b937f07d9fc52f19d17c943743a35da86 data/mccourse/recipes/netherite_hammer.json
@@ -231,7 +233,7 @@ d70e4c994acf63efa7bf821c708d58df09c43ca3 data/mccourse/recipes/white_ender_pearl
 5a15694ee74f2211eed8a89e37df673a52b8a26e data/mccourse/recipes/wooden_paxel.json
 3579756b97b7ff003ebf6630395e96ba2e6996ef data/mccourse/recipes/yellow_ender_pearl_block.json
 12fee3c665e7a74dcbbc44ec05da7fdc72347b81 data/minecraft/advancements/recipes/diamond.json
-241b127e7895b79c372a1679d567d7cb3d6c08be data/minecraft/advancements/recipes/enchanted_book.json
+7cf437c69aad5741631abb893f296554ae7d47c7 data/minecraft/advancements/recipes/enchanted_book.json
 7ee87ac0df391206bb6d8e0dd47a6b21631284a7 data/minecraft/advancements/recipes/misc/blaze_rod.json
 755d68502edf360d43e20838b899a9140a7d2029 data/minecraft/advancements/recipes/misc/ender_pearl.json
 01658d235dc3694a6947e4e4d6dda0247ec7d532 data/minecraft/advancements/recipes/misc/gunpowder.json

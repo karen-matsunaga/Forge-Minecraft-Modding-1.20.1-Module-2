@@ -287,11 +287,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 ModItems.LUCK.get()), pWriter);
 
         // Craft Crafting Table 7x7
+        // One item
         craftSeven(List.of(ModBlocks.KAUPEN_FURNACE_BLOCK.get(), Items.FURNACE), pWriter); // Kaupen Furnace
         craftSeven(List.of(ModBlocks.MCCOURSE_ELEVATOR.get(), Items.WHITE_WOOL), pWriter);
         craftSeven(List.of(ModItems.FARMER.get(), Items.BONE_MEAL), pWriter);
         craftSeven(List.of(ModItems.RESTORE.get(), Items.BOOK), pWriter); // Restore item
+        craftSeven(List.of(ModBlocks.MAGIC_BOOK_BLOCK.get(), ModBlocks.MAGIC_BLOCK.get()), pWriter);
 
+        // Two items
         craftSevenItems(List.of(ModBlocks.MCCOURSE_GENERATOR.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(),
                 Items.NETHER_STAR, Items.ENCHANTED_GOLDEN_APPLE), pWriter);
         craftSevenItems(List.of(ModBlocks.GEM_EMPOWERING_STATION.get(), Items.FURNACE, ModItems.ALEXANDRITE.get(),
