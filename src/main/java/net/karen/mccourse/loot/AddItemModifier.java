@@ -39,6 +39,16 @@ public class AddItemModifier extends LootModifier {
         this.items = items;
     }
 
+    // All tools, armors and enchanted books - KEY = Items || VALUE = MAP (Enchantment, Enchantment level)
+    private final Map<Item, Map<Enchantment, Integer>> itemEnchantments = Map.ofEntries(
+            Map.entry(Items.DIAMOND_SWORD, Map.of(Enchantments.SHARPNESS, 3, Enchantments.UNBREAKING, 2)),
+            Map.entry(Items.ENCHANTED_BOOK, Map.of(Enchantments.MOB_LOOTING, 2)),
+            Map.entry(Items.IRON_PICKAXE, Map.of(Enchantments.BLOCK_EFFICIENCY, 4)),
+            Map.entry(ModItems.ORANGE_MODES.get(), Map.of(Enchantments.BLOCK_EFFICIENCY, 10,
+                      Enchantments.BLOCK_FORTUNE, 10, ModEnchantments.OVERPOWER_MENDING.get(), 1,
+                      Enchantments.UNBREAKING, 10))
+            );
+
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot,
                                                           LootContext context) {
@@ -50,6 +60,7 @@ public class AddItemModifier extends LootModifier {
                 Blocks.DEEPSLATE_COAL_ORE.getLootTable());
 
         ItemStack contextTool = context.getParamOrNull(LootContextParams.TOOL);
+        ResourceLocation location = context.getQueriedLootTableId();
 
         if (contextTool != null) {
             // If mined ORES with Silk Touch's enchantment
@@ -57,7 +68,7 @@ public class AddItemModifier extends LootModifier {
             if (silkTouch > 0) {
                 // Loop through each item in the list and drop itself an item
                 for (Item item : items) {
-                    if (ores.contains(context.getQueriedLootTableId())) {
+                    if (ores.contains(location)) {
                         generatedLoot.add(new ItemStack(item));
                     }
                 }
@@ -72,7 +83,7 @@ public class AddItemModifier extends LootModifier {
 
                 // Loop through each item in the list and drop items
                 for (Item item : items) {
-                    if (ores.contains(context.getQueriedLootTableId())) {
+                    if (ores.contains(location)) {
                         generatedLoot.add(new ItemStack(item, drops));
                     }
                 }
@@ -111,16 +122,7 @@ public class AddItemModifier extends LootModifier {
         return generatedLoot;
     }
 
-    // All tools, armors and enchanted books - KEY = Items || VALUE = MAP (Enchantment, Enchantment level)
-    private final Map<Item, Map<Enchantment, Integer>> itemEnchantments = Map.of(
-            Items.DIAMOND_SWORD, Map.of(Enchantments.SHARPNESS, 3, Enchantments.UNBREAKING, 2),
-            Items.BOOK, Map.of(Enchantments.MOB_LOOTING, 2),
-            Items.IRON_PICKAXE, Map.of(Enchantments.BLOCK_EFFICIENCY, 4),
-            ModItems.ORANGE_MODES.get(), Map.of(Enchantments.BLOCK_EFFICIENCY, 10,
-                    Enchantments.BLOCK_FORTUNE, 10, ModEnchantments.OVERPOWER_MENDING.get(), 1,
-                    Enchantments.UNBREAKING, 10));
-
-    // Custom method to
+    // Custom method to enchant TOOLS, ARMORS or ENCHANTED BOOKS
     private ItemStack createEnchantedItem(Item item) {
         ItemStack stack = new ItemStack(item);
         Map<Enchantment, Integer> enchantments = itemEnchantments.get(item);

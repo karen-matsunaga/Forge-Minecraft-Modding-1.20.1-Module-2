@@ -1,0 +1,16 @@
+{
+  "type": "mccourse:add_item",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/bastion_treasure"
+    },
+    {
+      "chance": 0.1,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "items": [
+    "mccourse:orange_modes"
+  ]
+}

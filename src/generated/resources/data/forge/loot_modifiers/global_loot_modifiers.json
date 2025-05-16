@@ -3,12 +3,18 @@
     "mccourse:metal_detector_from_jungle_temple",
     "mccourse:coal_from_coal_ore",
     "mccourse:orange_modes_from_jungle_temple",
+    "mccourse:kohlrabi_seeds_from_fern",
+    "mccourse:coal_from_deepslate_coal_ore",
+    "mccourse:orange_modes_from_ancient_city",
+    "mccourse:orange_modes_from_bastion_other",
+    "mccourse:orange_modes_from_simple_dungeon",
     "mccourse:metal_detector_from_suspicious_sand",
     "mccourse:kohlrabi_seeds_from_grass",
-    "mccourse:kohlrabi_seeds_from_fern",
     "mccourse:special_metal_detector_from_jungle_temple",
-    "mccourse:coal_from_deepslate_coal_ore",
-    "mccourse:orange_modes_from_ancient_city"
+    "mccourse:orange_modes_from_bastion_hoglin_stable",
+    "mccourse:orange_modes_from_bastion_treasure",
+    "mccourse:orange_modes_from_bastion_bridge",
+    "mccourse:orange_modes_from_abandoned_mineshaft"
   ],
   "replace": false
 }
