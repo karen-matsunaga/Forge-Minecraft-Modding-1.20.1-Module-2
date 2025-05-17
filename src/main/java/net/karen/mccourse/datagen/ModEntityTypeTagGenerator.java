@@ -1,6 +1,7 @@
-package net.karen.mccourse.entity;
+package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
+import net.karen.mccourse.entity.ModEntities;
 import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -12,9 +13,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ModEntitiesTagGenerator extends EntityTypeTagsProvider {
-    public ModEntitiesTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
-                                   @Nullable ExistingFileHelper existingFileHelper) {
+public class ModEntityTypeTagGenerator extends EntityTypeTagsProvider {
+    public ModEntityTypeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
+                                     @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, MCCourseMod.MOD_ID, existingFileHelper);
     }
 

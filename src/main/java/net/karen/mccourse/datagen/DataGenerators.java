@@ -1,7 +1,6 @@
 package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
-import net.karen.mccourse.entity.ModEntitiesTagGenerator;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -46,7 +45,7 @@ public class DataGenerators {
         generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, existingFileHelper));
 
         // Entity Tag Generator
-        EntityTypeTagsProvider entityTypeTagsProvider = new ModEntitiesTagGenerator(packOutput, lookupProvider, existingFileHelper);
+        EntityTypeTagsProvider entityTypeTagsProvider = new ModEntityTypeTagGenerator(packOutput, lookupProvider, existingFileHelper);
         generator.addProvider(event.includeServer(), entityTypeTagsProvider);
 
         // Block State Provider
