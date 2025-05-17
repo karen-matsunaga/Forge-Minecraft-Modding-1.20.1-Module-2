@@ -22,60 +22,75 @@ public class MagicBookBlock extends Block {
 
     @Override
     public void stepOn(Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
-        if (!level.isClientSide() && entity instanceof ItemEntity itemEntity) {
-            // Checks if item is enchanted book
-            ItemStack stack = itemEntity.getItem();
+        if (!level.isClientSide() && entity instanceof ItemEntity) {
+            AABB area = new AABB(pos).inflate(0.5);
 
-            if (stack.getItem() == Items.ENCHANTED_BOOK) {
-                // Gets all ItemEntity entities from enchanted books within the block
-                List<ItemEntity> nearbyBooks = level.getEntitiesOfClass(ItemEntity.class,
-                        new AABB(pos).inflate(0.5), e -> e.getItem().getItem() == Items.ENCHANTED_BOOK);
+            // Collect enchanted books and enchanted items
+            List<ItemEntity> enchantedBooks = level.getEntitiesOfClass(ItemEntity.class, area,
+                    e -> e.getItem().getItem() == Items.ENCHANTED_BOOK);
 
-                if (nearbyBooks.size() > 1) {
-                    // Map to count how many times each enchantment appears
-                    Map<Enchantment, Integer> enchantCount = new HashMap<>();
+            List<ItemEntity> enchantedItems = level.getEntitiesOfClass(ItemEntity.class, area,
+                    e -> e.getItem().isEnchantable());
 
-                    // Counts the enchantments of all the books
-                    for (ItemEntity bookEntity : nearbyBooks) {
-                        Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(bookEntity.getItem());
-                        for (Enchantment enchant : enchants.keySet()) {
-                            enchantCount.merge(enchant, 1, Integer::sum);
-                        }
-                    }
+            // Combine books if there are multiple
+            if (enchantedBooks.size() > 1) {
+                Map<Enchantment, Integer> enchantSumLevels = new HashMap<>();
 
-                    // Checks if any enchantment appears in more than one book
-                    boolean hasCommonEnchants = enchantCount.values().stream().anyMatch(count -> count > 1);
-
-                    if (!hasCommonEnchants) {
-                        // If there are no repeated enchantments between the books, it matches
-                        Map<Enchantment, Integer> combined = new HashMap<>();
-
-                        // Combines the enchantments of all found books
-                        for (ItemEntity bookEntity : nearbyBooks) {
-                            Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(bookEntity.getItem());
-                            for (Map.Entry<Enchantment, Integer> e : enchants.entrySet()) {
-                                combined.merge(e.getKey(), e.getValue(), Math::max);
-                            }
-                        }
-
-                        // Remove the original books from the world
-                        for (ItemEntity bookEntity : nearbyBooks) {
-                            bookEntity.discard();
-                        }
-
-                        // Create the combined book
-                        ItemStack combinedBook = new ItemStack(Items.ENCHANTED_BOOK);
-                        EnchantmentHelper.setEnchantments(combined, combinedBook);
-
-                        // Spawn the combined book in the center of the block
-                        level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5,
-                                pos.getY() + 1, pos.getZ() + 0.5, combinedBook));
-
-                        // Sound for feedback
-                        level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE,
-                                SoundSource.BLOCKS, 1.0F, 1.0F);
+                for (ItemEntity bookEntity : enchantedBooks) {
+                    Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(bookEntity.getItem());
+                    for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
+                        enchantSumLevels.merge(entry.getKey(), entry.getValue(), Integer::sum);
                     }
                 }
+
+                Map<Enchantment, Integer> finalEnchants = new HashMap<>();
+                for (Map.Entry<Enchantment, Integer> entry : enchantSumLevels.entrySet()) {
+                    Enchantment ench = entry.getKey();
+                    int sumLevel = entry.getValue();
+                    finalEnchants.put(ench, sumLevel);
+                }
+
+                // Remove original books
+                enchantedBooks.forEach(Entity::discard);
+
+                // Create and drop the new combined book
+                ItemStack combinedBook = new ItemStack(Items.ENCHANTED_BOOK);
+                EnchantmentHelper.setEnchantments(finalEnchants, combinedBook);
+
+                level.addFreshEntity(new ItemEntity(level,
+                        pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5,
+                        combinedBook));
+
+                level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1f, 1f);
+
+            }
+
+            // Enchant item with book
+            else if (enchantedBooks.size() == 1 && !enchantedItems.isEmpty()) {
+                ItemEntity toolItem = enchantedItems.get(0);
+                ItemEntity enchantedBookItem = enchantedBooks.get(0);
+
+                ItemStack toolStack = toolItem.getItem();
+                ItemStack bookStack = enchantedBookItem.getItem();
+
+                Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(bookStack);
+
+                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                    toolStack.enchant(entry.getKey(), entry.getValue());
+                }
+
+                toolItem.setItem(toolStack);
+
+                // Consumes 1 book
+                bookStack.shrink(1);
+                if (bookStack.isEmpty()) {
+                    enchantedBookItem.discard();
+                }
+                else {
+                    enchantedBookItem.setItem(bookStack);
+                }
+
+                level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
         }
         super.stepOn(level, pos, state, entity);
