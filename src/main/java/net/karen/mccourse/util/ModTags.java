@@ -28,6 +28,9 @@ public class ModTags {
         public static final TagKey<Item> LEGGINGS_FLY = tag("items/leggings_fly");
         public static final TagKey<Item> BOOTS_FLY = tag("items/boots_fly");
 
+        // Restore item blacklist
+        public static final TagKey<Item> RESTORE_BLACKLIST_ITEMS = tag("items/restore_blacklist_items");
+
         // Pass item id
         private static TagKey<Item> tag(String name) { return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }
 

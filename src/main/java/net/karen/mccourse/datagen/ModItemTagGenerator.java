@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
@@ -71,6 +72,10 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
         this.tag(ModTags.Items.BOOTS_FLY)
                 .add(ModItems.ALEXANDRITE_BOOTS.get(), ModItems.PINK_BOOTS.get(), ModItems.COPPER_BOOTS.get());
+
+        this.tag(ModTags.Items.RESTORE_BLACKLIST_ITEMS)
+                .add(ModItems.BLUE_MODES.get(), ModItems.GREEN_MODES.get(), ModItems.ORANGE_MODES.get(),
+                        ModItems.PINK_MODES.get(), ModItems.PURPLE_MODES.get(), Items.ENCHANTED_BOOK);
     }
 
     @Override

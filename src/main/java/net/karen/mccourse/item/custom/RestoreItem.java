@@ -1,5 +1,6 @@
 package net.karen.mccourse.item.custom;
 
+import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -35,7 +36,7 @@ public class RestoreItem extends Item {
         ItemStack restoreItem = player.getItemInHand(InteractionHand.MAIN_HAND);
 
         // If Offhand empty
-        if (targetItem.isEmpty() || targetItem.is(Items.ENCHANTED_BOOK)) {
+        if (targetItem.isEmpty() || targetItem.is(ModTags.Items.RESTORE_BLACKLIST_ITEMS)) {
             player.displayClientMessage(
                     Component.literal("Hold the item you wish to uncraft in your other hand."), true);
             return InteractionResultHolder.success(player.getItemInHand(hand));
