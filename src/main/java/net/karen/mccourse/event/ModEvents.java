@@ -59,10 +59,7 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.EnchantedBookItem;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -124,12 +121,11 @@ public class ModEvents {
         // If player destroyed a block with Hammer tool
         if (mainHandItem.getItem() instanceof HammerItem hammer && player instanceof ServerPlayer serverPlayer) {
             int radius = hammer.getRadius(); // Radius declared on ModItems with HammerItem class
+
             // Player's position to break a block with Hammer tool
             for (BlockPos pos : HammerItem.getBlocksToBeDestroyed(radius, initalBlockPos, serverPlayer)) {
-                if (pos == initalBlockPos ||
-                        !hammer.isCorrectToolForDrops(mainHandItem, event.getLevel().getBlockState(pos))) {
-                    continue;
-                }
+                boolean item = hammer.isCorrectToolForDrops(mainHandItem, event.getLevel().getBlockState(pos));
+                if (pos == initalBlockPos || !item) { continue; }
                 // Have to add them to a Set otherwise, the same code right here will get called for each block!
                 HARVESTED_BLOCKS.add(pos); // Player destroyed block with Hammer tool
                 serverPlayer.gameMode.destroyBlock(pos);
@@ -144,26 +140,27 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END || Minecraft.getInstance().player == null) { return; }
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-        ItemStack held = player.getMainHandItem();
-        HammerItem.clientTick();
+        if (event.phase == TickEvent.Phase.END && player != null) {
+            ItemStack held = player.getMainHandItem();
+            HammerItem.clientTick();
 
-        if (!(held.getItem() instanceof HammerItem)) {
-            lastSentPos = null;
-            return;
-        }
+            if (!(held.getItem() instanceof HammerItem)) {
+                lastSentPos = null;
+                return;
+            }
 
-        HitResult hit = mc.hitResult;
-        if (hit == null || hit.getType() != HitResult.Type.BLOCK) { return; }
+            HitResult hit = mc.hitResult;
+            if (hit == null || hit.getType() != HitResult.Type.BLOCK) { return; }
 
-        BlockPos pos = ((BlockHitResult) hit).getBlockPos();
+            BlockPos pos = ((BlockHitResult) hit).getBlockPos();
 
-        if (!pos.equals(lastSentPos) && tickDelay-- <= 0) {
-            lastSentPos = pos;
-            tickDelay = 5;
-            ModNetworks.PACKET_HANDLER.sendToServer(new ServerHammerBlockRenderMessage(pos));
+            if (!pos.equals(lastSentPos) && tickDelay-- <= 0) {
+                lastSentPos = pos;
+                tickDelay = 5;
+                ModNetworks.PACKET_HANDLER.sendToServer(new ServerHammerBlockRenderMessage(pos));
+            }
         }
     }
 
@@ -198,20 +195,26 @@ public class ModEvents {
         if (event.getEntity() instanceof Sheep) {
             if (event.getSource().getDirectEntity() instanceof Player player) {
                 if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == ModItems.ALEXANDRITE_AXE.get()) {
-                    MCCourseMod.LOGGER.info("Sheep was hit with Alexandrite Axe by {}",
-                            player.getName().getString());
-                } else if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == Items.DIAMOND) {
-                    MCCourseMod.LOGGER.info("Sheep was hit with DIAMOND by {}",
-                            player.getName().getString());
-                } else {
-                    MCCourseMod.LOGGER.info("Sheep was hit with something else by {}",
-                            player.getName().getString());
+                    MCCourseMod.LOGGER.info("Sheep was hit with Alexandrite Axe by {}", player.getName().getString());
+                }
+                else if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == Items.DIAMOND) {
+                    MCCourseMod.LOGGER.info("Sheep was hit with DIAMOND by {}", player.getName().getString());
+                }
+                else {
+                    MCCourseMod.LOGGER.info("Sheep was hit with something else by {}", player.getName().getString());
                 }
             }
         }
     }
 
     // CUSTOM EVENT - Custom Villager's professions trade
+    private static void villagerTrades(Int2ObjectMap<List<VillagerTrades.ItemListing>> trade,
+                              List<Item> items, int level, List<Integer> levelCount, float multiplier) {
+        trade.get(level).add((pTrader, pRandom) -> new MerchantOffer(
+                new ItemStack(items.get(0), levelCount.get(0)),
+                new ItemStack(items.get(1), levelCount.get(1)), levelCount.get(2), levelCount.get(3), multiplier));
+    }
+
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {
         // Villager's farm profession
@@ -221,14 +224,12 @@ public class ModEvents {
 
             // List of all trades that the player can trade
             // Received KOHLRABI with Villager's level 1
-            trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 2),
-                    new ItemStack(ModItems.KOHLRABI.get(), 6), 10, 2, 0.02f));
+            villagerTrades(trades, List.of(Items.EMERALD, ModItems.KOHLRABI.get()), 1,
+                    List.of(2, 6, 10, 2), 0.02f);
 
             // Received KOHLRABI SEEDS with Villager's level 2
-            trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 5),
-                    new ItemStack(ModItems.KOHLRABI_SEEDS.get()), 3, 2, 0.02f));
+            villagerTrades(trades, List.of(Items.EMERALD, ModItems.KOHLRABI_SEEDS.get()), 2,
+                    List.of(5, 1, 3, 2), 0.02f);
         }
 
         // Villager's toolsmith profession
@@ -238,10 +239,8 @@ public class ModEvents {
 
             // List of all trades that the player can trade
             // Received ALEXANDRITE PAXEL with Villager's level 3
-            trades.get(3).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 12),
-                    new ItemStack(ModItems.ALEXANDRITE_PAXEL.get(), 1),
-                    2, 5, 0.06f));
+            villagerTrades(trades, List.of(Items.EMERALD, ModItems.ALEXANDRITE_PAXEL.get()), 3,
+                    List.of(12, 1, 2, 5), 0.06f);
         }
 
         // Custom Villager's soundmaster profession
@@ -251,13 +250,19 @@ public class ModEvents {
 
             // List of all trades that the player can trade
             // Received Sound Block with Villager's level 1
-            trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 25),
-                    new ItemStack(ModBlocks.SOUND_BLOCK.get(), 1), 2, 5, 0.06f));
+            villagerTrades(trades, List.of(Items.EMERALD, ModBlocks.SOUND_BLOCK.get().asItem()), 1,
+                    List.of(25, 1, 2, 5), 0.06f);
         }
     }
 
     // CUSTOM EVENT - Custom Villager Wandering
+    private static void wanderingTrades(List<VillagerTrades.ItemListing> trade,
+                                       List<Item> items, List<Integer> levelCount, float multiplier) {
+        trade.add((pTrader, pRandom) -> new MerchantOffer(
+                new ItemStack(items.get(0), levelCount.get(0)),
+                new ItemStack(items.get(1), levelCount.get(1)), levelCount.get(2), levelCount.get(3), multiplier));
+    }
+
     @SubscribeEvent
     public static void addWanderingTrades(WandererTradesEvent event) {
         // List of all trades that the player can trade - Generic and Rare trades because not exist levels
@@ -266,14 +271,16 @@ public class ModEvents {
 
         // List of all generic and rare trades
         // Received KOHLRABI like Generic Trades
-        genericTrades.add((pTrader, pRandom) -> new MerchantOffer(
-                new ItemStack(Items.EMERALD, 2),
-                new ItemStack(ModItems.KOHLRABI.get(), 6), 10, 2, 0.02f));
+        wanderingTrades(genericTrades, List.of(Items.EMERALD, ModItems.KOHLRABI.get()),
+                List.of(2, 6, 10, 2), 0.02f);
 
         // Received KOHLRABI SEEDS like Rare Trades
-        rareTrades.add((pTrader, pRandom) -> new MerchantOffer(
-                new ItemStack(Items.EMERALD, 5),
-                new ItemStack(ModItems.KOHLRABI_SEEDS.get()), 3, 2, 0.02f));
+        wanderingTrades(rareTrades, List.of(Items.EMERALD, ModItems.KOHLRABI_SEEDS.get()),
+                List.of(5, 1, 3, 2), 0.02f);
+
+        // Magic Book custom block
+        wanderingTrades(rareTrades, List.of(Items.EMERALD, ModBlocks.MAGIC_BOOK_BLOCK.get().asItem()),
+                List.of(64, 1, 9, 10), 0.06f);
     }
 
     // CUSTOM EVENT - Rainbow custom enchantment
@@ -281,33 +288,28 @@ public class ModEvents {
     public static void activatedRainbowEnchantment(BlockEvent.BreakEvent event) {
         LevelAccessor world = event.getLevel();
         BlockPos pos = event.getPos();
-        Entity entity = event.getPlayer();
-
-        if (!(entity instanceof LivingEntity livingEntity)) { return; } // Player is an entity
-
-        ItemStack mainHandItem = livingEntity.getMainHandItem(); // Player has tool on main hand
-
+        // Player has tool on main hand
+        ItemStack mainHandItem = event.getPlayer().getMainHandItem();
         // Player has tool with Rainbow enchantment
         int rainbowLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.RAINBOW.get());
 
         // Player's tool doesn't have Rainbow enchantment
-        if (!mainHandItem.isEnchanted() || rainbowLevel < 1) { return; }
+        if (mainHandItem.isEnchanted() || rainbowLevel > 0) {
+            BlockState blockState = world.getBlockState(pos);
+            BlockPos blockPos = BlockPos.containing(pos.getX(), pos.getY(), pos.getZ()); // Block position
 
-        BlockState blockState = world.getBlockState(pos);
-        BlockPos blockPos = BlockPos.containing(pos.getX(), pos.getY(), pos.getZ()); // Block position
+            // Block (Key) / Block Tag (Value)
+            Map<Block, TagKey<Block>> rainbowBlock = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL,
+                    Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER, Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND,
+                    Blocks.EMERALD_BLOCK, Tags.Blocks.ORES_EMERALD, Blocks.GOLD_BLOCK, Tags.Blocks.ORES_GOLD,
+                    Blocks.IRON_BLOCK, Tags.Blocks.ORES_IRON, Blocks.LAPIS_BLOCK, Tags.Blocks.ORES_LAPIS,
+                    Blocks.REDSTONE_BLOCK, Tags.Blocks.ORES_REDSTONE, Blocks.NETHERITE_BLOCK, Tags.Blocks.ORES_NETHERITE_SCRAP);
 
-        // Block (Key) / Block Tag (Value)
-        Map<Block, TagKey<Block>> rainbowBlock = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL,
-        Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER, Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND,
-        Blocks.EMERALD_BLOCK, Tags.Blocks.ORES_EMERALD, Blocks.GOLD_BLOCK, Tags.Blocks.ORES_GOLD,
-        Blocks.IRON_BLOCK, Tags.Blocks.ORES_IRON, Blocks.LAPIS_BLOCK, Tags.Blocks.ORES_LAPIS,
-        Blocks.REDSTONE_BLOCK, Tags.Blocks.ORES_REDSTONE, Blocks.NETHERITE_BLOCK,
-        Tags.Blocks.ORES_NETHERITE_SCRAP);
-
-        for (Map.Entry<Block, TagKey<Block>> rainbowEntry : rainbowBlock.entrySet()) {
-            if (rainbowLevel == 1 && blockState.is(rainbowEntry.getValue())) {
-                world.setBlock(blockPos, rainbowEntry.getKey().defaultBlockState(), 3); // Create KEY block
-                event.setCanceled(true); // Ore not break and replaced with block on rainbowOres
+            for (Map.Entry<Block, TagKey<Block>> rainbowEntry : rainbowBlock.entrySet()) {
+                if (rainbowLevel == 1 && blockState.is(rainbowEntry.getValue())) {
+                    world.setBlock(blockPos, rainbowEntry.getKey().defaultBlockState(), 3); // Create KEY block
+                    event.setCanceled(true); // Ore not break and replaced with block on rainbowOres
+                }
             }
         }
     }
@@ -319,37 +321,33 @@ public class ModEvents {
     public static void activatedMoreOresEnchantment(BlockEvent.BreakEvent event) {
         LevelAccessor world = event.getLevel();
         BlockPos pos = event.getPos();
-        Entity entity = event.getPlayer();
-
-        if (!(entity instanceof LivingEntity livingEntity)) { return; } // Player is an entity
-
-        ItemStack mainHandItem = livingEntity.getMainHandItem(); // Player has a tool on main hand
-
+        ItemStack mainHandItem = event.getPlayer().getMainHandItem(); // Player has a tool on main hand
         // More Ores enchantment level
         int moreOresLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.MORE_ORES.get());
 
-        if (!mainHandItem.isEnchanted() || moreOresLevel < 1) { return; } // Player has More Ores enchantment
+        // Player has More Ores enchantment
+        if (!mainHandItem.isEnchanted() || moreOresLevel < 1) {
+            // Check if the block is STONE's tags and has a small chance to drop ores
+            BlockState blockState = world.getBlockState(pos);
+            List<TagKey<Block>> ores = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS, ModTags.Blocks.MORE_ORES_TWO_DROPS,
+                    ModTags.Blocks.MORE_ORES_THREE_DROPS, ModTags.Blocks.MORE_ORES_FOUR_DROPS,
+                    ModTags.Blocks.MORE_ORES_FIVE_DROPS);
+            double chance = Math.random();
 
-        // Check if the block is STONE's tags and has a small chance to drop ores
-        BlockState blockState = world.getBlockState(pos);
-
-        List<TagKey<Block>> ores = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS, ModTags.Blocks.MORE_ORES_TWO_DROPS,
-        ModTags.Blocks.MORE_ORES_THREE_DROPS, ModTags.Blocks.MORE_ORES_FOUR_DROPS,
-        ModTags.Blocks.MORE_ORES_FIVE_DROPS);
-
-        if (world instanceof ServerLevel serverLevel) {  // Ores generated on world
-            for (int i = 1; i < 2; i++) { // Number of random ores are generated by block mined on any position
-                if (moreOresLevel < 5 && blockState.is(Blocks.STONE) && Math.random() < 0.1 ||
-                        moreOresLevel == 5 && blockState.is(Blocks.NETHERRACK) && Math.random() < 0.01) {
-                    // Broken block has ore block
-                    var oreTag = ForgeRegistries.BLOCKS.tags();
-                    if (oreTag != null) {
-                        // Create a new ItemEntity with the randomly ORES's tags on randomOre
-                        ItemEntity entityToSpawn = new ItemEntity(serverLevel, pos.getX() + 0.5,
-                                pos.getY() + 0.5, pos.getZ() + 0.5,
-                                new ItemStack(oreTag.getTag(ores.get(moreOresLevel-1))
-                                        .getRandomElement(RandomSource.create()).orElse(Blocks.AIR)));
-                        serverLevel.addFreshEntity(entityToSpawn); // All drops generated by block
+            if (world instanceof ServerLevel serverLevel) {  // Ores generated on world
+                for (int i = 1; i < 2; i++) { // Number of random ores are generated by block mined on any position
+                    if (moreOresLevel < 5 && blockState.is(Blocks.STONE) && chance < 0.1 ||
+                            moreOresLevel == 5 && blockState.is(Blocks.NETHERRACK) && chance < 0.01) {
+                        // Broken block has ore block
+                        var oreTag = ForgeRegistries.BLOCKS.tags();
+                        if (oreTag != null) {
+                            // Create a new ItemEntity with the randomly ORES's tags on randomOre
+                            ItemEntity entityToSpawn = new ItemEntity(serverLevel, pos.getX() + 0.5,
+                                    pos.getY() + 0.5, pos.getZ() + 0.5,
+                                    new ItemStack(oreTag.getTag(ores.get(moreOresLevel - 1))
+                                            .getRandomElement(RandomSource.create()).orElse(Blocks.AIR)));
+                            serverLevel.addFreshEntity(entityToSpawn); // All drops generated by block
+                        }
                     }
                 }
             }
@@ -377,9 +375,9 @@ public class ModEvents {
 
             // Blocks are generated on Player's inventory
             Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem)
-                    .forEach(drop -> { if (!player.getInventory().add(drop)) {
-                        player.drop(drop, false);
-                    }}); // Blocks does added drop on Player's inventory
+                    .forEach(drop -> {
+                        if (!player.getInventory().add(drop)) { player.drop(drop, false); }
+                    }); // Blocks does added drop on Player's inventory
             world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Remove broken block position
         }
     }
@@ -511,8 +509,7 @@ public class ModEvents {
                     if (raw != null && raw.startsWith(expected)) {
                         ChatFormatting color = enchantment.isCurse() ? ChatFormatting.RED :
                                 switch (enchantment.category) {
-                                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS,
-                                         ARMOR_FEET -> ChatFormatting.GOLD;
+                                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.GOLD;
                                     case DIGGER -> ChatFormatting.DARK_PURPLE;
                                     case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
                                     case TRIDENT -> ChatFormatting.AQUA;
@@ -557,63 +554,59 @@ public class ModEvents {
         int y = h - 30;
 
         if (player != null && player.getMainHandItem().getItem() instanceof ModesPickaxeItem modesPickaxe) {
-                ModesPickaxe mode = modesPickaxe.getModeActual(); // Show text mode actual on screen
-                Component modeText = Component.literal("Mode actual: ")
-                        .setStyle(Style.EMPTY.withColor(0xFFAA00)
-                        .applyFormat(ChatFormatting.BOLD)); // Gold color
+            ModesPickaxe mode = modesPickaxe.getModeActual(); // Show text mode actual on screen
+            Component modeText = Component.literal("Mode actual: ")
+                    .setStyle(Style.EMPTY.withColor(0xFFAA00)
+                    .applyFormat(ChatFormatting.BOLD)); // Gold color
 
-                // Renders text on overlay on same line
-                // Mode Text
-                event.getGuiGraphics().drawString(mc.font, modeText, x, y, 0xFFAA00, false);
-                x += mc.font.width(modeText);
+            // Renders text on overlay on same line
+            // Mode Text
+            event.getGuiGraphics().drawString(mc.font, modeText, x, y, 0xFFAA00, false);
+            x += mc.font.width(modeText);
 
-                // Mode Type
-                event.getGuiGraphics().drawString(mc.font, Component.literal(mode.toString()
-                                .replace("_", " "))
-                                .setStyle(Style.EMPTY.withColor(0xFF5555) // Red color
-                                .applyFormat(ChatFormatting.BOLD)),
-                        x, y, 0xFF5555, false);
+            // Mode Type
+            event.getGuiGraphics().drawString(mc.font, Component.literal(mode.toString()
+                            .replace("_", " "))
+                            .setStyle(Style.EMPTY.withColor(0xFF5555) // Red color
+                            .applyFormat(ChatFormatting.BOLD)), x, y, 0xFF5555, false);
 
-                // drawString method parameters:
-                // - mc.font: The source object used to draw the text.
-                // - modeText: The text component to be drawn.
-                // - x: X position when the text will be drawn on screen.
-                // - y: Y position when the text will be drawn on screen.
-                // - 0x0000FF: Text color on hexadecimal format.
-                // - false: Boolean that indicates if the text should have a shadow (false = without shadow).
+            // drawString method parameters:
+            // - mc.font: The source object used to draw the text.
+            // - modeText: The text component to be drawn.
+            // - x: X position when the text will be drawn on screen.
+            // - y: Y position when the text will be drawn on screen.
+            // - 0x0000FF: Text color on hexadecimal format.
+            // - false: Boolean that indicates if the text should have a shadow (false = without shadow).
         }
     }
 
     // Active Fly with Item
     @SubscribeEvent
     public static void flyEffect(TickEvent.PlayerTickEvent event) {
-        if ((event.phase != TickEvent.Phase.END) || event.player.level().isClientSide()) { return; }
         Player player = event.player;
+        if ((event.phase == TickEvent.Phase.END) && !player.level().isClientSide()) {
+            // Player used FULL ARMOR
+            boolean hasArmor = player.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.Items.HELMET_FLY) &&
+                    player.getItemBySlot(EquipmentSlot.CHEST).is(ModTags.Items.CHESTPLATE_FLY) &&
+                    player.getItemBySlot(EquipmentSlot.LEGS).is(ModTags.Items.LEGGINGS_FLY) &&
+                    player.getItemBySlot(EquipmentSlot.FEET).is(ModTags.Items.BOOTS_FLY);
 
-        // Player used FULL ARMOR
-        boolean hasArmor = player.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.Items.HELMET_FLY) &&
-                player.getItemBySlot(EquipmentSlot.CHEST).is(ModTags.Items.CHESTPLATE_FLY) &&
-                player.getItemBySlot(EquipmentSlot.LEGS).is(ModTags.Items.LEGGINGS_FLY) &&
-                player.getItemBySlot(EquipmentSlot.FEET).is(ModTags.Items.BOOTS_FLY);
+            // Player has FLY EFFECT
+            boolean hasFlyEffect = player.hasEffect(ModEffects.FLY_EFFECT.get()) ||
+                    player.hasEffect(ModEffects.OVERPOWER_FLY_EFFECT.get());
 
-        // Player has FLY EFFECT
-        boolean hasFlyEffect = player.hasEffect(ModEffects.FLY_EFFECT.get()) ||
-                player.hasEffect(ModEffects.OVERPOWER_FLY_EFFECT.get());
-
-        // Player has FULL ARMOR or FLY EFFECT
-        if (hasArmor || hasFlyEffect) {
-            if (!player.getAbilities().mayfly) {
-                player.getAbilities().mayfly = true;
-                player.onUpdateAbilities();
+            // Player has FULL ARMOR or FLY EFFECT
+            if (hasArmor || hasFlyEffect) {
+                if (!player.getAbilities().mayfly) { player.getAbilities().mayfly = true; }
             }
-        }
-        // Player hasn't FULL ARMOR or FLY EFFECT
-        else {
-            if (player.getAbilities().mayfly && !player.isCreative()) {
-                player.getAbilities().mayfly = false;
-                player.getAbilities().flying = false;
-                player.onUpdateAbilities();
+            // Player hasn't FULL ARMOR or FLY EFFECT
+            else {
+                if (player.getAbilities().mayfly && !player.isCreative()) {
+                    player.getAbilities().mayfly = false;
+                    player.getAbilities().flying = false;
+                }
             }
+            player.onUpdateAbilities();
         }
     }
 
@@ -668,7 +661,8 @@ public class ModEvents {
     Map.entry(Tags.Blocks.ORES_DIAMOND, 0xFF00FEFF), Map.entry(Tags.Blocks.ORES_EMERALD, 0xFF31c831),
     Map.entry(Tags.Blocks.ORES_GOLD, 0xFFffd700), Map.entry(Tags.Blocks.ORES_IRON, 0xFFd3d3d3),
     Map.entry(Tags.Blocks.ORES_LAPIS, 0xFF0000ff), Map.entry(Tags.Blocks.ORES_REDSTONE, 0xFFb30000),
-    Map.entry(Tags.Blocks.ORES_NETHERITE_SCRAP, 0xFFD22CF8), Map.entry(ModTags.Blocks.MCCOURSE_ORES, 0xFFffc0eb));
+    Map.entry(Tags.Blocks.ORES_NETHERITE_SCRAP, 0xFFD22CF8), Map.entry(ModTags.Blocks.MCCOURSE_ORES, 0xFFffc0eb),
+    Map.entry(ModTags.Blocks.SPECIAL_METAL_DETECTOR_VALUABLES, 0xFF157ccb));
 
     // Added all blocks shape with respective color
     private static void add(double x, double y, double z, int color) {
@@ -692,8 +686,11 @@ public class ModEvents {
     }
 
     // Before creating the blocks, cleaning is done
-    private static void clear() { if (vertexBuffer != null) {
-        vertexBuffer.close(); vertexBuffer = null; }
+    private static void clear() {
+        if (vertexBuffer != null) {
+            vertexBuffer.close();
+            vertexBuffer = null;
+        }
     }
 
     // After creating the block
@@ -707,8 +704,8 @@ public class ModEvents {
     }
 
     // Render block shape
-    private static void renderShape(VertexBuffer vertexBuffer,
-                                    double x, double y, double z, int color) {
+    private static void renderShape(VertexBuffer vertexBuffer, double x, double y, double z,
+                                    int color) {
         if (currentStage == 0 || currentStage != targetStage) { return; }
         if (poseStack == null || projectionMatrix == null) { return; }
         if (vertexBuffer == null) { return; }
@@ -719,7 +716,11 @@ public class ModEvents {
             j = (float) (y - pos.y());
             k = (float) (z - pos.z());
         }
-        else { i = (float) x; j = (float) y; k = (float) z; }
+        else {
+            i = (float) x;
+            j = (float) y;
+            k = (float) z;
+        }
         poseStack.pushPose();
         poseStack.translate(i, j, k);
         poseStack.mulPose(Axis.YN.rotationDegrees(0));
@@ -738,23 +739,24 @@ public class ModEvents {
         poseStack.popPose();
     }
 
+    // CUSTOM METHOD - Render block shape on world
+    private static void renderLevel(List<Integer> stage, List<Boolean> bool, RenderLevelStageEvent event) {
+        currentStage = stage.get(0);
+        RenderSystem.depthMask(bool.get(0));
+        renderShapes(event);
+        RenderSystem.enableCull();
+        RenderSystem.depthMask(bool.get(1));
+        currentStage = stage.get(1);
+    }
+
     // Where render block shape on world
     @SubscribeEvent
     public static void renderLevel(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
-            currentStage = 1;
-            RenderSystem.depthMask(false);
-            renderShapes(event);
-            RenderSystem.enableCull();
-            RenderSystem.depthMask(true);
-            currentStage = 0;
-        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            currentStage = 2;
-            RenderSystem.depthMask(true);
-            renderShapes(event);
-            RenderSystem.enableCull();
-            RenderSystem.depthMask(true);
-            currentStage = 0;
+            renderLevel(List.of(1, 0), List.of(false, true), event);
+        }
+        else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+            renderLevel(List.of(2, 0), List.of(true, true), event);
         }
     }
 
@@ -780,13 +782,12 @@ public class ModEvents {
                             double posY = Math.floor(pos.y + i);
                             double posZ = Math.floor(pos.z + zi);
                             BlockPos position = BlockPos.containing(posX, posY, posZ);
-                            BlockState block = level.getBlockState(position);
                             int[][] cubeCoordinates = { {0,0,0},{1,0,0},{1,0,0},{1,0,1},{1,0,1},{0,0,1},
                                     {0,0,1},{0,0,0},{0,0,0},{0,1,0},{1,0,0},{1,1,0},
                                     {1,0,1},{1,1,1},{0,0,1},{0,1,1},{0,1,0},{1,1,0},
                                     {1,1,0},{1,1,1},{1,1,1},{0,1,1},{0,1,1},{0,1,0}};
                             for (Map.Entry<TagKey<Block>, Integer> entry : renderColors.entrySet()) {
-                                if (block.is(entry.getKey())) {
+                                if (level.getBlockState(position).is(entry.getKey())) {
                                     RenderSystem.depthMask(false);
                                     RenderSystem.disableDepthTest();
                                     if (begin()) {
@@ -916,25 +917,24 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Mccourse Elevator advanced block
+    private static void network(boolean response) {
+        ModNetworks.PACKET_HANDLER.sendToServer(new MccourseElevatorKeyInputMessage(response));
+    }
+
     @SubscribeEvent
     public static void activatedMccourseElevatorOnKeyInput(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null) { return; }
         Player player = mc.player;
+        if (player != null) {
+            // Checks if the player is over the elevator
+            BlockPos pos = BlockPos.containing(player.getX(), player.getY() - 1, player.getZ());
+            if (player.level().getBlockState(pos).getBlock() == ModBlocks.MCCOURSE_ELEVATOR.get()) {
+                // Detects JUMP
+                if (InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_SPACE)) { network(true); }
 
-        // Checks if the player is over the elevator
-        BlockPos pos = BlockPos.containing(player.getX(), player.getY() - 1, player.getZ());
-        BlockState state = player.level().getBlockState(pos);
-        if (state.getBlock() != ModBlocks.MCCOURSE_ELEVATOR.get()) { return; }
-
-        // Detects jump
-        if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_SPACE)) {
-            ModNetworks.PACKET_HANDLER.sendToServer(new MccourseElevatorKeyInputMessage(true));
-        }
-
-        // Detects shift/crouch
-        if (player.isShiftKeyDown()) {
-            ModNetworks.PACKET_HANDLER.sendToServer(new MccourseElevatorKeyInputMessage(false));
+                // Detects SHIFT/crouch
+                if (player.isShiftKeyDown()) { network(false); }
+            }
         }
     }
 
@@ -1113,6 +1113,14 @@ public class ModEvents {
         }
     }
 
+    private static void crop(Block block, BlockState state, Level level, BlockPos pos,
+                             Player player, BlockEvent.BreakEvent event, ItemStack tool) {
+        event.setCanceled(true); // Cancels pattern break
+        Block.dropResources(state, level, pos, null, player, tool); // Drops items as if they had broken normally
+        level.setBlock(pos, block.defaultBlockState(), 3); // Replants the initial stage of the plantation
+        damageToolIfHoe(tool, player); // Spend tool durability
+    }
+
     // Crop automatically replant
     @SubscribeEvent
     public static void cropReplant(BlockEvent.BreakEvent event) {
@@ -1135,24 +1143,12 @@ public class ModEvents {
         // Wheat, Carrot, Potato, Beet, etc.
         if (block instanceof CropBlock crop) {
             // Check if it is ripe
-            if (crop.isMaxAge(state)) {
-                // Cancels pattern break
-                event.setCanceled(true);
-                // Drops items as if they had broken normally
-                Block.dropResources(state, level, pos, null, player, heldItem);
-                // Replants the initial stage of the plantation
-                level.setBlock(pos, crop.defaultBlockState(), 3);
-                // Spend tool durability
-                damageToolIfHoe(heldItem, player);
-            }
+            if (crop.isMaxAge(state)) { crop(crop, state, level, pos, player, event, heldItem); }
         }
         // Nether Wart
         else if (block == Blocks.NETHER_WART) {
             if (state.getValue(NetherWartBlock.AGE) == 3) {
-                event.setCanceled(true);
-                Block.dropResources(state, level, pos, null, player, heldItem);
-                level.setBlock(pos, Blocks.NETHER_WART.defaultBlockState(), 3);
-                damageToolIfHoe(heldItem, player);
+                crop(Blocks.NETHER_WART, state, level, pos, player, event, heldItem);
             }
         }
         // Sugar cane, Bamboo or Cactus
@@ -1161,9 +1157,9 @@ public class ModEvents {
             BlockState baseState = level.getBlockState(basePos);
             // Only replant if there is correct soil below
             boolean canReplant = ((block == Blocks.SUGAR_CANE && (baseState.is(Blocks.GRASS_BLOCK)
-                            || baseState.is(Blocks.DIRT) || baseState.is(Blocks.SAND))) ||
-                            (block == Blocks.BAMBOO && baseState.is(Blocks.GRASS_BLOCK)) ||
-                            (block == Blocks.CACTUS && baseState.is(Blocks.SAND)));
+                    || baseState.is(Blocks.DIRT) || baseState.is(Blocks.SAND))) ||
+                    (block == Blocks.BAMBOO && baseState.is(Blocks.GRASS_BLOCK)) ||
+                    (block == Blocks.CACTUS && baseState.is(Blocks.SAND)));
 
             if (canReplant) {
                 // Check if the bottom block is the same and only break the top one
@@ -1196,16 +1192,17 @@ public class ModEvents {
             boolean validSoil = baseState.is(Blocks.MYCELIUM) || baseState.is(Blocks.NETHERRACK) ||
                     baseState.is(Blocks.WARPED_NYLIUM) || baseState.is(Blocks.CRIMSON_NYLIUM);
 
-            if (validSoil) {
-                event.setCanceled(true);
-                Block.dropResources(state, level, pos, null, player, heldItem);
-                level.setBlock(pos, block.defaultBlockState(), 3);
-                damageToolIfHoe(heldItem, player);
-            }
+            if (validSoil) { crop(block, state, level, pos, player, event, heldItem); }
         }
     }
 
     // CUSTOM EVENT - Anvil disenchanted event
+    // CUSTOM METHOD - Drop enchanted book and base item on ground [world]
+    private static void dropItem(ServerLevel world, BlockPos pos, ItemStack stack) {
+        world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1,
+                pos.getZ() + 0.5, stack));
+    }
+
     @SubscribeEvent
     public static void anvilDisenchant(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
@@ -1284,9 +1281,7 @@ public class ModEvents {
 
                             // Ignore if item has no enchantment or if item is a book with only 1 enchantment
                             // Only process if it's not a previously split book (to avoid infinite loop)
-                            if (enchantments.isEmpty() || (isBook && enchantments.size() == 1)) {
-                                continue;
-                            }
+                            if (enchantments.isEmpty() || (isBook && enchantments.size() == 1)) { continue; }
 
                             // Drop an enchanted book with the enchantments of tool, armor, etc.
                             if (item.isDamageableItem() && !isBook) {
@@ -1339,38 +1334,28 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM METHOD - Drop enchanted book and base item on ground [world]
-    private static void dropItem(ServerLevel world, BlockPos pos, ItemStack stack) {
-        world.addFreshEntity(new ItemEntity(world,
-                pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, stack));
-    }
-
     // CUSTOM EVENT - Overpower Mending custom enchantment
-    private static void repairTool(NonNullList<ItemStack> player) {
-        for (ItemStack stack : player) {
-            if (stack.isEmpty() || !stack.isDamaged()) { continue; }
-            if (stack.getEnchantmentLevel(ModEnchantments.OVERPOWER_MENDING.get()) > 0) {
-                int currentDamage = stack.getDamageValue();
-                // Repairs 5 point of damage at a time
-                int repairAmount = Math.min(currentDamage, 5);
-                stack.setDamageValue(currentDamage - repairAmount);
+    @SubscribeEvent
+    public static void activatedOverpowerMendingEnchantment(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        if ((event.phase == TickEvent.Phase.END) || !player.level().isClientSide()) {
+            // Desired value for level.getGameTime() % X != 0 (1 second = 20 ticks)
+            // Once every [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks
+            if (player.level().getGameTime() % 100 != 0) { return; }
+            List<NonNullList<ItemStack>> playerSlots = List.of(player.getInventory().items,
+                    player.getInventory().armor, player.getInventory().offhand);
+            for (NonNullList<ItemStack> itemStacks : playerSlots) {
+                for (ItemStack stack : itemStacks) {
+                    if (!stack.isEmpty() && stack.isDamaged() &&
+                            stack.getEnchantmentLevel(ModEnchantments.OVERPOWER_MENDING.get()) > 0) {
+                        int currentDamage = stack.getDamageValue();
+                        // Repairs 5 point of damage at a time
+                        int repairAmount = Math.min(currentDamage, 1);
+                        stack.setDamageValue(currentDamage - repairAmount);
+                    }
+                }
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void activatedOverpowerMending(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END || event.player.level().isClientSide()) { return; }
-        Player player = event.player;
-        Level level = player.level();
-
-        // Desired value for level.getGameTime() % X != 0 (1 second = 20 ticks)
-        // Once every [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks
-        if (level.getGameTime() % 100 != 0) { return; }
-
-        repairTool(player.getInventory().items);
-        repairTool(player.getInventory().armor);
-        repairTool(player.getInventory().offhand);
     }
 
     // CUSTOM EVENT - NOTHING EFFECT
