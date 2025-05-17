@@ -15,17 +15,23 @@ public class ReturnHomeCommand {
     // When player to type this command it is returned on home
     private int execute(CommandContext<CommandSourceStack> context) {
         ServerPlayer player = context.getSource().getPlayer();
-        boolean hasHomepos = player.getPersistentData().getIntArray("mccourse.homepos").length != 0;
+        int value = 0;
+        if (player != null) {
+            boolean hasHomepos = player.getPersistentData().getIntArray("mccourse.homepos").length != 0;
+            // If not saved anyone set home
+            if (!hasHomepos) {
+                context.getSource().sendFailure(Component.literal("No Home Position has been set!"));
+                value = -1;
+            }
+            // If exists some set home
+            else {
+                int[] playerPos = player.getPersistentData().getIntArray("mccourse.homepos");
+                player.teleportTo(playerPos[0], playerPos[1], playerPos[2]);
 
-        if(hasHomepos) { // If exists some set home
-            int[] playerPos = player.getPersistentData().getIntArray("mccourse.homepos");
-            player.teleportTo(playerPos[0], playerPos[1], playerPos[2]);
-
-            context.getSource().sendSuccess(() -> Component.literal("Player returned Home!"), false);
-            return 1;
-        } else { // If not saved anyone set home
-            context.getSource().sendFailure(Component.literal("No Home Position has been set!"));
-            return -1;
+                context.getSource().sendSuccess(() -> Component.literal("Player returned Home!"), false);
+                value = 1;
+            }
         }
+        return value;
     }
 }

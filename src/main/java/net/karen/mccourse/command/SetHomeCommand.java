@@ -17,16 +17,18 @@ public class SetHomeCommand {
     // When player to type the command is done area's position
     private int execute(CommandContext<CommandSourceStack> context) {
         ServerPlayer player = context.getSource().getPlayer();
-        BlockPos playerPos = player.blockPosition();
+        if (player != null) {
+            BlockPos playerPos = player.blockPosition();
 
-        // Player's position
-        String positionString = "(" + playerPos.getX() + ", " + playerPos.getY() + ", " + playerPos.getZ() + ")";
+            // Player's position
+            String positionString = "[" + playerPos.getX() + ", " + playerPos.getY() + ", " + playerPos.getZ() + "]";
 
-        // Save data of Player's position
-        player.getPersistentData().putIntArray("mccourse.homepos",
-                new int[] {playerPos.getX(), playerPos.getY(), playerPos.getZ()});
+            // Save data of Player's position
+            player.getPersistentData().putIntArray("mccourse.homepos",
+                    new int[] {playerPos.getX(), playerPos.getY(), playerPos.getZ()});
 
-        context.getSource().sendSuccess(() -> Component.literal("Set home at " + positionString), true);
+            context.getSource().sendSuccess(() -> Component.literal("Set home at " + positionString), true);
+        }
         return 1;
     }
 }
