@@ -133,6 +133,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
                      ModBlocks.END_STONE_ALEXANDRITE_ORE.get(), ModBlocks.NETHER_ALEXANDRITE_ORE.get());
 
+        // Mccourse ores
         this.tag(ModTags.Blocks.MCCOURSE_ORES)
                 .addTag(ModTags.Blocks.PINK_ORES)
                 .addTag(ModTags.Blocks.ALEXANDRITE_ORES);
@@ -141,6 +142,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.PINK_BLOCK.get(), ModBlocks.ALEXANDRITE_BLOCK.get(),
                      ModBlocks.RAW_ALEXANDRITE_BLOCK.get());
 
+        // Crop replant tags
         this.tag(ModTags.Blocks.FARMER_INSTANT_GROWABLES)
                 .add(Blocks.SUGAR_CANE, Blocks.CACTUS, Blocks.NETHER_WART, Blocks.TWISTING_VINES,
                      Blocks.WEEPING_VINES, Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS, ModBlocks.KOHLRABI_CROP.get())
