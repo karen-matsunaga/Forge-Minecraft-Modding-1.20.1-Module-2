@@ -268,16 +268,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         itemTransformBlock(List.of(ModBlocks.DISENCHANTED_BLOCK.get(), Blocks.OBSIDIAN), pWriter);
 
         // My custom recipe builders (DEMO)
-        new CraftRecipeBuilder(List.of(Ingredient.of(Items.BOOK), Ingredient.of(Items.DIAMOND)), // Ingredients
-                List.of(1, 2), // Ingredient counts
-                Items.ENCHANTED_BOOK) // Output
-                .unlockedBy("has_diamond", has(Items.DIAMOND))
-                .save(pWriter);
-
-        new EnchantedRecipeBuilder(Enchantments.BLOCK_EFFICIENCY, 10,
-                List.of(Ingredient.of(Items.DIAMOND),
-                Ingredient.of(Items.BOOK)),
-                List.of(512, 1), Items.ENCHANTED_BOOK).save(pWriter);
+//        new CraftRecipeBuilder(List.of(Ingredient.of(Items.BOOK), Ingredient.of(Items.DIAMOND)), // Ingredients
+//                List.of(1, 2), // Ingredient counts
+//                Items.ENCHANTED_BOOK) // Output
+//                .unlockedBy("has_diamond", has(Items.DIAMOND))
+//                .save(pWriter);
+//
+//        new EnchantedRecipeBuilder(Enchantments.BLOCK_EFFICIENCY, 10,
+//                List.of(Ingredient.of(Items.DIAMOND),
+//                Ingredient.of(Items.BOOK)),
+//                List.of(512, 1), Items.ENCHANTED_BOOK).save(pWriter);
 
         // Luck custom generator enchanted book
         luckItem(List.of(ModItems.LUCK.get(), Items.LAPIS_LAZULI, Items.COPPER_INGOT, Items.BOOK), pWriter);
