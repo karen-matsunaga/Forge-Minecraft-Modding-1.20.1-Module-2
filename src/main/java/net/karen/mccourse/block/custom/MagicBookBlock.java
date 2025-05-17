@@ -36,6 +36,7 @@ public class MagicBookBlock extends Block {
                 // Sum enchanted book with same enchantment
                 Map<Enchantment, Integer> enchantSumLevels = new HashMap<>();
                 for (ItemEntity bookEntity : enchantedBooks) {
+                    // Get enchantments to each enchanted book
                     Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(bookEntity.getItem());
                     for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
                         enchantSumLevels.merge(entry.getKey(), entry.getValue(), Integer::sum);
@@ -78,6 +79,8 @@ public class MagicBookBlock extends Block {
                 for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
                     toolStack.enchant(entry.getKey(), entry.getValue());
                 }
+
+                // Receive item with updated enchantment levels
                 toolItem.setItem(toolStack);
 
                 // Consumes 1 book
