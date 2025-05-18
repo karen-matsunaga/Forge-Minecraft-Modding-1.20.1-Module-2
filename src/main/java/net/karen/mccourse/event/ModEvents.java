@@ -917,166 +917,132 @@ public class ModEvents {
     // CUSTOM EVENT - Protected Item custom enchantment
     private static final Map<UUID, List<ItemStack>> preservedItems = new HashMap<>(); // Map of Main hand + Items
     private static final Map<UUID, List<ItemStack>> preservedArmor = new HashMap<>(); // Map of Armor
-    private static final Map<UUID, ItemStack> preservedOffhand = new HashMap<>(); // Map of Offhand
+    private static final Map<UUID, List<ItemStack>> preservedOffhand = new HashMap<>(); // Map of Offhand
     private static final Map<UUID, int[]> preservedExperience = new HashMap<>(); // Map of Experience
     private static final Map<UUID, List<ItemStack>> preservedVault = new HashMap<>(); // Map of Vault items
+
+    private static void setPreservedVault(NonNullList<ItemStack> type, List<ItemStack> preserved,
+                                          List<ItemStack> vault) {
+        for (int i = 0; i < type.size(); i++) {
+            ItemStack inventory = type.get(i);
+            if (!inventory.isEmpty() && inventory.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
+                preserved.set(i, inventory.copy()); // Copy of item with Protected Item enchantment
+            }
+            // Copy of item WITHOUT Protected Item enchantment
+            else { vault.add(inventory.copy()); }
+            // Added on typePreserve or vaultItems removes stack on Inventory, Armor and Offhand slots
+            type.set(i, ItemStack.EMPTY);
+        }
+    }
+
+    private static Component itemChatMessage(Player player, BlockPos pos, ChatFormatting color) {
+        return Component.literal(player.getGameProfile().getName() + " died at [X: " +
+        pos.getX() + ", Y: " + pos.getY() + ", Z: " + pos.getZ() + "] " + LocalTime.now().format(
+        DateTimeFormatter.ofPattern("HH:mm:ss"))).withStyle(Style.EMPTY.withColor(color).withItalic(false));
+    }
+
+    // Player receives items after death
+    private static void setRestoredVault(NonNullList<ItemStack> type, List<ItemStack> restored) {
+        if (restored != null) {
+            for (int i = 0; i < restored.size(); i++) {
+                if (!restored.get(i).isEmpty()) { type.set(i, restored.get(i)); } // Added all items on Player inventory
+            }
+        }
+    }
 
     // Player normally drop all items when death
     @SubscribeEvent
     public static void activatedProtectedItemEnchantmentOnPlayerDeath(LivingDeathEvent event) {
-        if (!(event.getEntity() instanceof Player player)) { return; } // Entity is player
+        // Entity is player
+        if (event.getEntity() instanceof Player player) {
+            UUID playerUUID = player.getUUID(); // Player id
+            List<ItemStack> vaultItems = new ArrayList<>(); // Added rest items on Vault item
+            // Added all Inventory slots, Armor slots and Offhand slot
+            List<ItemStack> inventoryPreserve = new ArrayList<>(Collections.nCopies(36, ItemStack.EMPTY));
+            List<ItemStack> armorPreserve = new ArrayList<>(Collections.nCopies(4, ItemStack.EMPTY));
+            List<ItemStack> offhandPreserve = new ArrayList<>(Collections.nCopies(1, ItemStack.EMPTY));
+            int[] experienceData = new int[] { player.experienceLevel, Float.floatToIntBits(player.experienceProgress),
+            player.totalExperience }; // Added player experience
 
-        UUID playerUUID = player.getUUID(); // Player id
-        List<ItemStack> vaultItems = new ArrayList<>(); // Added rest items on Vault item
+            // Get all items on inventory, armor and offhand slots
+            // Main inventory, Armor and Left hand or Offhand
+            setPreservedVault(player.getInventory().items, inventoryPreserve, vaultItems);
+            setPreservedVault(player.getInventory().armor, armorPreserve, vaultItems);
+            setPreservedVault(player.getInventory().offhand, offhandPreserve, vaultItems);
 
-        // Added all Inventory slots
-        List<ItemStack> inventoryPreserve = new ArrayList<>(Collections.nCopies(36, ItemStack.EMPTY));
-        // Added all Armor slots
-        List<ItemStack> armorPreserve = new ArrayList<>(Collections.nCopies(4, ItemStack.EMPTY));
-        ItemStack offhandPreserve = ItemStack.EMPTY; // Added Offhand slot
+            // Save data
+            preservedItems.put(playerUUID, inventoryPreserve);
+            preservedArmor.put(playerUUID, armorPreserve);
+            preservedOffhand.put(playerUUID, offhandPreserve);
+            preservedExperience.put(playerUUID, experienceData);
 
-        int[] experienceData = new int[] { player.experienceLevel, Float.floatToIntBits(player.experienceProgress),
-                player.totalExperience }; // Added player experience
+            // Reset to prevent drop
+            player.experienceLevel = 0;
+            player.experienceProgress = 0;
+            player.totalExperience = 0;
 
-        // Main inventory
-        for (int i = 0; i < player.getInventory().items.size(); i++) {
-            ItemStack inventory = player.getInventory().items.get(i);
-            if (!inventory.isEmpty() && inventory.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
-                inventoryPreserve.add(inventory.copy()); // Copy of item with Protected Item enchantment
-                // Added on inventoryPreserve removes stack on Inventory slot
-                player.getInventory().items.set(i, ItemStack.EMPTY);
+            // Get position and time
+            BlockPos pos = player.blockPosition(); // Player X, Y and Z positions
+            // Display PLAYER NAME, death (X, Y and Z) positions and TIME showing (Hours::Minutes::Seconds)
+            Component displayName = itemChatMessage(player, pos, ChatFormatting.GREEN);
+
+            // Saves items from the Vault
+            if (!vaultItems.isEmpty()) {
+                ItemStack vaultItem = new ItemStack(ModItems.VAULT.get());
+                CompoundTag vaultTag = new CompoundTag();
+                ListTag itemListTag = new ListTag();
+                // Create VaultItem with the items data
+                for (ItemStack item : vaultItems) {
+                    CompoundTag itemTag = new CompoundTag();
+                    item.save(itemTag);
+                    itemListTag.add(itemTag);
+                }
+                // Added information on Vault item
+                vaultTag.put("VaultItems", itemListTag);
+                // Save custom name in NBT
+                vaultTag.putString("DisplayName", displayName.toString());
+                vaultItem.setTag(vaultTag);
+                vaultItem.setHoverName(displayName);
+
+                // Temporarily saved for the clone event
+                // Add directly to the new player's inventory in onClone()
+                // Try adding to a free inventory slot
+                preservedVault.computeIfAbsent(playerUUID, k -> new ArrayList<>()).add(vaultItem);
             }
-            else {
-                vaultItems.add(inventory.copy()); // Copy of item without Protected Item enchantment
-                // Added on vaultItems removes stack on Inventory slot
-                player.getInventory().items.set(i, ItemStack.EMPTY);
-            }
-        }
-
-        // Armor
-        for (int i = 0; i < player.getInventory().armor.size(); i++) {
-            ItemStack armor = player.getInventory().armor.get(i);
-            if (!armor.isEmpty() && armor.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
-                armorPreserve.set(i, armor.copy()); // Copy of item with Protected Item enchantment
-                // Added on armorPreserve removes stack on Armor slot
-                player.getInventory().armor.set(i, ItemStack.EMPTY);
-            }
-            else {
-                vaultItems.add(armor.copy()); // Copy of item without Protected Item enchantment
-                // Added on vaultItems removes stack on Inventory slot
-                player.getInventory().armor.set(i, ItemStack.EMPTY);
-            }
-        }
-
-        // Left hand or Offhand
-        ItemStack offhand = player.getInventory().offhand.get(0);
-        if (!offhand.isEmpty() && offhand.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
-            offhandPreserve = offhand.copy(); // Copy of item with Protected Item enchantment
-            // Added on offhandPreserve removes stack on Offhand slot
-            player.getInventory().offhand.set(0, ItemStack.EMPTY);
-        }
-        else {
-            vaultItems.add(offhand.copy()); // Copy of item without Protected Item enchantment
-            // Added on vaultItems removes stack on Inventory slot
-            player.getInventory().offhand.set(0, ItemStack.EMPTY);
-        }
-
-        // Save data
-        preservedItems.put(playerUUID, inventoryPreserve);
-        preservedArmor.put(playerUUID, armorPreserve);
-        preservedOffhand.put(playerUUID, offhandPreserve);
-        preservedExperience.put(playerUUID, experienceData);
-
-        // Reset to prevent drop
-        player.experienceLevel = 0;
-        player.experienceProgress = 0;
-        player.totalExperience = 0;
-
-        // Get position and time
-        BlockPos pos = player.blockPosition(); // Player X, Y and Z positions
-        // Display PLAYER NAME, death (X, Y and Z) positions and TIME showing (Hours::Minutes::Seconds)
-        String displayName = "Vault of " + player.getGameProfile().getName() +
-                " [X: " + pos.getX() + ", Y: " + pos.getY() + ", Z: " + pos.getZ() + "] - " +
-                LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-
-        // Saves items from the Vault
-        if (!vaultItems.isEmpty()) {
-            ItemStack vaultItem = new ItemStack(ModItems.VAULT.get());
-            CompoundTag vaultTag = new CompoundTag();
-            ListTag itemListTag = new ListTag();
-            // Create VaultItem with the items data
-            for (ItemStack item : vaultItems) {
-                CompoundTag itemTag = new CompoundTag();
-                item.save(itemTag);
-                itemListTag.add(itemTag);
-            }
-
-            // Added information on Vault item
-            vaultTag.put("VaultItems", itemListTag);
-            vaultTag.putString("DisplayName", displayName); // Save custom name in NBT
-            vaultItem.setTag(vaultTag);
-            vaultItem.setHoverName(Component.literal(displayName));
-
-            // Temporarily saved for the clone event
-            // Add directly to the new player's inventory in onClone()
-            // Try adding to a free inventory slot
-            preservedVault.computeIfAbsent(playerUUID, k -> new ArrayList<>()).add(vaultItem);
         }
     }
 
-    // Player receives items after death
     @SubscribeEvent
     public static void activatedProtectedItemEnchantmentOnPlayerClone(PlayerEvent.Clone event) {
-        if (!event.isWasDeath()) { return; } // Ensures that it only runs after death
+        // Ensures that it only runs after death
+        if (event.isWasDeath()) {
+            UUID playerUUID = event.getOriginal().getUUID(); // Get Player id
+            Player newPlayer = event.getEntity(); // Entity is Player -> After death
+            Player original = event.getOriginal(); // Old player -> Before death
+            BlockPos blockPos = original.blockPosition(); // Player position after death
 
-        UUID playerUUID = event.getOriginal().getUUID(); // Get Player id
-        Player newPlayer = event.getEntity(); // Entity is Player
+            // Player death message on chat
+            newPlayer.sendSystemMessage(itemChatMessage(newPlayer, blockPos, ChatFormatting.GOLD));
 
-        Player original = event.getOriginal(); // Old player
-        BlockPos blockPos = original.blockPosition(); // Player position after death
+            // Restore Inventory, Armor and Offhand slots
+            // Remove all Inventory, Armor and Offhand saved slots
+            setRestoredVault(newPlayer.getInventory().items, preservedItems.remove(playerUUID));
+            setRestoredVault(newPlayer.getInventory().armor, preservedArmor.remove(playerUUID));
+            setRestoredVault(newPlayer.getInventory().offhand, preservedOffhand.remove(playerUUID));
 
-        // Player death message on chat
-        newPlayer.sendSystemMessage(Component.translatable(newPlayer.getGameProfile().getName() +
-                " died at [X: " + blockPos.getX() + ", Y: " + blockPos.getY() + ", Z: " + blockPos.getZ() + "]"));
-
-        // Restore items
-        List<ItemStack> savedItems = preservedItems.remove(playerUUID); // Removed all Inventory slots saved
-        if (savedItems != null) {
-            for (ItemStack stack : savedItems) {
-                newPlayer.getInventory().add(stack); // Added all items on Player inventory
+            // Restore Experience
+            int[] experienceData = preservedExperience.remove(playerUUID); // Removed all experience saved
+            if (experienceData != null) {
+                newPlayer.experienceLevel = experienceData[0]; // Restored experience level
+                newPlayer.experienceProgress = Float.intBitsToFloat(experienceData[1]); // Restored experience progress
+                newPlayer.totalExperience = experienceData[2]; // Restored total experience
             }
-        }
 
-        // Restore Armor
-        List<ItemStack> savedArmor = preservedArmor.remove(playerUUID); // Removed all Armor slots saved
-        if (savedArmor != null) {
-            for (int i = 0; i < savedArmor.size(); i++) {
-                if (!savedArmor.get(i).isEmpty()) {
-                    newPlayer.getInventory().armor.set(i, savedArmor.get(i)); // Added all items on Armor slots
-                }
-            }
-        }
-
-        // Restore Offhand
-        ItemStack offhand = preservedOffhand.remove(playerUUID); // Removed Offhand slot saved
-        if (offhand != null && !offhand.isEmpty()) {
-            newPlayer.getInventory().offhand.set(0, offhand); // Added item on Offhand slot
-        }
-
-        // Restore Experience
-        int[] experienceData = preservedExperience.remove(playerUUID); // Removed all experience saved
-        if (experienceData != null) {
-            newPlayer.experienceLevel = experienceData[0]; // Restored experience level
-            newPlayer.experienceProgress = Float.intBitsToFloat(experienceData[1]); // Restored experience progress
-            newPlayer.totalExperience = experienceData[2]; // Restored total experience
-        }
-
-        // Restores items with Vault Item
-        // Remove all items without Protected Item saved on Vault
-        List<ItemStack> savedVault = preservedVault.remove(playerUUID);
-        if (savedVault != null) {
-            for (ItemStack item : savedVault) {
-                newPlayer.getInventory().add(item); // Added item on Inventory slot
+            // Restores items with Vault Item
+            // Remove all items without Protected Item saved on Vault
+            List<ItemStack> savedVault = preservedVault.remove(playerUUID);
+            if (savedVault != null) {
+                for (ItemStack item : savedVault) { newPlayer.getInventory().add(item); } // Added item on Inventory slot
             }
         }
     }
@@ -1111,13 +1077,12 @@ public class ModEvents {
 
         // Only on server side and if player is not in creative mode
         if (!level.isClientSide() && !player.isCreative()) {
-            ItemStack heldItem = player.getMainHandItem();
-            if (!(!heldItem.isEmpty() && heldItem.getItem() instanceof HoeItem)) { return; } // Player has Hoe on main hand
+            ItemStack heldItem = player.getMainHandItem(); // Player has Hoe on main hand
+            if (!(!heldItem.isEmpty() && heldItem.getItem() instanceof HoeItem)) { return; }
             Block block = state.getBlock();
             // Check if it is a plantation that can be replanted is Wheat, Carrot, Potato, Beet, etc.
             if (block instanceof CropBlock crop) {
-                // Check if it is ripe
-                if (crop.isMaxAge(state)) { crop(crop, state, level, pos, player, event, heldItem); }
+                if (crop.isMaxAge(state)) { crop(crop, state, level, pos, player, event, heldItem); } // Check if it is ripe
             }
             // Nether Wart
             else if (block.equals(Blocks.NETHER_WART) && state.getValue(NetherWartBlock.AGE).equals(3)) {
