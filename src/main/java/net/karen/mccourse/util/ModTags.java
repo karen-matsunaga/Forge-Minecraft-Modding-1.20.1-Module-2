@@ -78,6 +78,9 @@ public class ModTags {
         // Created Farmer tag
         public static final TagKey<Block> FARMER_INSTANT_GROWABLES = tag("blocks/farmer_instant_growables");
 
+        // Crop replant tag
+        public static final TagKey<Block> MUSHROOM_BLOCKS = tag("blocks/mushroom_blocks");
+
         // Pass block id
         private static TagKey<Block> tag(String name) { return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }
 

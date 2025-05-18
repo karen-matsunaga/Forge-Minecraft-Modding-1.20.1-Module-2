@@ -1101,9 +1101,6 @@ public class ModEvents {
     Blocks.BAMBOO, bs -> bs.is(Blocks.GRASS_BLOCK), Blocks.CACTUS, bs -> bs.is(Blocks.SAND),
     Blocks.SUGAR_CANE, bs -> bs.is(Blocks.GRASS_BLOCK) || bs.is(Blocks.DIRT) || bs.is(Blocks.SAND));
 
-    private static final List<Block> validBlocks = List.of(Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM,
-    Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS);
-
     // Crop automatically replant
     @SubscribeEvent
     public static void cropReplant(BlockEvent.BreakEvent event) {
@@ -1113,55 +1110,52 @@ public class ModEvents {
         Player player = event.getPlayer();
 
         // Only on server side and if player is not in creative mode
-        if (!level.isClientSide() || !player.isCreative()) {
+        if (!level.isClientSide() && !player.isCreative()) {
             ItemStack heldItem = player.getMainHandItem();
-            if (heldItem.isEmpty() || heldItem.getItem() instanceof HoeItem) {
-                Block block = state.getBlock();
+            if (!(!heldItem.isEmpty() && heldItem.getItem() instanceof HoeItem)) { return; } // Player has Hoe on main hand
+            Block block = state.getBlock();
+            // Check if it is a plantation that can be replanted is Wheat, Carrot, Potato, Beet, etc.
+            if (block instanceof CropBlock crop) {
+                // Check if it is ripe
+                if (crop.isMaxAge(state)) { crop(crop, state, level, pos, player, event, heldItem); }
+            }
+            // Nether Wart
+            else if (block.equals(Blocks.NETHER_WART) && state.getValue(NetherWartBlock.AGE).equals(3)) {
+                crop(Blocks.NETHER_WART, state, level, pos, player, event, heldItem);
+            }
+            // Sugar cane, Bamboo or Cactus
+            else if (validSoils.containsKey(block)) {
+                // Only replant if there is correct soil below
+                BlockPos basePos = pos.below();
+                BlockState baseState = level.getBlockState(basePos);
+                // 1. Bamboo (Block) -> Grass (Test) - 2. Cactus (Block) -> Sand (Test)
+                // 3. Sugar cane (Block) -> Grass, Sand or Dirt (Test)
+                if (validSoils.get(block).test(baseState)) {
+                    // Check if the bottom block is the same and only break the top one
+                    BlockPos topPos = pos;
+                    while (level.getBlockState(topPos.above()).is(block)) { topPos = topPos.above(); }
 
-                // Check if it is a plantation that can be replanted
-                // Wheat, Carrot, Potato, Beet, etc.
-                if (block instanceof CropBlock crop && crop.isMaxAge(state)) {
-                    // Check if it is ripe
-                    crop(crop, state, level, pos, player, event, heldItem);
-                }
-                // Nether Wart
-                else if (block == Blocks.NETHER_WART && state.getValue(NetherWartBlock.AGE) == 3) {
-                    crop(Blocks.NETHER_WART, state, level, pos, player, event, heldItem);
-                }
-                // Sugar cane, Bamboo or Cactus
-                else if (validSoils.containsKey(block)) {
-                    // Only replant if there is correct soil below
-                    BlockPos basePos = pos.below();
-                    BlockState baseState = level.getBlockState(basePos);
+                    event.setCanceled(true);
 
-                    if (validSoils.get(block).test(baseState)) {
-                        // Check if the bottom block is the same and only break the top one
-                        BlockPos topPos = pos;
-                        while (level.getBlockState(topPos.above()).is(block)) { topPos = topPos.above(); }
-
-                        event.setCanceled(true);
-
-                        // Break everything from top to bottom, except the base (to replant)
-                        BlockPos current = topPos;
-                        while (!current.equals(basePos)) {
-                            BlockState bState = level.getBlockState(current);
-                            Block.dropResources(bState, level, current, null, player, heldItem);
-                            level.setBlock(current, Blocks.AIR.defaultBlockState(), 3);
-                            current = current.below();
-                        }
-                        // Replant the original block
-                        level.setBlock(pos, block.defaultBlockState(), 3);
-                        damageToolIfHoe(heldItem, player);
+                    // Break everything from top to bottom, except the base (to replant)
+                    BlockPos current = topPos;
+                    while (!current.equals(basePos)) {
+                        BlockState bState = level.getBlockState(current);
+                        Block.dropResources(bState, level, current, null, player, heldItem);
+                        level.setBlock(current, Blocks.AIR.defaultBlockState(), 3);
+                        current = current.below();
                     }
+                    // Replant the original block
+                    level.setBlock(pos, block.defaultBlockState(), 3);
+                    damageToolIfHoe(heldItem, player);
                 }
-                // Mushroom, etc.
-                else if (validBlocks.contains(block)) {
-                    BlockState baseState = level.getBlockState(pos.below());
-                    // Check if the soil is suitable
-                    if (baseState.is(Blocks.RED_MUSHROOM) || baseState.is(Blocks.BROWN_MUSHROOM) ||
-                        baseState.is(Blocks.CRIMSON_FUNGUS) || baseState.is(Blocks.WARPED_FUNGUS)) {
-                        crop(block, state, level, pos, player, event, heldItem);
-                    }
+            }
+            // Mushroom, etc.
+            else if (block.defaultBlockState().is(ModTags.Blocks.MUSHROOM_BLOCKS)) {
+                BlockState baseState = level.getBlockState(pos.below());
+                // Check if the soil is suitable
+                if (baseState.is(BlockTags.MUSHROOM_GROW_BLOCK)) {
+                    crop(block, state, level, pos, player, event, heldItem);
                 }
             }
         }

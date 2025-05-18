@@ -142,12 +142,16 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.PINK_BLOCK.get(), ModBlocks.ALEXANDRITE_BLOCK.get(),
                      ModBlocks.RAW_ALEXANDRITE_BLOCK.get());
 
-        // Crop replant tags
+        // Crop Farmer item tag
         this.tag(ModTags.Blocks.FARMER_INSTANT_GROWABLES)
                 .add(Blocks.SUGAR_CANE, Blocks.CACTUS, Blocks.NETHER_WART, Blocks.TWISTING_VINES,
                      Blocks.WEEPING_VINES, Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS, ModBlocks.KOHLRABI_CROP.get())
                 .addTag(BlockTags.SAPLINGS)
                 .addTag(BlockTags.CROPS);
+
+        // Crop replant tags
+        this.tag(ModTags.Blocks.MUSHROOM_BLOCKS).add(Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM,
+                Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS);
     }
 
     @Override

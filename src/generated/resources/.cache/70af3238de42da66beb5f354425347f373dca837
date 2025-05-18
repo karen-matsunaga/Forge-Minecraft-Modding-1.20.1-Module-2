@@ -1,9 +1,10 @@
-// 1.20.1	2025-05-16T20:12:29.2951621	Block Tags
+// 1.20.1	2025-05-18T12:49:29.5199428	Block Tags
 16bc8d1b9b571914b59b5fad5f245361e5bfe539 data/mccourse/tags/blocks/blocks/alexandrite_ores.json
 e85223377aaac38bf12794279b0f04f0e79cf176 data/mccourse/tags/blocks/blocks/farmer_instant_growables.json
 42cc3daa7901d26fb72b8e713e9581da338312ba data/mccourse/tags/blocks/blocks/mccourse_ores.json
 7c1b435b864bf2f014cd9012348efb836e2ee6da data/mccourse/tags/blocks/blocks/mccourse_ores_block.json
 8e8aab39cd45575bafcb42d808151db6ecfed784 data/mccourse/tags/blocks/blocks/mobs_blocks_drops.json
+08f949771eaf1ded6903b40b92c0af47fb25828b data/mccourse/tags/blocks/blocks/mushroom_blocks.json
 ed55ae35c47237708c0967e2d75d1532412996c6 data/mccourse/tags/blocks/blocks/pink_ores.json
 edcc423584ff5ffbb15c906b9b243525680dfd75 data/mccourse/tags/blocks/metal_detector_valuables.json
 64ba52a0503fe733de3f3907b7f157cb0821a8e3 data/mccourse/tags/blocks/mineable/paxel.json
