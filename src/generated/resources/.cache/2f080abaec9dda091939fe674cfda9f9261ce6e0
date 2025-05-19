@@ -1,3 +1,10 @@
-// 1.20.1	2025-05-13T15:31:28.5983096	Entity Type Tags
-474c4310123526fd7765473ae3a57acc5f36e351 data/mccourse/tags/entity_types/entities/mccourse_bosses.json
+// 1.20.1	2025-05-19T11:48:23.5174986	Entity Type Tags
+dcb2d7b545e0fc2e69a81e4e5361067d7f946756 data/mccourse/tags/entity_types/entities/animals.json
+7d8ddddfbbb5cffbba07c755d16781c953c6c151 data/mccourse/tags/entity_types/entities/bosses.json
+a26182e8687abedcef79e6adbf4440708b12d3e0 data/mccourse/tags/entity_types/entities/end.json
 2dc61e7aec775f559e2f4a8f6813107d402ba320 data/mccourse/tags/entity_types/entities/mccourse_entities.json
+9d6ce3234fb41f4af1a994f981475a408563c237 data/mccourse/tags/entity_types/entities/monsters.json
+8a05f13ed84373e8512ca19c7ac964e8b5a8cc40 data/mccourse/tags/entity_types/entities/nether.json
+05de44e4c3b4c1a10b5317d30cbfa7202a306710 data/mccourse/tags/entity_types/entities/overworld.json
+e4098db828a803f857470a72ae3eda3edd0fe7c5 data/mccourse/tags/entity_types/entities/villager.json
+c988eb2365334ab1f4d85e2fbb3fb5e3d762f8ea data/mccourse/tags/entity_types/entities/water_animals.json

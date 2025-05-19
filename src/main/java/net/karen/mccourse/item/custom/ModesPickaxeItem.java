@@ -212,7 +212,7 @@ public class ModesPickaxeItem extends PickaxeItem {
                 case MAGNETIC: modeActual = ModesPickaxe.NORMAL; break; // Magnetic -> Normal
             }
             // Show message on chat with mode actual
-            player.displayClientMessage(Component.literal("§6§lMode actual: §c§l"
+            player.displayClientMessage(Component.literal("§6§lMode: §c§l"
                     + modeActual.toString().replace("_", " ")), true);
         }
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);

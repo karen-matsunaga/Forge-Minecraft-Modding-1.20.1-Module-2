@@ -1,0 +1,17 @@
+{
+  "values": [
+    "minecraft:slime",
+    "minecraft:silverfish",
+    "minecraft:spider",
+    "minecraft:cave_spider",
+    "minecraft:giant",
+    "minecraft:vex",
+    "minecraft:drowned",
+    "minecraft:zombie",
+    "minecraft:zombie_villager",
+    "minecraft:husk",
+    "minecraft:creeper",
+    "minecraft:warden",
+    "minecraft:phantom"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "values": [
+    "#mccourse:entities/overworld",
+    "#mccourse:entities/nether",
+    "#mccourse:entities/end",
+    "#mccourse:entities/bosses",
+    "#minecraft:skeletons",
+    "#minecraft:raiders",
+    "#minecraft:axolotl_always_hostiles",
+    "#minecraft:freeze_hurts_extra_types"
+  ]
+}

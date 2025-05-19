@@ -40,24 +40,17 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ambient.AmbientCreature;
-import net.minecraft.world.entity.animal.AbstractGolem;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.animal.WaterAnimal;
-import net.minecraft.world.entity.animal.allay.Allay;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.monster.warden.Warden;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -286,9 +279,14 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - RAINBOW | AUTO SMELT | MORE ORES | MAGNETIC custom enchantments
-    private static void block(LevelAccessor world, BlockPos pos, Block block, BlockEvent.BreakEvent event) {
+    private static void block(LevelAccessor world, BlockPos pos, Block block,
+                              BlockEvent.BreakEvent event) {
         world.setBlock(pos, block.defaultBlockState(), 3);
         event.setCanceled(true);
+    }
+
+    public static boolean hasBlock(BlockState state, Block block, float chance) {
+        return state.is(block) && Math.random() < chance;
     }
 
     @SubscribeEvent
@@ -298,8 +296,8 @@ public class ModEvents {
         BlockPos pos = event.getPos();
         BlockState state = event.getState();
         ItemStack tool = player.getMainHandItem();
-        int moreOresLevel = tool.getEnchantmentLevel(ModEnchantments.MORE_ORES.get());
-        int fortuneLevel = tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
+        int moreOres = tool.getEnchantmentLevel(ModEnchantments.MORE_ORES.get());
+        int fortune = tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
 
         // RAINBOW ENCHANTMENT
         if (tool.getEnchantmentLevel(ModEnchantments.RAINBOW.get()) > 0) {
@@ -328,22 +326,22 @@ public class ModEvents {
 
                 if (recipe.isPresent()) { // Has recipe
                     ItemStack result = recipe.get().getResultItem(serverLevel.registryAccess()).copy();
-                    int count = 1 + (fortuneLevel > 0 ? serverLevel.random.nextInt(fortuneLevel + 1) : 0);
+                    int count = 1 + (fortune > 0 ? serverLevel.random.nextInt(fortune + 1) : 0);
                     for (int i = 0; i < count; i++) { finalDrops.add(result.copy()); }
                     cancelVanillaDrop = true;
                 }
             }
 
             // MORE ORES ENCHANTMENT
-            if (moreOresLevel > 0) {
+            if (moreOres > 0) {
                 List<TagKey<Block>> oresTags = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS, ModTags.Blocks.MORE_ORES_TWO_DROPS,
                 ModTags.Blocks.MORE_ORES_THREE_DROPS, ModTags.Blocks.MORE_ORES_FOUR_DROPS, ModTags.Blocks.MORE_ORES_FIVE_DROPS);
 
-                if (state.is(Blocks.STONE) && moreOresLevel < 5 && Math.random() < 0.1 ||
-                        state.is(Blocks.NETHERRACK) && moreOresLevel == 5 && Math.random() < 0.01) {
+                if (hasBlock(state, Blocks.STONE, 0.1f) && moreOres < 5 ||
+                        hasBlock(state, Blocks.NETHERRACK, 0.01f) && moreOres == 5) {
                     var tagManager = ForgeRegistries.BLOCKS.tags();
                     if (tagManager != null) {
-                        tagManager.getTag(oresTags.get(moreOresLevel - 1)).getRandomElement(RandomSource.create())
+                        tagManager.getTag(oresTags.get(moreOres - 1)).getRandomElement(RandomSource.create())
                                 .ifPresent(block -> finalDrops.add(new ItemStack(block)));
                         cancelVanillaDrop = true;
                     }
@@ -374,50 +372,38 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedGlowingMobsEnchantment(LivingEvent event) {
         int GLOWING_EYES = 10; // Range of Glowing effect on mobs
-        LivingEntity livingEntity = event.getEntity();
-        // Player is an entity
-        if (livingEntity instanceof Player player) {
+        if (event.getEntity() instanceof Player player) { // Player is an entity
             ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD); // Player has an item on helmet slot
-            // Glowing Mobs enchantment level
-            int glowingMobsLevel = helmet.getEnchantmentLevel(ModEnchantments.GLOWING_MOBS.get());
             // Player has a helmet inputted on slot and Glowing Mobs enchantment level
-            if (helmet.isEnchanted() || glowingMobsLevel > 0) {
-                // Key - Class || Value - Group tag name
-                Map<Class<? extends LivingEntity>, String> entityTag = Map.of(Monster.class, "GlowingMonsterTag",
-                Animal.class, "GlowingAnimalTag", AbstractVillager.class, "GlowingVillagerTag",
-                WaterAnimal.class, "GlowingWaterAnimalTag", AmbientCreature.class, "GlowingAmbientCreatureTag",
-                Allay.class, "GlowingAllayTag", AbstractGolem.class, "GlowingAbstractGolemTag",
-                FlyingMob.class, "GlowingFlyingMobTag", EnderDragon.class, "GlowingEnderDragonTag",
-                Slime.class, "GlowingSlimeTag"); // Entities groups -> Classes as tags
+            if (helmet.isEnchanted() || helmet.getEnchantmentLevel(ModEnchantments.GLOWING_MOBS.get()) > 0) {
+                // Key - Entities colors -> Each group represent with some color (Color)
+                // Value - Entities groups -> Represent as Tag (Group tag name)
+                Map<ChatFormatting, TagKey<EntityType<?>>> entitiesTag = Map.ofEntries(
+                Map.entry(ChatFormatting.RED, ModTags.Entities.MONSTERS), // Monsters
+                Map.entry(ChatFormatting.BLUE, ModTags.Entities.ANIMALS), // Animal and Flying entities
+                Map.entry(ChatFormatting.YELLOW, ModTags.Entities.WATER_ANIMALS), // Water animals
+                Map.entry(ChatFormatting.DARK_PURPLE, ModTags.Entities.VILLAGER)); // Villagers
 
-                for (Map.Entry<Class<? extends LivingEntity>, String> entry : entityTag.entrySet()) {
-                    ChatFormatting entitiesColor = switch (entry.getValue()) {
-                        // Monsters
-                        case "GlowingMonsterTag", "GlowingFlyingMobTag", "GlowingEnderDragonTag",
-                             "GlowingSlimeTag" -> ChatFormatting.RED;
-                        // Flying entities
-                        case "GlowingAnimalTag", "GlowingAmbientCreatureTag", "GlowingAllayTag" -> ChatFormatting.BLUE;
-                        // Water animals
-                        case "GlowingWaterAnimalTag" -> ChatFormatting.YELLOW;
-                        // Villagers
-                        case "GlowingVillagerTag", "GlowingAbstractGolemTag" -> ChatFormatting.DARK_PURPLE;
-                        default -> ChatFormatting.WHITE; }; // Entities colors -> Each class represent with some color
+                for (Map.Entry<ChatFormatting, TagKey<EntityType<?>>> entry : entitiesTag.entrySet()) {
+                    TagKey<EntityType<?>> tagValue = entry.getValue();
+                    String teamName = tagValue.location().getPath();
+                    List<LivingEntity> entities = player.level().getEntitiesOfClass(LivingEntity.class,
+                    player.getBoundingBox().inflate(GLOWING_EYES), entity -> entity.getType().is(tagValue) && entity != player);
 
-                    List<? extends LivingEntity> entities = livingEntity.level().getEntitiesOfClass(entry.getKey(),
-                            livingEntity.getBoundingBox().inflate(GLOWING_EYES));
-                    PlayerTeam tag = ((Player) livingEntity).getScoreboard().getPlayerTeam(entry.getValue());
+                    if (!entities.isEmpty()) {
+                        PlayerTeam team = player.getScoreboard().getPlayerTeam(teamName);
+                        // Added each entity on group with specif tag and color on entitiesTag
+                        if (team == null) {
+                            team = player.getScoreboard().addPlayerTeam(teamName);
+                            team.setColor(entry.getKey()); // Color
+                        }
 
-                    // Added each entity on group with specif tag and color on entityTag and entityColors
-                    if (tag == null) {
-                        tag = ((Player) livingEntity).getScoreboard().addPlayerTeam(entry.getValue());
-                        tag.setColor(entitiesColor);
-                    }
-
-                    // Each entity received Glowing effect with specif color on entityColors
-                    for (LivingEntity entity : entities) {
-                        entity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1,
-                                true, false, false));
-                        ((Player) livingEntity).getScoreboard().addPlayerToTeam(entity.getScoreboardName(), tag);
+                        // Each entity received Glowing effect with specif color on entityColors
+                        for (LivingEntity entity : entities) {
+                            entity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1,
+                            true, false, false));
+                            player.getScoreboard().addPlayerToTeam(entity.getScoreboardName(), team);
+                        }
                     }
                 }
             }
@@ -441,16 +427,15 @@ public class ModEvents {
                         // Raw equals expected line replace old tooltip to new tooltip
                         if (raw != null && raw.startsWith(expected)) {
                             ChatFormatting color = enchantment.isCurse() ? ChatFormatting.RED :
-                                    switch (enchantment.category) {
-                                        case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.GOLD;
-                                        case DIGGER -> ChatFormatting.DARK_PURPLE;
-                                        case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
-                                        case TRIDENT -> ChatFormatting.AQUA;
-                                        case WEARABLE -> ChatFormatting.GREEN;
-                                        case BREAKABLE -> ChatFormatting.DARK_GREEN;
-                                        case VANISHABLE -> ChatFormatting.RED;
-                                        case FISHING_ROD -> ChatFormatting.YELLOW;
-                                    }; // Replace this line with custom styled version
+                            switch (enchantment.category) {
+                                case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.GOLD;
+                                case DIGGER -> ChatFormatting.DARK_PURPLE;
+                                case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
+                                case TRIDENT -> ChatFormatting.AQUA;
+                                case WEARABLE -> ChatFormatting.GREEN;
+                                case BREAKABLE -> ChatFormatting.DARK_GREEN;
+                                case VANISHABLE -> ChatFormatting.RED;
+                                case FISHING_ROD -> ChatFormatting.YELLOW; }; // Replace this line with custom styled version
                             boolean isCurse = enchantment.isCurse();
                             String descriptionValue = enchantment.getDescriptionId() + ".desc";
 
@@ -479,6 +464,12 @@ public class ModEvents {
 
     // Credits by Parlack - Pickaxe modes - https://www.youtube.com/watch?v=pBo1c3hM3b0
     // CUSTOM EVENT - Custom Modes Pickaxe event GUI - Using code with some modifications
+    private static void screen(RenderGuiOverlayEvent.Pre event, Minecraft mc, String message,
+                               int x, int y, int color) {
+        event.getGuiGraphics().drawString(mc.font, Component.literal(message).setStyle(Style.EMPTY.withColor(color)
+                .applyFormat(ChatFormatting.BOLD)), x, y, color, false);
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void eventHandler(RenderGuiOverlayEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
@@ -489,20 +480,11 @@ public class ModEvents {
 
         if (player != null && player.getMainHandItem().getItem() instanceof ModesPickaxeItem modesPickaxe) {
             ModesPickaxe mode = modesPickaxe.getModeActual(); // Show text mode actual on screen
-            Component modeText = Component.literal("Mode actual: ")
-                    .setStyle(Style.EMPTY.withColor(0xFFAA00)
-                    .applyFormat(ChatFormatting.BOLD)); // Gold color
-
             // Renders text on overlay on same line
-            // Mode Text
-            event.getGuiGraphics().drawString(mc.font, modeText, x, y, 0xFFAA00, false);
-            x += mc.font.width(modeText);
-
-            // Mode Type
-            event.getGuiGraphics().drawString(mc.font, Component.literal(mode.toString()
-                            .replace("_", " "))
-                            .setStyle(Style.EMPTY.withColor(0xFF5555) // Red color
-                            .applyFormat(ChatFormatting.BOLD)), x, y, 0xFF5555, false);
+            String text = "Mode: ";
+            screen(event, mc, text, x, y, 0xFFAA00);
+            x += mc.font.width(text); // Mode Text
+            screen(event, mc, mode.toString().replace("_", " "), x + 5, y, 0xFF5555); // Mode Type
 
             // drawString method parameters:
             // - mc.font: The source object used to draw the text.
@@ -515,30 +497,31 @@ public class ModEvents {
     }
 
     // Active Fly with Item
+    private static boolean fullArmor(Player player, EquipmentSlot slot, TagKey<Item> item) {
+        return player.getItemBySlot(slot).is(item);
+    }
+
+    private static boolean fly(Player player, MobEffect effect) { return player.hasEffect(effect); }
+
     @SubscribeEvent
     public static void flyEffect(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         if ((event.phase == TickEvent.Phase.END) && !player.level().isClientSide()) {
+            Abilities abilities = player.getAbilities();
             // Player used FULL ARMOR
-            boolean hasArmor = player.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.Items.HELMET_FLY) &&
-                    player.getItemBySlot(EquipmentSlot.CHEST).is(ModTags.Items.CHESTPLATE_FLY) &&
-                    player.getItemBySlot(EquipmentSlot.LEGS).is(ModTags.Items.LEGGINGS_FLY) &&
-                    player.getItemBySlot(EquipmentSlot.FEET).is(ModTags.Items.BOOTS_FLY);
+            boolean hasArmor = fullArmor(player, EquipmentSlot.HEAD, ModTags.Items.HELMET_FLY) &&
+            fullArmor(player, EquipmentSlot.CHEST, ModTags.Items.CHESTPLATE_FLY) &&
+            fullArmor(player, EquipmentSlot.LEGS, ModTags.Items.LEGGINGS_FLY) &&
+            fullArmor(player, EquipmentSlot.FEET, ModTags.Items.BOOTS_FLY);
 
             // Player has FLY EFFECT
-            boolean hasFlyEffect = player.hasEffect(ModEffects.FLY_EFFECT.get()) ||
-                    player.hasEffect(ModEffects.OVERPOWER_FLY_EFFECT.get());
+            boolean hasFlyEffect = fly(player, ModEffects.FLY_EFFECT.get()) || fly(player, ModEffects.OVERPOWER_FLY_EFFECT.get());
 
             // Player has FULL ARMOR or FLY EFFECT
-            if (hasArmor || hasFlyEffect) {
-                if (!player.getAbilities().mayfly) { player.getAbilities().mayfly = true; }
-            }
+            if (hasArmor || hasFlyEffect) { if (!abilities.mayfly) { abilities.mayfly = true; } }
             // Player hasn't FULL ARMOR or FLY EFFECT
             else {
-                if (player.getAbilities().mayfly && !player.isCreative()) {
-                    player.getAbilities().mayfly = false;
-                    player.getAbilities().flying = false;
-                }
+                if (abilities.mayfly && !player.isCreative()) { abilities.mayfly = false; abilities.flying = false; }
             }
             player.onUpdateAbilities();
         }

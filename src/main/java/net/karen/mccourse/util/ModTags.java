@@ -93,7 +93,21 @@ public class ModTags {
         // Created Entities's tags HERE
         public static final TagKey<EntityType<?>> MCCOURSE_ENTITIES = tag("entities/mccourse_entities");
 
-        public static final TagKey<EntityType<?>> MCCOURSE_BOSSES = tag("entities/mccourse_bosses");
+        public static final TagKey<EntityType<?>> BOSSES = tag("entities/bosses");
+
+        public static final TagKey<EntityType<?>> NETHER = tag("entities/nether");
+
+        public static final TagKey<EntityType<?>> END = tag("entities/end");
+
+        public static final TagKey<EntityType<?>> OVERWORLD = tag("entities/overworld");
+
+        public static final TagKey<EntityType<?>> MONSTERS = tag("entities/monsters");
+
+        public static final TagKey<EntityType<?>> ANIMALS = tag("entities/animals");
+
+        public static final TagKey<EntityType<?>> VILLAGER = tag("entities/villager");
+
+        public static final TagKey<EntityType<?>> WATER_ANIMALS = tag("entities/water_animals");
 
         // Pass entities id
         private static TagKey<EntityType<?>> tag(String name) {
