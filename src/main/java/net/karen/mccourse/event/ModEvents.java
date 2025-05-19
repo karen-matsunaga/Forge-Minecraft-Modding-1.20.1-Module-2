@@ -742,39 +742,8 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Decapitator
-    // Check if it is a log
-    private static boolean isLog(BlockState state) { return state.is(BlockTags.LOGS); }
-
-    // Check if it's a leaf
-    private static boolean isLeaf(BlockState state) { return state.is(BlockTags.LEAVES); }
-
-    // BFS (or DFS) search for connected logs and leaves
-    private static Set<BlockPos> findConnectedLogsAndLeaves(Level level, BlockPos start) {
-        Set<BlockPos> visited = new HashSet<>();
-        Queue<BlockPos> toVisit = new ArrayDeque<>();
-        toVisit.add(start);
-        int maxDistance = 50; // Maximum search distance
-        int maxHeight = 512; // Height limit (e.g. 10 blocks above and below)
-        while (!toVisit.isEmpty()) {
-            BlockPos pos = toVisit.poll();
-            if (!visited.add(pos)) { continue; } // Already visited
-            // Check if it is within the height limit
-            if (Math.abs(pos.getY() - start.getY()) > maxHeight) { continue; }
-            // Check the surrounding blocks (relative to the current position)
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dy = -1; dy <= 1; dy++) {
-                    for (int dz = -1; dz <= 1; dz++) {
-                        BlockPos offset = pos.offset(dx, dy, dz);
-                        if (visited.contains(offset)) { continue; }
-                        if (offset.distManhattan(start) > maxDistance) { continue; } // Limit horizontal distance
-                        BlockState neighborState = level.getBlockState(offset);
-                        if (isLog(neighborState) || isLeaf(neighborState)) { toVisit.add(offset); }
-                    }
-                }
-            }
-        }
-        return visited;
-    }
+    // Check if it is a log or a leaf
+    private static boolean isLogLeaf(BlockState state, TagKey<Block> block) { return state.is(block); }
 
     @SubscribeEvent
     public static void decapitatorBlock(BlockEvent.BreakEvent event) {
@@ -784,16 +753,41 @@ public class ModEvents {
             BlockState originState = level.getBlockState(origin);
             Player player = event.getPlayer();
             // Checks if the broken block is a log
-            if (isLog(originState)) {
+            if (isLogLeaf(originState, BlockTags.LOGS)) {
                 // Checks if you are using the correct tool
                 if (player.getMainHandItem().getItem().isCorrectToolForDrops(originState)) {
-                    Set<BlockPos> connected = findConnectedLogsAndLeaves(level, origin);
+                    // BFS (or DFS) search for connected logs and leaves
+                    Set<BlockPos> visited = new HashSet<>();
+                    Queue<BlockPos> toVisit = new ArrayDeque<>();
+                    toVisit.add(origin);
+                    int maxDistance = 50; // Maximum search distance
+                    int maxHeight = 512; // Height limit (e.g. 10 blocks above and below)
+                    while (!toVisit.isEmpty()) {
+                        BlockPos pos = toVisit.poll();
+                        if (!visited.add(pos)) { continue; } // Already visited
+                        // Check if it is within the height limit
+                        if (Math.abs(pos.getY() - origin.getY()) > maxHeight) { continue; }
+                        // Check the surrounding blocks (relative to the current position)
+                        for (int dx = -1; dx <= 1; dx++) {
+                            for (int dy = -1; dy <= 1; dy++) {
+                                for (int dz = -1; dz <= 1; dz++) {
+                                    BlockPos offset = pos.offset(dx, dy, dz);
+                                    if (visited.contains(offset)) { continue; }
+                                    if (offset.distManhattan(origin) > maxDistance) { continue; } // Limit horizontal distance
+                                    BlockState neighborState = level.getBlockState(offset);
+                                    if (isLogLeaf(neighborState, BlockTags.LOGS) || isLogLeaf(neighborState, BlockTags.LEAVES)) {
+                                        toVisit.add(offset);
+                                    }
+                                }
+                            }
+                        }
+                    }
                     int logCount = 0;
-                    for (BlockPos pos : connected) {
+                    for (BlockPos pos : visited) {
                         BlockState state = level.getBlockState(pos);
-                        if (isLog(state) || isLeaf(state)) {
+                        if (isLogLeaf(state, BlockTags.LOGS) || isLogLeaf(state, BlockTags.LEAVES)) {
                             level.destroyBlock(pos, true); // Drop the blocks
-                            if (isLog(state)) { logCount++; }
+                            if (isLogLeaf(state, BlockTags.LOGS)) { logCount++; }
                         }
                     }
                     // Applies damage proportional to the amount of logs broken
@@ -801,7 +795,6 @@ public class ModEvents {
                         ItemStack tool = player.getMainHandItem();
                         tool.hurtAndBreak(logCount, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
                     }
-
                 }
             }
         }
