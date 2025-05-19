@@ -116,7 +116,6 @@ public class ModEvents {
         // If player destroyed a block with Hammer tool
         if (mainHandItem.getItem() instanceof HammerItem hammer && player instanceof ServerPlayer serverPlayer) {
             int radius = hammer.getRadius(); // Radius declared on ModItems with HammerItem class
-
             // Player's position to break a block with Hammer tool
             for (BlockPos pos : HammerItem.getBlocksToBeDestroyed(radius, initalBlockPos, serverPlayer)) {
                 boolean item = hammer.isCorrectToolForDrops(mainHandItem, event.getLevel().getBlockState(pos));
@@ -439,8 +438,8 @@ public class ModEvents {
                             boolean isCurse = enchantment.isCurse();
                             String descriptionValue = enchantment.getDescriptionId() + ".desc";
 
-                        /* Enchantment Levels with Arabic numerals and Enchantment Descriptions with
-                           JSON file -> I18n = en_us.json */
+                            /* Enchantment Levels with Arabic numerals and Enchantment Descriptions with
+                            JSON file -> I18n = en_us.json */
                             if (level > 0 || enchantment.getMaxLevel() > 0 || I18n.exists(descriptionValue)) {
                                 MutableComponent name = Component.translatable(enchantment.getDescriptionId())
                                         .withStyle(Style.EMPTY.withColor(color).withBold(!isCurse).withItalic(isCurse))
@@ -732,13 +731,11 @@ public class ModEvents {
         LevelAccessor world = event.player.level();
         ItemStack metal = event.player.getItemBySlot(EquipmentSlot.MAINHAND); // Player has used Metal Detector
         ItemStack helmet = event.player.getItemBySlot(EquipmentSlot.HEAD); // Player has used helmet
-
-        // Player has used enchanted helmet
-        int glowingBlocksLevel = helmet.getEnchantmentLevel(ModEnchantments.GLOWING_BLOCKS.get());
         // Player has used enchanted Helmet or Metal Detector
         if (event.phase == TickEvent.Phase.END) {
             GlowingBlocksNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() &&
-                    glowingBlocksLevel > 0 || metal.is(ModItems.METAL_DETECTOR.get());
+                    helmet.getEnchantmentLevel(ModEnchantments.GLOWING_BLOCKS.get()) > 0 ||
+                    metal.is(ModItems.METAL_DETECTOR.get());
             // Update information player has enchanted Helmet or Metal Detector
             GlowingBlocksNetworkMessage.WorldVariables.get(world).syncData(world);
         }
@@ -1028,7 +1025,6 @@ public class ModEvents {
                     // Check if the bottom block is the same and only break the top one
                     BlockPos topPos = pos;
                     while (level.getBlockState(topPos.above()).is(block)) { topPos = topPos.above(); }
-
                     event.setCanceled(true);
 
                     // Break everything from top to bottom, except the base (to replant)
@@ -1070,123 +1066,58 @@ public class ModEvents {
                     if (entity instanceof FallingBlockEntity fallingBlockEntity) {
                         BlockState state = fallingBlockEntity.getBlockState(); // Anvil state
                         BlockPos pos = fallingBlockEntity.blockPosition(); // Anvil position
+
                         // List of blocks that accept disenchanted items
                         List<Block> anvils = List.of(Blocks.ANVIL, Blocks.CHIPPED_ANVIL, Blocks.DAMAGED_ANVIL);
-                        // Check if the dropped block is an anvil
-                        if (!anvils.contains(state.getBlock())) { continue; }
-                        // The item is below the anvil
-                        BlockPos blockBelow = pos.below();
+                        if (!anvils.contains(state.getBlock())) { continue; } // Check if the dropped block is an anvil
+                        BlockPos blockBelow = pos.below(); // The item is below the anvil
                         // Pick up the items on the ground below the anvil - small area below the anvil
                         List<ItemEntity> itemsBelow = world.getEntitiesOfClass(ItemEntity.class,
                                 new AABB(blockBelow).inflate(0.5));
 
-                        // Group books divided with 1 enchantment (without duplicating)
-                        List<ItemEntity> singleEnchantBooks = itemsBelow.stream()
-                                .filter(itemEntity -> {
-                                    // Get enchanted book with 1 enchantment
-                                    ItemStack stack = itemEntity.getItem();
-                                    if (!stack.is(Items.ENCHANTED_BOOK)) { return false; }
-                                    // Added enchanted book with 1 enchantment on list
-                                    Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(stack);
-                                    return enchants.size() == 1;
-                                }).toList();
+                        // Processing only if there is exactly ONE item
+                        if (itemsBelow.size() != 1) { continue; }
+                        ItemEntity itemEntity = itemsBelow.get(0); // First item of list
+                        ItemStack item = itemEntity.getItem(); // Get real item
+                        // Get all enchantments of the item
+                        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
+                        boolean isBook = item.is(Items.ENCHANTED_BOOK);
 
-                        // If single enchant book has more for 1
-                        if (singleEnchantBooks.size() > 1) {
-                            // Create an enchanted book
-                            ItemStack newGrouped = new ItemStack(Items.ENCHANTED_BOOK);
-                            // Create a map to transfer all enchantments to new grouped enchanted book
-                            Map<Enchantment, Integer> collected = new HashMap<>();
+                        // Ignore if item has no enchantment or if item is a book with only 1 enchantment
+                        // Only process if it's not a previously split book (to avoid infinite loop)
+                        if (enchantments.isEmpty() || (isBook && enchantments.size() == 1)) { continue; }
 
-                            // Each enchanted book
-                            for (ItemEntity itemEntity : singleEnchantBooks) {
-                                ItemStack stack = itemEntity.getItem();
-                                Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(stack);
-
-                                // Access map with all enchantments
-                                for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
-                                    Enchantment ench = entry.getKey();
-                                    int level = entry.getValue();
-
-                                    // If not already added, add
-                                    if (!collected.containsKey(ench)) {
-                                        // Added on map
-                                        collected.put(ench, level);
-                                        // Added on new enchanted book
-                                        EnchantedBookItem.addEnchantment(newGrouped, new EnchantmentInstance(ench, level));
-                                        // Remove original item
-                                        itemEntity.discard();
-                                    }
-                                }
+                        // Drop an enchanted book with the enchantments of tool, armor, etc.
+                        if (item.isDamageableItem() && !isBook) {
+                            ItemStack groupedBooks = new ItemStack(Items.ENCHANTED_BOOK);
+                            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                                // Added each enchantment found on tool, armor, etc.
+                                EnchantedBookItem.addEnchantment(groupedBooks,
+                                        new EnchantmentInstance(entry.getKey(), entry.getValue()));
                             }
-
-                            // All enchantments added on new enchanted book
-                            if (!collected.isEmpty()) {
-                                // Ensures books are grouped
-                                newGrouped.getOrCreateTag().putBoolean("Grouped", true);
-                                dropItem(world, blockBelow, newGrouped);
+                            // Set original item WITHOUT enchantments
+                            ItemStack baseItem = item.copy();
+                            EnchantmentHelper.setEnchantments(Map.of(), baseItem);
+                            baseItem.removeTagKey("StoredEnchantments");
+                            // Clean up tag if empty
+                            if (baseItem.getTag() != null && baseItem.hasTag() && baseItem.getTag().isEmpty()) {
+                                baseItem.setTag(null);
+                            }
+                            // Drop enchanted book WITH enchantments and item WITHOUT enchantments
+                            dropItem(world, blockBelow, groupedBooks);
+                            dropItem(world, blockBelow, baseItem);
+                        }
+                        // Book with multiple enchantments
+                        else if (isBook) {
+                            // Split each enchantment into individual books
+                            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                                ItemStack singleBook = new ItemStack(Items.ENCHANTED_BOOK);
+                                EnchantedBookItem.addEnchantment(singleBook,
+                                        new EnchantmentInstance(entry.getKey(), entry.getValue()));
+                                dropItem(world, blockBelow, singleBook); // Drop individual enchanted book
                             }
                         }
-
-                        // Process the normal items
-                        for (ItemEntity itemEntity : itemsBelow) {
-                            // It has already been discarded in the grouping
-                            if (itemEntity.isRemoved()) { continue; }
-                            // Get real item
-                            ItemStack item = itemEntity.getItem();
-                            // Get all enchantments of the item
-                            Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
-                            boolean isBook = item.is(Items.ENCHANTED_BOOK);
-
-                            // Ignore if item has no enchantment or if item is a book with only 1 enchantment
-                            // Only process if it's not a previously split book (to avoid infinite loop)
-                            if (enchantments.isEmpty() || (isBook && enchantments.size() == 1)) { continue; }
-
-                            // Drop an enchanted book with the enchantments of tool, armor, etc.
-                            if (item.isDamageableItem() && !isBook) {
-                                ItemStack groupedBooks = new ItemStack(Items.ENCHANTED_BOOK);
-                                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                                    // Added each enchantment found on tool, armor, etc.
-                                    EnchantedBookItem.addEnchantment(groupedBooks,
-                                            new EnchantmentInstance(entry.getKey(), entry.getValue()));
-                                }
-
-                                // Ensures books are grouped
-                                groupedBooks.getOrCreateTag().putBoolean("Grouped", true);
-
-                                // Set original item without enchantments
-                                ItemStack baseItem = item.copy();
-                                EnchantmentHelper.setEnchantments(Map.of(), baseItem);
-                                baseItem.removeTagKey("StoredEnchantments");
-
-                                // Clean up tag if empty
-                                if (baseItem.getTag() != null && baseItem.hasTag() && baseItem.getTag().isEmpty()) {
-                                    baseItem.setTag(null);
-                                }
-
-                                // Drop enchanted book with enchantments and item WITHOUT enchantments
-                                dropItem(world, blockBelow, groupedBooks);
-                                dropItem(world, blockBelow, baseItem);
-                            }
-
-                            // Book with multiple enchantments (not marked as Grouped=true)
-                            else if (isBook) {
-                                // Split each enchantment into individual books
-                                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                                    ItemStack singleBook = new ItemStack(Items.ENCHANTED_BOOK);
-                                    EnchantedBookItem.addEnchantment(singleBook,
-                                            new EnchantmentInstance(entry.getKey(), entry.getValue()));
-                                    if (singleBook.getTag() != null) {
-                                        singleBook.getTag().remove("Grouped");
-                                    }
-                                    // Drop individual enchanted book
-                                    dropItem(world, blockBelow, singleBook);
-                                }
-                            }
-
-                            // Discard the original item
-                            itemEntity.discard();
-                        }
+                        itemEntity.discard(); // Discard the original item
                     }
                 }
             }
