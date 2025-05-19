@@ -5,7 +5,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class BlockFlyEnchantment extends Enchantment {
-    protected BlockFlyEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, pCategory, pApplicableSlots);
+    protected BlockFlyEnchantment(Rarity rarity, EnchantmentCategory category, EquipmentSlot... equipmentSlots) {
+        super(rarity, category, equipmentSlots);
     }
 }

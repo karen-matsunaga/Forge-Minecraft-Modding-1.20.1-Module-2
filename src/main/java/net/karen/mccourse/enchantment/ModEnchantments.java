@@ -62,9 +62,9 @@ public class ModEnchantments {
                             EquipmentSlot.MAINHAND));
 
     // Protected Item enchantment - Armor and Tools enchantment
-    public static final RegistryObject<Enchantment> PROTECTED_ITEM =
-            ENCHANTMENTS.register("protected_item",
-                    () -> new ProtectedItemEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE,
+    public static final RegistryObject<Enchantment> ETERNAL =
+            ENCHANTMENTS.register("eternal",
+                    () -> new EternalEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE,
                             EquipmentSlot.values()));
 
     // Overpower mending enchantment - Armor and Tools enchantment

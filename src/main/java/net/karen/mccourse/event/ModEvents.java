@@ -61,6 +61,7 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
@@ -284,140 +285,86 @@ public class ModEvents {
                 List.of(64, 1, 9, 10), 0.06f);
     }
 
-    // CUSTOM EVENT - Rainbow custom enchantment
+    // CUSTOM EVENT - RAINBOW | AUTO SMELT | MORE ORES | MAGNETIC custom enchantments
+    private static void block(LevelAccessor world, BlockPos pos, Block block, BlockEvent.BreakEvent event) {
+        world.setBlock(pos, block.defaultBlockState(), 3);
+        event.setCanceled(true);
+    }
+
     @SubscribeEvent
-    public static void activatedRainbowEnchantment(BlockEvent.BreakEvent event) {
+    public static void onBlockBreakWithCustomEnchantments(BlockEvent.BreakEvent event) {
+        Player player = event.getPlayer();
         LevelAccessor world = event.getLevel();
         BlockPos pos = event.getPos();
-        // Player has tool on main hand
-        ItemStack mainHandItem = event.getPlayer().getMainHandItem();
-        // Player has tool with Rainbow enchantment
-        int rainbowLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.RAINBOW.get());
+        BlockState state = event.getState();
+        ItemStack tool = player.getMainHandItem();
+        int moreOresLevel = tool.getEnchantmentLevel(ModEnchantments.MORE_ORES.get());
+        int fortuneLevel = tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
 
-        // Player's tool doesn't have Rainbow enchantment
-        if (mainHandItem.isEnchanted() || rainbowLevel > 0) {
-            BlockState blockState = world.getBlockState(pos);
-            BlockPos blockPos = BlockPos.containing(pos.getX(), pos.getY(), pos.getZ()); // Block position
-
-            // Block (Key) / Block Tag (Value)
-            Map<Block, TagKey<Block>> rainbowBlock = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL,
+        // RAINBOW ENCHANTMENT
+        if (tool.getEnchantmentLevel(ModEnchantments.RAINBOW.get()) > 0) {
+            Map<Block, TagKey<Block>> rainbowMap = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL,
             Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER, Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND,
             Blocks.EMERALD_BLOCK, Tags.Blocks.ORES_EMERALD, Blocks.GOLD_BLOCK, Tags.Blocks.ORES_GOLD,
             Blocks.IRON_BLOCK, Tags.Blocks.ORES_IRON, Blocks.LAPIS_BLOCK, Tags.Blocks.ORES_LAPIS,
             Blocks.REDSTONE_BLOCK, Tags.Blocks.ORES_REDSTONE, Blocks.NETHERITE_BLOCK, Tags.Blocks.ORES_NETHERITE_SCRAP);
 
-            for (Map.Entry<Block, TagKey<Block>> rainbowEntry : rainbowBlock.entrySet()) {
-                if (rainbowLevel == 1 && blockState.is(rainbowEntry.getValue())) {
-                    world.setBlock(blockPos, rainbowEntry.getKey().defaultBlockState(), 3); // Create KEY block
-                    event.setCanceled(true); // Ore not break and replaced with block on rainbowOres
+            for (Map.Entry<Block, TagKey<Block>> entry : rainbowMap.entrySet()) {
+                if (state.is(entry.getValue())) {
+                    block(world, pos, entry.getKey(), event); // Blocks normal break
+                    return; // Other enchantments are not applied
                 }
             }
         }
-    }
 
-    // Credits by Shadow of Fire - https://github.com/Shadows-of-Fire/Apotheosis/blob/1.20/LICENSE
-    // Distributed under MIT
-    // CUSTOM EVENT - More Ores custom enchantment - Using code with some modifications
-    @SubscribeEvent
-    public static void activatedMoreOresEnchantment(BlockEvent.BreakEvent event) {
-        LevelAccessor world = event.getLevel();
-        BlockPos pos = event.getPos();
-        ItemStack mainHandItem = event.getPlayer().getMainHandItem(); // Player has a tool on main hand
-        // More Ores enchantment level
-        int moreOresLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.MORE_ORES.get());
+        if (world instanceof ServerLevel serverLevel) {
+            boolean cancelVanillaDrop = false; // Adapt the drop according to the enchantment being true
+            List<ItemStack> finalDrops = new ArrayList<>(); // Items caused by enchantments are stored in the list
 
-        // Player has More Ores enchantment
-        if (mainHandItem.isEnchanted() || moreOresLevel > 0) {
-            // Check if the block is STONE's tags and has a small chance to drop ores
-            BlockState blockState = world.getBlockState(pos);
-            List<TagKey<Block>> ores = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS, ModTags.Blocks.MORE_ORES_TWO_DROPS,
-            ModTags.Blocks.MORE_ORES_THREE_DROPS, ModTags.Blocks.MORE_ORES_FOUR_DROPS, ModTags.Blocks.MORE_ORES_FIVE_DROPS);
-            if (world instanceof ServerLevel serverLevel) {  // Ores generated on world
-                for (int i = 1; i < 2; i++) { // Number of random ores are generated by block mined on any position
-                    if (moreOresLevel < 5 && blockState.is(Blocks.STONE) && Math.random() < 0.1 ||
-                            moreOresLevel == 5 && blockState.is(Blocks.NETHERRACK) && Math.random() < 0.01) {
-                        // Broken block has ore block
-                        var oreTag = ForgeRegistries.BLOCKS.tags();
-                        if (oreTag != null) {
-                            // Create a new ItemEntity with the randomly ORES's tags on randomOre
-                            ItemEntity entityToSpawn = new ItemEntity(serverLevel, pos.getX() + 0.5,
-                                    pos.getY() + 0.5, pos.getZ() + 0.5,
-                                    new ItemStack(oreTag.getTag(ores.get(moreOresLevel - 1))
-                                            .getRandomElement(RandomSource.create()).orElse(Blocks.AIR)));
-                            serverLevel.addFreshEntity(entityToSpawn); // All drops generated by block
-                        }
+            // AUTO SMELT ENCHANTMENT
+            if (tool.getEnchantmentLevel(ModEnchantments.AUTO_SMELT.get()) > 0) {
+                Optional<SmeltingRecipe> recipe = serverLevel.getRecipeManager().getRecipeFor(RecipeType.SMELTING,
+                        new SimpleContainer(new ItemStack(state.getBlock())), serverLevel);
+
+                if (recipe.isPresent()) { // Has recipe
+                    ItemStack result = recipe.get().getResultItem(serverLevel.registryAccess()).copy();
+                    int count = 1 + (fortuneLevel > 0 ? serverLevel.random.nextInt(fortuneLevel + 1) : 0);
+                    for (int i = 0; i < count; i++) { finalDrops.add(result.copy()); }
+                    cancelVanillaDrop = true;
+                }
+            }
+
+            // MORE ORES ENCHANTMENT
+            if (moreOresLevel > 0) {
+                List<TagKey<Block>> oresTags = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS, ModTags.Blocks.MORE_ORES_TWO_DROPS,
+                ModTags.Blocks.MORE_ORES_THREE_DROPS, ModTags.Blocks.MORE_ORES_FOUR_DROPS, ModTags.Blocks.MORE_ORES_FIVE_DROPS);
+
+                if (state.is(Blocks.STONE) && moreOresLevel < 5 && Math.random() < 0.1 ||
+                        state.is(Blocks.NETHERRACK) && moreOresLevel == 5 && Math.random() < 0.01) {
+                    var tagManager = ForgeRegistries.BLOCKS.tags();
+                    if (tagManager != null) {
+                        tagManager.getTag(oresTags.get(moreOresLevel - 1)).getRandomElement(RandomSource.create())
+                                .ifPresent(block -> finalDrops.add(new ItemStack(block)));
+                        cancelVanillaDrop = true;
                     }
                 }
             }
-        }
-    }
 
-    // Credits by Parlack - https://www.youtube.com/watch?v=YOLHn23HU5w
-    // CUSTOM EVENT - Magnetic custom enchantment - Using code with some modifications
-    @SubscribeEvent
-    public static void activatedMagneticEnchantment(BlockEvent.BreakEvent event) {
-        Player player = event.getPlayer();
-        BlockState state = event.getState(); // Block state = AIR
-        if (player != null && state.getBlock() != Blocks.AIR) {
-            Level world = player.level();
-            ItemStack mainHandItem = player.getMainHandItem(); // Player has a tool on main hand
-            // Player has Magnetic custom enchantment
-            int magneticLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.MAGNETIC.get());
-            if (!mainHandItem.isEnchanted() || magneticLevel < 1) { return; }
-
-            event.setCanceled(true); // Prevents drop in the world = DEFAULT is dropped on the ground
-            BlockPos pos = event.getPos(); // Block position = (X, Y, Z)
-
-            // Blocks are generated on Player's inventory
-            Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem)
-                    .forEach(drop -> {
-                        if (!player.getInventory().add(drop)) { player.drop(drop, false); }
-                    }); // Blocks does added drop on Player's inventory
-            world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Remove broken block position
-        }
-    }
-
-    // CUSTOM EVENT - Auto Smelt custom enchantment
-    @SubscribeEvent
-    public static void activatedAutoSmeltEnchantment(BlockEvent.BreakEvent event) {
-        LevelAccessor world = event.getLevel();
-        BlockPos pos = event.getPos();
-        Player player = event.getPlayer();
-        ItemStack mainHandItem = player.getMainHandItem(); // Player has a tool on main hand
-        // Auto Smelt and Fortune enchantment levels
-        int autoSmeltLevel = mainHandItem.getEnchantmentLevel(ModEnchantments.AUTO_SMELT.get());
-        int fortuneLevel = mainHandItem.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
-
-        if (!mainHandItem.isEnchanted() || autoSmeltLevel < 1) { return; } // Player has Auto Smelt enchantment
-
-        BlockPos blockPos = BlockPos.containing(pos.getX(), pos.getY(), pos.getZ()); // Player x, y, and z coordinates
-
-        // Player used tool
-        if (!mainHandItem.getItem().isCorrectToolForDrops(world.getBlockState(blockPos))) { return; }
-
-        // Check if there is a casting recipe for the block
-        if (world instanceof Level level) {
-            ItemStack smeltResult = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING,
-                    new SimpleContainer(new ItemStack(world.getBlockState(blockPos).getBlock())), level)
-                    .map(recipe -> recipe.getResultItem(level.registryAccess()).copy()).orElse(ItemStack.EMPTY);
-
-            if (!smeltResult.isEmpty()) { // Has recipe
-                int dropAmount = 1; // Only Auto Smelt enchantment
-                // Fortune enchantment random drop amount
-                if (fortuneLevel > 0) { dropAmount += level.random.nextInt(fortuneLevel + 1); }
-                // Replaces the block with air and drops the molten item
-                if (world instanceof ServerLevel serverLevel) {
-                    for (int i = 0; i < dropAmount; i++) {
-                        ItemEntity entityToSpawn = new ItemEntity(serverLevel, pos.getX() + 0.5,
-                                pos.getY() + 0.5, pos.getZ() + 0.5, smeltResult);
-                        serverLevel.addFreshEntity(entityToSpawn);
-                    } // Auto Smelt item drops
+            // MAGNETIC ENCHANTMENT
+            if (tool.getEnchantmentLevel(ModEnchantments.MAGNETIC.get()) > 0 && !state.isAir()) {
+                if (finalDrops.isEmpty()) { // FinalDrops empty list added all items on it is
+                    finalDrops.addAll(Block.getDrops(state, serverLevel, pos, null, player, tool));
                 }
-                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-            } else { // Not have recipe
-                // Drop normal resources if there is no foundry revenue
-                Block.dropResources(world.getBlockState(blockPos), world, blockPos, null);
-                world.destroyBlock(blockPos, false);
+                for (ItemStack drop : finalDrops) { // FinalDrops list added on Player's inventory
+                    if (!player.getInventory().add(drop)) { player.drop(drop, false); }
+                }
+                block(serverLevel, pos, Blocks.AIR, event);
+                return;
+            }
+
+            if (cancelVanillaDrop) { // FinalDrops list accumulate drop on world
+                for (ItemStack drop : finalDrops) { dropItem(serverLevel, pos, drop); }
+                block(serverLevel, pos, Blocks.AIR, event);
             }
         }
     }
@@ -914,7 +861,7 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - Protected Item custom enchantment
+    // CUSTOM EVENT - Eternal custom enchantment
     private static final Map<UUID, List<ItemStack>> preservedItems = new HashMap<>(); // Map of Main hand + Items
     private static final Map<UUID, List<ItemStack>> preservedArmor = new HashMap<>(); // Map of Armor
     private static final Map<UUID, List<ItemStack>> preservedOffhand = new HashMap<>(); // Map of Offhand
@@ -925,10 +872,10 @@ public class ModEvents {
                                           List<ItemStack> vault) {
         for (int i = 0; i < type.size(); i++) {
             ItemStack inventory = type.get(i);
-            if (!inventory.isEmpty() && inventory.getEnchantmentLevel(ModEnchantments.PROTECTED_ITEM.get()) > 0) {
-                preserved.set(i, inventory.copy()); // Copy of item with Protected Item enchantment
+            if (!inventory.isEmpty() && inventory.getEnchantmentLevel(ModEnchantments.ETERNAL.get()) > 0) {
+                preserved.set(i, inventory.copy()); // Copy of item with Eternal enchantment
             }
-            // Copy of item WITHOUT Protected Item enchantment
+            // Copy of item WITHOUT Eternal enchantment
             else { vault.add(inventory.copy()); }
             // Added on typePreserve or vaultItems removes stack on Inventory, Armor and Offhand slots
             type.set(i, ItemStack.EMPTY);
@@ -952,7 +899,7 @@ public class ModEvents {
 
     // Player normally drop all items when death
     @SubscribeEvent
-    public static void activatedProtectedItemEnchantmentOnPlayerDeath(LivingDeathEvent event) {
+    public static void activatedEternalEnchantmentOnPlayerDeath(LivingDeathEvent event) {
         // Entity is player
         if (event.getEntity() instanceof Player player) {
             UUID playerUUID = player.getUUID(); // Player id
@@ -1013,7 +960,7 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void activatedProtectedItemEnchantmentOnPlayerClone(PlayerEvent.Clone event) {
+    public static void activatedEternalEnchantmentOnPlayerClone(PlayerEvent.Clone event) {
         // Ensures that it only runs after death
         if (event.isWasDeath()) {
             UUID playerUUID = event.getOriginal().getUUID(); // Get Player id
@@ -1039,8 +986,7 @@ public class ModEvents {
             }
 
             // Restores items with Vault Item
-            // Remove all items without Protected Item saved on Vault
-            List<ItemStack> savedVault = preservedVault.remove(playerUUID);
+            List<ItemStack> savedVault = preservedVault.remove(playerUUID); // Remove all items WITHOUT Eternal saved on Vault
             if (savedVault != null) {
                 for (ItemStack item : savedVault) { newPlayer.getInventory().add(item); } // Added item on Inventory slot
             }

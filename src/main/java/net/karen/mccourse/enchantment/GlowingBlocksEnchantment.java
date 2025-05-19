@@ -5,7 +5,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class GlowingBlocksEnchantment extends Enchantment {
-    protected GlowingBlocksEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, pCategory, pApplicableSlots);
+    protected GlowingBlocksEnchantment(Rarity rarity, EnchantmentCategory category, EquipmentSlot... equipmentSlots) {
+        super(rarity, category, equipmentSlots);
     }
 }

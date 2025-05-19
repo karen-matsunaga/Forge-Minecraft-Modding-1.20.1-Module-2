@@ -256,7 +256,7 @@
   "enchantment.mccourse.auto_smelt": "Auto Smelt",
   "enchantment.mccourse.rainbow": "Rainbow",
   "enchantment.mccourse.block_fly": "Block Fly",
-  "enchantment.mccourse.protected_item": "Protected Item",
+  "enchantment.mccourse.eternal": "Eternal",
   "enchantment.mccourse.overpower_mending": "Overpower Mending",
 
   "enchantment.minecraft.efficiency.desc": "When applied on axe, pickaxe, shovel or hoe increases mining speed.",
@@ -320,6 +320,6 @@
   "enchantment.mccourse.more_ores.desc": "When applied on pickaxe if a stone block is break has a percentage to receive ores.",
   "enchantment.mccourse.rainbow.desc": "When applied on pickaxe the broken ore is replaced and turned on an ore block.",
   "enchantment.mccourse.block_fly.desc": "When applied on pickaxe if player has flying speed mining equals if player has on ground.",
-  "enchantment.mccourse.protected_item.desc": "When applied to tools, armor, etc. remain in the Player's inventory upon death.",
+  "enchantment.mccourse.eternal.desc": "When applied to tools, armor, etc. remain in the Player's inventory upon death.",
   "enchantment.mccourse.overpower_mending.desc": "When applied to tools, armor, etc. are regenerate on Player's inventory."
 }

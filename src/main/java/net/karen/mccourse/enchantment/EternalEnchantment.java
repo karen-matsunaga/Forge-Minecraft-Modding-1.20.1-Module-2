@@ -6,9 +6,9 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.NotNull;
 
-public class ProtectedItemEnchantment extends Enchantment {
-    protected ProtectedItemEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, pCategory, pApplicableSlots);
+public class EternalEnchantment extends Enchantment {
+    protected EternalEnchantment(Rarity rarity, EnchantmentCategory category, EquipmentSlot... equipmentSlots) {
+        super(rarity, category, equipmentSlots);
     }
 
     @Override

@@ -6,13 +6,17 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import org.jetbrains.annotations.NotNull;
 
 public class LightningStrikerEnchantment extends Enchantment {
-    protected LightningStrikerEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) { super(pRarity, pCategory, pApplicableSlots); }
+    protected LightningStrikerEnchantment(Rarity rarity, EnchantmentCategory category,
+                                          EquipmentSlot... equipmentSlots) {
+        super(rarity, category, equipmentSlots);
+    }
 
     // Lightning Striker method
     @Override
-    public void doPostAttack(LivingEntity pAttacker, Entity pTarget, int pLevel) {
+    public void doPostAttack(LivingEntity pAttacker, @NotNull Entity pTarget, int pLevel) {
         // If player hit on client or server
         if(!pAttacker.level().isClientSide()) {
             ServerLevel level = ((ServerLevel) pAttacker.level());
