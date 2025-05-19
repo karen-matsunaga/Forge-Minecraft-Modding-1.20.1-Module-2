@@ -96,7 +96,6 @@ import org.lwjgl.glfw.GLFW;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber(modid = MCCourseMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
@@ -743,7 +742,9 @@ public class ModEvents {
 
     // CUSTOM EVENT - Decapitator
     // Check if it is a log or a leaf
-    private static boolean isLogLeaf(BlockState state, TagKey<Block> block) { return state.is(block); }
+    private static boolean isLogLeaf(BlockState state, TagKey<Block> block) {
+        return state.is(block);
+    }
 
     @SubscribeEvent
     public static void decapitatorBlock(BlockEvent.BreakEvent event) {
@@ -787,7 +788,7 @@ public class ModEvents {
                         BlockState state = level.getBlockState(pos);
                         if (isLogLeaf(state, BlockTags.LOGS) || isLogLeaf(state, BlockTags.LEAVES)) {
                             level.destroyBlock(pos, true); // Drop the blocks
-                            if (isLogLeaf(state, BlockTags.LOGS)) { logCount++; }
+                            if (isLogLeaf(state, BlockTags.LOGS)) { logCount++; } // Damage tool
                         }
                     }
                     // Applies damage proportional to the amount of logs broken
@@ -982,10 +983,6 @@ public class ModEvents {
         damageToolIfHoe(tool, player); // Spend tool durability
     }
 
-    private static final Map<Block, Predicate<BlockState>> validSoils = Map.of(
-    Blocks.BAMBOO, bs -> bs.is(Blocks.GRASS_BLOCK), Blocks.CACTUS, bs -> bs.is(Blocks.SAND),
-    Blocks.SUGAR_CANE, bs -> bs.is(Blocks.GRASS_BLOCK) || bs.is(Blocks.DIRT) || bs.is(Blocks.SAND));
-
     // Crop automatically replant
     @SubscribeEvent
     public static void cropReplant(BlockEvent.BreakEvent event) {
@@ -1008,13 +1005,13 @@ public class ModEvents {
                 crop(Blocks.NETHER_WART, state, level, pos, player, event, heldItem);
             }
             // Sugar cane, Bamboo or Cactus
-            else if (validSoils.containsKey(block)) {
+            else if (block.defaultBlockState().is(ModTags.Blocks.VERTICAL_BLOCKS)) {
                 // Only replant if there is correct soil below
                 BlockPos basePos = pos.below();
                 BlockState baseState = level.getBlockState(basePos);
                 // 1. Bamboo (Block) -> Grass (Test) - 2. Cactus (Block) -> Sand (Test)
                 // 3. Sugar cane (Block) -> Grass, Sand or Dirt (Test)
-                if (validSoils.get(block).test(baseState)) {
+                if (baseState.is(ModTags.Blocks.VERTICAL_GROW_BLOCKS)) {
                     // Check if the bottom block is the same and only break the top one
                     BlockPos topPos = pos;
                     while (level.getBlockState(topPos.above()).is(block)) { topPos = topPos.above(); }

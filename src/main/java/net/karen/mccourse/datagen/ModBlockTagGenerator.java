@@ -150,8 +150,16 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .addTag(BlockTags.CROPS);
 
         // Crop replant tags
+        // Mushroom crop
         this.tag(ModTags.Blocks.MUSHROOM_BLOCKS).add(Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM,
                 Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS);
+
+        // Vertical crop
+        this.tag(ModTags.Blocks.VERTICAL_BLOCKS)
+                .add(Blocks.BAMBOO_BLOCK, Blocks.SUGAR_CANE, Blocks.CACTUS);
+
+        this.tag(ModTags.Blocks.VERTICAL_GROW_BLOCKS)
+                .add(Blocks.GRASS_BLOCK, Blocks.SAND, Blocks.DIRT);
     }
 
     @Override

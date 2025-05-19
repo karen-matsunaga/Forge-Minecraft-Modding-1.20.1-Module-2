@@ -81,6 +81,9 @@ public class ModTags {
         // Crop replant tag
         public static final TagKey<Block> MUSHROOM_BLOCKS = tag("blocks/mushroom_blocks");
 
+        public static final TagKey<Block> VERTICAL_BLOCKS = tag("blocks/vertical_blocks");
+        public static final TagKey<Block> VERTICAL_GROW_BLOCKS = tag("blocks/vertical_grow_blocks");
+
         // Pass block id
         private static TagKey<Block> tag(String name) { return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); }
 
