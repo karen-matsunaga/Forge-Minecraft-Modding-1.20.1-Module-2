@@ -283,7 +283,7 @@ public class ModEvents {
         event.setCanceled(true);
     }
 
-    public static boolean hasBlock(BlockState state, Block block, float chance) {
+    public static boolean isBlock(BlockState state, Block block, float chance) {
         return state.is(block) && Math.random() < chance;
     }
 
@@ -335,8 +335,8 @@ public class ModEvents {
                 List<TagKey<Block>> oresTags = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS, ModTags.Blocks.MORE_ORES_TWO_DROPS,
                 ModTags.Blocks.MORE_ORES_THREE_DROPS, ModTags.Blocks.MORE_ORES_FOUR_DROPS, ModTags.Blocks.MORE_ORES_FIVE_DROPS);
 
-                if (hasBlock(state, Blocks.STONE, 0.1f) && moreOres < 5 ||
-                        hasBlock(state, Blocks.NETHERRACK, 0.01f) && moreOres == 5) {
+                if (isBlock(state, Blocks.STONE, 0.1f) && moreOres < 5 ||
+                        isBlock(state, Blocks.NETHERRACK, 0.01f) && moreOres == 5) {
                     var tagManager = ForgeRegistries.BLOCKS.tags();
                     if (tagManager != null) {
                         tagManager.getTag(oresTags.get(moreOres - 1)).getRandomElement(RandomSource.create())
@@ -374,8 +374,8 @@ public class ModEvents {
             ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD); // Player has an item on helmet slot
             // Player has a helmet inputted on slot and Glowing Mobs enchantment level
             if (helmet.isEnchanted() || helmet.getEnchantmentLevel(ModEnchantments.GLOWING_MOBS.get()) > 0) {
-                // Key - Entities colors -> Each group represent with some color (Color)
-                // Value - Entities groups -> Represent as Tag (Group tag name)
+                /* Key - Entities colors -> Each group represent with some color (Color)
+                Value - Entities groups -> Represent as Tag (Group tag name) */
                 Map<ChatFormatting, TagKey<EntityType<?>>> entitiesTag = Map.ofEntries(
                 Map.entry(ChatFormatting.RED, ModTags.Entities.MONSTERS), // Monsters
                 Map.entry(ChatFormatting.BLUE, ModTags.Entities.ANIMALS), // Animal and Flying entities
@@ -651,7 +651,7 @@ public class ModEvents {
     }
 
     // CUSTOM METHOD - Render block shape on world
-    private static void renderLevel(List<Integer> stage, List<Boolean> bool,
+    private static void renderLevelStage(List<Integer> stage, List<Boolean> bool,
                                     RenderLevelStageEvent event) {
         currentStage = stage.get(0);
         RenderSystem.depthMask(bool.get(0));
@@ -665,10 +665,10 @@ public class ModEvents {
     @SubscribeEvent
     public static void renderLevel(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
-            renderLevel(List.of(1, 0), List.of(false, true), event);
+            renderLevelStage(List.of(1, 0), List.of(false, true), event);
         }
         else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            renderLevel(List.of(2, 0), List.of(true, true), event);
+            renderLevelStage(List.of(2, 0), List.of(true, true), event);
         }
     }
 
@@ -730,12 +730,12 @@ public class ModEvents {
         LevelAccessor world = event.player.level();
         ItemStack metal = event.player.getItemBySlot(EquipmentSlot.MAINHAND); // Player has used Metal Detector
         ItemStack helmet = event.player.getItemBySlot(EquipmentSlot.HEAD); // Player has used helmet
-        // Player has used enchanted Helmet or Metal Detector
+        // Player has GLOWING BLOCKS or Metal Detector
         if (event.phase == TickEvent.Phase.END) {
             GlowingBlocksNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() &&
                     helmet.getEnchantmentLevel(ModEnchantments.GLOWING_BLOCKS.get()) > 0 ||
                     metal.is(ModItems.METAL_DETECTOR.get());
-            // Update information player has enchanted Helmet or Metal Detector
+            // Update information player has GLOWING BLOCKS or Metal Detector
             GlowingBlocksNetworkMessage.WorldVariables.get(world).syncData(world);
         }
     }
@@ -885,8 +885,7 @@ public class ModEvents {
             int[] experienceData = new int[] { player.experienceLevel, Float.floatToIntBits(player.experienceProgress),
             player.totalExperience }; // Added player experience
 
-            // Get all items on inventory, armor and offhand slots
-            // Main inventory, Armor and Left hand or Offhand
+            // Get all items on Main inventory, Armor and Left hand or Offhand slots
             setPreservedVault(player.getInventory().items, inventoryPreserve, vaultItems);
             setPreservedVault(player.getInventory().armor, armorPreserve, vaultItems);
             setPreservedVault(player.getInventory().offhand, offhandPreserve, vaultItems);
@@ -925,9 +924,9 @@ public class ModEvents {
                 vaultItem.setTag(vaultTag);
                 vaultItem.setHoverName(displayName);
 
-                // Temporarily saved for the clone event
-                // Add directly to the new player's inventory in onClone()
-                // Try adding to a free inventory slot
+                /* Temporarily saved for the clone event
+                Add directly to the new Player's inventory in onClone()
+                Try adding to a free inventory slot */
                 preservedVault.computeIfAbsent(playerUUID, k -> new ArrayList<>()).add(vaultItem);
             }
         }
@@ -1009,8 +1008,7 @@ public class ModEvents {
                 // Only replant if there is correct soil below
                 BlockPos basePos = pos.below();
                 BlockState baseState = level.getBlockState(basePos);
-                // 1. Bamboo (Block) -> Grass (Test) - 2. Cactus (Block) -> Sand (Test)
-                // 3. Sugar cane (Block) -> Grass, Sand or Dirt (Test)
+                // 1. Bamboo (Block) -> Grass - 2. Cactus (Block) -> Sand - 3. Sugar cane (Block) -> Grass, Sand or Dirt
                 if (baseState.is(ModTags.Blocks.VERTICAL_GROW_BLOCKS)) {
                     // Check if the bottom block is the same and only break the top one
                     BlockPos topPos = pos;
@@ -1073,8 +1071,8 @@ public class ModEvents {
                         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
                         boolean isBook = item.is(Items.ENCHANTED_BOOK);
 
-                        // Ignore if item has no enchantment or if item is a book with only 1 enchantment
-                        // Only process if it's not a previously split book (to avoid infinite loop)
+                        /* Ignore if item has no enchantment or if item is a book with only 1 enchantment
+                        Only process if it's not a previously split book (to avoid infinite loop) */
                         if (enchantments.isEmpty() || (isBook && enchantments.size() == 1)) { continue; }
 
                         // Drop an enchanted book with the enchantments of tool, armor, etc.
@@ -1119,15 +1117,14 @@ public class ModEvents {
     public static void activatedOverpowerMendingEnchantment(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         if ((event.phase == TickEvent.Phase.END) || !player.level().isClientSide()) {
-            // Desired value for level.getGameTime() % X != 0 (1 second = 20 ticks)
-            // Once every [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks
+            /* Desired value for level.getGameTime() % X != 0 (1 second = 20 ticks)
+            Once every [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks */
             if (player.level().getGameTime() % 100 != 0) { return; }
             List<NonNullList<ItemStack>> playerSlots = List.of(player.getInventory().items,
                     player.getInventory().armor, player.getInventory().offhand);
             for (NonNullList<ItemStack> itemStacks : playerSlots) {
                 for (ItemStack stack : itemStacks) {
-                    if (!stack.isEmpty() && stack.isDamaged() &&
-                            stack.getEnchantmentLevel(ModEnchantments.OVERPOWER_MENDING.get()) > 0) {
+                    if (!stack.isEmpty() && stack.isDamaged() && stack.getEnchantmentLevel(ModEnchantments.RECOVER.get()) > 0) {
                         int currentDamage = stack.getDamageValue();
                         // Repairs 5 point of damage at a time
                         int repairAmount = Math.min(currentDamage, 1);

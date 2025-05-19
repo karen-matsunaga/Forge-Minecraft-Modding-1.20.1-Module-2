@@ -45,9 +45,7 @@ public class AddItemModifier extends LootModifier {
             Map.entry(Items.ENCHANTED_BOOK, Map.of(Enchantments.MOB_LOOTING, 2)),
             Map.entry(Items.IRON_PICKAXE, Map.of(Enchantments.BLOCK_EFFICIENCY, 4)),
             Map.entry(ModItems.ORANGE_MODES.get(), Map.of(Enchantments.BLOCK_EFFICIENCY, 10,
-                      Enchantments.BLOCK_FORTUNE, 10, ModEnchantments.OVERPOWER_MENDING.get(), 1,
-                      Enchantments.UNBREAKING, 10))
-            );
+            Enchantments.BLOCK_FORTUNE, 10, ModEnchantments.RECOVER.get(), 1, Enchantments.UNBREAKING, 10)));
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot,

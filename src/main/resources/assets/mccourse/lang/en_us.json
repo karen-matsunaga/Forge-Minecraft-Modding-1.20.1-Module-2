@@ -257,7 +257,7 @@
   "enchantment.mccourse.rainbow": "Rainbow",
   "enchantment.mccourse.block_fly": "Block Fly",
   "enchantment.mccourse.eternal": "Eternal",
-  "enchantment.mccourse.overpower_mending": "Overpower Mending",
+  "enchantment.mccourse.recover": "Recover",
 
   "enchantment.minecraft.efficiency.desc": "When applied on axe, pickaxe, shovel or hoe increases mining speed.",
   "enchantment.minecraft.silk_touch.desc": "When applied on axe, pickaxe, shovel or hoe receives the broken block.",
@@ -321,5 +321,5 @@
   "enchantment.mccourse.rainbow.desc": "When applied on pickaxe the broken ore is replaced and turned on an ore block.",
   "enchantment.mccourse.block_fly.desc": "When applied on pickaxe if player has flying speed mining equals if player has on ground.",
   "enchantment.mccourse.eternal.desc": "When applied to tools, armor, etc. remain in the Player's inventory upon death.",
-  "enchantment.mccourse.overpower_mending.desc": "When applied to tools, armor, etc. are regenerate on Player's inventory."
+  "enchantment.mccourse.recover.desc": "When applied to tools, armor, etc. are regenerate on Player's inventory."
 }

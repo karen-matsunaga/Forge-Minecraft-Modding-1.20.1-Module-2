@@ -61,16 +61,16 @@ public class ModEnchantments {
                     () -> new BlockFlyEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER,
                             EquipmentSlot.MAINHAND));
 
-    // Protected Item enchantment - Armor and Tools enchantment
+    // Eternal enchantment - Armor and Tools enchantment
     public static final RegistryObject<Enchantment> ETERNAL =
             ENCHANTMENTS.register("eternal",
                     () -> new EternalEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE,
                             EquipmentSlot.values()));
 
-    // Overpower mending enchantment - Armor and Tools enchantment
-    public static final RegistryObject<Enchantment> OVERPOWER_MENDING =
-            ENCHANTMENTS.register("overpower_mending",
-                    () -> new OverpowerMendingEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE,
+    // Recover enchantment - Armor and Tools enchantment
+    public static final RegistryObject<Enchantment> RECOVER =
+            ENCHANTMENTS.register("recover",
+                    () -> new RecoverEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE,
                             EquipmentSlot.values()));
 
     // Registry all enchantments in game
