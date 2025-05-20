@@ -12,6 +12,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class CraftCraftingTableBlockEntity extends RandomizableContainerBlockEntity {
     protected CraftCraftingTableBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -19,16 +20,16 @@ public class CraftCraftingTableBlockEntity extends RandomizableContainerBlockEnt
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() { return this.getItems(); }
+    protected @NotNull NonNullList<ItemStack> getItems() { return this.getItems(); }
 
     @Override
-    protected void setItems(NonNullList<ItemStack> pItemStacks) { this.getItems(); }
+    protected void setItems(@NotNull NonNullList<ItemStack> pItemStacks) { this.getItems(); }
 
     @Override
-    protected Component getDefaultName() { return Component.literal("craft"); }
+    protected @NotNull Component getDefaultName() { return Component.literal("craft"); }
 
     @Override
-    protected AbstractContainerMenu createMenu(int id, Inventory inventory) {
+    protected @NotNull AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory) {
         return new CraftCraftingTableMenu(id, inventory, (ContainerLevelAccess)
                 new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(this.worldPosition));
     }
