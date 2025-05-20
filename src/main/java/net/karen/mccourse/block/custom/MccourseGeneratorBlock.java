@@ -22,30 +22,27 @@ public class MccourseGeneratorBlock extends Block {
     }
 
     @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
-                                       boolean willHarvest, FluidState fluid) {
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest,
+                                       FluidState fluid) {
         ItemStack heldItem = player.getMainHandItem();
-        if (!level.isClientSide) {
-            if (player.isCreative() || heldItem.is(ModItems.PINK_PICKAXE.get())) {
-                // Destroyed block, but not received drop block
-                return level.destroyBlock(pos, false); // Enables destruction in the creative
-            }
+        boolean destroy = player.isCreative() || heldItem.is(ModItems.PINK_PICKAXE.get());
+        if (!level.isClientSide()) {
+            if (destroy) { // ENABLES destruction on CREATIVE mode or uses PINK PICKAXE, but not received DROP items
+                return level.destroyBlock(pos, false); }
             else {
-                for (Item item : items) { // Drop custom items only in survival
-                    ItemStack stack = new ItemStack(item);
-                    Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack); // Item generated
+                for (Item item : items) { // Items generated only on SURVIVAL mode
+                    Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(item));
                 }
-                level.sendBlockUpdated(pos, state, state, 3); // Reseat the block - Prevents destruction outside of creative
+                level.sendBlockUpdated(pos, state, state, 3); // PREVENTS destruction of block
                 return false;
             }
         }
-        return player.isCreative() || heldItem.is(ModItems.PINK_PICKAXE.get()); // On the client side, it allows only if you are creative
+        return destroy; // On the SERVER side, it allows only if you are creative
     }
 
     @Override
     public boolean canHarvestBlock(BlockState state, BlockGetter level, BlockPos pos, Player player) {
-        // Checks if the player is holding the specific item
-        ItemStack heldItem = player.getMainHandItem();
-        return heldItem.is(ModItems.PINK_PICKAXE.get()); // Change to your item
+        // Checks if the player is holding the specific item is PINK PICKAXE
+        return player.getMainHandItem().is(ModItems.PINK_PICKAXE.get());
     }
 }
