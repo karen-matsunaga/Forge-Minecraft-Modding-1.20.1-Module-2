@@ -16,6 +16,7 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class MagicBookBlock extends Block {
     public MagicBookBlock(Properties pProperties) { super(pProperties); }
@@ -25,36 +26,21 @@ public class MagicBookBlock extends Block {
         if (!level.isClientSide() && entity instanceof ItemEntity) {
             AABB area = new AABB(pos).inflate(0.5);
             // Collect enchanted books and enchanted items
-            List<ItemEntity> enchantedBooks = level.getEntitiesOfClass(ItemEntity.class, area,
-                    books -> books.getItem().getItem() == Items.ENCHANTED_BOOK);
+            List<ItemEntity> enchantedBooks = items(level, area, books -> books.getItem().getItem() == Items.ENCHANTED_BOOK);
+            List<ItemEntity> enchantedItems = items(level, area, items -> items.getItem().isEnchantable());
 
-            List<ItemEntity> enchantedItems = level.getEntitiesOfClass(ItemEntity.class, area,
-                    items -> items.getItem().isEnchantable());
-
-            // Combine books if there are multiple
+            // Combine books if there are MULTIPLE
             if (enchantedBooks.size() > 1) {
-                // Sum enchanted book with same enchantment
-                Map<Enchantment, Integer> enchantSumLevels = new HashMap<>();
-                for (ItemEntity bookEntity : enchantedBooks) {
-                    // Get enchantments to each enchanted book
-                    Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(bookEntity.getItem());
-                    for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
-                        enchantSumLevels.merge(entry.getKey(), entry.getValue(), Integer::sum);
-                    }
-                }
+                Map<Enchantment, Integer> enchantSumLevels = new HashMap<>(); // SUM enchanted book with SAME enchantment
+                // Get enchantments to EACH enchanted book
+                enchantedBooks.stream().map(bookEntity -> EnchantmentHelper.getEnchantments(bookEntity.getItem()))
+                        .forEachOrdered(enchants -> enchants.forEach((key, value)
+                                -> enchantSumLevels.merge(key, value, Integer::sum)));
 
-                // Enchanted Book with new value
-                Map<Enchantment, Integer> finalEnchants = new HashMap<>();
-                for (Map.Entry<Enchantment, Integer> entry : enchantSumLevels.entrySet()) {
-                    Enchantment ench = entry.getKey();
-                    int sumLevel = entry.getValue();
-                    finalEnchants.put(ench, sumLevel);
-                }
+                Map<Enchantment, Integer> finalEnchants = new HashMap<>(enchantSumLevels); // Enchanted Book with NEW value
+                enchantedBooks.forEach(Entity::discard); // Remove original books
 
-                // Remove original books
-                enchantedBooks.forEach(Entity::discard);
-
-                // Create and drop the new combined book
+                // Create and drop the NEW combined book
                 ItemStack combinedBook = new ItemStack(Items.ENCHANTED_BOOK);
                 EnchantmentHelper.setEnchantments(finalEnchants, combinedBook);
 
@@ -63,45 +49,36 @@ public class MagicBookBlock extends Block {
 
                 sound(level, pos);
             }
-            // Enchant item with book
+            // Enchant ITEM with enchanted book
             else if (enchantedBooks.size() == 1 && !enchantedItems.isEmpty()) {
-                // Get the first item of toolItem and enchantedBookItem
+                // Get the first item of ITEM and ENCHANTED BOOK
                 ItemEntity toolItem = enchantedItems.get(0);
                 ItemEntity enchantedBookItem = enchantedBooks.get(0);
 
-                // Tool, armor, etc.
-                ItemStack toolStack = toolItem.getItem();
-                // Enchanted book with enchantment
-                ItemStack bookStack = enchantedBookItem.getItem();
+                ItemStack toolStack = toolItem.getItem(); // TOOL, ARMOR, etc.
+                ItemStack bookStack = enchantedBookItem.getItem(); // ENCHANTED BOOK with enchantment
 
-                // Transfer all enchantments of enchanted book to Tool, armor, etc.
+                // Transfer all enchantments of enchanted book to TOOL, ARMOR, etc.
                 Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(bookStack);
-                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                    toolStack.enchant(entry.getKey(), entry.getValue());
-                }
+                enchantments.forEach(toolStack::enchant);
 
-                // Receive item with updated enchantment levels
-                toolItem.setItem(toolStack);
-
-                // Consumes 1 book
-                bookStack.shrink(1);
-                if (bookStack.isEmpty()) {
-                    // Remove original item
-                    enchantedBookItem.discard();
-                }
-                else {
-                    // Return original item
-                    enchantedBookItem.setItem(bookStack);
-                }
+                toolItem.setItem(toolStack); // Receive item with updated enchantment levels
+                bookStack.shrink(1); // Consumes 1 book
+                if (bookStack.isEmpty()) { enchantedBookItem.discard(); } // Remove original item
+                else { enchantedBookItem.setItem(bookStack); } // Return original item
                 sound(level, pos);
             }
         }
         super.stepOn(level, pos, state, entity);
     }
 
-    // CUSTOM METHOD - Sound
+    // CUSTOM METHOD - Enchanted Book and Item quantities list
+    private static List<ItemEntity> items(Level level, AABB area, Predicate<ItemEntity> filter) {
+        return level.getEntitiesOfClass(ItemEntity.class, area, filter);
+    }
+
+    // CUSTOM METHOD - Sound when player uses Magic Book block
     private static void sound(Level level, BlockPos pos) {
-        level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE,
-                SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 }

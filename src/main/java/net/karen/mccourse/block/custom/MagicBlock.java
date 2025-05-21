@@ -21,7 +21,7 @@ public class MagicBlock extends Block {
 
     @Override
     public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
-        if (entity instanceof ItemEntity itemEntity) {
+        if (!level.isClientSide() && entity instanceof ItemEntity itemEntity) {
             ItemStack item = itemEntity.getItem(); // Get real item
             // Get all enchantments of the item
             Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
@@ -35,10 +35,8 @@ public class MagicBlock extends Block {
             if (!isBook) {
                 // It's a TOOL/ARMOR/etc.
                 ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
-                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                    EnchantedBookItem.addEnchantment(enchantedBook,
-                            new EnchantmentInstance(entry.getKey(), entry.getValue()));
-                }
+                enchantments.forEach((key, value) -> EnchantedBookItem.addEnchantment(enchantedBook,
+                        new EnchantmentInstance(key, value)));
 
                 // Drop the base item WITHOUT enchantments
                 ItemStack baseItem = item.copy();
@@ -46,21 +44,18 @@ public class MagicBlock extends Block {
                 baseItem.removeTagKey("StoredEnchantments");
 
                 // Clean up tag if empty
-                if (baseItem.getTag() != null && baseItem.hasTag() && baseItem.getTag().isEmpty()) {
-                    baseItem.setTag(null);
-                }
+                if (baseItem.getTag() != null && baseItem.hasTag() && baseItem.getTag().isEmpty()) { baseItem.setTag(null); }
 
                 dropItem(level, pos, enchantedBook);
                 dropItem(level, pos, baseItem);
             }
             // Split each enchantment into individual books
             else {
-                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                enchantments.forEach((key, value) -> {
                     ItemStack singleBook = new ItemStack(Items.ENCHANTED_BOOK);
-                    EnchantedBookItem.addEnchantment(singleBook,
-                            new EnchantmentInstance(entry.getKey(), entry.getValue()));
+                    EnchantedBookItem.addEnchantment(singleBook, new EnchantmentInstance(key, value));
                     dropItem(level, pos, singleBook);
-                }
+                });
             }
             itemEntity.discard(); // Remove the original item (to avoid reprocessing)
         }
