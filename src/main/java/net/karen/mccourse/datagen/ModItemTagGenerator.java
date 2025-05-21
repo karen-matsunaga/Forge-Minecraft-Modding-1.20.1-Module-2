@@ -29,7 +29,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         // Trimmable's armor item tag
         this.tag(ItemTags.TRIMMABLE_ARMOR)
                 .add(ModItems.ALEXANDRITE_HELMET.get(), ModItems.ALEXANDRITE_CHESTPLATE.get(),
-                        ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.ALEXANDRITE_BOOTS.get());
+                     ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.ALEXANDRITE_BOOTS.get());
 
         // Bar Brawl's music disc tag
         this.tag(ItemTags.MUSIC_DISCS)
@@ -38,7 +38,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         // Walnut's custom wood tag
         this.tag(ItemTags.LOGS_THAT_BURN)
                 .add(ModBlocks.WALNUT_LOG.get().asItem(), ModBlocks.WALNUT_WOOD.get().asItem(),
-                        ModBlocks.STRIPPED_WALNUT_LOG.get().asItem(),  ModBlocks.STRIPPED_WALNUT_WOOD.get().asItem());
+                     ModBlocks.STRIPPED_WALNUT_LOG.get().asItem(),  ModBlocks.STRIPPED_WALNUT_WOOD.get().asItem());
 
         this.tag(ItemTags.PLANKS)
                 .add(ModBlocks.WALNUT_PLANKS.get().asItem());
@@ -53,14 +53,15 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
         this.tag(ModTags.Items.ALEXANDRITE_ORES_ITEMS)
                 .add(ModBlocks.ALEXANDRITE_BLOCK.get().asItem(), ModBlocks.ALEXANDRITE_ORE.get().asItem(),
-                        ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get().asItem(), ModBlocks.END_STONE_ALEXANDRITE_ORE.get().asItem(),
-                        ModBlocks.NETHER_ALEXANDRITE_ORE.get().asItem());
+                     ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get().asItem(), ModBlocks.END_STONE_ALEXANDRITE_ORE.get().asItem(),
+                     ModBlocks.NETHER_ALEXANDRITE_ORE.get().asItem());
 
         this.tag(ModTags.Items.PINK_ORES_ITEMS)
                 .add(ModBlocks.PINK_BLOCK.get().asItem(), ModBlocks.PINK_ORE.get().asItem(),
                      ModBlocks.DEEPSLATE_PINK_ORE.get().asItem(), ModBlocks.END_STONE_PINK_ORE.get().asItem(),
                      ModBlocks.NETHER_PINK_ORE.get().asItem());
 
+        // Active Fly effect tag
         this.tag(ModTags.Items.HELMET_FLY)
                 .add(ModItems.ALEXANDRITE_HELMET.get(), ModItems.PINK_HELMET.get(), ModItems.COPPER_HELMET.get());
 
@@ -73,9 +74,10 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ModTags.Items.BOOTS_FLY)
                 .add(ModItems.ALEXANDRITE_BOOTS.get(), ModItems.PINK_BOOTS.get(), ModItems.COPPER_BOOTS.get());
 
+        // Restore blacklist items tag
         this.tag(ModTags.Items.RESTORE_BLACKLIST_ITEMS)
                 .add(ModItems.BLUE_MODES.get(), ModItems.GREEN_MODES.get(), ModItems.ORANGE_MODES.get(),
-                        ModItems.PINK_MODES.get(), ModItems.PURPLE_MODES.get(), Items.ENCHANTED_BOOK);
+                     ModItems.PINK_MODES.get(), ModItems.PURPLE_MODES.get(), Items.ENCHANTED_BOOK);
     }
 
     @Override
