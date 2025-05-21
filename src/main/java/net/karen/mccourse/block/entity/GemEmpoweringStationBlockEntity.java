@@ -44,19 +44,21 @@ import java.util.Map;
 import java.util.Optional;
 
 public class GemEmpoweringStationBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(4) { // Custom block entity GUI
+    // Custom block entity GUI
+    private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
 
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if(!level.isClientSide()) { level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3); }
+            hasLevel(level);
         }
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) { // An item inserted it is valid
             return switch (slot) {
                 case 0 -> true; // Input an item = Item input slot
-                case 1 -> stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent(); // Input a fluid item = Fluid input slot
+                // Input a fluid item = Fluid input slot
+                case 1 -> stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
                 case 2 -> false; // Output an item = Item output slot
                 case 3 -> stack.getItem() == ModItems.KOHLRABI.get(); // Transform an item on energy = Energy item slot
                 default -> super.isItemValid(slot, stack);
@@ -92,9 +94,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
     private int maxProgress = 78;
 
     // Added DEFAULT values
-    private final int DEFAULT_MAX_PROGRESS = 78;
     private int energyAmount = 0;
-    private final int DEFAULT_ENERGY_AMOUNT = 100;
     private FluidStack neededFluidStack = FluidStack.EMPTY;
 
     // Progress bar when an item transform on custom energy storage - CLIENT and SERVER is synchronized
@@ -107,7 +107,7 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
             @Override
             protected void onContentsChanged() {
                 setChanged();
-                if (!level.isClientSide()) { level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3); }
+                hasLevel(level);
             }
 
             @Override
@@ -120,7 +120,10 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
             @Override
             public void onEnergyChanged() {
                 setChanged();
-                getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                Level level = getLevel();
+                if (level != null) {
+                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                }
             }
         };
     }
@@ -159,26 +162,25 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         };
     }
 
-    public IEnergyStorage getEnergyStorage() { return this.ENERGY_STORAGE; } // Restore energy storage saved
+    // Restore energy storage saved
+    public IEnergyStorage getEnergyStorage() { return this.ENERGY_STORAGE; }
 
     public FluidStack getFluid() { return FLUID_TANK.getFluid(); }
 
     // Drops all items on inventory
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
-        }
-        Containers.dropContents(this.level, this.worldPosition, inventory);
+        for (int i = 0; i < itemHandler.getSlots(); i++) { inventory.setItem(i, itemHandler.getStackInSlot(i)); }
+        if (this.level != null) { Containers.dropContents(this.level, this.worldPosition, inventory); }
     }
 
     // Name that to show in screen
     @Override
-    public Component getDisplayName() { return Component.literal("Gem Empowering Station"); }
+    public @NotNull Component getDisplayName() { return Component.literal("Gem Empowering Station"); }
 
     @Override
-    public @Nullable AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new GemEmpoweringStationMenu(pContainerId, pPlayerInventory, this, this.data);
+    public @Nullable AbstractContainerMenu createMenu(int pContainerId, @NotNull Inventory inventory, @NotNull Player player) {
+        return new GemEmpoweringStationMenu(pContainerId, inventory, this, this.data);
     }
 
     // Avoid losing items when inserted on custom block entity
@@ -199,10 +201,10 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
                 if(side == Direction.DOWN ||side == Direction.UP) { return directionWrappedHandlerMap.get(side).cast(); }
 
                 return switch (localDir) {
-                    default -> directionWrappedHandlerMap.get(side.getOpposite()).cast();
                     case EAST -> directionWrappedHandlerMap.get(side.getClockWise()).cast();
                     case SOUTH -> directionWrappedHandlerMap.get(side).cast();
                     case WEST -> directionWrappedHandlerMap.get(side.getCounterClockWise()).cast();
+                    default -> directionWrappedHandlerMap.get(side.getOpposite()).cast();
                 };
             }
         }
@@ -227,38 +229,38 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
 
     // Save all items of inventory
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        pTag.put("inventory", itemHandler.serializeNBT());
-        pTag.putInt("gem_empowering_station.progress", progress);
-        pTag.putInt("gem_empowering_station.max_progress", maxProgress);
-        pTag.putInt("gem_empowering_station.energy_amount", energyAmount);
-        neededFluidStack.writeToNBT(pTag);
-        pTag.putInt("energy", ENERGY_STORAGE.getEnergyStored());
-        pTag = FLUID_TANK.writeToNBT(pTag);
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag tag) {
+        tag.put("inventory", itemHandler.serializeNBT());
+        tag.putInt("gem_empowering_station.progress", progress);
+        tag.putInt("gem_empowering_station.max_progress", maxProgress);
+        tag.putInt("gem_empowering_station.energy_amount", energyAmount);
+        neededFluidStack.writeToNBT(tag);
+        tag.putInt("energy", ENERGY_STORAGE.getEnergyStored());
+        tag = FLUID_TANK.writeToNBT(tag);
+        super.saveAdditional(tag);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-        itemHandler.deserializeNBT(pTag.getCompound("inventory"));
-        progress = pTag.getInt("gem_empowering_station.progress");
-        maxProgress = pTag.getInt("gem_empowering_station.max_progress");
-        energyAmount = pTag.getInt("gem_empowering_station.energy_amount");
-        neededFluidStack = FluidStack.loadFluidStackFromNBT(pTag);
-        ENERGY_STORAGE.setEnergy(pTag.getInt("energy"));
-        FLUID_TANK.readFromNBT(pTag);
+    public void load(@NotNull CompoundTag tag) {
+        super.load(tag);
+        itemHandler.deserializeNBT(tag.getCompound("inventory"));
+        progress = tag.getInt("gem_empowering_station.progress");
+        maxProgress = tag.getInt("gem_empowering_station.max_progress");
+        energyAmount = tag.getInt("gem_empowering_station.energy_amount");
+        neededFluidStack = FluidStack.loadFluidStackFromNBT(tag);
+        ENERGY_STORAGE.setEnergy(tag.getInt("energy"));
+        FLUID_TANK.readFromNBT(tag);
     }
 
     // Custom block entity class to work on Server side
-    public void tick(Level level, BlockPos pPos, BlockState pState) {
+    public void tick(Level level, BlockPos pos, BlockState state) {
         fillUpOnEnergy(); // This is a "placeholder" for getting energy through wires or similar
         fillUpOnFluid();
 
         if (isOutputSlotEmptyOrReceivable() && hasRecipe()) {
             increaseCraftingProcess();
             extractEnergy();
-            setChanged(level, pPos, pState);
+            setChanged(level, pos, state);
 
             if (hasProgressFinished()) {
                 craftItem();
@@ -268,14 +270,17 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         } else { resetProgress(); }
     }
 
-    private void extractFluid() { this.FLUID_TANK.drain(neededFluidStack.getAmount(), IFluidHandler.FluidAction.EXECUTE); }
-
-    private void fillUpOnFluid() {
-        if (hasFluidSourceInSlot(FLUID_INPUT_SLOT)) { transferItemFluidToTank(FLUID_INPUT_SLOT); }
+    private void extractFluid() {
+        this.FLUID_TANK.drain(neededFluidStack.getAmount(), IFluidHandler.FluidAction.EXECUTE);
     }
 
-    private void transferItemFluidToTank(int fluidInputSlot) {
-        this.itemHandler.getStackInSlot(fluidInputSlot).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(iFluidHandlerItem -> {
+    private void fillUpOnFluid() {
+        if (hasFluidSourceInSlot()) { transferItemFluidToTank(); }
+    }
+
+    private void transferItemFluidToTank() {
+        this.itemHandler.getStackInSlot(GemEmpoweringStationBlockEntity.FLUID_INPUT_SLOT).getCapability(
+                ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(iFluidHandlerItem -> {
             int drainAmount = Math.min(this.FLUID_TANK.getSpace(), 1000);
 
             FluidStack stack = iFluidHandlerItem.drain(drainAmount, IFluidHandler.FluidAction.SIMULATE);
@@ -291,24 +296,27 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         this.itemHandler.insertItem(FLUID_INPUT_SLOT, container, false);
     }
 
-    private boolean hasFluidSourceInSlot(int fluidInputSlot) {
-        return this.itemHandler.getStackInSlot(fluidInputSlot).getCount() > 0 &&
-                this.itemHandler.getStackInSlot(fluidInputSlot).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
+    private boolean hasFluidSourceInSlot() {
+        return this.itemHandler.getStackInSlot(GemEmpoweringStationBlockEntity.FLUID_INPUT_SLOT).getCount() > 0 &&
+                this.itemHandler.getStackInSlot(GemEmpoweringStationBlockEntity.FLUID_INPUT_SLOT)
+                        .getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
     }
 
     private void extractEnergy() { this.ENERGY_STORAGE.extractEnergy(energyAmount, false); }
 
     private void fillUpOnEnergy() {
-        if(hasEnergyItemInSlot(ENERGY_ITEM_SLOT)) { this.ENERGY_STORAGE.receiveEnergy(3200, false); }
+        if(hasEnergyItemInSlot()) { this.ENERGY_STORAGE.receiveEnergy(3200, false); }
     }
 
-    private boolean hasEnergyItemInSlot(int energyItemSlot) {
-        return !this.itemHandler.getStackInSlot(energyItemSlot).isEmpty() &&
-                this.itemHandler.getStackInSlot(energyItemSlot).getItem() == ModItems.KOHLRABI.get();
+    private boolean hasEnergyItemInSlot() {
+        return !this.itemHandler.getStackInSlot(GemEmpoweringStationBlockEntity.ENERGY_ITEM_SLOT).isEmpty() &&
+                this.itemHandler.getStackInSlot(GemEmpoweringStationBlockEntity.ENERGY_ITEM_SLOT).getItem() ==
+                        ModItems.KOHLRABI.get();
     }
 
     private void craftItem() {
         Optional<GemEmpoweringRecipe> recipe = getCurrentRecipe();
+        assert getLevel() != null;
         ItemStack resultItem = recipe.get().getResultItem(getLevel().registryAccess());
 
         this.itemHandler.extractItem(INPUT_SLOT, 1, false); // Input slot
@@ -332,27 +340,33 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
         energyAmount = recipe.get().getEnergyAmount();
         neededFluidStack = recipe.get().getFluidStack();
 
+        assert getLevel() != null;
         ItemStack resultItem = recipe.get().getResultItem(getLevel().registryAccess());
+
         return canInsertAmountIntoOutputSlot(resultItem.getCount())
                 && canInsertItemIntoOutputSlot(resultItem.getItem()) && hasEnoughEnergyToCraft()
                 && hasEnoughFluidToCraft();
     }
 
-    private boolean hasEnoughFluidToCraft() { return this.FLUID_TANK.getFluidAmount() >= neededFluidStack.getAmount(); }
+    private boolean hasEnoughFluidToCraft() {
+        return this.FLUID_TANK.getFluidAmount() >= neededFluidStack.getAmount();
+    }
 
-    private boolean hasEnoughEnergyToCraft() { return this.ENERGY_STORAGE.getEnergyStored() >= energyAmount * maxProgress; }
+    private boolean hasEnoughEnergyToCraft() {
+        return this.ENERGY_STORAGE.getEnergyStored() >= energyAmount * maxProgress;
+    }
 
     // Verify all custom recipes if are added or not inserted
     private Optional<GemEmpoweringRecipe> getCurrentRecipe() {
         SimpleContainer inventory = new SimpleContainer(this.itemHandler.getSlots());
-        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, this.itemHandler.getStackInSlot(i));
-        }
+        for (int i = 0; i < this.itemHandler.getSlots(); i++) { inventory.setItem(i, this.itemHandler.getStackInSlot(i)); }
+        assert this.level != null;
         return this.level.getRecipeManager().getRecipeFor(GemEmpoweringRecipe.Type.INSTANCE, inventory, level);
     }
 
     private boolean canInsertItemIntoOutputSlot(Item item) {
-        return this.itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() || this.itemHandler.getStackInSlot(OUTPUT_SLOT).is(item);
+        return this.itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ||
+                this.itemHandler.getStackInSlot(OUTPUT_SLOT).is(item);
     }
 
     private boolean canInsertAmountIntoOutputSlot(int count) {
@@ -362,16 +376,27 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
 
     private boolean isOutputSlotEmptyOrReceivable() {
         return this.itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ||
-                this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() < this.itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize();
+                this.itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() <
+                        this.itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize();
     }
 
     // Save and restore on disk the energy storage
     @Override
-    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
+    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
 
     @Override
-    public CompoundTag getUpdateTag() { return saveWithoutMetadata(); }
+    public @NotNull CompoundTag getUpdateTag() { return saveWithoutMetadata(); }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) { super.onDataPacket(net, pkt); }
+
+    private void hasLevel(Level level) {
+        if (level != null) {
+            if (!level.isClientSide()) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+    }
 }
