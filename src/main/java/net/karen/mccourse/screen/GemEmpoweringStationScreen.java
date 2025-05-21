@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -22,7 +23,9 @@ public class GemEmpoweringStationScreen extends AbstractContainerScreen<GemEmpow
     private EnergyDisplayTooltipArea energyInfoArea;
     private FluidTankRenderer fluidRenderer;
 
-    public GemEmpoweringStationScreen(GemEmpoweringStationMenu pMenu, Inventory pPlayerInventory, Component pTitle) { super(pMenu, pPlayerInventory, pTitle); }
+    public GemEmpoweringStationScreen(GemEmpoweringStationMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
+    }
 
     // Titles to show on custom block entity GUI
     @Override
@@ -34,25 +37,31 @@ public class GemEmpoweringStationScreen extends AbstractContainerScreen<GemEmpow
         assignFluidRenderer();
     }
 
-    private void assignFluidRenderer() { fluidRenderer = new FluidTankRenderer(64000, true, 16, 39); }
+    // Fluid renderer texture screen
+    private void assignFluidRenderer() {
+        fluidRenderer = new FluidTankRenderer(64000, true, 16, 39);
+    }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int pMouseX, int pMouseY) {
+    protected void renderLabels(@NotNull GuiGraphics guiGraphics, int pMouseX, int pMouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         renderEnergyAreaTooltip(guiGraphics, pMouseX, pMouseY, x, y);
-        renderFluidTooltipArea(guiGraphics, pMouseX, pMouseY, x, y, menu.blockEntity.getFluid(), 26, 11, fluidRenderer);
+        renderFluidTooltipArea(guiGraphics, pMouseX, pMouseY, x, y, menu.blockEntity.getFluid(),
+                26, 11, fluidRenderer);
     }
 
-    private void renderFluidTooltipArea(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y,
-                                        FluidStack stack, int offsetX, int offsetY, FluidTankRenderer renderer) {
+    private void renderFluidTooltipArea(GuiGraphics guiGraphics, int pMouseX, int pMouseY,
+                                        int x, int y, FluidStack stack, int offsetX, int offsetY,
+                                        FluidTankRenderer renderer) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, offsetX, offsetY, renderer)) {
             guiGraphics.renderTooltip(this.font, renderer.getTooltip(stack, TooltipFlag.Default.NORMAL),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
 
-    private void renderEnergyAreaTooltip(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
+    private void renderEnergyAreaTooltip(GuiGraphics guiGraphics, int pMouseX, int pMouseY,
+                                         int x, int y) {
         if(isMouseAboveArea(pMouseX, pMouseY, x, y, 156, 11, 8, 64)) {
             guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
@@ -83,21 +92,27 @@ public class GemEmpoweringStationScreen extends AbstractContainerScreen<GemEmpow
 
     // Render progress arrow when item transform on other
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
-        if(menu.isCrafting()) { guiGraphics.blit(TEXTURE, x + 85, y + 30, 176, 0, 8, menu.getScaledProgress()); }
+        if (menu.isCrafting()) {
+            guiGraphics.blit(TEXTURE, x + 85, y + 30, 176, 0, 8,
+                    menu.getScaledProgress());
+        }
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
-    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, FluidTankRenderer renderer) {
-        return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, renderer.getWidth(), renderer.getHeight());
+    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y,
+                                     int offsetX, int offsetY, FluidTankRenderer renderer) {
+        return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY,
+                renderer.getWidth(), renderer.getHeight());
     }
 
-    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {
+    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y,
+                                     int offsetX, int offsetY, int width, int height) {
         return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, width, height);
     }
 }
