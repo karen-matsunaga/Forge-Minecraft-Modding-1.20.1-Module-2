@@ -20,6 +20,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +39,8 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
 
     public GemEmpoweringRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 83);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.GEM_EMPOWERING_STATION.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
+                new ItemStack(ModBlocks.GEM_EMPOWERING_STATION.get()));
     }
 
     @Override
@@ -76,16 +78,11 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
 
     // Energy Renderer on screen
     @Override
-    public void draw(GemEmpoweringRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView,
+    public void draw(@NotNull GemEmpoweringRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView,
                      @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
-
-        ModEnergyStorage storage = new ModEnergyStorage(64000, recipe.getEnergyAmount()) {
-            @Override
-            public void onEnergyChanged() {}
-        };
-        storage.setEnergy(recipe.getEnergyAmount());
-        EnergyDisplayTooltipArea energyDisplay = new EnergyDisplayTooltipArea(156, 11, storage, 8, 64);
-        energyDisplay.render(guiGraphics); // draws the power bar
+        ModEnergyStorage storage = energyStorage(recipe);
+        EnergyDisplayTooltipArea energy = energyTooltip(storage);
+        energy.render(guiGraphics); // Draws the power bar
     }
 
     // Energy Renderer on screen
@@ -94,16 +91,28 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
                                                       @NotNull IRecipeSlotsView recipeSlotsView,
                                                       double mouseX, double mouseY) {
         int x = 156, y = 11, width = 8, height = 64;
-
         if (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height) {
-            ModEnergyStorage storage = new ModEnergyStorage(64000, recipe.getEnergyAmount()) {
-                @Override
-                public void onEnergyChanged() {}
-            };
-            storage.setEnergy(recipe.getEnergyAmount());
-            return new EnergyDisplayTooltipArea(x, y, storage, width, height).getTooltips();
+            ModEnergyStorage storage = energyStorage(recipe);
+            return energyTooltip(storage).getTooltips();
         }
 
         return List.of(); // No tooltip outside the bar
+    }
+
+    private ModEnergyStorage energyStorage(GemEmpoweringRecipe recipe) {
+        IEnergyStorage iEnergy = new ModEnergyStorage(64000, 64000) {
+            @Override
+            public void onEnergyChanged() {}
+        };
+        ModEnergyStorage energy = new ModEnergyStorage(iEnergy.getMaxEnergyStored(), iEnergy.getEnergyStored()) {
+            @Override
+            public void onEnergyChanged() {}
+        };
+        energy.setEnergy(recipe.getEnergyAmount());
+        return energy;
+    }
+
+    private EnergyDisplayTooltipArea energyTooltip(ModEnergyStorage stored) {
+        return new EnergyDisplayTooltipArea(156, 11, stored);
     }
 }
