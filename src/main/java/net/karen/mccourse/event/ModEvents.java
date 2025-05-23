@@ -382,30 +382,34 @@ public class ModEvents {
                 Map.entry(ChatFormatting.YELLOW, ModTags.Entities.WATER_ANIMALS), // Water animals
                 Map.entry(ChatFormatting.DARK_PURPLE, ModTags.Entities.VILLAGER)); // Villagers
 
-                for (Map.Entry<ChatFormatting, TagKey<EntityType<?>>> entry : entitiesTag.entrySet()) {
-                    TagKey<EntityType<?>> tagValue = entry.getValue();
-                    String teamName = tagValue.location().getPath();
+                entitiesTag.forEach((key, value) -> {
+                    String teamName = value.location().getPath();
                     List<LivingEntity> entities = player.level().getEntitiesOfClass(LivingEntity.class,
-                    player.getBoundingBox().inflate(GLOWING_EYES), entity -> entity.getType().is(tagValue) && entity != player);
+                            player.getBoundingBox().inflate(GLOWING_EYES), entity -> entity.getType().is(value) && entity != player);
 
                     if (!entities.isEmpty()) {
                         PlayerTeam team = player.getScoreboard().getPlayerTeam(teamName);
                         // Added each entity on group with specif tag and color on entitiesTag
                         if (team == null) {
                             team = player.getScoreboard().addPlayerTeam(teamName);
-                            team.setColor(entry.getKey()); // Color
+                            team.setColor(key); // Color
                         }
 
                         // Each entity received Glowing effect with specif color on entityColors
-                        for (LivingEntity entity : entities) {
-                            entity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1,
-                            true, false, false));
-                            player.getScoreboard().addPlayerToTeam(entity.getScoreboardName(), team);
-                        }
+                        PlayerTeam finalTeam = team;
+                        entities.forEach(entity -> { entity.addEffect(new MobEffectInstance(MobEffects.GLOWING,
+                                100, 1, true, false, false));
+                            player.getScoreboard().addPlayerToTeam(entity.getScoreboardName(), finalTeam);
+                        });
                     }
-                }
+                });
             }
         }
+    }
+
+    private static MutableComponent description(String tooltip, ChatFormatting color, List<Boolean> curse) {
+        return Component.translatable(tooltip).withStyle(Style.EMPTY.withColor(color).withBold(curse.get(0))
+                .withItalic(curse.get(1)));
     }
 
     // CUSTOM EVENT - Custom Enchantment's tooltips
@@ -435,19 +439,17 @@ public class ModEvents {
                                 case VANISHABLE -> ChatFormatting.RED;
                                 case FISHING_ROD -> ChatFormatting.YELLOW; }; // Replace this line with custom styled version
                             boolean isCurse = enchantment.isCurse();
-                            String descriptionValue = enchantment.getDescriptionId() + ".desc";
-
+                            String enchant = enchantment.getDescriptionId();
+                            String descriptionValue = enchant + ".desc";
                             /* Enchantment Levels with Arabic numerals and Enchantment Descriptions with
                             JSON file -> I18n = en_us.json */
                             if (level > 0 || enchantment.getMaxLevel() > 0 || I18n.exists(descriptionValue)) {
-                                MutableComponent name = Component.translatable(enchantment.getDescriptionId())
-                                        .withStyle(Style.EMPTY.withColor(color).withBold(!isCurse).withItalic(isCurse))
-                                        .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level)))
+                                MutableComponent name = description(enchant, color, List.of(!isCurse, isCurse))
+                                        .append(CommonComponents.SPACE)
+                                        .append(Component.literal(String.valueOf(level)))
                                         .append(CommonComponents.NEW_LINE);
 
-                                MutableComponent desc = Component.translatable(descriptionValue)
-                                        .withStyle(Style.EMPTY.withColor(color).withBold(false)
-                                                .withItalic(false));
+                                MutableComponent desc = description(descriptionValue, color, List.of(false, false));
 
                                 // Number line of enchantment names and enchantment descriptions
                                 tooltip.set(i, name.append(desc));
@@ -698,21 +700,21 @@ public class ModEvents {
                                     {0,0,1},{0,0,0},{0,0,0},{0,1,0},{1,0,0},{1,1,0},
                                     {1,0,1},{1,1,1},{0,0,1},{0,1,1},{0,1,0},{1,1,0},
                                     {1,1,0},{1,1,1},{1,1,1},{0,1,1},{0,1,1},{0,1,0}};
-                            for (Map.Entry<TagKey<Block>, Integer> entry : renderColors.entrySet()) {
-                                if (level.getBlockState(position).is(entry.getKey())) {
+                            renderColors.forEach((key, value) -> {
+                                if (level.getBlockState(position).is(key)) {
                                     RenderSystem.depthMask(false);
                                     RenderSystem.disableDepthTest();
                                     if (begin()) {
-                                        for (int[] c : cubeCoordinates) { add(c[0], c[1], c[2], entry.getValue()); }
+                                        for (int[] c : cubeCoordinates) { add(c[0], c[1], c[2], value); }
                                         end();
                                     }
                                     if (currentStage == 2) {
                                         ModEvents.targetStage = 2;
-                                        renderShape(vertexBuffer, posX, posY, posZ, entry.getValue());
+                                        renderShape(vertexBuffer, posX, posY, posZ, value);
                                         targetStage = 0;
                                     }
                                 }
-                            }
+                            });
                         }
                     }
                 }
@@ -912,11 +914,8 @@ public class ModEvents {
                 CompoundTag vaultTag = new CompoundTag();
                 ListTag itemListTag = new ListTag();
                 // Create VaultItem with the items data
-                for (ItemStack item : vaultItems) {
-                    CompoundTag itemTag = new CompoundTag();
-                    item.save(itemTag);
-                    itemListTag.add(itemTag);
-                }
+                vaultItems.forEach(item -> { CompoundTag itemTag = new CompoundTag(); item.save(itemTag);
+                    itemListTag.add(itemTag); });
                 // Added information on Vault item
                 vaultTag.put("VaultItems", itemListTag);
                 // Save custom name in NBT
@@ -961,7 +960,7 @@ public class ModEvents {
             // Restores items with Vault Item
             List<ItemStack> savedVault = preservedVault.remove(playerUUID); // Remove all items WITHOUT Eternal saved on Vault
             if (savedVault != null) {
-                for (ItemStack item : savedVault) { newPlayer.getInventory().add(item); } // Added item on Inventory slot
+                savedVault.forEach(item -> newPlayer.getInventory().add(item)); // Added item on Inventory slot
             }
         }
     }
@@ -1054,7 +1053,6 @@ public class ModEvents {
                     if (entity instanceof FallingBlockEntity fallingBlockEntity) {
                         BlockState state = fallingBlockEntity.getBlockState(); // Anvil state
                         BlockPos pos = fallingBlockEntity.blockPosition(); // Anvil position
-
                         // List of blocks that accept disenchanted items
                         List<Block> anvils = List.of(Blocks.ANVIL, Blocks.CHIPPED_ANVIL, Blocks.DAMAGED_ANVIL);
                         if (!anvils.contains(state.getBlock())) { continue; } // Check if the dropped block is an anvil
@@ -1062,7 +1060,6 @@ public class ModEvents {
                         // Pick up the items on the ground below the anvil - small area below the anvil
                         List<ItemEntity> itemsBelow = world.getEntitiesOfClass(ItemEntity.class,
                                 new AABB(blockBelow).inflate(0.5));
-
                         // Processing only if there is exactly ONE item
                         if (itemsBelow.size() != 1) { continue; }
                         ItemEntity itemEntity = itemsBelow.get(0); // First item of list
@@ -1078,11 +1075,9 @@ public class ModEvents {
                         // Drop an enchanted book with the enchantments of tool, armor, etc.
                         if (item.isDamageableItem() && !isBook) {
                             ItemStack groupedBooks = new ItemStack(Items.ENCHANTED_BOOK);
-                            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                                // Added each enchantment found on tool, armor, etc.
-                                EnchantedBookItem.addEnchantment(groupedBooks,
-                                        new EnchantmentInstance(entry.getKey(), entry.getValue()));
-                            }
+                            // Added each enchantment found on tool, armor, etc.
+                            enchantments.forEach((key, value) -> EnchantedBookItem.addEnchantment(groupedBooks,
+                                    new EnchantmentInstance(key, value)));
                             // Set original item WITHOUT enchantments
                             ItemStack baseItem = item.copy();
                             EnchantmentHelper.setEnchantments(Map.of(), baseItem);
@@ -1098,12 +1093,11 @@ public class ModEvents {
                         // Book with multiple enchantments
                         else if (isBook) {
                             // Split each enchantment into individual books
-                            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                            enchantments.forEach((key, value) -> {
                                 ItemStack singleBook = new ItemStack(Items.ENCHANTED_BOOK);
-                                EnchantedBookItem.addEnchantment(singleBook,
-                                        new EnchantmentInstance(entry.getKey(), entry.getValue()));
+                                EnchantedBookItem.addEnchantment(singleBook, new EnchantmentInstance(key, value));
                                 dropItem(world, blockBelow, singleBook); // Drop individual enchanted book
-                            }
+                            });
                         }
                         itemEntity.discard(); // Discard the original item
                     }
@@ -1119,15 +1113,15 @@ public class ModEvents {
         if ((event.phase == TickEvent.Phase.END) || !player.level().isClientSide()) {
             /* Desired value for level.getGameTime() % X != 0 (1 second = 20 ticks)
             Once every [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks */
-            if (player.level().getGameTime() % 100 != 0) { return; }
+            if (player.level().getGameTime() % 40 != 0) { return; }
             List<NonNullList<ItemStack>> playerSlots = List.of(player.getInventory().items,
                     player.getInventory().armor, player.getInventory().offhand);
             for (NonNullList<ItemStack> itemStacks : playerSlots) {
                 for (ItemStack stack : itemStacks) {
                     if (!stack.isEmpty() && stack.isDamaged() && stack.getEnchantmentLevel(ModEnchantments.RECOVER.get()) > 0) {
                         int currentDamage = stack.getDamageValue();
-                        // Repairs 5 point of damage at a time
-                        int repairAmount = Math.min(currentDamage, 1);
+                        // Repairs 10 point of damage at a time
+                        int repairAmount = Math.min(currentDamage, 10);
                         stack.setDamageValue(currentDamage - repairAmount);
                     }
                 }
