@@ -139,7 +139,7 @@ public class ModEvents {
             ItemStack held = player.getMainHandItem();
             HammerItem.clientTick();
 
-            if (!(held.getItem() instanceof HammerItem)) {
+            if (!(held.getItem() instanceof HammerItem)) { // Player hasn't HammerItem
                 lastSentPos = null;
                 return;
             }
@@ -212,8 +212,7 @@ public class ModEvents {
     public static void addCustomTrades(VillagerTradesEvent event) {
         // Villager's farm profession
         if (event.getType() == VillagerProfession.FARMER) {
-            // List of all trades
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades(); // List of all trades
 
             // List of all trades that the player can trade
             // Received KOHLRABI with Villager's level 1
@@ -227,8 +226,7 @@ public class ModEvents {
 
         // Villager's toolsmith profession
         if (event.getType() == VillagerProfession.TOOLSMITH) {
-            // List of all trades
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades(); // List of all trades
 
             // List of all trades that the player can trade
             // Received ALEXANDRITE PAXEL with Villager's level 3
@@ -251,8 +249,7 @@ public class ModEvents {
     // CUSTOM EVENT - Custom Villager Wandering
     private static void wanderingTrades(List<VillagerTrades.ItemListing> trade,
                                        List<Item> items, List<Integer> levelCount, float multiplier) {
-        trade.add((pTrader, pRandom) -> new MerchantOffer(
-                new ItemStack(items.get(0), levelCount.get(0)),
+        trade.add((pTrader, pRandom) -> new MerchantOffer(new ItemStack(items.get(0), levelCount.get(0)),
                 new ItemStack(items.get(1), levelCount.get(1)), levelCount.get(2), levelCount.get(3), multiplier));
     }
 
@@ -277,6 +274,10 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - RAINBOW | AUTO SMELT | MORE ORES | MAGNETIC custom enchantments
+    private static int enchant(ItemStack stack, Enchantment enchantment) {
+        return stack.getEnchantmentLevel(enchantment);
+    }
+
     private static void block(LevelAccessor world, BlockPos pos, Block block,
                               BlockEvent.BreakEvent event) {
         world.setBlock(pos, block.defaultBlockState(), 3);
@@ -294,11 +295,11 @@ public class ModEvents {
         BlockPos pos = event.getPos();
         BlockState state = event.getState();
         ItemStack tool = player.getMainHandItem();
-        int moreOres = tool.getEnchantmentLevel(ModEnchantments.MORE_ORES.get());
-        int fortune = tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
+        int fortune = enchant(tool, Enchantments.BLOCK_FORTUNE);
+        int moreOres = enchant(tool, ModEnchantments.MORE_ORES.get());
 
         // RAINBOW ENCHANTMENT
-        if (tool.getEnchantmentLevel(ModEnchantments.RAINBOW.get()) > 0) {
+        if (enchant(tool, ModEnchantments.RAINBOW.get()) > 0) {
             Map<Block, TagKey<Block>> rainbowMap = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL,
             Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER, Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND,
             Blocks.EMERALD_BLOCK, Tags.Blocks.ORES_EMERALD, Blocks.GOLD_BLOCK, Tags.Blocks.ORES_GOLD,
@@ -318,13 +319,13 @@ public class ModEvents {
             List<ItemStack> finalDrops = new ArrayList<>(); // Items caused by enchantments are stored in the list
 
             // AUTO SMELT ENCHANTMENT
-            if (tool.getEnchantmentLevel(ModEnchantments.AUTO_SMELT.get()) > 0) {
+            if (enchant(tool, ModEnchantments.AUTO_SMELT.get()) > 0) {
                 Optional<SmeltingRecipe> recipe = serverLevel.getRecipeManager().getRecipeFor(RecipeType.SMELTING,
                         new SimpleContainer(new ItemStack(state.getBlock())), serverLevel);
 
                 if (recipe.isPresent()) { // Has recipe
                     ItemStack result = recipe.get().getResultItem(serverLevel.registryAccess()).copy();
-                    int count = 1 + (fortune > 0 ? serverLevel.random.nextInt(fortune + 1) : 0);
+                    int count = 1 + fortune > 0 ? serverLevel.random.nextInt(fortune + 1) : 0;
                     for (int i = 0; i < count; i++) { finalDrops.add(result.copy()); }
                     cancelVanillaDrop = true;
                 }
@@ -347,19 +348,20 @@ public class ModEvents {
             }
 
             // MAGNETIC ENCHANTMENT
-            if (tool.getEnchantmentLevel(ModEnchantments.MAGNETIC.get()) > 0 && !state.isAir()) {
+            if (enchant(tool, ModEnchantments.MAGNETIC.get()) > 0 && !state.isAir()) {
                 if (finalDrops.isEmpty()) { // FinalDrops empty list added all items on it is
                     finalDrops.addAll(Block.getDrops(state, serverLevel, pos, null, player, tool));
                 }
-                for (ItemStack drop : finalDrops) { // FinalDrops list added on Player's inventory
+                // FinalDrops list added on Player's inventory
+                finalDrops.forEach(drop -> {
                     if (!player.getInventory().add(drop)) { player.drop(drop, false); }
-                }
+                });
                 block(serverLevel, pos, Blocks.AIR, event);
                 return;
             }
 
             if (cancelVanillaDrop) { // FinalDrops list accumulate drop on world
-                for (ItemStack drop : finalDrops) { dropItem(serverLevel, pos, drop); }
+                finalDrops.forEach(drop -> dropItem(serverLevel, pos, drop));
                 block(serverLevel, pos, Blocks.AIR, event);
             }
         }
@@ -373,7 +375,7 @@ public class ModEvents {
         if (event.getEntity() instanceof Player player) { // Player is an entity
             ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD); // Player has an item on helmet slot
             // Player has a helmet inputted on slot and Glowing Mobs enchantment level
-            if (helmet.isEnchanted() || helmet.getEnchantmentLevel(ModEnchantments.GLOWING_MOBS.get()) > 0) {
+            if (helmet.isEnchanted() || enchant(helmet, ModEnchantments.GLOWING_MOBS.get()) > 0) {
                 /* Key - Entities colors -> Each group represent with some color (Color)
                 Value - Entities groups -> Represent as Tag (Group tag name) */
                 Map<ChatFormatting, TagKey<EntityType<?>>> entitiesTag = Map.ofEntries(
@@ -408,7 +410,8 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Enchantment tooltips
-    private static MutableComponent description(String tooltip, ChatFormatting color, List<Boolean> curse) {
+    private static MutableComponent description(String tooltip, ChatFormatting color,
+                                                List<Boolean> curse) {
         return Component.translatable(tooltip).withStyle(Style.EMPTY.withColor(color).withBold(curse.get(0))
                 .withItalic(curse.get(1)));
     }
@@ -539,10 +542,8 @@ public class ModEvents {
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) { // Player is on world
         Player player = event.getEntity();
         if (!player.level().isClientSide()) {
-            GlowingBlocksNetworkMessage.SyncedSavedData mapData =
-                    GlowingBlocksNetworkMessage.MapVariables.get(player.level());
-            GlowingBlocksNetworkMessage.SyncedSavedData worldData =
-                    GlowingBlocksNetworkMessage.WorldVariables.get(player.level());
+            GlowingBlocksNetworkMessage.SyncedSavedData mapData = GlowingBlocksNetworkMessage.MapVariables.get(player.level());
+            GlowingBlocksNetworkMessage.SyncedSavedData worldData = GlowingBlocksNetworkMessage.WorldVariables.get(player.level());
             if (mapData != null) { sendPacket(player, mapData); }
             if (worldData != null) { sendPacket(player, worldData); }
         }
@@ -553,8 +554,7 @@ public class ModEvents {
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         Player player = event.getEntity();
         if (!player.level().isClientSide()) {
-            GlowingBlocksNetworkMessage.SyncedSavedData worldData =
-                    GlowingBlocksNetworkMessage.WorldVariables.get(player.level());
+            GlowingBlocksNetworkMessage.SyncedSavedData worldData = GlowingBlocksNetworkMessage.WorldVariables.get(player.level());
             if (worldData != null) { sendPacket(player, worldData); }
         }
     }
@@ -727,16 +727,18 @@ public class ModEvents {
     }
 
     // Xray items - Enchanted Helmet or Metal Detector
+    private static ItemStack items(Player player, EquipmentSlot slot) { return player.getItemBySlot(slot); }
+
     @SubscribeEvent
     public static void activatedGlowingBlocksEnchantment(TickEvent.PlayerTickEvent event) {
-        LevelAccessor world = event.player.level();
-        ItemStack metal = event.player.getItemBySlot(EquipmentSlot.MAINHAND); // Player has used Metal Detector
-        ItemStack helmet = event.player.getItemBySlot(EquipmentSlot.HEAD); // Player has used helmet
-        // Player has GLOWING BLOCKS or Metal Detector
+        Player player = event.player;
+        LevelAccessor world = player.level();
+        ItemStack helmet = items(player, EquipmentSlot.HEAD); // Player has used helmet
+        // Player has using GLOWING BLOCKS or Metal Detector
         if (event.phase == TickEvent.Phase.END) {
             GlowingBlocksNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() &&
-                    helmet.getEnchantmentLevel(ModEnchantments.GLOWING_BLOCKS.get()) > 0 ||
-                    metal.is(ModItems.METAL_DETECTOR.get());
+                    enchant(helmet, ModEnchantments.GLOWING_BLOCKS.get()) > 0 ||
+                    items(player, EquipmentSlot.MAINHAND).is(ModItems.METAL_DETECTOR.get());
             // Update information player has GLOWING BLOCKS or Metal Detector
             GlowingBlocksNetworkMessage.WorldVariables.get(world).syncData(world);
         }
@@ -837,20 +839,19 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - Eternal custom enchantment
+    // CUSTOM EVENT - ETERNAL custom enchantment
     private static final Map<UUID, List<ItemStack>> preservedItems = new HashMap<>(); // Map of Main hand + Items
     private static final Map<UUID, List<ItemStack>> preservedArmor = new HashMap<>(); // Map of Armor
     private static final Map<UUID, List<ItemStack>> preservedOffhand = new HashMap<>(); // Map of Offhand
     private static final Map<UUID, int[]> preservedExperience = new HashMap<>(); // Map of Experience
     private static final Map<UUID, List<ItemStack>> preservedVault = new HashMap<>(); // Map of Vault items
 
-    private static void setPreservedVault(NonNullList<ItemStack> type, List<ItemStack> preserved,
+    private static void setPreservedVault(NonNullList<ItemStack> type, List<ItemStack> store,
                                           List<ItemStack> vault) {
         for (int i = 0; i < type.size(); i++) {
             ItemStack inventory = type.get(i);
-            if (!inventory.isEmpty() && inventory.getEnchantmentLevel(ModEnchantments.ETERNAL.get()) > 0) {
-                preserved.set(i, inventory.copy()); // Copy of item with Eternal enchantment
-            }
+            // Copy of item WITH Eternal enchantment
+            if (!inventory.isEmpty() && enchant(inventory, ModEnchantments.ETERNAL.get()) > 0) { store.set(i, inventory.copy()); }
             // Copy of item WITHOUT Eternal enchantment
             else { vault.add(inventory.copy()); }
             // Added on typePreserve or vaultItems removes stack on Inventory, Armor and Offhand slots
@@ -943,12 +944,10 @@ public class ModEvents {
             // Player death message on chat
             newPlayer.sendSystemMessage(itemChatMessage(newPlayer, blockPos, ChatFormatting.GOLD));
 
-            // Restore Inventory, Armor and Offhand slots
-            // Remove all Inventory, Armor and Offhand saved slots
+            // Restore all Inventory, Armor and Offhand saved slots
             setRestoredVault(newPlayer.getInventory().items, preservedItems.remove(playerUUID));
             setRestoredVault(newPlayer.getInventory().armor, preservedArmor.remove(playerUUID));
             setRestoredVault(newPlayer.getInventory().offhand, preservedOffhand.remove(playerUUID));
-
             // Restore Experience
             int[] experienceData = preservedExperience.remove(playerUUID); // Removed all experience saved
             if (experienceData != null) {
@@ -956,12 +955,10 @@ public class ModEvents {
                 newPlayer.experienceProgress = Float.intBitsToFloat(experienceData[1]); // Restored experience progress
                 newPlayer.totalExperience = experienceData[2]; // Restored total experience
             }
-
             // Restores items with Vault Item
             List<ItemStack> savedVault = preservedVault.remove(playerUUID); // Remove all items WITHOUT Eternal saved on Vault
-            if (savedVault != null) {
-                savedVault.forEach(item -> newPlayer.getInventory().add(item)); // Added item on Inventory slot
-            }
+            // Added item on Inventory slot
+            if (savedVault != null) { savedVault.forEach(item -> newPlayer.getInventory().add(item)); }
         }
     }
 
@@ -1031,14 +1028,12 @@ public class ModEvents {
             else if (block.defaultBlockState().is(ModTags.Blocks.MUSHROOM_BLOCKS)) {
                 BlockState baseState = level.getBlockState(pos.below());
                 // Check if the soil is suitable
-                if (baseState.is(BlockTags.MUSHROOM_GROW_BLOCK)) {
-                    crop(block, state, level, pos, player, event, heldItem);
-                }
+                if (baseState.is(BlockTags.MUSHROOM_GROW_BLOCK)) { crop(block, state, level, pos, player, event, heldItem); }
             }
         }
     }
 
-    // CUSTOM EVENT - Anvil disenchanted event
+    // CUSTOM EVENT - ANVIL disenchanted event
     // CUSTOM METHOD - Drop enchanted book and base item on ground [world]
     private static void dropItem(ServerLevel world, BlockPos pos, ItemStack stack) {
         world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1,
@@ -1106,37 +1101,32 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - Overpower Mending custom enchantment
+    // CUSTOM EVENT - RECOVER custom enchantment
     @SubscribeEvent
-    public static void activatedOverpowerMendingEnchantment(TickEvent.PlayerTickEvent event) {
+    public static void activatedRecoverEnchantment(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         if ((event.phase == TickEvent.Phase.END) || !player.level().isClientSide()) {
             /* Desired value for level.getGameTime() % X != 0 (1 second = 20 ticks)
             Once every [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks */
             if (player.level().getGameTime() % 40 != 0) { return; }
-            List<NonNullList<ItemStack>> playerSlots = List.of(player.getInventory().items,
-                    player.getInventory().armor, player.getInventory().offhand);
-            for (NonNullList<ItemStack> itemStacks : playerSlots) {
-                for (ItemStack stack : itemStacks) {
-                    if (!stack.isEmpty() && stack.isDamaged() && stack.getEnchantmentLevel(ModEnchantments.RECOVER.get()) > 0) {
-                        int currentDamage = stack.getDamageValue();
-                        // Repairs 10 point of damage at a time
-                        int repairAmount = Math.min(currentDamage, 10);
-                        stack.setDamageValue(currentDamage - repairAmount);
-                    }
+            List<NonNullList<ItemStack>> playerSlots = List.of(player.getInventory().items, player.getInventory().armor,
+                    player.getInventory().offhand);
+            playerSlots.forEach(itemStacks -> itemStacks.forEach(stack -> {
+                if (!stack.isEmpty() && stack.isDamaged() && enchant(stack, ModEnchantments.RECOVER.get()) > 0) {
+                    int currentDamage = stack.getDamageValue();
+                    stack.setDamageValue(currentDamage - Math.min(currentDamage, 10)); // Repairs 10 point of damage at a time
                 }
-            }
+            }));
         }
     }
 
-    // CUSTOM EVENT - NOTHING EFFECT
+    // CUSTOM EVENT - NOTHING custom effect
     @SubscribeEvent
     public static void activatedNothingEffect(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof Warden wardenEntity) {
             Level level = wardenEntity.level();
             // Checks if there is a player with the effect active nearby
-            List<Player> players = level.getEntitiesOfClass(Player.class,
-                    wardenEntity.getBoundingBox().inflate(32));
+            List<Player> players = level.getEntitiesOfClass(Player.class, wardenEntity.getBoundingBox().inflate(32));
             for (Player player : players) {
                 if (player.hasEffect(ModEffects.NOTHING_EFFECT.get())) {
                     event.setCanceled(true); // Prevents the Warden from spawning
