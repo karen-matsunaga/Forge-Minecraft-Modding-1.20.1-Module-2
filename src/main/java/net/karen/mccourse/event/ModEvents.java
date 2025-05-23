@@ -407,12 +407,12 @@ public class ModEvents {
         }
     }
 
+    // CUSTOM EVENT - Enchantment tooltips
     private static MutableComponent description(String tooltip, ChatFormatting color, List<Boolean> curse) {
         return Component.translatable(tooltip).withStyle(Style.EMPTY.withColor(color).withBold(curse.get(0))
                 .withItalic(curse.get(1)));
     }
 
-    // CUSTOM EVENT - Custom Enchantment's tooltips
     @SubscribeEvent
     public static void enchantmentTooltipDescriptions(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
