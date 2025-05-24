@@ -14,23 +14,24 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class BouncyBallsItem extends Item {
-    public BouncyBallsItem(Properties pProperties) { super(pProperties); }
+    public BouncyBallsItem(Properties properties) { super(properties); }
 
-    public @NotNull InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, @NotNull InteractionHand pHand) {
-        ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(),
-                SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
-        pPlayer.getCooldowns().addCooldown(this, 0); // Nothing cooldown
-        if (!pLevel.isClientSide) {
-            BouncyBallsProjectileEntity thrownbouncyballs = new BouncyBallsProjectileEntity(pLevel, pPlayer);
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player,
+                                                           @NotNull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_PEARL_THROW,
+                SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+        player.getCooldowns().addCooldown(this, 0); // Nothing cooldown
+        if (!level.isClientSide()) {
+            BouncyBallsProjectileEntity thrownbouncyballs = new BouncyBallsProjectileEntity(level, player);
             thrownbouncyballs.setItem(new ItemStack(ModItems.BOUNCY_BALLS_PARTICLES.get()));
-            thrownbouncyballs.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 1.5F, 1.0F);
-            pLevel.addFreshEntity(thrownbouncyballs);
+            thrownbouncyballs.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+            level.addFreshEntity(thrownbouncyballs);
         }
 
-        pPlayer.awardStat(Stats.ITEM_USED.get(this));
-        if (!pPlayer.getAbilities().instabuild) { itemstack.hurtAndBreak(1, pPlayer, p -> p.broadcastBreakEvent(pHand)); }
+        player.awardStat(Stats.ITEM_USED.get(this));
+        if (!player.getAbilities().instabuild) { itemstack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand)); }
 
-        return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide());
+        return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
     }
 }
