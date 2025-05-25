@@ -36,7 +36,7 @@ public class EnergyDisplayTooltipArea {
 
     public void render(GuiGraphics guiGraphics) {
         int maxEnergy = energy.getMaxEnergyStored();
-        if (maxEnergy <= 0) { return; }
+        if (maxEnergy < 0) { return; }
         int stored = (int)(height * (energy.getEnergyStored() / (float) maxEnergy));
         guiGraphics.fill(xPos, yPos, xPos + width, yPos + height, 0xFF333333);
         guiGraphics.fillGradient(xPos,yPos + (height - stored),xPos + width, yPos + height,

@@ -20,7 +20,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -100,11 +99,7 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
     }
 
     private ModEnergyStorage energyStorage(GemEmpoweringRecipe recipe) {
-        IEnergyStorage iEnergy = new ModEnergyStorage(64000, 64000) {
-            @Override
-            public void onEnergyChanged() {}
-        };
-        ModEnergyStorage energy = new ModEnergyStorage(iEnergy.getMaxEnergyStored(), iEnergy.getEnergyStored()) {
+        ModEnergyStorage energy = new ModEnergyStorage(64000, 200) {
             @Override
             public void onEnergyChanged() {}
         };
