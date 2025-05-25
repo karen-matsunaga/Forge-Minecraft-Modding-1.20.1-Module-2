@@ -10,14 +10,17 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 
 public class SlowingSwordItem extends SwordItem {
-    public SlowingSwordItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
-        super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+    public SlowingSwordItem(Tier tier, int pAttackDamageModifier,
+                            float pAttackSpeedModifier, Properties properties) {
+        super(tier, pAttackDamageModifier, pAttackSpeedModifier, properties);
     }
 
     // Every time the player hit on entity to create slowing effect only to a living entity
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if(entity instanceof LivingEntity livingEntity) { livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400), player); }
+        if (entity instanceof LivingEntity livingEntity) {
+            livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400), player);
+        }
         return super.onLeftClickEntity(stack, player, entity);
     }
 }
