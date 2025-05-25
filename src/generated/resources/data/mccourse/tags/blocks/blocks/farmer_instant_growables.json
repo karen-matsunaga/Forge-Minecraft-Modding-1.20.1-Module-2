@@ -1,13 +1,7 @@
 {
   "values": [
-    "minecraft:sugar_cane",
-    "minecraft:cactus",
-    "minecraft:nether_wart",
-    "minecraft:twisting_vines",
-    "minecraft:weeping_vines",
-    "minecraft:crimson_fungus",
-    "minecraft:warped_fungus",
     "mccourse:kohlrabi_crop",
+    "#mccourse:blocks/farmer_block_growables",
     "#minecraft:saplings",
     "#minecraft:crops"
   ]

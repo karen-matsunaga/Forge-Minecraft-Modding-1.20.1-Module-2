@@ -25,6 +25,7 @@
     "mccourse:mccourse_elevator",
     "mccourse:magic",
     "mccourse:magic_book",
+    "mccourse:dice_block",
     "#mccourse:blocks/mobs_blocks_drops",
     "#mccourse:blocks/mccourse_ores",
     "#mccourse:blocks/mccourse_ores_block"
