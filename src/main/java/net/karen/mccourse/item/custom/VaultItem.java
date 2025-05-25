@@ -17,42 +17,39 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class VaultItem extends Item {
-    public VaultItem(Properties pProperties) { super(pProperties); }
+    public VaultItem(Properties properties) { super(properties); }
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+        ItemStack stack = player.getItemInHand(hand); // Player has Vault item on main hand
         if (!level.isClientSide() && stack.hasTag() && stack.getTag() != null && stack.getTag().contains("VaultItems")) {
             ListTag itemListTag = stack.getTag().getList("VaultItems", Tag.TAG_COMPOUND);
-            for (Tag tag : itemListTag) {
+            itemListTag.forEach(tag -> {
                 if (tag instanceof CompoundTag compound) {
-                    ItemStack restored = ItemStack.of(compound);
-                    boolean added = player.getInventory().add(restored);
-                    if (!added) { player.spawnAtLocation(restored, 0.5f); } // Drops on the ground if inventory is full
+                    ItemStack restored = ItemStack.of(compound); // Drops on the ground if inventory is full
+                    if (!player.getInventory().add(restored)) { player.spawnAtLocation(restored, 0.5f); }
                 }
-            }
-            // Remove VaultItem after use
-            stack.shrink(1);
+            });
+            stack.shrink(1); // Remove VaultItem after use
             return InteractionResultHolder.success(stack);
         }
         return InteractionResultHolder.pass(stack);
     }
 
-    // Name item
     @Override
-    public @NotNull Component getName(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.contains("DisplayName")) {
-            return Component.literal(stack.getTag().getString("DisplayName"));
+    public @NotNull Component getName(@NotNull ItemStack stack) {
+        if (stack.getTag() != null && stack.getTag().contains("DisplayName")) {
+            return message(stack.getTag().getString("DisplayName")); // Name item
         }
         return super.getName(stack);
     }
 
-    // Description item
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level,
-                                List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
-        tooltip.add(Component.literal("Restored all items from inventory!"));
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltip,
+                                @NotNull TooltipFlag tooltipFlag) {
+        tooltip.add(message("Restored all items from inventory!")); // Description item
         super.appendHoverText(stack, level, tooltip, tooltipFlag);
     }
+
+    private Component message(String message) { return Component.literal(message); }
 }
