@@ -10,25 +10,25 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class RadiationStaffItem extends Item {
-    public RadiationStaffItem(Properties pProperties) { super(pProperties); }
+    public RadiationStaffItem(Properties properties) { super(properties); }
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) { // Magic Projectile only right click on mouse button
-        ItemStack itemstack = pPlayer.getItemInHand(pUsedHand); // Player has RADIATION STAFF item
-        pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), ModSounds.METAL_DETECTOR_FOUND_ORE.get(), SoundSource.NEUTRAL,
-                1.5F, 1F); // Sound of Magic Projectile
-        pPlayer.getCooldowns().addCooldown(this, 40);
-
-        if(!pLevel.isClientSide()) { // CLIENT / SERVER created Magic Projectile
-            MagicProjectileEntity magicProjectile = new MagicProjectileEntity(pLevel, pPlayer);
-            magicProjectile.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 1.5F, 0.25F); // Added velocity and inaccuracy
-            pLevel.addFreshEntity(magicProjectile); // Added Magic Projectile on world
+    @Override // Magic Projectile only right click on mouse button
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand); // Player has RADIATION STAFF item
+        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                ModSounds.METAL_DETECTOR_FOUND_ORE.get(), SoundSource.NEUTRAL, 1.5F, 1F); // Sound of Magic Projectile
+        player.getCooldowns().addCooldown(this, 40);
+        if (!level.isClientSide()) { // CLIENT and SERVER created Magic Projectile
+            MagicProjectileEntity magicProjectile = new MagicProjectileEntity(level, player); // Added velocity and inaccuracy
+            magicProjectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 0.25F);
+            level.addFreshEntity(magicProjectile); // Added Magic Projectile on world
         }
-
-        pPlayer.awardStat(Stats.ITEM_USED.get(this));
-        if (!pPlayer.getAbilities().instabuild) { itemstack.hurtAndBreak(1, pPlayer, p -> p.broadcastBreakEvent(pUsedHand)); } // Player is on Creative mode
-        return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide());
+        player.awardStat(Stats.ITEM_USED.get(this));
+        // Player is on Creative mode
+        if (!player.getAbilities().instabuild) { itemstack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand)); }
+        return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
     }
 }
