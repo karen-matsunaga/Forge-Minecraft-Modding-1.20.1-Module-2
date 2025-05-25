@@ -16,15 +16,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class DestroyerItem extends Item {
-    public DestroyerItem(Properties pProperties) { super(pProperties); }
+    public DestroyerItem(Properties properties) { super(properties); }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player,
-                                                           @NotNull InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         // Player has Destroyer item on Main hand
-        if (level.isClientSide()) {
-            return InteractionResultHolder.pass(player.getItemInHand(hand));
-        }
+        if (level.isClientSide()) { return InteractionResultHolder.pass(player.getItemInHand(hand)); }
 
         // Block below the player
         BlockState state = level.getBlockState(player.blockPosition().below());
@@ -34,8 +31,7 @@ public class DestroyerItem extends Item {
 
         // All recipes from Crafting Recipe
         List<Recipe<?>> matchingRecipes = level.getRecipeManager().getRecipes().stream()
-                .filter(recipe -> recipe.getResultItem(level.registryAccess()).getItem()
-                        == targetItem.getItem()).toList();
+                .filter(recipe -> recipe.getResultItem(level.registryAccess()).getItem() == targetItem.getItem()).toList();
 
         // If not has recipe display on screen message
         if (matchingRecipes.isEmpty()) {
