@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class MccourseHammer extends DiggerItem implements Vanishable {
-    public MccourseHammer(Tier tier, float pAttackDamageModifier, float pAttackSpeedModifier,
+public class MccourseHammerItem extends DiggerItem implements Vanishable {
+    public MccourseHammerItem(Tier tier, float pAttackDamageModifier, float pAttackSpeedModifier,
                         TagKey<Block> blockTags, Properties properties) {
         super(pAttackDamageModifier, pAttackSpeedModifier, tier, blockTags, properties);
     }
