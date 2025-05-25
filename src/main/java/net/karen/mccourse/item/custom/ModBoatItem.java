@@ -17,6 +17,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -26,52 +27,51 @@ public class ModBoatItem extends Item {
     private final ModBoatEntity.Type type;
     private final boolean hasChest;
 
-    public ModBoatItem(boolean pHasChest, ModBoatEntity.Type pType, Item.Properties pProperties) {
-        super(pProperties);
+    public ModBoatItem(boolean pHasChest, ModBoatEntity.Type type, Item.Properties properties) {
+        super(properties);
         this.hasChest = pHasChest;
-        this.type = pType;
+        this.type = type;
     }
 
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
-        ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        HitResult hitresult = getPlayerPOVHitResult(pLevel, pPlayer, ClipContext.Fluid.ANY);
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player,
+                                                           @NotNull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        HitResult hitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
         if (hitresult.getType() == HitResult.Type.MISS) { return InteractionResultHolder.pass(itemstack); }
         else {
-            Vec3 vec3 = pPlayer.getViewVector(1.0F);
-            List<Entity> list = pLevel.getEntities(pPlayer, pPlayer.getBoundingBox().expandTowards(vec3.scale(5.0D)).inflate(1.0D), ENTITY_PREDICATE);
+            Vec3 vec3 = player.getViewVector(1.0F);
+            List<Entity> list = level.getEntities(player, player.getBoundingBox().expandTowards(vec3.scale(5.0D))
+                            .inflate(1.0D), ENTITY_PREDICATE);
             if (!list.isEmpty()) {
-                Vec3 vec31 = pPlayer.getEyePosition();
-
-                for(Entity entity : list) {
-                    AABB aabb = entity.getBoundingBox().inflate((double)entity.getPickRadius());
-                    if (aabb.contains(vec31)) {
-                        return InteractionResultHolder.pass(itemstack);
-                    }
+                Vec3 vec31 = player.getEyePosition();
+                for (Entity entity : list) {
+                    AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
+                    if (aabb.contains(vec31)) { return InteractionResultHolder.pass(itemstack); }
                 }
             }
 
             if (hitresult.getType() == HitResult.Type.BLOCK) {
-                Boat boat = this.getBoat(pLevel, hitresult);
+                Boat boat = this.getBoat(level, hitresult);
                 if (boat instanceof ModChestBoatEntity chestBoat) { chestBoat.setVariant(this.type); }
                 else if (boat instanceof ModBoatEntity) { ((ModBoatEntity)boat).setVariant(this.type); }
-                boat.setYRot(pPlayer.getYRot());
-                if (!pLevel.noCollision(boat, boat.getBoundingBox())) { return InteractionResultHolder.fail(itemstack); }
+                boat.setYRot(player.getYRot());
+                if (!level.noCollision(boat, boat.getBoundingBox())) { return InteractionResultHolder.fail(itemstack); }
                 else {
-                    if (!pLevel.isClientSide) {
-                        pLevel.addFreshEntity(boat);
-                        pLevel.gameEvent(pPlayer, GameEvent.ENTITY_PLACE, hitresult.getLocation());
-                        if (!pPlayer.getAbilities().instabuild) { itemstack.shrink(1); }
+                    if (!level.isClientSide()) {
+                        level.addFreshEntity(boat);
+                        level.gameEvent(player, GameEvent.ENTITY_PLACE, hitresult.getLocation());
+                        if (!player.getAbilities().instabuild) { itemstack.shrink(1); }
                     }
-
-                    pPlayer.awardStat(Stats.ITEM_USED.get(this));
-                    return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide());
+                    player.awardStat(Stats.ITEM_USED.get(this));
+                    return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
                 }
-            } else { return InteractionResultHolder.pass(itemstack); }
+            }
+            else { return InteractionResultHolder.pass(itemstack); }
         }
     }
 
-    private Boat getBoat(Level p_220017_, HitResult p_220018_) {
-        return (this.hasChest ? new ModChestBoatEntity(p_220017_, p_220018_.getLocation().x, p_220018_.getLocation().y, p_220018_.getLocation().z) :
-                new ModBoatEntity(p_220017_, p_220018_.getLocation().x, p_220018_.getLocation().y, p_220018_.getLocation().z));
+    private Boat getBoat(Level level, HitResult hit) {
+        return (this.hasChest ? new ModChestBoatEntity(level, hit.getLocation().x, hit.getLocation().y, hit.getLocation().z)
+                : new ModBoatEntity(level, hit.getLocation().x, hit.getLocation().y, hit.getLocation().z));
     }
 }
