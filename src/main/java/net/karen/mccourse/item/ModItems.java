@@ -357,8 +357,7 @@ public class ModItems {
     // Mccourse custom items
     public static final RegistryObject<Item> MCCOURSE_HAMMER = ITEMS.register("mccourse_hammer",
             () -> new MccourseHammerItem(ModToolTiers.PINK, 3, 1,
-                    BlockTags.MINEABLE_WITH_PICKAXE,
-                    new Item.Properties().durability(10000).fireResistant()));
+                    BlockTags.MINEABLE_WITH_PICKAXE, new Item.Properties().durability(10000).fireResistant()));
 
     public static final RegistryObject<Item> SPECIAL_METAL_DETECTOR = ITEMS.register("special_metal_detector",
             () -> new MetalDetectorItem(new Item.Properties().fireResistant().stacksTo(1),

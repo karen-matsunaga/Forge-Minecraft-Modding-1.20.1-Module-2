@@ -31,12 +31,10 @@ public class MccourseHammerItem extends DiggerItem implements Vanishable {
 
     // Hammer 2x1
     public void hammerMode(LevelAccessor world, double x, double y, double z, Entity entity) {
-        if (entity != null) {
-            positions(Direction.NORTH, x, y, z, entity, world);
-            positions(Direction.SOUTH, x, y, z, entity, world);
-            positions(Direction.WEST, x, y, z, entity, world);
-            positions(Direction.EAST, x, y, z, entity, world);
-        }
+        positions(Direction.NORTH, x, y, z, entity, world);
+        positions(Direction.SOUTH, x, y, z, entity, world);
+        positions(Direction.WEST, x, y, z, entity, world);
+        positions(Direction.EAST, x, y, z, entity, world);
     }
 
     // Appears tooltip on screen of Hammer, Paxel, etc.
