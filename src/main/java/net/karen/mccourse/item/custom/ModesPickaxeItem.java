@@ -25,11 +25,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITagManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 
 // Credits by Parlack - Pickaxe modes - https://www.youtube.com/watch?v=pBo1c3hM3b0
 // Using code with some modifications
@@ -37,7 +37,8 @@ public class ModesPickaxeItem extends PickaxeItem {
     private ModesPickaxe modeActual = ModesPickaxe.NORMAL; // Pickaxe mode actual
 
     // Pickaxe tier, attack damage, attack speed, properties, enchantment level and enchantments
-    public ModesPickaxeItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
+    public ModesPickaxeItem(Tier tier, int attackDamageModifier,
+                            float attackSpeedModifier, Properties properties) {
         super(tier, attackDamageModifier, attackSpeedModifier, properties);
     }
 
@@ -67,7 +68,7 @@ public class ModesPickaxeItem extends PickaxeItem {
             switch (modeActual) {
                 case HAMMER -> hammerMode(stack, world, pos, (Player) entity);
                 case AUTO_SMELT -> autoSmeltMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity));
-                case MORE_ORES ->  moreOresMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity));
+                case MORE_ORES -> moreOresMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity));
                 case MAGNETIC -> magneticMode(new BlockEvent.BreakEvent(world, pos, blockstate, (Player) entity));
             }
         }
@@ -92,11 +93,9 @@ public class ModesPickaxeItem extends PickaxeItem {
                         BlockPos newPos = pos.offset(dx, dy, dz);
                         BlockState state = world.getBlockState(newPos);
                         if (!state.isAir() && !newPos.equals(pos)) {
-                            state.getBlock().playerDestroy(world, player, newPos, state,
-                                    world.getBlockEntity(newPos), itemstack);
+                            state.getBlock().playerDestroy(world, player, newPos, state, world.getBlockEntity(newPos), itemstack);
                             world.removeBlock(newPos, false);
-                            itemstack.hurtAndBreak(1, player, (e) ->
-                                    e.broadcastBreakEvent(player.getUsedItemHand()));
+                            itemstack.hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(player.getUsedItemHand()));
                         }
                     }
                 }
@@ -113,8 +112,7 @@ public class ModesPickaxeItem extends PickaxeItem {
         targetState.getBlock().playerDestroy(world, player, pos, targetState, world.getBlockEntity(pos), itemstack);
         itemstack.hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(player.getUsedItemHand()));
 
-        for (BlockPos offset : BlockPos.betweenClosed(pos.offset(-1, -1, -1),
-                pos.offset(1, 1, 1))) {
+        for (BlockPos offset : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
             if (world.getBlockState(offset).equals(targetState)) {
                 breakAdjacentBlocks(itemstack, world, offset, player, targetState, depth + 1);
             }
@@ -131,11 +129,9 @@ public class ModesPickaxeItem extends PickaxeItem {
 
         // Check if there is a casting recipe for the block
         if (world instanceof Level level) {
-            ItemStack smeltResult = level.getRecipeManager()
-                    .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(
-                            new ItemStack(world.getBlockState(pos).getBlock())), level)
-                    .map(recipe -> recipe.getResultItem(level.registryAccess()).copy())
-                    .orElse(ItemStack.EMPTY);
+            ItemStack smeltResult = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING,
+                            new SimpleContainer(new ItemStack(world.getBlockState(pos).getBlock())), level)
+                    .map(recipe -> recipe.getResultItem(level.registryAccess()).copy()).orElse(ItemStack.EMPTY);
 
             if (!smeltResult.isEmpty()) {
                 // Replaces the block with air and drops the molten item
@@ -145,7 +141,8 @@ public class ModesPickaxeItem extends PickaxeItem {
                     serverLevel.addFreshEntity(entityToSpawn);
                 }
                 level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-            } else {
+            }
+            else {
                 // Drop normal resources if there is no foundry revenue
                 Block.dropResources(world.getBlockState(pos), world, pos, null);
                 world.destroyBlock(pos, false);
@@ -164,12 +161,14 @@ public class ModesPickaxeItem extends PickaxeItem {
         if (blockState.is(Blocks.STONE) && Math.random() < 0.2 && world instanceof ServerLevel serverLevel) {
             for (int i = 0; i < 1; i++) { // Number of random ores are generated by block mined on any position
                 // Create a new ItemEntity with the randomly ORES's tags on randomOre
-                ItemEntity entityToSpawn = new ItemEntity(serverLevel, pos.getX() + 0.5,
-                        pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(
-                        Objects.requireNonNull(ForgeRegistries.BLOCKS.tags())
-                                .getTag(ModTags.Blocks.MORE_ORES_MODES_PICKAXE_DROPS)
-                                .getRandomElement(RandomSource.create()).orElse(Blocks.AIR)));
-                serverLevel.addFreshEntity(entityToSpawn); // All drops generated by block
+                ITagManager<Block> block = ForgeRegistries.BLOCKS.tags();
+                if (block != null) {
+                    ItemEntity entityToSpawn = new ItemEntity(serverLevel, pos.getX() + 0.5,
+                            pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(
+                            block.getTag(ModTags.Blocks.MORE_ORES_MODES_PICKAXE_DROPS)
+                                    .getRandomElement(RandomSource.create()).orElse(Blocks.AIR)));
+                    serverLevel.addFreshEntity(entityToSpawn); // All drops generated by block
+                }
             }
         }
     }
@@ -188,9 +187,8 @@ public class ModesPickaxeItem extends PickaxeItem {
             // Drops are generated automatically on Player's inventory
             Block.getDrops(state, (ServerLevel) world, pos, null, player, mainHandItem)
                     .forEach(drop -> {
-                        if (!player.getInventory().add(drop)) {
-                            player.drop(drop, false); // Blocks does added drop on Player's inventory
-                        }
+                        // Blocks does added drop on Player's inventory
+                        if (!player.getInventory().add(drop)) { player.drop(drop, false); }
                     });
             world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState()); // Prevents drop in the world
         }
