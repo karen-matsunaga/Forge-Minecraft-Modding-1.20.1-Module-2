@@ -10,8 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 public class SetHomeCommand {
     public SetHomeCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         // Command to type on chat -> /home set
-        dispatcher.register(Commands.literal("home").then(Commands.literal("set")
-                .executes(this::execute)));
+        dispatcher.register(Commands.literal("home").then(Commands.literal("set").executes(this::execute)));
     }
 
     // When player to type the command is done area's position
@@ -24,8 +23,7 @@ public class SetHomeCommand {
             int z = player.blockPosition().getZ();
 
             // Save data of Player's position
-            player.getPersistentData().putIntArray("mccourse.homepos",
-                    new int[] { x, y, z });
+            player.getPersistentData().putIntArray("mccourse.homepos", new int[] { x, y, z });
 
             // Display the message in the chat
             context.getSource().sendSuccess(() -> Component.literal("Set home at " +
