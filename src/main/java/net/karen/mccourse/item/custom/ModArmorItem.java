@@ -31,26 +31,31 @@ public class ModArmorItem extends ArmorItem {
                 new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 300, 1, false, false),
                 new MobEffectInstance(MobEffects.DIG_SPEED, 300, 1, false, false),
                 new MobEffectInstance(MobEffects.DAMAGE_BOOST, 300, 1, false, false),
-                new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 300, 1, false, false))).build();
+                new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 300, 1, false, false)))
+        .build();
 
-    public ModArmorItem(ArmorMaterial material, Type type, Properties properties) { super(material, type, properties); }
+    public ModArmorItem(ArmorMaterial material, Type type, Properties properties) {
+        super(material, type, properties);
+    }
 
     @Override
     public void onArmorTick(ItemStack stack, Level level, Player player) { // Apply effect if player using all parts of armor
         if (!level.isClientSide() && hasFullSuitOfArmorOn(player)) { evaluateArmorEffects(player); }
     }
 
-    private void evaluateArmorEffects(Player player) { // Player is using same armor material applies all effects
-        for (Map.Entry<ArmorMaterial, List<MobEffectInstance>> entry : MATERIAL_TO_EFFECT_MAP.entrySet()) {
-            if (hasPlayerCorrectArmorOn(entry.getKey(), player)) { addEffectToPlayer(player, entry.getValue()); }
-        }
+    private void evaluateArmorEffects(Player player) {
+        // Player is using same armor material applies all effects
+        MATERIAL_TO_EFFECT_MAP.forEach((key, value) -> {
+            if (hasPlayerCorrectArmorOn(key, player)) { addEffectToPlayer(player, value); }
+        });
     }
 
-    private void addEffectToPlayer(Player player, List<MobEffectInstance> effects) { // Player not to receive the effects it is adding
-        for (MobEffectInstance effect : effects) {
-            MobEffectInstance current = player.getEffect(effect.getEffect());
-            if (current == null) { player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration(), effect.getAmplifier())); }
-        }
+    private void addEffectToPlayer(Player player, List<MobEffectInstance> effects) {
+        effects.forEach(effect -> {
+            if (player.getEffect(effect.getEffect()) == null) { // Player not to receive the effects it is adding
+                player.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration(), effect.getAmplifier()));
+            }
+        });
     }
 
     // Player is using same armor material [Boots, Leggings, Chestplate and Helmet]
@@ -62,8 +67,9 @@ public class ModArmorItem extends ArmorItem {
         ((ArmorItem) player.getInventory().getArmor(3).getItem()).getMaterial() == mapArmorMaterial; // Helmet
     }
 
-    private boolean hasFullSuitOfArmorOn(Player player) { // Player is using all parts [Boots, Leggings, Chestplate and Helmet]
-        return !player.getInventory().getArmor(0).isEmpty() && !player.getInventory().getArmor(1).isEmpty() // Boots | Leggings
-        && !player.getInventory().getArmor(2).isEmpty() && !player.getInventory().getArmor(3).isEmpty(); // Chestplate | Helmet
+    private boolean hasFullSuitOfArmorOn(Player player) {
+        // Player is using all parts [Boots 0, Leggings 1, Chestplate 2 and Helmet 3]
+        return !player.getInventory().getArmor(0).isEmpty() && !player.getInventory().getArmor(1).isEmpty()
+        && !player.getInventory().getArmor(2).isEmpty() && !player.getInventory().getArmor(3).isEmpty();
     }
 }
