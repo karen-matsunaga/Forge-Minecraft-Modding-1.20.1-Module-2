@@ -20,25 +20,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class RestoreItem extends Item {
-    public RestoreItem(Properties pProperties) { super(pProperties); }
+    public RestoreItem(Properties properties) { super(properties); }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player,
-                                                           @NotNull InteractionHand hand) {
-
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         if (level.isClientSide()) { return InteractionResultHolder.pass(player.getItemInHand(hand)); }
 
-        // Main hand -> Restore item
-        // Offhand -> Block, item, tools, armors or enchanted book to uncraft
-        InteractionHand otherHand = (hand == InteractionHand.MAIN_HAND) ?
-                InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
-        ItemStack targetItem = player.getItemInHand(otherHand);
+        // Main hand -> Restore item || Offhand -> Target item (Block, item, tools or armors to uncraft)
+        ItemStack targetItem = player.getItemInHand((hand == InteractionHand.MAIN_HAND) ?
+                InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
         ItemStack restoreItem = player.getItemInHand(InteractionHand.MAIN_HAND);
 
         // If Offhand empty
         if (targetItem.isEmpty() || targetItem.is(ModTags.Items.RESTORE_BLACKLIST_ITEMS)) {
-            player.displayClientMessage(
-                    Component.literal("Hold the item you wish to uncraft in your other hand."), true);
+            message(player, "Hold the item you wish to uncraft in your other hand.");
             return InteractionResultHolder.success(player.getItemInHand(hand));
         }
 
@@ -49,23 +44,18 @@ public class RestoreItem extends Item {
         // base item WITHOUT enchantment
         if (targetItem.isEnchanted()) {
             Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(targetItem);
-            // Tools or Armors
-            ItemStack toolsArmorsBook = new ItemStack(Items.ENCHANTED_BOOK);
-            for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                EnchantmentHelper.setEnchantments(Map.of(entry.getKey(), entry.getValue()), toolsArmorsBook);
-            }
+            ItemStack toolsArmorsBook = new ItemStack(Items.ENCHANTED_BOOK); // Tools or Armors
+            enchantments.forEach((key, value) -> EnchantmentHelper.setEnchantments(Map.of(key, value), toolsArmorsBook));
             if (player.getInventory().add(toolsArmorsBook)) { itemsGiven++; }
         }
 
         // Filters recipes that create the same base item (ignores NBT)
         List<Recipe<?>> matchingRecipes = level.getRecipeManager().getRecipes().stream()
                 .filter(recipe -> recipe.getType() == RecipeType.CRAFTING)
-                .filter(recipe -> recipe.getResultItem(level.registryAccess()).getItem() == targetItem.getItem())
-                .toList();
+                .filter(recipe -> recipe.getResultItem(level.registryAccess()).getItem() == targetItem.getItem()).toList();
 
         if (matchingRecipes.isEmpty()) {
-            player.displayClientMessage(Component.literal("No recipes found for this item."),
-                    true);
+            message(player, "No recipes found for this item.");
             return InteractionResultHolder.success(player.getItemInHand(hand));
         }
 
@@ -75,7 +65,6 @@ public class RestoreItem extends Item {
         // First, return the ingredients
         for (Ingredient ingredient : ingredients) {
             if (ingredient.isEmpty()) { continue; }
-
             ItemStack[] possibleItems = ingredient.getItems();
             if (possibleItems.length > 0) {
                 ItemStack stackToGive = possibleItems[0].copy();
@@ -87,9 +76,12 @@ public class RestoreItem extends Item {
         // Target item and Restore item are removed on Player's inventory
         targetItem.shrink(1);
         restoreItem.shrink(1);
-        player.displayClientMessage(
-                Component.literal("Descraft accomplished! Items recovered: " + itemsGiven), true);
-
+        message(player, "Descraft accomplished! Items recovered: " + itemsGiven);
         return InteractionResultHolder.success(player.getItemInHand(hand));
+    }
+
+    // Custom method - Message on SCREEN
+    private void message(Player player, String message) {
+        player.displayClientMessage(Component.literal(message), true);
     }
 }
