@@ -16,7 +16,5 @@ public class FuelItem extends Item {
 
     // Registry fuel item
     @Override
-    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-        return this.burnTime;
-    }
+    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) { return this.burnTime; }
 }
