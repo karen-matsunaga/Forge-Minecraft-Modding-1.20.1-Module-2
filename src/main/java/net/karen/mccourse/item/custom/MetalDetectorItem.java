@@ -31,12 +31,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class MetalDetectorItem extends Item {
     TagKey<Block> type;
-    public MetalDetectorItem(Properties pProperties, TagKey<Block> type) {
-        super(pProperties);
+    public MetalDetectorItem(Properties properties, TagKey<Block> type) {
+        super(properties);
         this.type = type;
     }
 
@@ -44,70 +43,66 @@ public class MetalDetectorItem extends Item {
 
     // Function of Metal Detector item
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext pContext) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         // Client and Server sides
-        if(!pContext.getLevel().isClientSide()) {
-            // Block that player clicked
-            BlockPos positionClicked = pContext.getClickedPos();
-
-            // Detected position of block
-            Player player = pContext.getPlayer();
-
-            // Starting always false when not found an ore
-            boolean foundBlock = false;
+        if (!context.getLevel().isClientSide()) {
+            BlockPos positionClicked = context.getClickedPos(); // Block that player clicked
+            Player player = context.getPlayer(); // Detected position of block
+            boolean foundBlock = false; // Starting always false when not found an ore
 
             // Block of current layer up to layer -64
             for (int i = 0; i <= positionClicked.getY() + 64; i++) {
                 // Checked if found some ore
-                BlockState blockState = pContext.getLevel().getBlockState(positionClicked.below(i));
+                BlockState blockState = context.getLevel().getBlockState(positionClicked.below(i));
 
                 // Custom method if found ore
-                if(isValuableBlock(blockState)) {
+                if (isValuableBlock(blockState)) {
                     // Detected coordinates of block clicked
                     outputValuableCoordinates(positionClicked.below(i), player, blockState.getBlock());
                     foundBlock = true;
 
-                    // If found ore the information is recorded in data tablet item
-                    if(InventoryUtil.hasPlayerStackInInventory(Objects.requireNonNull(player), ModItems.DATA_TABLET.get())) {
-                        addDataToDataTablet(player, positionClicked.below(i), blockState.getBlock());
+                    if (player != null) {
+                        // If found ore the information is recorded in data tablet item
+                        if (InventoryUtil.hasPlayerStackInInventory(player, ModItems.DATA_TABLET.get())) {
+                            addDataToDataTablet(player, positionClicked.below(i), blockState.getBlock());
+                        }
+                        // If found ore it is sounded
+                        context.getLevel().playSeededSound(null, player.getX(), player.getY(), player.getZ(),
+                                ModSounds.METAL_DETECTOR_FOUND_ORE.get(), SoundSource.BLOCKS,
+                                1f, 1f, 0);
                     }
-
-                    // If found ore it is sounded
-                    pContext.getLevel().playSeededSound(null, player.getX(), player.getY(), player.getZ(),
-                            ModSounds.METAL_DETECTOR_FOUND_ORE.get(), SoundSource.BLOCKS, 1f, 1f, 0);
-
-                    // If found ore it is particles
-                    spawnFoundParticles(pContext, positionClicked, blockState);
-
-                    // Finished loop
-                    break;
+                    spawnFoundParticles(context, positionClicked, blockState); // If found ore it is particles
+                    break; // Finished loop
                 }
             }
             // Output message if not found ore
-            if(!foundBlock) { outputNoValuableFound(Objects.requireNonNull(player)); }
+            if (player != null && !foundBlock) { outputNoValuableFound(player); }
         }
 
         // Durability of Metal Detector item hurt
-        pContext.getItemInHand().hurtAndBreak(1, Objects.requireNonNull(pContext.getPlayer()),
-                player -> player.broadcastBreakEvent(player.getUsedItemHand()));
-
+        if (context.getPlayer() != null) {
+            context.getItemInHand().hurtAndBreak(1, context.getPlayer(), player ->
+                    player.broadcastBreakEvent(player.getUsedItemHand()));
+        }
         return InteractionResult.SUCCESS;
     }
 
     // Method that created custom particles if found an ore
-    private void spawnFoundParticles(UseOnContext pContext, BlockPos positionClicked, BlockState blockState) {
+    private void spawnFoundParticles(UseOnContext context, BlockPos positionClicked,
+                                     BlockState blockState) {
         for(int i = 0; i < 20; i++) {
-            ServerLevel level = (ServerLevel) pContext.getLevel();
+            ServerLevel level = (ServerLevel) context.getLevel();
             // Position of block and spawn particle
-            level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState),
-                    positionClicked.getX() + 0.5d, positionClicked.getY() + 1, positionClicked.getZ() + 0.5d, 1,
+            level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState), positionClicked.getX() + 0.5d,
+                    positionClicked.getY() + 1, positionClicked.getZ() + 0.5d, 1,
                     Math.cos(i * 18) * 0.15d, 0.15d, Math.sin(i * 18) * 0.15d, 0.1);
         }
     }
 
     // Data Tablet function
     private void addDataToDataTablet(Player player, BlockPos below, Block block) {
-        ItemStack dataTablet = player.getInventory().getItem(InventoryUtil.getFirstInventoryIndex(player, ModItems.DATA_TABLET.get()));
+        ItemStack dataTablet = player.getInventory().getItem(
+                InventoryUtil.getFirstInventoryIndex(player, ModItems.DATA_TABLET.get()));
 
         CompoundTag data = new CompoundTag();
         data.putString("mccourse.found_ore", "Valuable Found: " + I18n.get(block.getDescriptionId())
@@ -118,13 +113,15 @@ public class MetalDetectorItem extends Item {
 
     // When player press Shift keyword appears more information about Metal Detector item
     @Override
-    public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
-        if(Screen.hasShiftDown()) {
-            pTooltipComponents.add(Component.translatable("tooltip.mccourse.metal_detector.tooltip.shift")); // If press Shift keyword
-        } else {
-            pTooltipComponents.add(Component.translatable("tooltip.mccourse.metal_detector.tooltip")); // If not press Shift keyword
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level,
+                                @NotNull List<Component> components, @NotNull TooltipFlag tooltipFlag) {
+        if (Screen.hasShiftDown()) { // If press Shift keyword
+            components.add(Component.translatable("tooltip.mccourse.metal_detector.tooltip.shift"));
         }
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        else { // If not press Shift keyword
+            components.add(Component.translatable("tooltip.mccourse.metal_detector.tooltip"));
+        }
+        super.appendHoverText(stack, level, components, tooltipFlag);
     }
 
     // Output message if not found ore -> Screen
@@ -134,7 +131,6 @@ public class MetalDetectorItem extends Item {
 
     // Output message if found ore -> Screen
     private void outputValuableCoordinates(BlockPos pos, Player player, Block block) {
-        String description = I18n.get(block.getDescriptionId());
         ChatFormatting color = ChatFormatting.WHITE;
         Map<TagKey<Block>, ChatFormatting> oreColors = Map.ofEntries(Map.entry(Tags.Blocks.ORES_DIAMOND, ChatFormatting.AQUA),
         Map.entry(Tags.Blocks.ORES_GOLD, ChatFormatting.GOLD), Map.entry(Tags.Blocks.ORES_COPPER, ChatFormatting.GOLD),
@@ -148,18 +144,16 @@ public class MetalDetectorItem extends Item {
         }
 
         player.displayClientMessage(Component.literal("Valuable Found: ")
-                        .append(Component.literal(description).withStyle(ChatFormatting.BOLD, color))
-                        .append(Component.literal(" at [X: "))
-                        .append(Component.literal(String.valueOf(pos.getX())).withStyle(color, ChatFormatting.BOLD))
-                        .append(Component.literal(", Y: "))
-                        .append(Component.literal(String.valueOf(pos.getY())).withStyle(color, ChatFormatting.BOLD))
-                        .append(Component.literal(", Z: "))
-                        .append(Component.literal(String.valueOf(pos.getZ())).withStyle(color, ChatFormatting.BOLD))
-                        .append(Component.literal("]")),
-                true);
+              .append(Component.literal(I18n.get(block.getDescriptionId())).withStyle(ChatFormatting.BOLD, color))
+              .append(Component.literal(" at [X: "))
+              .append(Component.literal(String.valueOf(pos.getX())).withStyle(color, ChatFormatting.BOLD))
+              .append(Component.literal(", Y: "))
+              .append(Component.literal(String.valueOf(pos.getY())).withStyle(color, ChatFormatting.BOLD))
+              .append(Component.literal(", Z: "))
+              .append(Component.literal(String.valueOf(pos.getZ())).withStyle(color, ChatFormatting.BOLD))
+              .append(Component.literal("]")), true);
     }
 
-    // Custom method that identifies all blocks added it is
-    // All blocks added in metal_detector_valuables.json
+    // Custom method that identifies ALL BLOCKS added in metal_detector_valuables.json (CUSTOM TAGS)
     private boolean isValuableBlock(BlockState blockState) { return blockState.is(getType()); }
 }
