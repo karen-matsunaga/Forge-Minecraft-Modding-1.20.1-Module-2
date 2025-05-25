@@ -7,8 +7,7 @@ import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
-import net.karen.mccourse.command.ReturnHomeCommand;
-import net.karen.mccourse.command.SetHomeCommand;
+import net.karen.mccourse.command.*;
 import net.karen.mccourse.effect.ModEffects;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
@@ -170,7 +169,7 @@ public class ModEvents {
     // CUSTOM EVENT - Home's commands
     @SubscribeEvent
     public static void onCommandsRegister(RegisterCommandsEvent event) { // Register all custom commands
-        new SetHomeCommand(event.getDispatcher());
+        new SetHomeCommand(event.getDispatcher()); // HOME command
         new ReturnHomeCommand(event.getDispatcher());
         ConfigCommand.register(event.getDispatcher());
     }
