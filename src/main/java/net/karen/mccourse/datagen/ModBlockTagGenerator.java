@@ -1,19 +1,20 @@
 package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
-import net.karen.mccourse.block.ModBlocks;
-import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
+
+import static net.karen.mccourse.block.ModBlocks.*;
+import static net.karen.mccourse.util.ModTags.Blocks.*;
+import static net.minecraftforge.common.Tags.Blocks.*;
 
 public class ModBlockTagGenerator extends BlockTagsProvider {
     public ModBlockTagGenerator(PackOutput output,
@@ -25,137 +26,100 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         // Add Block Tags here
-        this.tag(ModTags.Blocks.METAL_DETECTOR_VALUABLES)
-                .addTag(Tags.Blocks.ORES)
-                .addTag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE)
-                .addTag(ModTags.Blocks.MCCOURSE_ORES);
+        // Metal Detector tags
+        this.tag(METAL_DETECTOR_VALUABLES).addTag(ORES).addTag(ORES_IN_GROUND_DEEPSLATE).addTag(MCCOURSE_ORES);
+        this.tag(METAL_DETECTOR_COLORS).addTag(ORES_GOLD).addTag(ORES_COPPER);
+        this.tag(SPECIAL_METAL_DETECTOR_VALUABLES).add(Blocks.SPAWNER, Blocks.END_PORTAL_FRAME, Blocks.CHEST, Blocks.TRAPPED_CHEST);
 
-        this.tag(ModTags.Blocks.METAL_DETECTOR_COLORS).addTag(Tags.Blocks.ORES_GOLD).addTag(Tags.Blocks.ORES_COPPER);
-
-        this.tag(ModTags.Blocks.SPECIAL_METAL_DETECTOR_VALUABLES)
-                .add(Blocks.SPAWNER, Blocks.END_PORTAL_FRAME, Blocks.CHEST, Blocks.TRAPPED_CHEST);
-
-        // Add Mineable's tags
-        // Pickaxe's tag, Alexandrite hammer's tag
+        // Add Mineable's tags - Pickaxe's tag, Alexandrite hammer's tag, etc.
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(ModBlocks.SOUND_BLOCK.get(), // Blocks
-                     ModBlocks.ALEXANDRITE_STAIRS.get(), // Stairs
-                     ModBlocks.ALEXANDRITE_SLABS.get(), // Slabs
-                     ModBlocks.GEM_EMPOWERING_STATION.get(), ModBlocks.KAUPEN_FURNACE_BLOCK.get(),
-                     ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), ModBlocks.BLACK_ENDER_PEARL_BLOCK.get(), // Custom blocks
-                     ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get(), ModBlocks.PURPLE_ENDER_PEARL_BLOCK.get(),
-                     ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get(), ModBlocks.PINK_ENDER_PEARL_BLOCK.get(),
-                     ModBlocks.CYAN_ENDER_PEARL_BLOCK.get(), ModBlocks.BROWN_ENDER_PEARL_BLOCK.get(),
-                     ModBlocks.GRAY_ENDER_PEARL_BLOCK.get(), ModBlocks.RED_ENDER_PEARL_BLOCK.get(),
-                     ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get(), ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get(),
-                     ModBlocks.BLUE_ENDER_PEARL_BLOCK.get(), ModBlocks.WHITE_ENDER_PEARL_BLOCK.get(),
-                     ModBlocks.DISENCHANTED_BLOCK.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(),
-                     ModBlocks.MCCOURSE_GENERATOR.get(), ModBlocks.MCCOURSE_ELEVATOR.get(),
-                     ModBlocks.MAGIC_BLOCK.get(), ModBlocks.MAGIC_BOOK_BLOCK.get(), ModBlocks.DICE_BLOCK.get())
-                .addTag(ModTags.Blocks.MOBS_BLOCKS_DROPS)
-                .addTag(ModTags.Blocks.MCCOURSE_ORES)
-                .addTag(ModTags.Blocks.MCCOURSE_ORES_BLOCK);
+                .add(SOUND_BLOCK.get(), // Blocks
+                     ALEXANDRITE_STAIRS.get(), // Stairs
+                     ALEXANDRITE_SLABS.get(), // Slabs
+                     GEM_EMPOWERING_STATION.get(), KAUPEN_FURNACE_BLOCK.get(),
+                     GREEN_ENDER_PEARL_BLOCK.get(), BLACK_ENDER_PEARL_BLOCK.get(), // Custom blocks
+                     MAGENTA_ENDER_PEARL_BLOCK.get(), PURPLE_ENDER_PEARL_BLOCK.get(),
+                     ORANGE_ENDER_PEARL_BLOCK.get(), PINK_ENDER_PEARL_BLOCK.get(),
+                     CYAN_ENDER_PEARL_BLOCK.get(), BROWN_ENDER_PEARL_BLOCK.get(),
+                     GRAY_ENDER_PEARL_BLOCK.get(), RED_ENDER_PEARL_BLOCK.get(),
+                     LIME_GREEN_ENDER_PEARL_BLOCK.get(), YELLOW_ENDER_PEARL_BLOCK.get(),
+                     BLUE_ENDER_PEARL_BLOCK.get(), WHITE_ENDER_PEARL_BLOCK.get(),
+                     DISENCHANTED_BLOCK.get(), CRAFT_CRAFTING_TABLE.get(),
+                     MCCOURSE_GENERATOR.get(), MCCOURSE_ELEVATOR.get(),
+                     MAGIC_BLOCK.get(), MAGIC_BOOK_BLOCK.get(), DICE_BLOCK.get())
+                .addTag(MOBS_BLOCKS_DROPS).addTag(MCCOURSE_ORES).addTag(MCCOURSE_ORES_BLOCK);
 
         // Iron's tool tag
         this.tag(BlockTags.NEEDS_IRON_TOOL)
-                .add(ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.PINK_ORE.get(), // Ores
-                     ModBlocks.SOUND_BLOCK.get(), // Custom Advanced Block
-                     ModBlocks.ALEXANDRITE_STAIRS.get(), // Stairs
-                     ModBlocks.ALEXANDRITE_SLABS.get()) // Slabs
-                .addTag(ModTags.Blocks.MCCOURSE_ORES_BLOCK);
+                .add(ALEXANDRITE_ORE.get(), PINK_ORE.get(), // Ores
+                     SOUND_BLOCK.get(), // Custom Advanced Block
+                     ALEXANDRITE_STAIRS.get(), // Stairs
+                     ALEXANDRITE_SLABS.get()) // Slabs
+                .addTag(MCCOURSE_ORES_BLOCK);
 
         // Diamond's tool tag
-        this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
-                .add(ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(), ModBlocks.END_STONE_ALEXANDRITE_ORE.get(),
-                     ModBlocks.DEEPSLATE_PINK_ORE.get(), ModBlocks.END_STONE_PINK_ORE.get());
+        this.tag(BlockTags.NEEDS_DIAMOND_TOOL).add(DEEPSLATE_ALEXANDRITE_ORE.get(), END_STONE_ALEXANDRITE_ORE.get(),
+                 DEEPSLATE_PINK_ORE.get(), END_STONE_PINK_ORE.get());
 
         // Fence's tag
-        this.tag(BlockTags.FENCES).add(ModBlocks.ALEXANDRITE_FENCE.get());
+        this.tag(BlockTags.FENCES).add(ALEXANDRITE_FENCE.get());
 
         // Wall's tag
-        this.tag(BlockTags.WALLS).add(ModBlocks.ALEXANDRITE_WALL.get());
+        this.tag(BlockTags.WALLS).add(ALEXANDRITE_WALL.get());
 
         // Fence Gate's tag
-        this.tag(BlockTags.FENCE_GATES).add(ModBlocks.ALEXANDRITE_FENCE_GATE.get());
+        this.tag(BlockTags.FENCE_GATES).add(ALEXANDRITE_FENCE_GATE.get());
 
         // Alexandrite tool's tag
-        this.tag(ModTags.Blocks.NEEDS_ALEXANDRITE_TOOL).add(ModBlocks.NETHER_ALEXANDRITE_ORE.get());
+        this.tag(NEEDS_ALEXANDRITE_TOOL).add(NETHER_ALEXANDRITE_ORE.get());
 
         // Alexandrite Paxel's tag
-        this.tag(ModTags.Blocks.PAXEL_MINEABLE)
-                .addTag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .addTag(BlockTags.MINEABLE_WITH_SHOVEL)
-                .addTag(BlockTags.MINEABLE_WITH_AXE);
+        this.tag(PAXEL_MINEABLE).addTag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .addTag(BlockTags.MINEABLE_WITH_SHOVEL).addTag(BlockTags.MINEABLE_WITH_AXE);
 
         // Walnut's tag
-        this.tag(BlockTags.LOGS_THAT_BURN)
-                .add(ModBlocks.WALNUT_LOG.get(), ModBlocks.WALNUT_WOOD.get(),
-                     ModBlocks.STRIPPED_WALNUT_LOG.get(), ModBlocks.STRIPPED_WALNUT_WOOD.get());
+        this.tag(BlockTags.LOGS_THAT_BURN).add(WALNUT_LOG.get(), WALNUT_WOOD.get(),
+                 STRIPPED_WALNUT_LOG.get(), STRIPPED_WALNUT_WOOD.get());
 
-        this.tag(BlockTags.PLANKS).add(ModBlocks.WALNUT_PLANKS.get());
+        this.tag(BlockTags.PLANKS).add(WALNUT_PLANKS.get());
 
-        // More Ores's tags
-        this.tag(ModTags.Blocks.MORE_ORES_ONE_DROPS) // More Ores I
-                .add(Blocks.COAL_ORE, Blocks.COPPER_ORE);
+        // More Ores's tags -> More Ores I, II, III, IV, V
+        this.tag(MORE_ORES_ONE_DROPS).add(Blocks.COAL_ORE, Blocks.COPPER_ORE);
+        this.tag(MORE_ORES_TWO_DROPS).add(Blocks.IRON_ORE, Blocks.LAPIS_ORE);
+        this.tag(MORE_ORES_THREE_DROPS).add(Blocks.REDSTONE_ORE, Blocks.GOLD_ORE);
+        this.tag(MORE_ORES_FOUR_DROPS).add(Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE);
+        this.tag(MORE_ORES_FIVE_DROPS).add(Blocks.ANCIENT_DEBRIS, Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE);
 
-        this.tag(ModTags.Blocks.MORE_ORES_TWO_DROPS) // More Ores II
-                .add(Blocks.IRON_ORE, Blocks.LAPIS_ORE);
-
-        this.tag(ModTags.Blocks.MORE_ORES_THREE_DROPS) // More Ores III
-                .add(Blocks.REDSTONE_ORE, Blocks.GOLD_ORE);
-
-        this.tag(ModTags.Blocks.MORE_ORES_FOUR_DROPS) // More Ores IV
-                .add(Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE);
-
-        this.tag(ModTags.Blocks.MORE_ORES_FIVE_DROPS) // More Ores V
-                .add(Blocks.ANCIENT_DEBRIS, Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE);
-
-        // Modes Pickaxe's tag
-        this.tag(ModTags.Blocks.MORE_ORES_MODES_PICKAXE_DROPS) // Modes Pickaxe's Mores Ores mode
-                .addTag(Tags.Blocks.ORES_IN_GROUND_STONE)
-                .addTag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
-                .addTag(Tags.Blocks.ORES_NETHERITE_SCRAP);
+        // Modes Pickaxe's tag -  Modes Pickaxe's Mores Ores mode
+        this.tag(MORE_ORES_MODES_PICKAXE_DROPS).addTag(ORES_IN_GROUND_STONE)
+                .addTag(ORES_IN_GROUND_NETHERRACK).addTag(ORES_NETHERITE_SCRAP);
 
         // Mobs Blocks
-        this.tag(ModTags.Blocks.MOBS_BLOCKS_DROPS)
-                .add(ModBlocks.ENDER_PEARL_BLOCK.get(), ModBlocks.NETHER_STAR_BLOCK.get(),
-                     ModBlocks.GUNPOWDER_BLOCK.get(), ModBlocks.ROTTEN_FLESH_BLOCK.get(), ModBlocks.BLAZE_ROD_BLOCK.get());
+        this.tag(MOBS_BLOCKS_DROPS).add(ENDER_PEARL_BLOCK.get(), NETHER_STAR_BLOCK.get(),
+                 GUNPOWDER_BLOCK.get(), ROTTEN_FLESH_BLOCK.get(), BLAZE_ROD_BLOCK.get());
 
-        // My custom ores tags
-        this.tag(ModTags.Blocks.PINK_ORES)
-                .add(ModBlocks.PINK_ORE.get(), ModBlocks.DEEPSLATE_PINK_ORE.get(),
-                     ModBlocks.END_STONE_PINK_ORE.get(), ModBlocks.NETHER_PINK_ORE.get());
-
-        this.tag(ModTags.Blocks.ALEXANDRITE_ORES)
-                .add(ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
-                     ModBlocks.END_STONE_ALEXANDRITE_ORE.get(), ModBlocks.NETHER_ALEXANDRITE_ORE.get());
-
-        // Mccourse ores
-        this.tag(ModTags.Blocks.MCCOURSE_ORES)
-                .addTag(ModTags.Blocks.PINK_ORES).addTag(ModTags.Blocks.ALEXANDRITE_ORES);
-
-        this.tag(ModTags.Blocks.MCCOURSE_ORES_BLOCK)
-                .add(ModBlocks.PINK_BLOCK.get(), ModBlocks.ALEXANDRITE_BLOCK.get(), ModBlocks.RAW_ALEXANDRITE_BLOCK.get());
-
-        // Crop Farmer block tag
-        this.tag(ModTags.Blocks.FARMER_INSTANT_GROWABLES).add(ModBlocks.KOHLRABI_CROP.get())
-                .addTag(ModTags.Blocks.FARMER_BLOCK_GROWABLES)
-                .addTag(BlockTags.SAPLINGS)
-                .addTag(BlockTags.CROPS);
+        // Mccourse ores tags
+        this.tag(PINK_ORES).add(PINK_ORE.get(), DEEPSLATE_PINK_ORE.get(), END_STONE_PINK_ORE.get(), NETHER_PINK_ORE.get());
+        this.tag(ALEXANDRITE_ORES).add(ALEXANDRITE_ORE.get(), DEEPSLATE_ALEXANDRITE_ORE.get(),
+                 END_STONE_ALEXANDRITE_ORE.get(), NETHER_ALEXANDRITE_ORE.get());
+        this.tag(MCCOURSE_ORES).addTag(PINK_ORES).addTag(ALEXANDRITE_ORES);
+        this.tag(MCCOURSE_ORES_BLOCK).add(PINK_BLOCK.get(), ALEXANDRITE_BLOCK.get(), RAW_ALEXANDRITE_BLOCK.get());
 
         // Farmer block tag
-        this.tag(ModTags.Blocks.FARMER_BLOCK_GROWABLES)
-                .addTag(ModTags.Blocks.VERTICAL_BLOCKS)
-                .add(Blocks.NETHER_WART, Blocks.TWISTING_VINES, Blocks.WEEPING_VINES, Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS);
+        this.tag(FARMER_BONEMEAL_GROWABLES).addTag(FARMER_CROPS_GROWABLES).addTag(FARMER_TREE_GROWABLES);
+        this.tag(FARMER_CROPS_GROWABLES).add(KOHLRABI_CROP.get()).addTag(BlockTags.CROPS);
+        this.tag(FARMER_TREE_GROWABLES).addTag(BlockTags.SAPLINGS);
+        this.tag(FARMER_VERTICAL_GROWABLES).addTag(VERTICAL_BLOCKS);
+        this.tag(FARMER_AGE_GROWABLES).add(Blocks.NETHER_WART, Blocks.TWISTING_VINES,
+                 Blocks.WEEPING_VINES, Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS);
 
         // Crop replant tags
         // Mushroom crop
-        this.tag(ModTags.Blocks.MUSHROOM_BLOCKS)
-                .add(Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM, Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS);
+        this.tag(MUSHROOM_BLOCKS).add(Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM, Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS);
 
         // Vertical crop
-        this.tag(ModTags.Blocks.VERTICAL_BLOCKS).add(Blocks.BAMBOO_BLOCK, Blocks.SUGAR_CANE, Blocks.CACTUS);
-        this.tag(ModTags.Blocks.VERTICAL_GROW_BLOCKS).add(Blocks.GRASS_BLOCK, Blocks.SAND, Blocks.DIRT);
+        this.tag(VERTICAL_BLOCKS).add(Blocks.BAMBOO, Blocks.SUGAR_CANE, Blocks.CACTUS);
+        this.tag(VERTICAL_GROW_BLOCKS).add(Blocks.GRASS_BLOCK, Blocks.SAND, Blocks.DIRT);
     }
 
     @Override

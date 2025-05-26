@@ -78,8 +78,11 @@ public class ModTags {
         public static final TagKey<Block> MCCOURSE_ORES = tag("blocks/mccourse_ores");
 
         // Created Farmer tag
-        public static final TagKey<Block> FARMER_INSTANT_GROWABLES = tag("blocks/farmer_instant_growables");
-        public static final TagKey<Block> FARMER_BLOCK_GROWABLES = tag("blocks/farmer_block_growables");
+        public static final TagKey<Block> FARMER_BONEMEAL_GROWABLES = tag("blocks/farmer_bonemeal_growables");
+        public static final TagKey<Block> FARMER_CROPS_GROWABLES = tag("blocks/farmer_crops_growables");
+        public static final TagKey<Block> FARMER_TREE_GROWABLES = tag("blocks/farmer_tree_growables");
+        public static final TagKey<Block> FARMER_VERTICAL_GROWABLES = tag("blocks/farmer_vertical_growables");
+        public static final TagKey<Block> FARMER_AGE_GROWABLES = tag("blocks/farmer_age_growables");
 
         // Crop replant tag
         public static final TagKey<Block> MUSHROOM_BLOCKS = tag("blocks/mushroom_blocks");
