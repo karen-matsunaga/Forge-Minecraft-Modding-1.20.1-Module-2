@@ -1,8 +1,6 @@
 {
   "values": [
     "mccourse:kohlrabi_crop",
-    "#mccourse:blocks/farmer_block_growables",
-    "#minecraft:saplings",
     "#minecraft:crops"
   ]
 }
