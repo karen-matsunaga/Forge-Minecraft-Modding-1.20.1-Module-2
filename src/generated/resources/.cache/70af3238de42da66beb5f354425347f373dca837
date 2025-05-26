@@ -1,6 +1,7 @@
-// 1.20.1	2025-05-26T12:54:49.267191	Block Tags
+// 1.20.1	2025-05-26T19:08:22.987433	Block Tags
 16bc8d1b9b571914b59b5fad5f245361e5bfe539 data/mccourse/tags/blocks/blocks/alexandrite_ores.json
 98a6b17f43b7700939b408265be7513b394137da data/mccourse/tags/blocks/blocks/farmer_age_growables.json
+6527dc5007f3b0595e621ca8c35f74180d8b522e data/mccourse/tags/blocks/blocks/farmer_bonemeal_growables.json
 5dca2983fc2fb89ff1db91573895dc4b54afef70 data/mccourse/tags/blocks/blocks/farmer_crops_growables.json
 347d7db9633b91359c616fd62d97385b7de8bc73 data/mccourse/tags/blocks/blocks/farmer_tree_growables.json
 b0a036ce5239f217229e254022911a66be5b6545 data/mccourse/tags/blocks/blocks/farmer_vertical_growables.json
