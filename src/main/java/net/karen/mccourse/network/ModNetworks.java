@@ -11,14 +11,18 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ModNetworks {
-    // Start of user code block mod methods
-    // End of user code block mod methods
+    // START and END of user code block mod methods
+    private static final String NAME = "mccourse";
     private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation("mccourse", "mccourse"), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(NAME, NAME),
+            () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
     private static int messageID = 0;
 
-    public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
-        PACKET_HANDLER.registerMessage(messageID, messageType, encoder, decoder, messageConsumer);
+    // 1. CLASS (MESSAGE TYPE) ; 2. ENCODER -> BUFFER; 3. DECODER -> ::new; 4. CONSUMER -> ::handler (MESSAGE CONSUMER)
+    public static <T> void addNetworkMessage(Class<T> classType,
+                                             BiConsumer<T, FriendlyByteBuf> encode, Function<FriendlyByteBuf, T> decode,
+                                             BiConsumer<T, Supplier<NetworkEvent.Context>> consumer) {
+        PACKET_HANDLER.registerMessage(messageID, classType, encode, decode, consumer);
         messageID++;
     }
 }
