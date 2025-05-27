@@ -26,14 +26,11 @@ public class JEIMCCoursePlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         // Register all custom categories
-        registration.addRecipeCategories(new GemEmpoweringRecipeCategory(
-                registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new GemEmpoweringRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 
-        registration.addRecipeCategories(new KaupenFurnaceRecipeCategory(
-                registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new KaupenFurnaceRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 
-        registration.addRecipeCategories(new CraftCraftingTableRecipeCategory(
-                registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new CraftCraftingTableRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
