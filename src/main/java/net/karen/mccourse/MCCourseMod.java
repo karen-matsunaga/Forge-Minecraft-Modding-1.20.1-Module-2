@@ -18,12 +18,12 @@ import net.karen.mccourse.loot.ModLootModifiers;
 import net.karen.mccourse.network.*;
 import net.karen.mccourse.painting.ModPaintings;
 import net.karen.mccourse.particle.ModParticles;
-import net.karen.mccourse.potion.BetterBrewingRecipe;
 import net.karen.mccourse.potion.ModPotions;
 import net.karen.mccourse.recipe.ModRecipes;
 import net.karen.mccourse.screen.*;
 import net.karen.mccourse.sound.ModSounds;
 import net.karen.mccourse.util.ModWoodTypes;
+import net.karen.mccourse.potion.ModPotionsRecipes;
 import net.karen.mccourse.villager.ModVillagers;
 import net.karen.mccourse.worldgen.biome.ModTerraBlenderAPI;
 import net.karen.mccourse.worldgen.biome.surface.ModSurfaceRules;
@@ -44,7 +44,6 @@ import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -104,16 +103,11 @@ public class MCCourseMod {
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.SNAPDRAGON.getId(), ModBlocks.POTTED_SNAPDRAGON);
 
             // Slimey's, Fly's, etc. custom potion recipes
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.SLIME_BALL,
-                    ModPotions.SLIMEY_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.EMERALD,
-                    ModPotions.FLY_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.CARROT,
-                    ModPotions.HASTE_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.GLOWSTONE,
-                    ModPotions.NOTHING_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.PHANTOM_MEMBRANE,
-                    ModPotions.OVERPOWER_FLY_POTION.get()));
+            ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.SLIME_BALL, ModPotions.SLIMEY_POTION.get());
+            ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.EMERALD, ModPotions.FLY_POTION.get());
+            ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.CARROT, ModPotions.HASTE_POTION.get());
+            ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.GLOWSTONE, ModPotions.NOTHING_POTION.get());
+            ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.PHANTOM_MEMBRANE, ModPotions.OVERPOWER_FLY_POTION.get());
 
             // Added custom Surface Rules
             SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MOD_ID, ModSurfaceRules.makeRules());
@@ -124,13 +118,11 @@ public class MCCourseMod {
                     DisenchantedGuiSlotMessage::new, DisenchantedGuiSlotMessage::handler);
             // Glowing Blocks Block Shape Renderer
             ModNetworks.addNetworkMessage(GlowingBlocksNetworkMessage.SavedDataSyncMessage.class,
-                    GlowingBlocksNetworkMessage.SavedDataSyncMessage::buffer,
-                    GlowingBlocksNetworkMessage.SavedDataSyncMessage::new,
+                    GlowingBlocksNetworkMessage.SavedDataSyncMessage::buffer, GlowingBlocksNetworkMessage.SavedDataSyncMessage::new,
                     GlowingBlocksNetworkMessage.SavedDataSyncMessage::handler);
             // Mccourse Elevator key input message
-            ModNetworks.addNetworkMessage(MccourseElevatorKeyInputMessage.class,
-                    MccourseElevatorKeyInputMessage::buffer, MccourseElevatorKeyInputMessage::new,
-                    MccourseElevatorKeyInputMessage::handler);
+            ModNetworks.addNetworkMessage(MccourseElevatorKeyInputMessage.class, MccourseElevatorKeyInputMessage::buffer,
+                    MccourseElevatorKeyInputMessage::new, MccourseElevatorKeyInputMessage::handler);
             // Hammer Preview Block
             ModNetworks.addNetworkMessage(ClientHammerBlockRenderMessage.class, ClientHammerBlockRenderMessage::buffer,
                     ClientHammerBlockRenderMessage::new, ClientHammerBlockRenderMessage::handler); // CLIENT
