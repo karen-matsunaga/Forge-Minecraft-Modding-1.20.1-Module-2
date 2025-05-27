@@ -1,6 +1,5 @@
 package net.karen.mccourse.item.custom;
 
-import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -12,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,6 +23,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 
+import static net.karen.mccourse.util.ModTags.Blocks.*;
+
 public class FarmerItem extends Item {
     public FarmerItem(Properties properties) { super(properties); }
 
@@ -36,13 +36,12 @@ public class FarmerItem extends Item {
         ItemStack stack = context.getItemInHand();
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
-        BlockState contains = block.defaultBlockState();
+        @Nullable ITagManager<Block> blockTag = ForgeRegistries.BLOCKS.tags(); // Checks if the block is in the tag
         if (!level.isClientSide() && player != null) {
-            @Nullable ITagManager<Block> blockTag = ForgeRegistries.BLOCKS.tags(); // Checks if the block is in the tag
-            if (isBlock(blockTag, ModTags.Blocks.FARMER_INSTANT_GROWABLES, block)) {
-                // Standard Bonemealable
-                if (block instanceof BonemealableBlock growable && growable.isValidBonemealTarget(level, pos, state, false)) {
-                    growable.performBonemeal((ServerLevel) level, level.random, pos, state);
+            if (isBlock(blockTag, FARMER_BONEMEAL_GROWABLES, block) && block instanceof BonemealableBlock grow &&
+                grow.isValidBonemealTarget(level, pos, state, false)) {
+                grow.performBonemeal((ServerLevel) level, level.random, pos, state); // Standard Bonemealable
+                if (isBlock(blockTag, FARMER_CROPS_GROWABLES, block)) {
                     BlockState newState = level.getBlockState(pos);
                     for (Property<?> property : newState.getProperties()) {
                         if (property.getName().equals("age") && property instanceof IntegerProperty age) {
@@ -50,42 +49,35 @@ public class FarmerItem extends Item {
                             break;
                         }
                     }
-                    consumeItem(stack, player);
-                    return InteractionResult.SUCCESS;
                 }
-                // Vertical growth (if tagged)
-                if (isBlock(blockTag, ModTags.Blocks.FARMER_BLOCK_GROWABLES, block)) {
-                    // Used Farmer on grow vertically
-                    int maxHeight = 5;
-                    BlockPos.MutableBlockPos current = pos.mutable();
-
-                    while (level.getBlockState(current.above()).is(block) && maxHeight-- > 0) { current.move(Direction.UP); }
-
-                    for (int i = 0; i < 3; i++) {
-                        BlockPos above = current.above();
-                        if (level.isEmptyBlock(above) && contains.canSurvive(level, above)) {
-                            grow(level, above, contains, 3);
-                            current = above.mutable();
-                        }
-                        else { break; }
+                return consumeAndSucceed(stack, player); // Used Farmer on CROPS or TREES
+            }
+            if (isBlock(blockTag, FARMER_VERTICAL_GROWABLES, block)) {
+                int height = 0;
+                BlockState contains = block.defaultBlockState();
+                BlockPos.MutableBlockPos current = pos.mutable();
+                while (level.getBlockState(current.above()).is(block) && height++ < 16) { current.move(Direction.UP); }
+                for (int i = 0; i < 3; i++) {
+                    BlockPos above = current.above();
+                    if (level.isEmptyBlock(above) && contains.canSurvive(level, above)) {
+                        grow(level, above, contains, 3);
+                        current = above.mutable();
                     }
-                    // Used Farmer on Nether wart
-                    if (contains.is(Blocks.NETHER_WART)) {
-                        if (state.hasProperty(BlockStateProperties.AGE_3)) {
-                            grow(level, pos, state.setValue(BlockStateProperties.AGE_3, 3), 2);
-                        }
-                    }
-                    consumeItem(stack, player);
-                    return InteractionResult.SUCCESS;
+                    else { break; }
                 }
+                return consumeAndSucceed(stack, player); // Vertical growth (if tagged) - Used Farmer on GROW VERTICALLY
+            }
+            if (isBlock(blockTag, FARMER_AGE_GROWABLES, block) && state.hasProperty(BlockStateProperties.AGE_3)) {
+                grow(level, pos, state.setValue(BlockStateProperties.AGE_3, 3), 2);
+                return consumeAndSucceed(stack, player); // Used Farmer on NETHER WART
             }
         }
         return InteractionResult.PASS;
     }
 
-    // Every time it is used it is consumed
-    private void consumeItem(ItemStack stack, Player player) {
-        if (!player.getAbilities().instabuild) { stack.shrink(1); }
+    private InteractionResult consumeAndSucceed(ItemStack stack, Player player) {
+        if (!player.getAbilities().instabuild) { stack.shrink(1); } // Every time it is used it is consumed
+        return InteractionResult.SUCCESS;
     }
 
     private void grow(Level level, BlockPos pos, BlockState state, int flag) {
