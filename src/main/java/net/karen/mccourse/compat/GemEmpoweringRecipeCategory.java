@@ -61,9 +61,8 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
 
         // Recipe FLUID renderer slot on screen
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 11)
-                .addIngredients(ForgeTypes.FLUID_STACK,
-                        List.of(new FluidStack(recipe.getFluidStack(), recipe.getFluidStack().getAmount())))
-                        .setFluidRenderer(64000, true, 16, 39);
+                .addIngredients(ForgeTypes.FLUID_STACK, List.of(new FluidStack(recipe.getFluidStack(),
+                        recipe.getFluidStack().getAmount()))).setFluidRenderer(64000, true, 16, 39);
 
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 59)
                 .addItemStack(new ItemStack(recipe.getFluidStack().getFluid().getBucket()));
