@@ -27,9 +27,7 @@ public class JEIMCCoursePlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         // Register all custom categories
         registration.addRecipeCategories(new GemEmpoweringRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
         registration.addRecipeCategories(new KaupenFurnaceRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-
         registration.addRecipeCategories(new CraftCraftingTableRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
@@ -79,21 +77,13 @@ public class JEIMCCoursePlugin implements IModPlugin {
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         // Register all custom recipe transfer handlers
-
-        // Craft Crafting Table Input Start - Input End
+        // [CUSTOM ITEM] Input Start - Input End
         // Player's Inventory Start (9 hotbar + 27 inventory slots) - Inventory End
         registration.addRecipeTransferHandler(CraftCraftingTableMenu.class, // Menu Class, Menu Type and Recipe Type
         ModMenuTypes.CRAFT_CRAFTING_TABLE_MENU.get(), CraftCraftingTableRecipeCategory.CRAFT_CRAFTING_TABLE_TYPE,
         1, 49, 50, 36);
 
-        // Kaupen Furnace Input Start - Input End
-        // Player's Inventory Start (9 hotbar + 27 inventory slots) - Inventory End
         registration.addRecipeTransferHandler(KaupenFurnaceMenu.class, // Menu Class, Menu Type and Recipe Type
         ModMenuTypes.KAUPEN_FURNACE_MENU.get(), KaupenFurnaceRecipeCategory.KAUPEN_FURNACE_TYPE, 0, 1, 3, 36);
-
-//        // Gem Empowering Station Input Start - Input End
-//        // Player's Inventory Start (9 hotbar + 27 inventory slots) - Inventory End
-//        registration.addRecipeTransferHandler(GemEmpoweringStationMenu.class, // Menu Class, Menu Type and Recipe Type
-//        ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringRecipeCategory.GEM_EMPOWERING_TYPE, 0, 1, 4, 36);
     }
 }
