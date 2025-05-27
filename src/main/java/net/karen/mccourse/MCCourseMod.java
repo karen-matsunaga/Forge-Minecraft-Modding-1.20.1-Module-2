@@ -66,77 +66,34 @@ public class MCCourseMod {
 
     public MCCourseMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        // Register Creative Mode Tab
-        ModCreativeModeTabs.register(modEventBus);
-
-        // Register items
-        ModItems.register(modEventBus);
-
-        // Register blocks
-        ModBlocks.register(modEventBus);
-
-        // Register enchantments
-        ModEnchantments.register(modEventBus);
-
-        // Register sounds
-        ModSounds.register(modEventBus);
-
-        // Register loot tables
-        ModLootModifiers.register(modEventBus);
-
-        // Register paintings
-        ModPaintings.register(modEventBus);
-
-        // Register effects
-        ModEffects.register(modEventBus);
-
-        // Register potions
-        ModPotions.register(modEventBus);
-
-        // Register villagers
-        ModVillagers.register(modEventBus);
-
-        // Register particles
-        ModParticles.register(modEventBus);
-
-        // Register fluids
-        ModFluidsTypes.register(modEventBus);
-        ModFluids.register(modEventBus);
-
-        // Register block entities
-        ModBlockEntities.register(modEventBus);
-        ModMenuTypes.register(modEventBus);
-
-        // Register recipes
-        ModRecipes.register(modEventBus);
-
-        // Register entities
-        ModEntities.register(modEventBus);
-
-        // Register trunk placer types
-        ModTrunkPlacerTypes.register(modEventBus);
-
-        // Register foliage placer types
-        ModFoliagePlacerTypes.register(modEventBus);
-
-        // Register custom biomes
-        ModTerraBlenderAPI.registerRegions();
-
-        // Register the commonSetup method for mod loading
-        modEventBus.addListener(this::commonSetup);
-
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
-
-        // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
+        ModCreativeModeTabs.register(modEventBus); // Register CREATIVE MODE TAB
+        ModItems.register(modEventBus);  // Register ITEMS
+        ModBlocks.register(modEventBus); // Register BLOCKS
+        ModEnchantments.register(modEventBus); // Register ENCHANTMENTS
+        ModSounds.register(modEventBus); // Register SOUNDS
+        ModLootModifiers.register(modEventBus);  // Register LOOT TABLES
+        ModPaintings.register(modEventBus); // Register PAINTINGS
+        ModEffects.register(modEventBus); // Register EFFECTS
+        ModPotions.register(modEventBus); // Register POTIONS
+        ModVillagers.register(modEventBus); // Register VILLAGERS
+        ModParticles.register(modEventBus); // Register PARTICLES
+        ModFluidsTypes.register(modEventBus); // Register FLUIDS TYPES
+        ModFluids.register(modEventBus); // Register FLUIDS
+        ModBlockEntities.register(modEventBus); // Register BLOCK ENTITIES
+        ModMenuTypes.register(modEventBus); // Register BLOCK ENTITY MENU TYPES
+        ModRecipes.register(modEventBus); // Register RECIPES
+        ModEntities.register(modEventBus); // Register MOBS ENTITIES
+        ModTrunkPlacerTypes.register(modEventBus); // Register TRUNK PLACER TYPES
+        ModFoliagePlacerTypes.register(modEventBus); // Register FOLIAGE PLACER TYPES
+        ModTerraBlenderAPI.registerRegions(); // Register CUSTOM BIOMES
+        modEventBus.addListener(this::commonSetup); // Register the COMMON SETUP method for MOD LOADING
+        MinecraftForge.EVENT_BUS.register(this); // Register ourselves for SERVER and other GAME EVENTS we are interested in
+        modEventBus.addListener(this::addCreative); // Register the ITEM to CREATIVE TAB
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            // Craft Crafting Table 7x7 size
-            ShapedRecipe.setCraftingSize(7, 7);
+            ShapedRecipe.setCraftingSize(7, 7); // Craft Crafting Table 7x7 size
 
             // Adding all seeds, flowers, etc. on composter block
             // Adding Kohlrabi's on composter block
@@ -144,24 +101,22 @@ public class MCCourseMod {
             ComposterBlock.COMPOSTABLES.put(ModItems.KOHLRABI_SEEDS.get(), 0.20f);
 
             // Snapdragon's potted flower
-            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.SNAPDRAGON.getId(),
-                    ModBlocks.POTTED_SNAPDRAGON);
+            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.SNAPDRAGON.getId(), ModBlocks.POTTED_SNAPDRAGON);
 
             // Slimey's, Fly's, etc. custom potion recipes
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(
-                    Potions.AWKWARD, Items.SLIME_BALL, ModPotions.SLIMEY_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(
-                    Potions.AWKWARD, Items.EMERALD, ModPotions.FLY_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(
-                    Potions.AWKWARD, Items.CARROT, ModPotions.HASTE_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(
-                    Potions.AWKWARD, Items.GLOWSTONE, ModPotions.NOTHING_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(
-                    Potions.AWKWARD, Items.PHANTOM_MEMBRANE, ModPotions.OVERPOWER_FLY_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.SLIME_BALL,
+                    ModPotions.SLIMEY_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.EMERALD,
+                    ModPotions.FLY_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.CARROT,
+                    ModPotions.HASTE_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.GLOWSTONE,
+                    ModPotions.NOTHING_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.PHANTOM_MEMBRANE,
+                    ModPotions.OVERPOWER_FLY_POTION.get()));
 
             // Added custom Surface Rules
-            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MOD_ID,
-                    ModSurfaceRules.makeRules());
+            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MOD_ID, ModSurfaceRules.makeRules());
 
             // All ModNetwork messages
             // Disenchanted block event network message
@@ -186,26 +141,15 @@ public class MCCourseMod {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            // First item
-            event.accept(ModItems.ALEXANDRITE);
-            // Second item
-            event.accept(ModItems.RAW_ALEXANDRITE);
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) { // Items
+            event.accept(ModItems.ALEXANDRITE); // First item
+            event.accept(ModItems.RAW_ALEXANDRITE); // Second item
         }
-
-        if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            // Blocks
-            // First block
-            event.accept(ModBlocks.ALEXANDRITE_BLOCK);
-
-            // Second block
-            event.accept(ModBlocks.RAW_ALEXANDRITE_BLOCK);
-
-            // Custom Advanced Block
-            event.accept(ModBlocks.SOUND_BLOCK);
-
-            // Ores
-            event.accept(ModBlocks.ALEXANDRITE_ORE);
+        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) { // Blocks
+            event.accept(ModBlocks.ALEXANDRITE_BLOCK); // First block
+            event.accept(ModBlocks.RAW_ALEXANDRITE_BLOCK); // Second block
+            event.accept(ModBlocks.SOUND_BLOCK); // Custom Advanced Block
+            event.accept(ModBlocks.ALEXANDRITE_ORE); // Ores
             event.accept(ModBlocks.DEEPSLATE_ALEXANDRITE_ORE);
             event.accept(ModBlocks.END_STONE_ALEXANDRITE_ORE);
             event.accept(ModBlocks.NETHER_ALEXANDRITE_ORE);
@@ -218,22 +162,20 @@ public class MCCourseMod {
 
     // You can use EventBusSubscriber to automatically register all static methods
     // in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MOD_ID,
+            bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             event.enqueueWork(() -> {
-                // Register custom wood type
-                Sheets.addWoodType(ModWoodTypes.WALNUT);
-
-                ModItemProperties.addCustomItemProperties();
+                Sheets.addWoodType(ModWoodTypes.WALNUT); // Register custom wood type
+                ModItemProperties.addCustomItemProperties(); // Register Item properties
 
                 // Adding Soap Water's source and flowing layers
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_SOAP_WATER.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_SOAP_WATER.get(), RenderType.translucent());
 
-                // Gem Empowering's menu
-                // Added all custom screens
+                // Gem Empowering's menu -> Menu Types - Added all custom screens
                 MenuScreens.register(ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringStationScreen::new);
                 MenuScreens.register(ModMenuTypes.KAUPEN_FURNACE_MENU.get(), KaupenFurnaceScreen::new);
                 MenuScreens.register(ModMenuTypes.DISENCHANTED_MENU.get(), DisenchantedScreen::new);
@@ -249,11 +191,9 @@ public class MCCourseMod {
                 // Adding Bouncy Balls Projectile's custom projectile entity renderer
                 EntityRenderers.register(ModEntities.BOUNCY_BALLS_PROJECTILE.get(), ThrownItemRenderer::new);
                 // Adding Boat's custom projectile entity renderer
-                EntityRenderers.register(ModEntities.MOD_BOAT.get(), pContext ->
-                        new ModBoatRenderer(pContext, false));
+                EntityRenderers.register(ModEntities.MOD_BOAT.get(), context -> new ModBoatRenderer(context, false));
                 // Adding Chest Boat's custom projectile entity renderer
-                EntityRenderers.register(ModEntities.MOD_CHEST_BOAT.get(), pContext ->
-                        new ModBoatRenderer(pContext, true));
+                EntityRenderers.register(ModEntities.MOD_CHEST_BOAT.get(), context -> new ModBoatRenderer(context, true));
             });
         }
     }
