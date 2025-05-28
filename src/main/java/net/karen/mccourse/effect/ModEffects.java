@@ -14,36 +14,30 @@ public class ModEffects {
     public static final DeferredRegister<MobEffect> MOB_EFFECTS =
             DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, MCCourseMod.MOD_ID);
 
-    // Registry all effects
+    // Registry all custom effects
     // Slimey's effect
     public static final RegistryObject<MobEffect> SLIMEY_EFFECT = MOB_EFFECTS.register("slimey",
             () -> new SlimeyEffect(MobEffectCategory.NEUTRAL, 0x36ebab).addAttributeModifier(Attributes.MOVEMENT_SPEED,
-                    "7107DE5E-7CE8-4030-940E-514C1F160890", -0.25f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                  "7107DE5E-7CE8-4030-940E-514C1F160890", -0.25f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     // Fly's effect
     public static final RegistryObject<MobEffect> FLY_EFFECT = MOB_EFFECTS.register("fly",
             () -> new FlyEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)
-                    // Fly's effect
-                    .addAttributeModifier(Attributes.FLYING_SPEED,
-                            "f81d4fae-7dec-11d0-a765-00a0c91e6bf7", 1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL)
-                    // Speed's effect
+                  .addAttributeModifier(Attributes.FLYING_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf7",
+                      1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL) // Fly speed
+                  .addAttributeModifier(Attributes.MOVEMENT_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf8",
+                      1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL)); // Fly player speed
+
+    public static final RegistryObject<MobEffect> FLY_PLUS_EFFECT = MOB_EFFECTS.register("fly_plus",
+            () -> new FlyEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)
+                    .addAttributeModifier(Attributes.FLYING_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf7",
+                            50.00f, AttributeModifier.Operation.MULTIPLY_TOTAL) // Fly II speed
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf8",
-                            1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                            3.00f, AttributeModifier.Operation.MULTIPLY_TOTAL)); // Fly II player speed
 
     // Nothing's effect
     public static final RegistryObject<MobEffect> NOTHING_EFFECT = MOB_EFFECTS.register("nothing",
             () -> new NothingEffect(MobEffectCategory.NEUTRAL, 0x333366));
 
-    // Overpower Fly's effect
-    public static final RegistryObject<MobEffect> OVERPOWER_FLY_EFFECT = MOB_EFFECTS.register("overpower_fly",
-            () -> new OverpowerFlyEffect(MobEffectCategory.BENEFICIAL, 0x4682b4)
-                    // Overpower Fly's effect
-                    .addAttributeModifier(Attributes.FLYING_SPEED,
-                            "f81d4fae-7dec-11d0-a765-00a0c91e6bf7", 50.00f, AttributeModifier.Operation.MULTIPLY_TOTAL)
-                    .addAttributeModifier(Attributes.MOVEMENT_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf8", 5.00f,
-                            AttributeModifier.Operation.MULTIPLY_TOTAL)
-    );
-
-    // Registry all effects on Forge
-    public static void register(IEventBus eventBus) { MOB_EFFECTS.register(eventBus); }
+    public static void register(IEventBus eventBus) { MOB_EFFECTS.register(eventBus); } // Registry all effects on Forge
 }

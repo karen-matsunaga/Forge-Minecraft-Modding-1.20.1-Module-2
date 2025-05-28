@@ -6,10 +6,8 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
 public class NothingEffect extends MobEffect {
-    protected NothingEffect(MobEffectCategory pCategory, int pColor) { super(pCategory, pColor); }
+    protected NothingEffect(MobEffectCategory category, int color) { super(category, color); }
 
     @Override
-    public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {
-        super.applyEffectTick(entity, amplifier);
-    }
+    public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) { super.applyEffectTick(entity, amplifier); }
 }

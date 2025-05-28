@@ -23,6 +23,9 @@ public class ModPotions {
     public static final RegistryObject<Potion> FLY_POTION = POTIONS.register("fly_potion",
             () -> new Potion(new MobEffectInstance(ModEffects.FLY_EFFECT.get(), 2000, 0)));
 
+    public static final RegistryObject<Potion> FLY_PLUS_POTION = POTIONS.register("fly_plus_potion",
+            () -> new Potion(new MobEffectInstance(ModEffects.FLY_PLUS_EFFECT.get(), 4000, 1)));
+
     // Haste's potion register
     public static final RegistryObject<Potion> HASTE_POTION = POTIONS.register("haste_potion",
             () -> new Potion(new MobEffectInstance(MobEffects.DIG_SPEED, 2000, 0)));
@@ -30,10 +33,6 @@ public class ModPotions {
     // Nothing's potion register
     public static final RegistryObject<Potion> NOTHING_POTION = POTIONS.register("nothing_potion",
             () -> new Potion(new MobEffectInstance(ModEffects.NOTHING_EFFECT.get(), 2000, 0)));
-
-    // Overpower Fly's potion register
-    public static final RegistryObject<Potion> OVERPOWER_FLY_POTION = POTIONS.register("overpower_fly_potion",
-            () -> new Potion(new MobEffectInstance(ModEffects.OVERPOWER_FLY_EFFECT.get(), 2000, 0)));
 
     public static void register(IEventBus eventBus) { POTIONS.register(eventBus); } // Registry all potions on Forge
 }

@@ -84,10 +84,22 @@
   "item.minecraft.lingering_potion.effect.fly_potion": "Fly Lingering Potion",
   "item.minecraft.tipped_arrow.effect.fly_potion": "Arrow of Fly",
 
+  "effect.mccourse.fly_plus": "Fly Plus",
+  "item.minecraft.potion.effect.fly_plus_potion": "Fly Plus Potion",
+  "item.minecraft.splash_potion.effect.fly_plus_potion": "Fly Plus Splash Potion",
+  "item.minecraft.lingering_potion.effect.fly_plus_potion": "Fly Plus Lingering Potion",
+  "item.minecraft.tipped_arrow.effect.fly_plus_potion": "Arrow of Fly Plus",
+
   "item.minecraft.potion.effect.haste_potion": "Haste Potion",
   "item.minecraft.splash_potion.effect.haste_potion": "Haste Splash Potion",
   "item.minecraft.lingering_potion.effect.haste_potion": "Haste Lingering Potion",
   "item.minecraft.tipped_arrow.effect.haste_potion": "Arrow of Haste",
+
+  "effect.mccourse.nothing": "Nothing",
+  "item.minecraft.potion.effect.nothing_potion": "Nothing Potion",
+  "item.minecraft.splash_potion.effect.nothing_potion": "Nothing Splash Potion",
+  "item.minecraft.lingering_potion.effect.nothing_potion": "Nothing Lingering Potion",
+  "item.minecraft.tipped_arrow.effect.nothing_potion": "Arrow of Nothing",
 
   "entity.minecraft.villager.mccourse.soundmaster": "Soundmaster",
 
@@ -156,18 +168,6 @@
   "item.mccourse.magnet": "Magnet",
   "item.mccourse.farmer": "Farmer",
   "item.mccourse.restore": "Restore",
-
-  "effect.mccourse.nothing": "Nothing",
-  "item.minecraft.potion.effect.nothing_potion": "Nothing Potion",
-  "item.minecraft.splash_potion.effect.nothing_potion": "Nothing Splash Potion",
-  "item.minecraft.lingering_potion.effect.nothing_potion": "Nothing Lingering Potion",
-  "item.minecraft.tipped_arrow.effect.nothing_potion": "Arrow of Nothing",
-
-  "effect.mccourse.overpower_fly": "Overpower Fly",
-  "item.minecraft.potion.effect.overpower_fly_potion": "Overpower Fly Potion",
-  "item.minecraft.splash_potion.effect.overpower_fly_potion": "Overpower Fly Splash Potion",
-  "item.minecraft.lingering_potion.effect.overpower_fly_potion": "Overpower Fly Lingering Potion",
-  "item.minecraft.tipped_arrow.effect.overpower_fly_potion": "Arrow of Overpower Fly",
 
   "item.mccourse.blue_modes": "Blue Modes",
   "item.mccourse.green_modes": "Green Modes",

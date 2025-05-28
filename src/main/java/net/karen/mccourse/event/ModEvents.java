@@ -517,7 +517,7 @@ public class ModEvents {
             fullArmor(player, EquipmentSlot.FEET, ModTags.Items.BOOTS_FLY);
 
             // Player has FLY EFFECT
-            boolean hasFlyEffect = fly(player, ModEffects.FLY_EFFECT.get()) || fly(player, ModEffects.OVERPOWER_FLY_EFFECT.get());
+            boolean hasFlyEffect = fly(player, ModEffects.FLY_EFFECT.get()) || fly(player, ModEffects.FLY_PLUS_EFFECT.get());
 
             // Player has FULL ARMOR or FLY EFFECT
             if (hasArmor || hasFlyEffect) { if (!abilities.mayfly) { abilities.mayfly = true; } }
