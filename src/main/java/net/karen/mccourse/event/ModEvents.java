@@ -98,8 +98,8 @@ import java.util.*;
 
 @Mod.EventBusSubscriber(modid = MCCourseMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
-    // Don't be a jerk License - Done with the help of
-    // https://github.com/CoFH/CoFHCore/blob/1.19.x/src/main/java/cofh/core/event/AreaEffectEvents.java
+    /* Don't be a jerk License - Done with the help of
+       https://github.com/CoFH/CoFHCore/blob/1.19.x/src/main/java/cofh/core/event/AreaEffectEvents.java */
     // CUSTOM EVENT - Hammer's tool
     private static final Set<BlockPos> HARVESTED_BLOCKS = new HashSet<>(); // Hammer's receive blocks range
 
@@ -182,19 +182,23 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - An event example that to show if player hit on sheep entity using specific items
+    private static void chat(String message, Player player) {
+        MCCourseMod.LOGGER.info(message, player.getName().getString());
+    }
+
+    private static boolean item(Player player, Item item) {
+        return player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == item;
+    }
+
     @SubscribeEvent
     public static void livingDamage(LivingDamageEvent event) {
         if (event.getEntity() instanceof Sheep) {
             if (event.getSource().getDirectEntity() instanceof Player player) {
-                if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == ModItems.ALEXANDRITE_AXE.get()) {
-                    MCCourseMod.LOGGER.info("Sheep was hit with Alexandrite Axe by {}", player.getName().getString());
+                if (item(player, ModItems.ALEXANDRITE_AXE.get())) {
+                    chat("Sheep was hit with Alexandrite Axe by {}", player);
                 }
-                else if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == Items.DIAMOND) {
-                    MCCourseMod.LOGGER.info("Sheep was hit with DIAMOND by {}", player.getName().getString());
-                }
-                else {
-                    MCCourseMod.LOGGER.info("Sheep was hit with something else by {}", player.getName().getString());
-                }
+                else if (item(player, Items.DIAMOND)) { chat("Sheep was hit with DIAMOND by {}", player); }
+                else { chat("Sheep was hit with something else by {}", player); }
             }
         }
     }
@@ -447,14 +451,10 @@ public class ModEvents {
                             JSON file -> I18n = en_us.json */
                             if (level > 0 || enchantment.getMaxLevel() > 0 || I18n.exists(descriptionValue)) {
                                 MutableComponent name = description(enchant, color, List.of(!isCurse, isCurse))
-                                        .append(CommonComponents.SPACE)
-                                        .append(Component.literal(String.valueOf(level)))
+                                        .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level)))
                                         .append(CommonComponents.NEW_LINE);
-
-                                MutableComponent desc = description(descriptionValue, color, List.of(false, false));
-
                                 // Number line of enchantment names and enchantment descriptions
-                                tooltip.set(i, name.append(desc));
+                                tooltip.set(i, name.append(description(descriptionValue, color, List.of(false, false))));
                             }
                             break;
                         }
@@ -510,21 +510,15 @@ public class ModEvents {
         Player player = event.player;
         if ((event.phase == TickEvent.Phase.END) && !player.level().isClientSide()) {
             Abilities abilities = player.getAbilities();
-            // Player used FULL ARMOR
-            boolean hasArmor = fullArmor(player, EquipmentSlot.HEAD, ModTags.Items.HELMET_FLY) &&
+            // Player used FULL ARMOR or has FLY EFFECT
+            boolean hasArmor = (fullArmor(player, EquipmentSlot.HEAD, ModTags.Items.HELMET_FLY) &&
             fullArmor(player, EquipmentSlot.CHEST, ModTags.Items.CHESTPLATE_FLY) &&
             fullArmor(player, EquipmentSlot.LEGS, ModTags.Items.LEGGINGS_FLY) &&
-            fullArmor(player, EquipmentSlot.FEET, ModTags.Items.BOOTS_FLY);
-
-            // Player has FLY EFFECT
-            boolean hasFlyEffect = fly(player, ModEffects.FLY_EFFECT.get()) || fly(player, ModEffects.FLY_PLUS_EFFECT.get());
-
+            fullArmor(player, EquipmentSlot.FEET, ModTags.Items.BOOTS_FLY)) || fly(player, ModEffects.FLY_EFFECT.get());
             // Player has FULL ARMOR or FLY EFFECT
-            if (hasArmor || hasFlyEffect) { if (!abilities.mayfly) { abilities.mayfly = true; } }
+            if (hasArmor) { if (!abilities.mayfly) { abilities.mayfly = true; } }
             // Player hasn't FULL ARMOR or FLY EFFECT
-            else {
-                if (abilities.mayfly && !player.isCreative()) { abilities.mayfly = false; abilities.flying = false; }
-            }
+            else { if (abilities.mayfly && !player.isCreative()) { abilities.mayfly = false; abilities.flying = false; } }
             player.onUpdateAbilities();
         }
     }
@@ -641,10 +635,10 @@ public class ModEvents {
         poseStack.scale(1, 1, 1);
         poseStack.translate(offset.x(), offset.y(), offset.z());
         RenderSystem.setShaderColor((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F,
-                (color & 255) / 255.0F, (color >>> 24) / 255.0F);
+        (color & 255) / 255.0F, (color >>> 24) / 255.0F);
         vertexBuffer.bind();
         ShaderInstance shader = vertexBuffer.getFormat().hasUV(0) ? GameRenderer.getPositionTexColorShader()
-                : GameRenderer.getPositionColorShader();
+        : GameRenderer.getPositionColorShader();
         if (shader != null) { vertexBuffer.drawWithShader(poseStack.last().pose(), projectionMatrix, shader); }
         VertexBuffer.unbind();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -652,8 +646,8 @@ public class ModEvents {
     }
 
     // CUSTOM METHOD - Render block shape on world
-    private static void renderLevelStage(List<Integer> stage, List<Boolean> bool,
-                                    RenderLevelStageEvent event) {
+    private static void stage(List<Integer> stage, List<Boolean> bool,
+                              RenderLevelStageEvent event) {
         currentStage = stage.get(0);
         RenderSystem.depthMask(bool.get(0));
         renderShapes(event);
@@ -665,11 +659,9 @@ public class ModEvents {
     // Where render block shape on world
     @SubscribeEvent
     public static void renderLevel(RenderLevelStageEvent event) {
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
-            renderLevelStage(List.of(1, 0), List.of(false, true), event);
-        }
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) { stage(List.of(1, 0), List.of(false, true), event); }
         else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            renderLevelStage(List.of(2, 0), List.of(true, true), event);
+            stage(List.of(2, 0), List.of(true, true), event);
         }
     }
 
@@ -696,9 +688,9 @@ public class ModEvents {
                             double posZ = Math.floor(pos.z + zi);
                             BlockPos position = BlockPos.containing(posX, posY, posZ);
                             int[][] cubeCoordinates = { {0,0,0},{1,0,0},{1,0,0},{1,0,1},{1,0,1},{0,0,1},
-                                    {0,0,1},{0,0,0},{0,0,0},{0,1,0},{1,0,0},{1,1,0},
-                                    {1,0,1},{1,1,1},{0,0,1},{0,1,1},{0,1,0},{1,1,0},
-                                    {1,1,0},{1,1,1},{1,1,1},{0,1,1},{0,1,1},{0,1,0}};
+                            {0,0,1},{0,0,0},{0,0,0},{0,1,0},{1,0,0},{1,1,0},
+                            {1,0,1},{1,1,1},{0,0,1},{0,1,1},{0,1,0},{1,1,0},
+                            {1,1,0},{1,1,1},{1,1,1},{0,1,1},{0,1,1},{0,1,0}};
                             renderColors.forEach((key, value) -> {
                                 if (level.getBlockState(position).is(key)) {
                                     RenderSystem.depthMask(false);
@@ -726,7 +718,9 @@ public class ModEvents {
     }
 
     // Xray items - Enchanted Helmet or Metal Detector
-    private static ItemStack items(Player player, EquipmentSlot slot) { return player.getItemBySlot(slot); }
+    private static ItemStack items(Player player, EquipmentSlot slot) {
+        return player.getItemBySlot(slot);
+    }
 
     @SubscribeEvent
     public static void activatedGlowingBlocksEnchantment(TickEvent.PlayerTickEvent event) {
@@ -745,9 +739,7 @@ public class ModEvents {
 
     // CUSTOM EVENT - Decapitator
     // Check if it is a log or a leaf
-    private static boolean isLogLeaf(BlockState state, TagKey<Block> block) {
-        return state.is(block);
-    }
+    private static boolean isLogLeaf(BlockState state, TagKey<Block> block) { return state.is(block); }
 
     @SubscribeEvent
     public static void decapitatorBlock(BlockEvent.BreakEvent event) {
@@ -1044,12 +1036,10 @@ public class ModEvents {
         if (event.phase == TickEvent.Phase.END) {
             for (ServerLevel world : event.getServer().getAllLevels()) {
                 for (Entity entity : world.getAllEntities()) {
-                    if (entity instanceof FallingBlockEntity fallingBlockEntity) {
-                        BlockState state = fallingBlockEntity.getBlockState(); // Anvil state
-                        BlockPos pos = fallingBlockEntity.blockPosition(); // Anvil position
-                        // List of blocks that accept disenchanted items
-                        List<Block> anvils = List.of(Blocks.ANVIL, Blocks.CHIPPED_ANVIL, Blocks.DAMAGED_ANVIL);
-                        if (!anvils.contains(state.getBlock())) { continue; } // Check if the dropped block is an anvil
+                    if (entity instanceof FallingBlockEntity fallingBlock) {
+                        BlockState state = fallingBlock.getBlockState(); // Anvil state
+                        BlockPos pos = fallingBlock.blockPosition(); // Anvil position
+                        if (!state.getBlock().defaultBlockState().is(BlockTags.ANVIL)) { continue; }
                         BlockPos blockBelow = pos.below(); // The item is below the anvil
                         // Pick up the items on the ground below the anvil - small area below the anvil
                         List<ItemEntity> itemsBelow = world.getEntitiesOfClass(ItemEntity.class,
@@ -1108,8 +1098,8 @@ public class ModEvents {
             /* Desired value for level.getGameTime() % X != 0 (1 second = 20 ticks)
             Once every [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks */
             if (player.level().getGameTime() % 40 != 0) { return; }
-            List<NonNullList<ItemStack>> playerSlots = List.of(player.getInventory().items, player.getInventory().armor,
-                    player.getInventory().offhand);
+            List<NonNullList<ItemStack>> playerSlots =
+                    List.of(player.getInventory().items, player.getInventory().armor, player.getInventory().offhand);
             playerSlots.forEach(itemStacks -> itemStacks.forEach(stack -> {
                 if (!stack.isEmpty() && stack.isDamaged() && enchant(stack, ModEnchantments.RECOVER.get()) > 0) {
                     int currentDamage = stack.getDamageValue();
