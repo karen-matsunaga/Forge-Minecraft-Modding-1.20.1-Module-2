@@ -27,39 +27,31 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         // Add Item Tags here
 
         // Trimmable's armor item tag
-        this.tag(ItemTags.TRIMMABLE_ARMOR)
-                .add(ModItems.ALEXANDRITE_HELMET.get(), ModItems.ALEXANDRITE_CHESTPLATE.get(),
-                     ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.ALEXANDRITE_BOOTS.get());
+        this.tag(ItemTags.TRIMMABLE_ARMOR).add(ModItems.ALEXANDRITE_HELMET.get(), ModItems.ALEXANDRITE_CHESTPLATE.get(),
+                 ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.ALEXANDRITE_BOOTS.get());
 
         // Bar Brawl's music disc tag
-        this.tag(ItemTags.MUSIC_DISCS)
-                .add(ModItems.BAR_BRAWL_RECORD.get());
+        this.tag(ItemTags.MUSIC_DISCS).add(ModItems.BAR_BRAWL_RECORD.get());
 
         // Walnut's custom wood tag
-        this.tag(ItemTags.LOGS_THAT_BURN)
-                .add(ModBlocks.WALNUT_LOG.get().asItem(), ModBlocks.WALNUT_WOOD.get().asItem(),
-                     ModBlocks.STRIPPED_WALNUT_LOG.get().asItem(),  ModBlocks.STRIPPED_WALNUT_WOOD.get().asItem());
+        this.tag(ItemTags.LOGS_THAT_BURN).add(ModBlocks.WALNUT_LOG.get().asItem(), ModBlocks.WALNUT_WOOD.get().asItem(),
+                 ModBlocks.STRIPPED_WALNUT_LOG.get().asItem(),  ModBlocks.STRIPPED_WALNUT_WOOD.get().asItem());
 
-        this.tag(ItemTags.PLANKS)
-                .add(ModBlocks.WALNUT_PLANKS.get().asItem());
+        this.tag(ItemTags.PLANKS).add(ModBlocks.WALNUT_PLANKS.get().asItem());
 
         // MCCOURSE custom items
-        this.tag(ModTags.Items.MCCOURSE_ITEMS)
-                .add(ModItems.PINK.get(), ModItems.ALEXANDRITE.get());
+        this.tag(ModTags.Items.MCCOURSE_ITEMS).add(ModItems.PINK.get(), ModItems.ALEXANDRITE.get());
 
-        this.tag(ModTags.Items.MCCOURSE_ORES_ITEMS)
-                .addTag(ModTags.Items.PINK_ORES_ITEMS)
+        this.tag(ModTags.Items.MCCOURSE_ORES_ITEMS).addTag(ModTags.Items.PINK_ORES_ITEMS)
                 .addTag(ModTags.Items.ALEXANDRITE_ORES_ITEMS);
 
-        this.tag(ModTags.Items.ALEXANDRITE_ORES_ITEMS)
-                .add(ModBlocks.ALEXANDRITE_BLOCK.get().asItem(), ModBlocks.ALEXANDRITE_ORE.get().asItem(),
-                     ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get().asItem(), ModBlocks.END_STONE_ALEXANDRITE_ORE.get().asItem(),
-                     ModBlocks.NETHER_ALEXANDRITE_ORE.get().asItem());
+        this.tag(ModTags.Items.ALEXANDRITE_ORES_ITEMS).add(ModBlocks.ALEXANDRITE_BLOCK.get().asItem(),
+                 ModBlocks.ALEXANDRITE_ORE.get().asItem(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get().asItem(),
+                 ModBlocks.END_STONE_ALEXANDRITE_ORE.get().asItem(), ModBlocks.NETHER_ALEXANDRITE_ORE.get().asItem());
 
-        this.tag(ModTags.Items.PINK_ORES_ITEMS)
-                .add(ModBlocks.PINK_BLOCK.get().asItem(), ModBlocks.PINK_ORE.get().asItem(),
-                     ModBlocks.DEEPSLATE_PINK_ORE.get().asItem(), ModBlocks.END_STONE_PINK_ORE.get().asItem(),
-                     ModBlocks.NETHER_PINK_ORE.get().asItem());
+        this.tag(ModTags.Items.PINK_ORES_ITEMS).add(ModBlocks.PINK_BLOCK.get().asItem(), ModBlocks.PINK_ORE.get().asItem(),
+                 ModBlocks.DEEPSLATE_PINK_ORE.get().asItem(), ModBlocks.END_STONE_PINK_ORE.get().asItem(),
+                 ModBlocks.NETHER_PINK_ORE.get().asItem());
 
         // Active Fly effect tag
         this.tag(ModTags.Items.HELMET_FLY)
