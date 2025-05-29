@@ -24,9 +24,9 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> FLY_EFFECT = MOB_EFFECTS.register("fly",
             () -> new FlyEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)
                   .addAttributeModifier(Attributes.FLYING_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf7",
-                      1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL) // Fly speed
+                      1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL) // Flying speed
                   .addAttributeModifier(Attributes.MOVEMENT_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf8",
-                      1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL)); // Fly player speed
+                      1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL)); // Player speed
 
     // Nothing's effect
     public static final RegistryObject<MobEffect> NOTHING_EFFECT = MOB_EFFECTS.register("nothing",

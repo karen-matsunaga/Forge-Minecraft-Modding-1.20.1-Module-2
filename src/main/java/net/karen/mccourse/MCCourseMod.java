@@ -105,7 +105,7 @@ public class MCCourseMod {
             // Slimey's, Fly's, etc. custom potion recipes
             ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.SLIME_BALL, ModPotions.SLIMEY_POTION.get());
             ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.EMERALD, ModPotions.FLY_POTION.get());
-            ModPotionsRecipes.addRecipe(ModPotions.FLY_POTION.get(), Blocks.EMERALD_BLOCK, ModPotions.FLY_PLUS_POTION.get());
+            ModPotionsRecipes.addRecipe(ModPotions.FLY_POTION.get(), Blocks.EMERALD_BLOCK, ModPotions.FLY_II_POTION.get());
             ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.CARROT, ModPotions.HASTE_POTION.get());
             ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.GLOWSTONE, ModPotions.NOTHING_POTION.get());
 

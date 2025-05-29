@@ -12,26 +12,26 @@ import org.jetbrains.annotations.NotNull;
 public class FlyEffect extends MobEffect {
     protected FlyEffect(MobEffectCategory category, int color) { super(category, color); }
 
-    @Override // Fly effect applied
+    @Override // Fly effect APPLIED
     public void addAttributeModifiers(@NotNull LivingEntity entity, @NotNull AttributeMap map, int amplifier) {
         event(entity, 0.05f + (0.02f * amplifier), 0.1f + (0.02f * amplifier));
         super.addAttributeModifiers(entity, map, amplifier);
     }
 
-    @Override // Fly effect ended
+    @Override // Fly effect ENDED
     public void removeAttributeModifiers(@NotNull LivingEntity entity, @NotNull AttributeMap map, int amplifier) {
         event(entity, 0.05f, 0.1f);
         super.removeAttributeModifiers(entity, map, amplifier);
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) { return duration % 20 == 0; } // Fly effect duration
+    public boolean isDurationEffectTick(int duration, int amplifier) { return duration % 20 == 0; } // Fly effect DURATION
 
     private void event(LivingEntity entity, float fly, float walk) {
         if (entity instanceof Player player) {
             ModEvents.flyEffect(new TickEvent.PlayerTickEvent(TickEvent.Phase.END, player));
-            player.getAbilities().setFlyingSpeed(fly);
-            player.getAbilities().setWalkingSpeed(walk);
+            player.getAbilities().setFlyingSpeed(fly); // Flying speed
+            player.getAbilities().setWalkingSpeed(walk); // Walking speed
         }
     }
 }
