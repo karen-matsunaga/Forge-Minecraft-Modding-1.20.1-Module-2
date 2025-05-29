@@ -24,7 +24,7 @@ public class ModPotions {
             () -> new Potion(new MobEffectInstance(ModEffects.FLY_EFFECT.get(), 2000, 0)));
 
     public static final RegistryObject<Potion> FLY_PLUS_POTION = POTIONS.register("fly_plus_potion",
-            () -> new Potion(new MobEffectInstance(ModEffects.FLY_PLUS_EFFECT.get(), 4000, 1)));
+            () -> new Potion("fly_potion", new MobEffectInstance(ModEffects.FLY_EFFECT.get(), 4000, 1)));
 
     // Haste's potion register
     public static final RegistryObject<Potion> HASTE_POTION = POTIONS.register("haste_potion",
