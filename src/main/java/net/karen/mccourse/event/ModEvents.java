@@ -39,7 +39,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -98,9 +97,8 @@ import java.util.*;
 
 @Mod.EventBusSubscriber(modid = MCCourseMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
-    /* Don't be a jerk License - Done with the help of
+    /* CUSTOM EVENT - Hammer's tool - Don't be a jerk License - Done with the help of
        https://github.com/CoFH/CoFHCore/blob/1.19.x/src/main/java/cofh/core/event/AreaEffectEvents.java */
-    // CUSTOM EVENT - Hammer's tool
     private static final Set<BlockPos> HARVESTED_BLOCKS = new HashSet<>(); // Hammer's receive blocks range
 
     @SubscribeEvent
@@ -108,9 +106,7 @@ public class ModEvents {
         Player player = event.getPlayer(); // Player is using Hammer tool
         ItemStack mainHandItem = player.getMainHandItem();
         BlockPos initalBlockPos = event.getPos();
-
-        if (HARVESTED_BLOCKS.contains(initalBlockPos)) { return; }
-
+        if (HARVESTED_BLOCKS.contains(initalBlockPos)) { return; } // Different type of blocks
         // If player destroyed a block with Hammer tool
         if (mainHandItem.getItem() instanceof HammerItem hammer && player instanceof ServerPlayer serverPlayer) {
             int radius = hammer.getRadius(); // Radius declared on ModItems with HammerItem class
@@ -136,18 +132,11 @@ public class ModEvents {
         Player player = mc.player;
         if (event.phase == TickEvent.Phase.END && player != null) {
             ItemStack held = player.getMainHandItem();
-            HammerItem.clientTick();
-
-            if (!(held.getItem() instanceof HammerItem)) { // Player hasn't HammerItem
-                lastSentPos = null;
-                return;
-            }
-
             HitResult hit = mc.hitResult;
+            HammerItem.clientTick();
+            if (!(held.getItem() instanceof HammerItem)) { lastSentPos = null; return; } // Player hasn't HammerItem
             if (hit == null || hit.getType() != HitResult.Type.BLOCK) { return; }
-
             BlockPos pos = ((BlockHitResult) hit).getBlockPos();
-
             if (!pos.equals(lastSentPos) && tickDelay-- <= 0) {
                 lastSentPos = pos;
                 tickDelay = 5;
@@ -204,8 +193,8 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Custom Villager's professions trade
-    private static void villagerTrades(Int2ObjectMap<List<VillagerTrades.ItemListing>> trade,
-                              List<Item> items, int level, List<Integer> levelCount, float multiplier) {
+    private static void normal(Int2ObjectMap<List<VillagerTrades.ItemListing>> trade,
+                               List<Item> items, int level, List<Integer> levelCount, float multiplier) {
         trade.get(level).add((pTrader, pRandom) -> new MerchantOffer(
                 new ItemStack(items.get(0), levelCount.get(0)),
                 new ItemStack(items.get(1), levelCount.get(1)), levelCount.get(2), levelCount.get(3), multiplier));
@@ -213,66 +202,46 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {
-        // Villager's farm profession
+        Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades(); // List of all trades
+        // Villager's FARM profession - List of all trades that the player can trade
         if (event.getType() == VillagerProfession.FARMER) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades(); // List of all trades
-
-            // List of all trades that the player can trade
             // Received KOHLRABI with Villager's level 1
-            villagerTrades(trades, List.of(Items.EMERALD, ModItems.KOHLRABI.get()), 1,
-                    List.of(2, 6, 10, 2), 0.02f);
-
+            normal(trades, List.of(Items.EMERALD, ModItems.KOHLRABI.get()), 1, List.of(2, 6, 10, 2), 0.02f);
             // Received KOHLRABI SEEDS with Villager's level 2
-            villagerTrades(trades, List.of(Items.EMERALD, ModItems.KOHLRABI_SEEDS.get()), 2,
-                    List.of(5, 1, 3, 2), 0.02f);
+            normal(trades, List.of(Items.EMERALD, ModItems.KOHLRABI_SEEDS.get()), 2, List.of(5, 1, 3, 2), 0.02f);
         }
-
-        // Villager's toolsmith profession
+        // Villager's TOOLSMITH profession - List of all trades that the player can trade
         if (event.getType() == VillagerProfession.TOOLSMITH) {
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades(); // List of all trades
-
-            // List of all trades that the player can trade
             // Received ALEXANDRITE PAXEL with Villager's level 3
-            villagerTrades(trades, List.of(Items.EMERALD, ModItems.ALEXANDRITE_PAXEL.get()), 3,
+            normal(trades, List.of(Items.EMERALD, ModItems.ALEXANDRITE_PAXEL.get()), 3,
                     List.of(12, 1, 2, 5), 0.06f);
         }
-
-        // Custom Villager's soundmaster profession
+        // Custom Villager's SOUNDMASTER profession - List of all trades that the player can trade
         if (event.getType() == ModVillagers.SOUND_MASTER.get()) {
-            // List of all trades
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-
-            // List of all trades that the player can trade
             // Received Sound Block with Villager's level 1
-            villagerTrades(trades, List.of(Items.EMERALD, ModBlocks.SOUND_BLOCK.get().asItem()), 1,
+            normal(trades, List.of(Items.EMERALD, ModBlocks.SOUND_BLOCK.get().asItem()), 1,
                     List.of(25, 1, 2, 5), 0.06f);
         }
     }
 
     // CUSTOM EVENT - Custom Villager Wandering
-    private static void wanderingTrades(List<VillagerTrades.ItemListing> trade,
-                                       List<Item> items, List<Integer> levelCount, float multiplier) {
+    private static void wandering(List<VillagerTrades.ItemListing> trade,
+                                  List<Item> items, List<Integer> levelCount, float multiplier) {
         trade.add((pTrader, pRandom) -> new MerchantOffer(new ItemStack(items.get(0), levelCount.get(0)),
                 new ItemStack(items.get(1), levelCount.get(1)), levelCount.get(2), levelCount.get(3), multiplier));
     }
 
     @SubscribeEvent
     public static void addWanderingTrades(WandererTradesEvent event) {
-        // List of all trades that the player can trade - Generic and Rare trades because not exist levels
-        List<VillagerTrades.ItemListing> genericTrades = event.getGenericTrades();
-        List<VillagerTrades.ItemListing> rareTrades = event.getRareTrades();
-
-        // List of all generic and rare trades
+        // List of all generic and rare trades that the player can trade because not exist levels
+        List<VillagerTrades.ItemListing> generic = event.getGenericTrades();
+        List<VillagerTrades.ItemListing> rare = event.getRareTrades();
         // Received KOHLRABI like Generic Trades
-        wanderingTrades(genericTrades, List.of(Items.EMERALD, ModItems.KOHLRABI.get()),
-                List.of(2, 6, 10, 2), 0.02f);
-
+        wandering(generic, List.of(Items.EMERALD, ModItems.KOHLRABI.get()), List.of(2, 6, 10, 2), 0.02f);
         // Received KOHLRABI SEEDS like Rare Trades
-        wanderingTrades(rareTrades, List.of(Items.EMERALD, ModItems.KOHLRABI_SEEDS.get()),
-                List.of(5, 1, 3, 2), 0.02f);
-
+        wandering(rare, List.of(Items.EMERALD, ModItems.KOHLRABI_SEEDS.get()), List.of(5, 1, 3, 2), 0.02f);
         // Magic Book custom block
-        wanderingTrades(rareTrades, List.of(Items.EMERALD, ModBlocks.MAGIC_BOOK_BLOCK.get().asItem()),
+        wandering(rare, List.of(Items.EMERALD, ModBlocks.MAGIC_BOOK_BLOCK.get().asItem()),
                 List.of(64, 1, 9, 10), 0.06f);
     }
 
@@ -300,7 +269,6 @@ public class ModEvents {
         ItemStack tool = player.getMainHandItem();
         int fortune = enchant(tool, Enchantments.BLOCK_FORTUNE);
         int moreOres = enchant(tool, ModEnchantments.MORE_ORES.get());
-
         // RAINBOW ENCHANTMENT
         if (enchant(tool, ModEnchantments.RAINBOW.get()) > 0) {
             Map<Block, TagKey<Block>> rainbowMap = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL,
@@ -308,7 +276,6 @@ public class ModEvents {
             Blocks.EMERALD_BLOCK, Tags.Blocks.ORES_EMERALD, Blocks.GOLD_BLOCK, Tags.Blocks.ORES_GOLD,
             Blocks.IRON_BLOCK, Tags.Blocks.ORES_IRON, Blocks.LAPIS_BLOCK, Tags.Blocks.ORES_LAPIS,
             Blocks.REDSTONE_BLOCK, Tags.Blocks.ORES_REDSTONE, Blocks.NETHERITE_BLOCK, Tags.Blocks.ORES_NETHERITE_SCRAP);
-
             for (Map.Entry<Block, TagKey<Block>> entry : rainbowMap.entrySet()) {
                 if (state.is(entry.getValue())) {
                     block(world, pos, entry.getKey(), event); // Blocks normal break
@@ -316,16 +283,13 @@ public class ModEvents {
                 }
             }
         }
-
         if (world instanceof ServerLevel serverLevel) {
             boolean cancelVanillaDrop = false; // Adapt the drop according to the enchantment being true
             List<ItemStack> finalDrops = new ArrayList<>(); // Items caused by enchantments are stored in the list
-
             // AUTO SMELT ENCHANTMENT
             if (enchant(tool, ModEnchantments.AUTO_SMELT.get()) > 0) {
                 Optional<SmeltingRecipe> recipe = serverLevel.getRecipeManager().getRecipeFor(RecipeType.SMELTING,
                         new SimpleContainer(new ItemStack(state.getBlock())), serverLevel);
-
                 if (recipe.isPresent()) { // Has recipe
                     ItemStack result = recipe.get().getResultItem(serverLevel.registryAccess()).copy();
                     int count = 1 + fortune > 0 ? serverLevel.random.nextInt(fortune + 1) : 0;
@@ -333,13 +297,12 @@ public class ModEvents {
                     cancelVanillaDrop = true;
                 }
             }
-
             // MORE ORES ENCHANTMENT
             if (moreOres > 0) {
-                List<TagKey<Block>> oresTags = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS, ModTags.Blocks.MORE_ORES_TWO_DROPS,
-                ModTags.Blocks.MORE_ORES_THREE_DROPS, ModTags.Blocks.MORE_ORES_FOUR_DROPS, ModTags.Blocks.MORE_ORES_FIVE_DROPS);
-
-                if (isBlock(state, Blocks.STONE, 0.1f) && moreOres < 5 ||
+                List<TagKey<Block>> oresTags = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS,
+                ModTags.Blocks.MORE_ORES_TWO_DROPS, ModTags.Blocks.MORE_ORES_THREE_DROPS,
+                ModTags.Blocks.MORE_ORES_FOUR_DROPS, ModTags.Blocks.MORE_ORES_FIVE_DROPS);
+                if (isBlock(state, Blocks.STONE, 0.1f) && moreOres < 5 || // Break block and ore chance drop
                         isBlock(state, Blocks.NETHERRACK, 0.01f) && moreOres == 5) {
                     var tagManager = ForgeRegistries.BLOCKS.tags();
                     if (tagManager != null) {
@@ -349,20 +312,16 @@ public class ModEvents {
                     }
                 }
             }
-
             // MAGNETIC ENCHANTMENT
             if (enchant(tool, ModEnchantments.MAGNETIC.get()) > 0 && !state.isAir()) {
                 if (finalDrops.isEmpty()) { // FinalDrops empty list added all items on it is
                     finalDrops.addAll(Block.getDrops(state, serverLevel, pos, null, player, tool));
                 }
-                // FinalDrops list added on Player's inventory
-                finalDrops.forEach(drop -> {
-                    if (!player.getInventory().add(drop)) { player.drop(drop, false); }
-                });
+                finalDrops.forEach(drop -> { // FinalDrops list added on Player's inventory
+                    if (!player.getInventory().add(drop)) { player.drop(drop, false); }});
                 block(serverLevel, pos, Blocks.AIR, event);
                 return;
             }
-
             if (cancelVanillaDrop) { // FinalDrops list accumulate drop on world
                 finalDrops.forEach(drop -> dropItem(serverLevel, pos, drop));
                 block(serverLevel, pos, Blocks.AIR, event);
@@ -380,26 +339,24 @@ public class ModEvents {
             // Player has a helmet inputted on slot and Glowing Mobs enchantment level
             if (helmet.isEnchanted() || enchant(helmet, ModEnchantments.GLOWING_MOBS.get()) > 0) {
                 /* Key - Entities colors -> Each group represent with some color (Color)
-                Value - Entities groups -> Represent as Tag (Group tag name) */
+                   Value - Entities groups -> Represent as Tag (Group tag name) */
                 Map<ChatFormatting, TagKey<EntityType<?>>> entitiesTag = Map.ofEntries(
                 Map.entry(ChatFormatting.RED, ModTags.Entities.MONSTERS), // Monsters
                 Map.entry(ChatFormatting.BLUE, ModTags.Entities.ANIMALS), // Animal and Flying entities
                 Map.entry(ChatFormatting.YELLOW, ModTags.Entities.WATER_ANIMALS), // Water animals
                 Map.entry(ChatFormatting.DARK_PURPLE, ModTags.Entities.VILLAGER)); // Villagers
-
-                entitiesTag.forEach((key, value) -> {
+                entitiesTag.forEach((key, value) -> { // Added GLOWING EFFECT for each GROUP
                     String teamName = value.location().getPath();
                     List<LivingEntity> entities = player.level().getEntitiesOfClass(LivingEntity.class,
-                            player.getBoundingBox().inflate(GLOWING_EYES), entity -> entity.getType().is(value) && entity != player);
-
-                    if (!entities.isEmpty()) {
+                    player.getBoundingBox().inflate(GLOWING_EYES),
+                    entity -> entity.getType().is(value) && entity != player);
+                    if (!entities.isEmpty()) { // Groups not empty
                         PlayerTeam team = player.getScoreboard().getPlayerTeam(teamName);
                         // Added each entity on group with specif tag and color on entitiesTag
                         if (team == null) {
                             team = player.getScoreboard().addPlayerTeam(teamName);
                             team.setColor(key); // Color
                         }
-
                         // Each entity received Glowing effect with specif color on entityColors
                         PlayerTeam finalTeam = team;
                         entities.forEach(entity -> { entity.addEffect(new MobEffectInstance(MobEffects.GLOWING,
@@ -434,21 +391,18 @@ public class ModEvents {
                         String expected = Component.translatable(enchantment.getDescriptionId()).getString();
                         // Raw equals expected line replace old tooltip to new tooltip
                         if (raw != null && raw.startsWith(expected)) {
-                            ChatFormatting color = enchantment.isCurse() ? ChatFormatting.RED :
-                            switch (enchantment.category) {
-                                case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.GOLD;
-                                case DIGGER -> ChatFormatting.DARK_PURPLE;
-                                case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
-                                case TRIDENT -> ChatFormatting.AQUA;
-                                case WEARABLE -> ChatFormatting.GREEN;
-                                case BREAKABLE -> ChatFormatting.DARK_GREEN;
-                                case VANISHABLE -> ChatFormatting.RED;
-                                case FISHING_ROD -> ChatFormatting.YELLOW; }; // Replace this line with custom styled version
                             boolean isCurse = enchantment.isCurse();
+                            ChatFormatting color = isCurse ? ChatFormatting.RED :
+                                switch (enchantment.category) { // Replace this line with custom styled version
+                                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.GOLD;
+                                    case DIGGER -> ChatFormatting.DARK_PURPLE; case TRIDENT -> ChatFormatting.AQUA;
+                                    case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
+                                    case WEARABLE -> ChatFormatting.GREEN; case FISHING_ROD -> ChatFormatting.YELLOW;
+                                    case BREAKABLE -> ChatFormatting.DARK_GREEN; case VANISHABLE -> ChatFormatting.RED; };
                             String enchant = enchantment.getDescriptionId();
                             String descriptionValue = enchant + ".desc";
                             /* Enchantment Levels with Arabic numerals and Enchantment Descriptions with
-                            JSON file -> I18n = en_us.json */
+                               JSON file -> I18n = en_us.json */
                             if (level > 0 || enchantment.getMaxLevel() > 0 || I18n.exists(descriptionValue)) {
                                 MutableComponent name = description(enchant, color, List.of(!isCurse, isCurse))
                                         .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level)))
@@ -476,34 +430,25 @@ public class ModEvents {
     public static void eventHandler(RenderGuiOverlayEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-        int h = event.getWindow().getGuiScaledHeight();
         int x = 10;
-        int y = h - 30;
-
+        int y = event.getWindow().getGuiScaledHeight() - 30;
         if (player != null && player.getMainHandItem().getItem() instanceof ModesPickaxeItem modesPickaxe) {
             ModesPickaxe mode = modesPickaxe.getModeActual(); // Show text mode actual on screen
-            // Renders text on overlay on same line
-            String text = "Mode: ";
+            String text = "Mode: "; // Renders text on overlay on same line
             screen(event, mc, text, x, y, 0xFFAA00);
             x += mc.font.width(text); // Mode Text
             screen(event, mc, mode.toString().replace("_", " "), x + 5, y, 0xFF5555); // Mode Type
-
-            // drawString method parameters:
-            // - mc.font: The source object used to draw the text.
-            // - modeText: The text component to be drawn.
-            // - x: X position when the text will be drawn on screen.
-            // - y: Y position when the text will be drawn on screen.
-            // - 0x0000FF: Text color on hexadecimal format.
-            // - false: Boolean that indicates if the text should have a shadow (false = without shadow).
+            /* drawString method parameters:
+               MC.FONT: The source object used to draw the text; modeTEXT: The text component to be drawn;
+               X/Y: X/Y position when the text will be drawn on screen; 0x0000FF: Text color on hexadecimal format;
+               FALSE: Boolean that indicates if the text should have a shadow (false = without shadow). */
         }
     }
 
     // Active Fly with Item
-    private static boolean fullArmor(Player player, EquipmentSlot slot, TagKey<Item> item) {
+    private static boolean slot(Player player, EquipmentSlot slot, TagKey<Item> item) {
         return player.getItemBySlot(slot).is(item);
     }
-
-    private static boolean fly(Player player, MobEffect effect) { return player.hasEffect(effect); }
 
     @SubscribeEvent
     public static void flyEffect(TickEvent.PlayerTickEvent event) {
@@ -511,10 +456,10 @@ public class ModEvents {
         if ((event.phase == TickEvent.Phase.END) && !player.level().isClientSide()) {
             Abilities abilities = player.getAbilities();
             // Player used FULL ARMOR or has FLY EFFECT
-            boolean hasArmor = (fullArmor(player, EquipmentSlot.HEAD, ModTags.Items.HELMET_FLY) &&
-            fullArmor(player, EquipmentSlot.CHEST, ModTags.Items.CHESTPLATE_FLY) &&
-            fullArmor(player, EquipmentSlot.LEGS, ModTags.Items.LEGGINGS_FLY) &&
-            fullArmor(player, EquipmentSlot.FEET, ModTags.Items.BOOTS_FLY)) || fly(player, ModEffects.FLY_EFFECT.get());
+            boolean hasArmor = (slot(player, EquipmentSlot.HEAD, ModTags.Items.HELMET_FLY) &&
+            slot(player, EquipmentSlot.CHEST, ModTags.Items.CHESTPLATE_FLY) &&
+            slot(player, EquipmentSlot.LEGS, ModTags.Items.LEGGINGS_FLY) &&
+            slot(player, EquipmentSlot.FEET, ModTags.Items.BOOTS_FLY)) || player.hasEffect(ModEffects.FLY_EFFECT.get());
             // Player has FULL ARMOR or FLY EFFECT
             if (hasArmor) { if (!abilities.mayfly) { abilities.mayfly = true; } }
             // Player hasn't FULL ARMOR or FLY EFFECT
@@ -531,14 +476,19 @@ public class ModEvents {
                         (ServerPlayer) player), new GlowingBlocksNetworkMessage.SavedDataSyncMessage(data));
     }
 
+    public static GlowingBlocksNetworkMessage.SyncedSavedData var(Player player, int type) {
+        GlowingBlocksNetworkMessage.SyncedSavedData number = null;
+        switch (type) { case 1 -> number = GlowingBlocksNetworkMessage.MapVariables.get(player.level());
+                        case 2 -> number = GlowingBlocksNetworkMessage.WorldVariables.get(player.level()); }
+        return number;
+    }
+
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) { // Player is on world
         Player player = event.getEntity();
         if (!player.level().isClientSide()) {
-            GlowingBlocksNetworkMessage.SyncedSavedData mapData = GlowingBlocksNetworkMessage.MapVariables.get(player.level());
-            GlowingBlocksNetworkMessage.SyncedSavedData worldData = GlowingBlocksNetworkMessage.WorldVariables.get(player.level());
-            if (mapData != null) { sendPacket(player, mapData); }
-            if (worldData != null) { sendPacket(player, worldData); }
+            sendPacket(player, var(player, 1));
+            sendPacket(player, var(player, 2));
         }
     }
 
@@ -546,10 +496,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         Player player = event.getEntity();
-        if (!player.level().isClientSide()) {
-            GlowingBlocksNetworkMessage.SyncedSavedData worldData = GlowingBlocksNetworkMessage.WorldVariables.get(player.level());
-            if (worldData != null) { sendPacket(player, worldData); }
-        }
+        if (!player.level().isClientSide()) { sendPacket(player, var(player, 2)); }
     }
 
     // Render Level block shape variables
@@ -593,10 +540,7 @@ public class ModEvents {
 
     // Before creating the blocks, cleaning is done
     private static void clear() {
-        if (vertexBuffer != null) {
-            vertexBuffer.close();
-            vertexBuffer = null;
-        }
+        if (vertexBuffer != null) { vertexBuffer.close(); vertexBuffer = null; }
     }
 
     // After creating the block
@@ -730,8 +674,8 @@ public class ModEvents {
         // Player has using GLOWING BLOCKS or Metal Detector
         if (event.phase == TickEvent.Phase.END) {
             GlowingBlocksNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() &&
-                    enchant(helmet, ModEnchantments.GLOWING_BLOCKS.get()) > 0 ||
-                    items(player, EquipmentSlot.MAINHAND).is(ModItems.METAL_DETECTOR.get());
+            enchant(helmet, ModEnchantments.GLOWING_BLOCKS.get()) > 0 ||
+            items(player, EquipmentSlot.MAINHAND).is(ModItems.METAL_DETECTOR.get());
             // Update information player has GLOWING BLOCKS or Metal Detector
             GlowingBlocksNetworkMessage.WorldVariables.get(world).syncData(world);
         }
@@ -739,7 +683,9 @@ public class ModEvents {
 
     // CUSTOM EVENT - Decapitator
     // Check if it is a log or a leaf
-    private static boolean isLogLeaf(BlockState state, TagKey<Block> block) { return state.is(block); }
+    private static boolean isLogLeaf(BlockState state, TagKey<Block> block) {
+        return state.is(block);
+    }
 
     @SubscribeEvent
     public static void decapitatorBlock(BlockEvent.BreakEvent event) {
@@ -771,7 +717,8 @@ public class ModEvents {
                                     if (visited.contains(offset)) { continue; }
                                     if (offset.distManhattan(origin) > maxDistance) { continue; } // Limit horizontal distance
                                     BlockState neighborState = level.getBlockState(offset);
-                                    if (isLogLeaf(neighborState, BlockTags.LOGS) || isLogLeaf(neighborState, BlockTags.LEAVES)) {
+                                    if (isLogLeaf(neighborState, BlockTags.LOGS) ||
+                                            isLogLeaf(neighborState, BlockTags.LEAVES)) {
                                         toVisit.add(offset);
                                     }
                                 }
@@ -842,7 +789,9 @@ public class ModEvents {
         for (int i = 0; i < type.size(); i++) {
             ItemStack inventory = type.get(i);
             // Copy of item WITH Eternal enchantment
-            if (!inventory.isEmpty() && enchant(inventory, ModEnchantments.ETERNAL.get()) > 0) { store.set(i, inventory.copy()); }
+            if (!inventory.isEmpty() && enchant(inventory, ModEnchantments.ETERNAL.get()) > 0) {
+                store.set(i, inventory.copy());
+            }
             // Copy of item WITHOUT Eternal enchantment
             else { vault.add(inventory.copy()); }
             // Added on typePreserve or vaultItems removes stack on Inventory, Armor and Offhand slots
@@ -878,28 +827,23 @@ public class ModEvents {
             List<ItemStack> offhandPreserve = new ArrayList<>(Collections.nCopies(1, ItemStack.EMPTY));
             int[] experienceData = new int[] { player.experienceLevel, Float.floatToIntBits(player.experienceProgress),
             player.totalExperience }; // Added player experience
-
             // Get all items on Main inventory, Armor and Left hand or Offhand slots
             setPreservedVault(player.getInventory().items, inventoryPreserve, vaultItems);
             setPreservedVault(player.getInventory().armor, armorPreserve, vaultItems);
             setPreservedVault(player.getInventory().offhand, offhandPreserve, vaultItems);
-
             // Save data
             preservedItems.put(playerUUID, inventoryPreserve);
             preservedArmor.put(playerUUID, armorPreserve);
             preservedOffhand.put(playerUUID, offhandPreserve);
             preservedExperience.put(playerUUID, experienceData);
-
             // Reset to prevent drop
             player.experienceLevel = 0;
             player.experienceProgress = 0;
             player.totalExperience = 0;
-
             // Get position and time
             BlockPos pos = player.blockPosition(); // Player X, Y and Z positions
             // Display PLAYER NAME, death (X, Y and Z) positions and TIME showing (Hours::Minutes::Seconds)
             Component displayName = itemChatMessage(player, pos, ChatFormatting.GREEN);
-
             // Saves items from the Vault
             if (!vaultItems.isEmpty()) {
                 ItemStack vaultItem = new ItemStack(ModItems.VAULT.get());
@@ -914,10 +858,9 @@ public class ModEvents {
                 vaultTag.putString("DisplayName", displayName.toString());
                 vaultItem.setTag(vaultTag);
                 vaultItem.setHoverName(displayName);
-
-                /* Temporarily saved for the clone event
-                Add directly to the new Player's inventory in onClone()
-                Try adding to a free inventory slot */
+                /* Temporarily saved for the clone event;
+                   Add directly to the new Player's inventory in onClone()
+                   Try adding to a free inventory slot. */
                 preservedVault.computeIfAbsent(playerUUID, k -> new ArrayList<>()).add(vaultItem);
             }
         }
@@ -931,10 +874,8 @@ public class ModEvents {
             Player newPlayer = event.getEntity(); // Entity is Player -> After death
             Player original = event.getOriginal(); // Old player -> Before death
             BlockPos blockPos = original.blockPosition(); // Player position after death
-
             // Player death message on chat
             newPlayer.sendSystemMessage(itemChatMessage(newPlayer, blockPos, ChatFormatting.GOLD));
-
             // Restore all Inventory, Armor and Offhand saved slots
             setRestoredVault(newPlayer.getInventory().items, preservedItems.remove(playerUUID));
             setRestoredVault(newPlayer.getInventory().armor, preservedArmor.remove(playerUUID));
@@ -976,32 +917,26 @@ public class ModEvents {
         BlockPos pos = event.getPos();
         BlockState state = level.getBlockState(pos);
         Player player = event.getPlayer();
-
-        // Only on server side and if player is not in creative mode
-        if (!level.isClientSide() && !player.isCreative()) {
+        if (!level.isClientSide() && !player.isCreative()) { // Only on server side and if player is not in creative mode
             ItemStack heldItem = player.getMainHandItem(); // Player has Hoe on main hand
             if (!(!heldItem.isEmpty() && heldItem.getItem() instanceof HoeItem)) { return; }
             Block block = state.getBlock();
             // Check if it is a plantation that can be replanted is Wheat, Carrot, Potato, Beet, etc.
-            if (block instanceof CropBlock crop) {
-                if (crop.isMaxAge(state)) { crop(crop, state, level, pos, player, event, heldItem); } // Check if it is ripe
+            if (block instanceof CropBlock crop) {  // Check if it is ripe
+                if (crop.isMaxAge(state)) { crop(crop, state, level, pos, player, event, heldItem); }
             }
-            // Nether Wart
-            else if (block.equals(Blocks.NETHER_WART) && state.getValue(NetherWartBlock.AGE).equals(3)) {
+            else if (block.equals(Blocks.NETHER_WART) && state.getValue(NetherWartBlock.AGE).equals(3)) { // Nether Wart
                 crop(Blocks.NETHER_WART, state, level, pos, player, event, heldItem);
             }
-            // Sugar cane, Bamboo or Cactus
-            else if (block.defaultBlockState().is(ModTags.Blocks.VERTICAL_BLOCKS)) {
-                // Only replant if there is correct soil below
-                BlockPos basePos = pos.below();
+            else if (block.defaultBlockState().is(ModTags.Blocks.VERTICAL_BLOCKS)) { // Sugar cane, Bamboo or Cactus
+                BlockPos basePos = pos.below(); // Only replant if there is correct soil below
                 BlockState baseState = level.getBlockState(basePos);
-                // 1. Bamboo (Block) -> Grass - 2. Cactus (Block) -> Sand - 3. Sugar cane (Block) -> Grass, Sand or Dirt
+                // Bamboo (Block) -> Grass; Cactus (Block) -> Sand; Sugar cane (Block) -> Grass, Sand or Dirt.
                 if (baseState.is(ModTags.Blocks.VERTICAL_GROW_BLOCKS)) {
                     // Check if the bottom block is the same and only break the top one
                     BlockPos topPos = pos;
                     while (level.getBlockState(topPos.above()).is(block)) { topPos = topPos.above(); }
                     event.setCanceled(true);
-
                     // Break everything from top to bottom, except the base (to replant)
                     BlockPos current = topPos;
                     while (!current.equals(basePos)) {
@@ -1010,16 +945,15 @@ public class ModEvents {
                         level.setBlock(current, Blocks.AIR.defaultBlockState(), 3);
                         current = current.below();
                     }
-                    // Replant the original block
-                    level.setBlock(pos, block.defaultBlockState(), 3);
+                    level.setBlock(pos, block.defaultBlockState(), 3); // Replant the original block
                     damageToolIfHoe(heldItem, player);
                 }
             }
-            // Mushroom, etc.
-            else if (block.defaultBlockState().is(ModTags.Blocks.MUSHROOM_BLOCKS)) {
+            else if (block.defaultBlockState().is(ModTags.Blocks.MUSHROOM_BLOCKS)) { // Mushroom, etc.
                 BlockState baseState = level.getBlockState(pos.below());
-                // Check if the soil is suitable
-                if (baseState.is(BlockTags.MUSHROOM_GROW_BLOCK)) { crop(block, state, level, pos, player, event, heldItem); }
+                if (baseState.is(BlockTags.MUSHROOM_GROW_BLOCK)) { // Check if the soil is suitable
+                    crop(block, state, level, pos, player, event, heldItem);
+                }
             }
         }
     }
@@ -1027,8 +961,7 @@ public class ModEvents {
     // CUSTOM EVENT - ANVIL disenchanted event
     // CUSTOM METHOD - Drop enchanted book and base item on ground [world]
     private static void dropItem(ServerLevel world, BlockPos pos, ItemStack stack) {
-        world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1,
-                pos.getZ() + 0.5, stack));
+        world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, stack));
     }
 
     @SubscribeEvent
@@ -1044,18 +977,15 @@ public class ModEvents {
                         // Pick up the items on the ground below the anvil - small area below the anvil
                         List<ItemEntity> itemsBelow = world.getEntitiesOfClass(ItemEntity.class,
                                 new AABB(blockBelow).inflate(0.5));
-                        // Processing only if there is exactly ONE item
-                        if (itemsBelow.size() != 1) { continue; }
+                        if (itemsBelow.size() != 1) { continue; } // Processing only if there is exactly ONE item
                         ItemEntity itemEntity = itemsBelow.get(0); // First item of list
                         ItemStack item = itemEntity.getItem(); // Get real item
                         // Get all enchantments of the item
                         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
                         boolean isBook = item.is(Items.ENCHANTED_BOOK);
-
                         /* Ignore if item has no enchantment or if item is a book with only 1 enchantment
-                        Only process if it's not a previously split book (to avoid infinite loop) */
+                           Only process if it's not a previously split book (to avoid infinite loop) */
                         if (enchantments.isEmpty() || (isBook && enchantments.size() == 1)) { continue; }
-
                         // Drop an enchanted book with the enchantments of tool, armor, etc.
                         if (item.isDamageableItem() && !isBook) {
                             ItemStack groupedBooks = new ItemStack(Items.ENCHANTED_BOOK);
@@ -1066,18 +996,15 @@ public class ModEvents {
                             ItemStack baseItem = item.copy();
                             EnchantmentHelper.setEnchantments(Map.of(), baseItem);
                             baseItem.removeTagKey("StoredEnchantments");
-                            // Clean up tag if empty
                             if (baseItem.getTag() != null && baseItem.hasTag() && baseItem.getTag().isEmpty()) {
-                                baseItem.setTag(null);
+                                baseItem.setTag(null); // Clean up tag if empty
                             }
                             // Drop enchanted book WITH enchantments and item WITHOUT enchantments
                             dropItem(world, blockBelow, groupedBooks);
                             dropItem(world, blockBelow, baseItem);
                         }
-                        // Book with multiple enchantments
-                        else if (isBook) {
-                            // Split each enchantment into individual books
-                            enchantments.forEach((key, value) -> {
+                        else if (isBook) { // Book with multiple enchantments
+                            enchantments.forEach((key, value) -> { // Split each enchantment into individual books
                                 ItemStack singleBook = new ItemStack(Items.ENCHANTED_BOOK);
                                 EnchantedBookItem.addEnchantment(singleBook, new EnchantmentInstance(key, value));
                                 dropItem(world, blockBelow, singleBook); // Drop individual enchanted book
@@ -1098,12 +1025,12 @@ public class ModEvents {
             /* Desired value for level.getGameTime() % X != 0 (1 second = 20 ticks)
             Once every [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks */
             if (player.level().getGameTime() % 40 != 0) { return; }
-            List<NonNullList<ItemStack>> playerSlots =
-                    List.of(player.getInventory().items, player.getInventory().armor, player.getInventory().offhand);
+            List<NonNullList<ItemStack>> playerSlots = List.of(player.getInventory().items,
+            player.getInventory().armor, player.getInventory().offhand);
             playerSlots.forEach(itemStacks -> itemStacks.forEach(stack -> {
                 if (!stack.isEmpty() && stack.isDamaged() && enchant(stack, ModEnchantments.RECOVER.get()) > 0) {
                     int currentDamage = stack.getDamageValue();
-                    stack.setDamageValue(currentDamage - Math.min(currentDamage, 10)); // Repairs 10 point of damage at a time
+                    stack.setDamageValue(currentDamage - Math.min(currentDamage, 10)); // Repairs 10 of damage at a time
                 }
             }));
         }
@@ -1112,10 +1039,9 @@ public class ModEvents {
     // CUSTOM EVENT - NOTHING custom effect
     @SubscribeEvent
     public static void activatedNothingEffect(EntityJoinLevelEvent event) {
-        if (event.getEntity() instanceof Warden wardenEntity) {
-            Level level = wardenEntity.level();
+        if (event.getEntity() instanceof Warden warden) {
             // Checks if there is a player with the effect active nearby
-            List<Player> players = level.getEntitiesOfClass(Player.class, wardenEntity.getBoundingBox().inflate(32));
+            List<Player> players = warden.level().getEntitiesOfClass(Player.class, warden.getBoundingBox().inflate(32));
             for (Player player : players) {
                 if (player.hasEffect(ModEffects.NOTHING_EFFECT.get())) {
                     event.setCanceled(true); // Prevents the Warden from spawning
