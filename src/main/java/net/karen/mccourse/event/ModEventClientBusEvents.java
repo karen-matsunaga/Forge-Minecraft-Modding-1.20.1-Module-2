@@ -58,6 +58,7 @@ public class ModEventClientBusEvents {
 
     @SubscribeEvent
     public static void registerKeyInput(RegisterKeyMappingsEvent event) {
+        // Register custom Key Input
         event.register(KeyBinding.GLOWING_KEY);
     }
 }

@@ -49,13 +49,13 @@ public class GlowingBlocksNetworkMessage {
         public static World load(CompoundTag tag) { var data = new World(); data.read(tag); return data; }
 
         @Override
-        public void read(CompoundTag tag) { xray = tag.getBoolean("xray"); }
+        public void read(CompoundTag tag) { xray = tag.getBoolean("xray"); } // TRUE/FALSE xray tag
 
         @Override
         public @NotNull CompoundTag save(@NotNull CompoundTag tag) { tag.putBoolean("xray", xray); return tag; }
 
         @Override
-        public String getDataName() { return DATA_NAME; }
+        public String getDataName() { return DATA_NAME; } // Data name: mccourse_world
 
         @Override
         public boolean isWorldScoped() { return true; }
@@ -83,7 +83,7 @@ public class GlowingBlocksNetworkMessage {
         public @NotNull CompoundTag save(@NotNull CompoundTag tag) { return tag; }
 
         @Override
-        public String getDataName() { return DATA_NAME; }
+        public String getDataName() { return DATA_NAME; } // Data name: mccourse_map
 
         @Override
         public boolean isWorldScoped() { return false; }

@@ -668,8 +668,13 @@ public class ModEvents {
     }
 
     private static void change(GlowingBlocksNetworkMessage.World worldVar, boolean item,
-                               boolean xray, LevelAccessor world) {
-        if (item) { worldVar.xray = xray; worldVar.syncData(world); }
+                               LevelAccessor world) {
+        if (worldVar.xray != item) { worldVar.xray = item; worldVar.syncData(world); }
+    }
+
+    private static void messageStage(Player player, String name, ChatFormatting color) {
+        player.displayClientMessage(Component.translatable("Glowing Blocks: " + name)
+                .setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD)), true);
     }
 
     @SubscribeEvent
@@ -677,12 +682,20 @@ public class ModEvents {
         Player player = event.player;
         LevelAccessor world = player.level();
         ItemStack helmet = has(player, EquipmentSlot.HEAD);
-        if (event.phase == TickEvent.Phase.END && KeyBinding.GLOWING_KEY.isDown() && KeyBinding.GLOWING_KEY.consumeClick()) {
+        if (event.phase == TickEvent.Phase.END) {
             GlowingBlocksNetworkMessage.World worldVar = GlowingBlocksNetworkMessage.World.get(world);
             boolean hasItem = helmet.isEnchanted() && enchant(helmet, ModEnchantments.GLOWING_BLOCKS.get()) > 0 ||
-                              has(player, EquipmentSlot.MAINHAND).is(ModItems.METAL_DETECTOR.get());
-            change(worldVar, hasItem, !worldVar.xray, world); // Player has used HELMET or METAL DETECTOR
-            change(worldVar, worldVar.xray && !hasItem, hasItem, world);
+                    has(player, EquipmentSlot.MAINHAND).is(ModItems.METAL_DETECTOR.get());
+            if (KeyBinding.GLOWING_KEY.isDown() && KeyBinding.GLOWING_KEY.consumeClick()) {
+                if (hasItem) {
+                    boolean newState = !worldVar.xray;
+                    change(worldVar, newState, world);
+                    messageStage(player, newState ? "Activated" : "Disabled",
+                            newState ? ChatFormatting.DARK_GREEN : ChatFormatting.DARK_RED);
+                }
+                else { messageStage(player, "Use a enchanted helmet or a metal detector!", ChatFormatting.RED); }
+            }
+            if (!hasItem && worldVar.xray) { change(worldVar, false, world); }
         }
     }
 
