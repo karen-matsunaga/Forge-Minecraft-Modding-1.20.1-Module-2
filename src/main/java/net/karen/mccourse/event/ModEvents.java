@@ -18,6 +18,7 @@ import net.karen.mccourse.network.MccourseElevatorKeyInputMessage;
 import net.karen.mccourse.network.ModNetworks;
 import net.karen.mccourse.network.GlowingBlocksNetworkMessage;
 import net.karen.mccourse.network.ServerHammerBlockRenderMessage;
+import net.karen.mccourse.util.KeyBinding;
 import net.karen.mccourse.util.ModTags;
 import net.karen.mccourse.villager.ModVillagers;
 import net.minecraft.ChatFormatting;
@@ -478,8 +479,8 @@ public class ModEvents {
 
     public static GlowingBlocksNetworkMessage.SyncedSavedData var(Player player, int type) {
         GlowingBlocksNetworkMessage.SyncedSavedData number = null;
-        switch (type) { case 1 -> number = GlowingBlocksNetworkMessage.MapVariables.get(player.level());
-                        case 2 -> number = GlowingBlocksNetworkMessage.WorldVariables.get(player.level()); }
+        switch (type) { case 1 -> number = GlowingBlocksNetworkMessage.Map.get(player.level());
+                        case 2 -> number = GlowingBlocksNetworkMessage.World.get(player.level()); }
         return number;
     }
 
@@ -626,7 +627,7 @@ public class ModEvents {
                 for (int xi = -RadiusSquare; xi <= RadiusSquare; xi++) {
                     for (int zi = -RadiusSquare; zi <= RadiusSquare; zi++) {
                         // Execute the desired statements within the square/cube
-                        if (GlowingBlocksNetworkMessage.WorldVariables.get(level).xray) {
+                        if (GlowingBlocksNetworkMessage.World.get(level).xray) {
                             double posX = Math.floor(pos.x + xi);
                             double posY = Math.floor(pos.y + i);
                             double posZ = Math.floor(pos.z + zi);
@@ -662,22 +663,26 @@ public class ModEvents {
     }
 
     // Xray items - Enchanted Helmet or Metal Detector
-    private static ItemStack items(Player player, EquipmentSlot slot) {
+    private static ItemStack has(Player player, EquipmentSlot slot) {
         return player.getItemBySlot(slot);
+    }
+
+    private static void change(GlowingBlocksNetworkMessage.World worldVar, boolean item,
+                               boolean xray, LevelAccessor world) {
+        if (item) { worldVar.xray = xray; worldVar.syncData(world); }
     }
 
     @SubscribeEvent
     public static void activatedGlowingBlocksEnchantment(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         LevelAccessor world = player.level();
-        ItemStack helmet = items(player, EquipmentSlot.HEAD); // Player has used helmet
-        // Player has using GLOWING BLOCKS or Metal Detector
-        if (event.phase == TickEvent.Phase.END) {
-            GlowingBlocksNetworkMessage.WorldVariables.get(world).xray = helmet.isEnchanted() &&
-            enchant(helmet, ModEnchantments.GLOWING_BLOCKS.get()) > 0 ||
-            items(player, EquipmentSlot.MAINHAND).is(ModItems.METAL_DETECTOR.get());
-            // Update information player has GLOWING BLOCKS or Metal Detector
-            GlowingBlocksNetworkMessage.WorldVariables.get(world).syncData(world);
+        ItemStack helmet = has(player, EquipmentSlot.HEAD);
+        if (event.phase == TickEvent.Phase.END && KeyBinding.GLOWING_KEY.isDown() && KeyBinding.GLOWING_KEY.consumeClick()) {
+            GlowingBlocksNetworkMessage.World worldVar = GlowingBlocksNetworkMessage.World.get(world);
+            boolean hasItem = helmet.isEnchanted() && enchant(helmet, ModEnchantments.GLOWING_BLOCKS.get()) > 0 ||
+                              has(player, EquipmentSlot.MAINHAND).is(ModItems.METAL_DETECTOR.get());
+            change(worldVar, hasItem, !worldVar.xray, world); // Player has used HELMET or METAL DETECTOR
+            change(worldVar, worldVar.xray && !hasItem, hasItem, world);
         }
     }
 

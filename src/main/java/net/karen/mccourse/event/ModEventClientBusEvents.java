@@ -7,6 +7,7 @@ import net.karen.mccourse.block.entity.renderer.GemEmpoweringBlockEntityRenderer
 import net.karen.mccourse.particle.AlexandriteParticles;
 import net.karen.mccourse.particle.BouncyBallsParticles;
 import net.karen.mccourse.particle.ModParticles;
+import net.karen.mccourse.util.KeyBinding;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,7 +32,7 @@ public class ModEventClientBusEvents {
 
     @SubscribeEvent
     public static void registerBER(EntityRenderersEvent.RegisterRenderers event) { // Register custom BER
-        // Register custom block entity
+        // Register custom block entity renderer
         event.registerBlockEntityRenderer(ModBlockEntities.GEM_EMPOWERING_STATION_BE.get(),
                 GemEmpoweringBlockEntityRenderer::new);
 
@@ -42,8 +44,8 @@ public class ModEventClientBusEvents {
     // Register custom colored blocks
     @SubscribeEvent
     public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
-        event.register((pState, pLevel, pPos, pTintIndex) -> pLevel != null &&
-                pPos != null ? BiomeColors.getAverageFoliageColor(pLevel, pPos) : FoliageColor.getDefaultColor(), ModBlocks.COLORED_LEAVES.get());
+        event.register((pState, pLevel, pPos, pTintIndex) -> pLevel != null && pPos != null
+                ? BiomeColors.getAverageFoliageColor(pLevel, pPos) : FoliageColor.getDefaultColor(), ModBlocks.COLORED_LEAVES.get());
     }
 
     @SubscribeEvent
@@ -52,5 +54,10 @@ public class ModEventClientBusEvents {
             BlockState state = ((BlockItem)pStack.getItem()).getBlock().defaultBlockState();
             return event.getBlockColors().getColor(state, null, null, pTintIndex);
         }, ModBlocks.COLORED_LEAVES.get());
+    }
+
+    @SubscribeEvent
+    public static void registerKeyInput(RegisterKeyMappingsEvent event) {
+        event.register(KeyBinding.GLOWING_KEY);
     }
 }

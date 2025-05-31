@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 public class GlowingBlocksNetworkMessage {
-    // Base class for synchronize data
+    // SyncedSavedData base subclass for synchronize data
     public static abstract class SyncedSavedData extends SavedData {
         public abstract String getDataName();
         public abstract void read(CompoundTag tag);
@@ -25,7 +25,7 @@ public class GlowingBlocksNetworkMessage {
         public abstract @NotNull CompoundTag save(@NotNull CompoundTag tag);
 
         public void syncData(LevelAccessor world) {
-            setDirty();
+            setDirty(); // Saved data on DISK
             if (world instanceof Level level && !level.isClientSide()) {
                 var target = isWorldScoped() ? PacketDistributor.DIMENSION.with(level::dimension) : PacketDistributor.ALL.noArg();
                 ModNetworks.PACKET_HANDLER.send(target, new SavedDataSyncMessage(this));
@@ -33,20 +33,20 @@ public class GlowingBlocksNetworkMessage {
         }
     }
 
-    // World Variables class
-    public static class WorldVariables extends SyncedSavedData { // World variable data
-        public static final String DATA_NAME = "mccourse_world_variables";
+    // World subclass
+    public static class World extends SyncedSavedData { // World variable data
+        public static final String DATA_NAME = "mccourse_world";
         public boolean xray = false;
-        public static WorldVariables clientSide = new WorldVariables();
+        public static World clientSide = new World();
 
-        public static WorldVariables get(LevelAccessor world) {
+        public static World get(LevelAccessor world) {
             if (world instanceof ServerLevel level) {
-                return level.getDataStorage().computeIfAbsent(WorldVariables::load, WorldVariables::new, DATA_NAME);
+                return level.getDataStorage().computeIfAbsent(World::load, World::new, DATA_NAME);
             }
             return clientSide;
         }
 
-        public static WorldVariables load(CompoundTag tag) { var data = new WorldVariables(); data.read(tag); return data; }
+        public static World load(CompoundTag tag) { var data = new World(); data.read(tag); return data; }
 
         @Override
         public void read(CompoundTag tag) { xray = tag.getBoolean("xray"); }
@@ -61,20 +61,20 @@ public class GlowingBlocksNetworkMessage {
         public boolean isWorldScoped() { return true; }
     }
 
-    // Map Variables class
-    public static class MapVariables extends SyncedSavedData { // Map variable data
-        public static final String DATA_NAME = "mccourse_map_variables";
-        public static MapVariables clientSide = new MapVariables();
+    // Map subclass
+    public static class Map extends SyncedSavedData { // Map variable data
+        public static final String DATA_NAME = "mccourse_map";
+        public static Map clientSide = new Map();
 
-        public static MapVariables get(LevelAccessor world) {
+        public static Map get(LevelAccessor world) {
             if (world instanceof ServerLevelAccessor accessor) {
                 return Objects.requireNonNull(accessor.getLevel().getServer().getLevel(Level.OVERWORLD))
-                        .getDataStorage().computeIfAbsent(MapVariables::load, MapVariables::new, DATA_NAME);
+                        .getDataStorage().computeIfAbsent(Map::load, Map::new, DATA_NAME);
             }
             return clientSide;
         }
 
-        public static MapVariables load(CompoundTag tag) { var data = new MapVariables(); data.read(tag); return data; }
+        public static Map load(CompoundTag tag) { var data = new Map(); data.read(tag); return data; }
 
         @Override
         public void read(CompoundTag tag) {}
@@ -89,16 +89,15 @@ public class GlowingBlocksNetworkMessage {
         public boolean isWorldScoped() { return false; }
     }
 
-    // Base class for save synchronize data
+    // SavedDataSyncMessage class for save synchronize data (ACTIVE/DISABLE xray)
     public static class SavedDataSyncMessage { // Saved data
         private final SyncedSavedData data;
 
         public SavedDataSyncMessage(FriendlyByteBuf buffer) {
             String id = buffer.readUtf();
             CompoundTag tag = buffer.readNbt();
-
-            if (MapVariables.DATA_NAME.equals(id)) { data = MapVariables.load(tag); }
-            else { data = WorldVariables.load(tag); }
+            if (Map.DATA_NAME.equals(id)) { data = Map.load(tag); }
+            else { data = World.load(tag); }
         }
 
         public SavedDataSyncMessage(SyncedSavedData data) { this.data = data; }
@@ -109,13 +108,14 @@ public class GlowingBlocksNetworkMessage {
         }
 
         public static void handler(SavedDataSyncMessage msg, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> {
-                if (!ctx.get().getDirection().getReceptionSide().isServer()) {
-                    if (msg.data instanceof MapVariables mapVars) MapVariables.clientSide = mapVars;
-                    else if (msg.data instanceof WorldVariables worldVars) WorldVariables.clientSide = worldVars;
+            NetworkEvent.Context context = ctx.get();
+            context.enqueueWork(() -> {
+                if (!context.getDirection().getReceptionSide().isServer()) {
+                    if (msg.data instanceof Map map) { Map.clientSide = map; } // Map Saved Data
+                    else if (msg.data instanceof World world) { World.clientSide = world; } // World Saved Data
                 }
             });
-            ctx.get().setPacketHandled(true);
+            context.setPacketHandled(true);
         }
     }
 }
