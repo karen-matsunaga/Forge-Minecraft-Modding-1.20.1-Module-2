@@ -101,6 +101,8 @@ public class ModEvents {
     /* CUSTOM EVENT - Hammer's tool - Don't be a jerk License - Done with the help of
        https://github.com/CoFH/CoFHCore/blob/1.19.x/src/main/java/cofh/core/event/AreaEffectEvents.java */
     private static final Set<BlockPos> HARVESTED_BLOCKS = new HashSet<>(); // Hammer's receive blocks range
+    private static BlockPos lastSentPos = null; // Hammer Tick position
+    private static int tickDelay = 0; // Hammer Tick delay
 
     @SubscribeEvent
     public static void onHammerUsage(BlockEvent.BreakEvent event) {
@@ -123,22 +125,17 @@ public class ModEvents {
         }
     }
 
-    // Hammer Tick
-    private static BlockPos lastSentPos = null;
-    private static int tickDelay = 0;
-
     @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
+    public static void onHammerTick(TickEvent.ClientTickEvent event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         if (event.phase == TickEvent.Phase.END && player != null) {
-            ItemStack held = player.getMainHandItem();
             HitResult hit = mc.hitResult;
             HammerItem.clientTick();
-            if (!(held.getItem() instanceof HammerItem)) { lastSentPos = null; return; } // Player hasn't HammerItem
-            if (hit == null || hit.getType() != HitResult.Type.BLOCK) { return; }
+            if (!(player.getMainHandItem().getItem() instanceof HammerItem)) { lastSentPos = null; return; }
+            if (hit == null || hit.getType() != HitResult.Type.BLOCK) { return; } // Player hasn't HammerItem
             BlockPos pos = ((BlockHitResult) hit).getBlockPos();
-            if (!pos.equals(lastSentPos) && tickDelay-- <= 0) {
+            if (!pos.equals(lastSentPos) && tickDelay-- <= 0) { // Hammer render position
                 lastSentPos = pos;
                 tickDelay = 5;
                 ModNetworks.PACKET_HANDLER.sendToServer(new ServerHammerBlockRenderMessage(pos));
@@ -146,12 +143,11 @@ public class ModEvents {
         }
     }
 
-    // Hammer Highlight Renderer blocks
     @SubscribeEvent
-    public static void onRenderLevel(RenderLevelStageEvent event) {
+    public static void onHammerRender(RenderLevelStageEvent event) { // Hammer Highlight Renderer blocks
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-            HammerItem.renderHighlight(event.getPoseStack(), event.getCamera(), bufferSource);
+            HammerItem.renderHighlight(event.getPoseStack(), event.getCamera(), bufferSource); // Renderer block positions
             bufferSource.endBatch(); // Finish the drawing!
         }
     }
@@ -159,25 +155,24 @@ public class ModEvents {
     // CUSTOM EVENT - Home's commands
     @SubscribeEvent
     public static void onCommandsRegister(RegisterCommandsEvent event) { // Register all custom commands
-        new SetHomeCommand(event.getDispatcher()); // HOME command
-        new ReturnHomeCommand(event.getDispatcher());
+        new SetHomeCommand(event.getDispatcher()); // SET HOME command
+        new ReturnHomeCommand(event.getDispatcher()); // RETURN HOME command
         ConfigCommand.register(event.getDispatcher());
     }
 
-    // If player's dies is respawned where saved the set home
     @SubscribeEvent
-    public static void onPlayerCloned(PlayerEvent.Clone event) {
+    public static void onPlayerCloned(PlayerEvent.Clone event) { // If player dies is respawned where saved the SET HOME
         event.getEntity().getPersistentData().putIntArray("mccourse.homepos",
                 event.getOriginal().getPersistentData().getIntArray("mccourse.homepos"));
     }
 
     // CUSTOM EVENT - An event example that to show if player hit on sheep entity using specific items
     private static void chat(String message, Player player) {
-        MCCourseMod.LOGGER.info(message, player.getName().getString());
+        MCCourseMod.LOGGER.info(message, player.getName().getString()); // CUSTOM METHOD - Chat message on prompt
     }
 
     private static boolean item(Player player, Item item) {
-        return player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == item;
+        return player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == item; // CUSTOM METHOD - Used item
     }
 
     @SubscribeEvent
@@ -193,16 +188,25 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - Custom Villager's professions trade
+    // CUSTOM EVENT - Custom Villager's professions and Custom Villager Wandering trades
+    private static VillagerTrades.ItemListing createTrade(List<Item> items, List<Integer> levelCount,
+                                                          float multiplier) {
+        return (pTrader, pRandom) -> new MerchantOffer(new ItemStack(items.get(0), levelCount.get(0)),
+                new ItemStack(items.get(1), levelCount.get(1)), levelCount.get(2), levelCount.get(3), multiplier);
+    }
+
     private static void normal(Int2ObjectMap<List<VillagerTrades.ItemListing>> trade,
                                List<Item> items, int level, List<Integer> levelCount, float multiplier) {
-        trade.get(level).add((pTrader, pRandom) -> new MerchantOffer(
-                new ItemStack(items.get(0), levelCount.get(0)),
-                new ItemStack(items.get(1), levelCount.get(1)), levelCount.get(2), levelCount.get(3), multiplier));
+        trade.get(level).add(createTrade(items, levelCount, multiplier));
+    }
+
+    private static void wandering(List<VillagerTrades.ItemListing> trade,
+                                  List<Item> items, List<Integer> levelCount, float multiplier) {
+        trade.add(createTrade(items, levelCount, multiplier));
     }
 
     @SubscribeEvent
-    public static void addCustomTrades(VillagerTradesEvent event) {
+    public static void addNormalTrades(VillagerTradesEvent event) {
         Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades(); // List of all trades
         // Villager's FARM profession - List of all trades that the player can trade
         if (event.getType() == VillagerProfession.FARMER) {
@@ -214,8 +218,7 @@ public class ModEvents {
         // Villager's TOOLSMITH profession - List of all trades that the player can trade
         if (event.getType() == VillagerProfession.TOOLSMITH) {
             // Received ALEXANDRITE PAXEL with Villager's level 3
-            normal(trades, List.of(Items.EMERALD, ModItems.ALEXANDRITE_PAXEL.get()), 3,
-                    List.of(12, 1, 2, 5), 0.06f);
+            normal(trades, List.of(Items.EMERALD, ModItems.ALEXANDRITE_PAXEL.get()), 3, List.of(12, 1, 2, 5), 0.06f);
         }
         // Custom Villager's SOUNDMASTER profession - List of all trades that the player can trade
         if (event.getType() == ModVillagers.SOUND_MASTER.get()) {
@@ -223,13 +226,6 @@ public class ModEvents {
             normal(trades, List.of(Items.EMERALD, ModBlocks.SOUND_BLOCK.get().asItem()), 1,
                     List.of(25, 1, 2, 5), 0.06f);
         }
-    }
-
-    // CUSTOM EVENT - Custom Villager Wandering
-    private static void wandering(List<VillagerTrades.ItemListing> trade,
-                                  List<Item> items, List<Integer> levelCount, float multiplier) {
-        trade.add((pTrader, pRandom) -> new MerchantOffer(new ItemStack(items.get(0), levelCount.get(0)),
-                new ItemStack(items.get(1), levelCount.get(1)), levelCount.get(2), levelCount.get(3), multiplier));
     }
 
     @SubscribeEvent
@@ -242,8 +238,7 @@ public class ModEvents {
         // Received KOHLRABI SEEDS like Rare Trades
         wandering(rare, List.of(Items.EMERALD, ModItems.KOHLRABI_SEEDS.get()), List.of(5, 1, 3, 2), 0.02f);
         // Magic Book custom block
-        wandering(rare, List.of(Items.EMERALD, ModBlocks.MAGIC_BOOK_BLOCK.get().asItem()),
-                List.of(64, 1, 9, 10), 0.06f);
+        wandering(rare, List.of(Items.EMERALD, ModBlocks.MAGIC_BOOK_BLOCK.get().asItem()), List.of(64, 1, 9, 10), 0.06f);
     }
 
     // CUSTOM EVENT - RAINBOW | AUTO SMELT | MORE ORES | MAGNETIC custom enchantments
@@ -457,9 +452,8 @@ public class ModEvents {
         }
     }
 
-    // Active Fly with Item
     private static boolean slot(Player player, EquipmentSlot slot, TagKey<Item> item) {
-        return player.getItemBySlot(slot).is(item);
+        return player.getItemBySlot(slot).is(item); // Active Fly with Item
     }
 
     @SubscribeEvent
@@ -468,12 +462,12 @@ public class ModEvents {
         if ((event.phase == TickEvent.Phase.END) && !player.level().isClientSide()) {
             Abilities abilities = player.getAbilities();
             // Player used FULL ARMOR or has FLY EFFECT
-            boolean hasArmor = (slot(player, EquipmentSlot.HEAD, ModTags.Items.HELMET_FLY) &&
+            boolean hasItem = (slot(player, EquipmentSlot.HEAD, ModTags.Items.HELMET_FLY) &&
             slot(player, EquipmentSlot.CHEST, ModTags.Items.CHESTPLATE_FLY) &&
             slot(player, EquipmentSlot.LEGS, ModTags.Items.LEGGINGS_FLY) &&
             slot(player, EquipmentSlot.FEET, ModTags.Items.BOOTS_FLY)) || player.hasEffect(ModEffects.FLY_EFFECT.get());
             // Player has FULL ARMOR or FLY EFFECT
-            if (hasArmor) { if (!abilities.mayfly) { abilities.mayfly = true; } }
+            if (hasItem) { if (!abilities.mayfly) { abilities.mayfly = true; } }
             // Player hasn't FULL ARMOR or FLY EFFECT
             else { if (abilities.mayfly && !player.isCreative()) { abilities.mayfly = false; abilities.flying = false; } }
             player.onUpdateAbilities();
@@ -504,10 +498,9 @@ public class ModEvents {
         }
     }
 
-    // Player is on [Overworld, Nether, End, etc.]
     @SubscribeEvent
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-        Player player = event.getEntity();
+        Player player = event.getEntity(); // Player is on [Overworld, Nether, End, etc.]
         if (!player.level().isClientSide()) { sendPacket(player, var(player, 2)); }
     }
 
@@ -529,14 +522,14 @@ public class ModEvents {
     Map.entry(Tags.Blocks.ORES_NETHERITE_SCRAP, 0xFFD22CF8), Map.entry(ModTags.Blocks.MCCOURSE_ORES, 0xFFffc0eb),
     Map.entry(ModTags.Blocks.SPECIAL_METAL_DETECTOR_VALUABLES, 0xFF157ccb));
 
-    // Added all blocks shape with respective color
     private static void add(double x, double y, double z, int color) {
+        // Added all blocks shape with respective color
         if (bufferBuilder == null || !bufferBuilder.building()) { return; }
         if (format == DefaultVertexFormat.POSITION_COLOR) { bufferBuilder.vertex(x, y, z).color(color).endVertex(); }
     }
 
-    // Building all block shape with respective mode and format
     private static boolean begin() {
+        // Building all block shape with respective mode and format
         if (ModEvents.bufferBuilder == null || !ModEvents.bufferBuilder.building()) {
             clear();
             if (vertexBuffer == null) {
@@ -550,13 +543,13 @@ public class ModEvents {
         return false;
     }
 
-    // Before creating the blocks, cleaning is done
     private static void clear() {
+        // Before creating the blocks, cleaning is done
         if (vertexBuffer != null) { vertexBuffer.close(); vertexBuffer = null; }
     }
 
-    // After creating the block
     private static void end() {
+        // After creating the block
         if (bufferBuilder == null || !bufferBuilder.building()) { return; }
         if (vertexBuffer != null) { vertexBuffer.close(); }
         vertexBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
@@ -565,9 +558,8 @@ public class ModEvents {
         VertexBuffer.unbind();
     }
 
-    // Render block shape
     private static void renderShape(VertexBuffer vertexBuffer, double x, double y, double z,
-                                    int color) {
+                                    int color) { // Render block shape
         if (currentStage == 0 || currentStage != targetStage) { return; }
         if (poseStack == null || projectionMatrix == null) { return; }
         if (vertexBuffer == null) { return; }
@@ -601,9 +593,8 @@ public class ModEvents {
         poseStack.popPose();
     }
 
-    // CUSTOM METHOD - Render block shape on world
     private static void stage(List<Integer> stage, List<Boolean> bool,
-                              RenderLevelStageEvent event) {
+                              RenderLevelStageEvent event) { // CUSTOM METHOD - Render block shape on world
         currentStage = stage.get(0);
         RenderSystem.depthMask(bool.get(0));
         renderShapes(event);
@@ -612,17 +603,16 @@ public class ModEvents {
         currentStage = stage.get(1);
     }
 
-    // Where render block shape on world
     @SubscribeEvent
-    public static void renderLevel(RenderLevelStageEvent event) {
+    public static void renderLevel(RenderLevelStageEvent event) { // Where render block shape on world
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) { stage(List.of(1, 0), List.of(false, true), event); }
         else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             stage(List.of(2, 0), List.of(true, true), event);
         }
     }
 
-    // Created block shape with all blocks and colors defined on renderColors variable
     private static void renderShapes(RenderLevelStageEvent event) {
+        // Created block shape with all blocks and colors defined on renderColors variable
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         Entity entity = minecraft.gameRenderer.getMainCamera().getEntity();
@@ -673,9 +663,8 @@ public class ModEvents {
         }
     }
 
-    // Xray items - Enchanted Helmet or Metal Detector
     private static ItemStack has(Player player, EquipmentSlot slot) {
-        return player.getItemBySlot(slot);
+        return player.getItemBySlot(slot); // Xray items - Enchanted Helmet or Metal Detector
     }
 
     private static void change(GlowingBlocksNetworkMessage.World worldVar, boolean item,
@@ -713,9 +702,8 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Decapitator
-    // Check if it is a log or a leaf
-    private static boolean isLogLeaf(BlockState state, TagKey<Block> block) {
-        return state.is(block);
+    private static boolean isBlock(BlockState state, TagKey<Block> block) {
+        return state.is(block); // Check if it is a log or a leaf
     }
 
     @SubscribeEvent
@@ -725,48 +713,41 @@ public class ModEvents {
             BlockPos origin = event.getPos();
             BlockState originState = level.getBlockState(origin);
             Player player = event.getPlayer();
-            // Checks if the broken block is a log
-            if (isLogLeaf(originState, BlockTags.LOGS)) {
-                // Checks if you are using the correct tool
-                if (player.getMainHandItem().getItem().isCorrectToolForDrops(originState)) {
-                    // BFS (or DFS) search for connected logs and leaves
-                    Set<BlockPos> visited = new HashSet<>();
+            ItemStack tool = player.getMainHandItem();
+            if (isBlock(originState, BlockTags.LOGS)) { // Checks if the broken block is a log
+                if (tool.getItem().isCorrectToolForDrops(originState)) { // Checks if you are using the correct tool
+                    Set<BlockPos> visited = new HashSet<>(); // BFS (or DFS) search for connected logs and leaves
                     Queue<BlockPos> toVisit = new ArrayDeque<>();
                     toVisit.add(origin);
                     int maxDistance = 50; // Maximum search distance
                     int maxHeight = 512; // Height limit (e.g. 10 blocks above and below)
+                    int logCount = 0;
                     while (!toVisit.isEmpty()) {
                         BlockPos pos = toVisit.poll();
-                        if (!visited.add(pos)) { continue; } // Already visited
-                        // Check if it is within the height limit
-                        if (Math.abs(pos.getY() - origin.getY()) > maxHeight) { continue; }
-                        // Check the surrounding blocks (relative to the current position)
-                        for (int dx = -1; dx <= 1; dx++) {
+                        // Check if it is already visited or within the height limit
+                        if (!visited.add(pos) || Math.abs(pos.getY() - origin.getY()) > maxHeight) { continue; }
+                        for (int dx = -1; dx <= 1; dx++) { // Check the surrounding blocks (relative to the current position)
                             for (int dy = -1; dy <= 1; dy++) {
                                 for (int dz = -1; dz <= 1; dz++) {
                                     BlockPos offset = pos.offset(dx, dy, dz);
-                                    if (visited.contains(offset)) { continue; }
-                                    if (offset.distManhattan(origin) > maxDistance) { continue; } // Limit horizontal distance
+                                    // Limit horizontal distance
+                                    if (visited.contains(offset) || offset.distManhattan(origin) > maxDistance) { continue; }
                                     BlockState neighborState = level.getBlockState(offset);
-                                    if (isLogLeaf(neighborState, BlockTags.LOGS) ||
-                                            isLogLeaf(neighborState, BlockTags.LEAVES)) {
+                                    if (isBlock(neighborState, BlockTags.LOGS) || isBlock(neighborState, BlockTags.LEAVES)) {
                                         toVisit.add(offset);
                                     }
                                 }
                             }
                         }
                     }
-                    int logCount = 0;
                     for (BlockPos pos : visited) {
                         BlockState state = level.getBlockState(pos);
-                        if (isLogLeaf(state, BlockTags.LOGS) || isLogLeaf(state, BlockTags.LEAVES)) {
+                        if (isBlock(state, BlockTags.LOGS) || isBlock(state, BlockTags.LEAVES)) {
                             level.destroyBlock(pos, true); // Drop the blocks
-                            if (isLogLeaf(state, BlockTags.LOGS)) { logCount++; } // Damage tool
+                            if (isBlock(state, BlockTags.LOGS)) { logCount++; } // Damage tool
                         }
                     }
-                    // Applies damage proportional to the amount of logs broken
-                    if (logCount > 0) {
-                        ItemStack tool = player.getMainHandItem();
+                    if (logCount > 0) { // Applies damage proportional to the amount of logs broken
                         tool.hurtAndBreak(logCount, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
                     }
                 }
@@ -778,8 +759,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedBlockFlyEnchantment(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity(); // Entity is a player
-        // Player has Block Fly enchantment
-        if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BLOCK_FLY.get(), player) > 0) {
+        if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BLOCK_FLY.get(), player) > 0) { // There is Block Fly enchantment
             if ((!player.onGround() && !player.isUnderWater()) || player.isUnderWater()) {
                 float oldSpeed = event.getOriginalSpeed(); // Old speed
                 event.setNewSpeed(oldSpeed * 5); // New speed -> Fixed speed mining
@@ -789,20 +769,17 @@ public class ModEvents {
 
     // CUSTOM EVENT - Mccourse Elevator advanced block
     private static void send(boolean response) {
-        ModNetworks.PACKET_HANDLER.sendToServer(new MccourseElevatorKeyInputMessage(response));
+        ModNetworks.PACKET_HANDLER.sendToServer(new MccourseElevatorKeyInputMessage(response)); // Client -> Server
     }
 
     @SubscribeEvent
     public static void activatedMccourseElevatorOnKeyInput(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-        if (player != null) {
-            // Checks if the player is over the elevator
+        if (player != null) { // Checks if the player is over the elevator
             BlockPos pos = BlockPos.containing(player.getX(), player.getY() - 1, player.getZ());
-            if (player.level().getBlockState(pos).getBlock() == ModBlocks.MCCOURSE_ELEVATOR.get()) {
-                // Detects JUMP
+            if (player.level().getBlockState(pos).getBlock() == ModBlocks.MCCOURSE_ELEVATOR.get()) { // Detects JUMP or SHIFT
                 if (InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_SPACE)) { send(true); }
-                // Detects SHIFT/crouch
                 if (player.isShiftKeyDown()) { send(false); }
             }
         }
@@ -836,21 +813,18 @@ public class ModEvents {
         DateTimeFormatter.ofPattern("HH:mm:ss"))).withStyle(Style.EMPTY.withColor(color).withItalic(false));
     }
 
-    // Player receives items after death
     private static void setRestoredVault(NonNullList<ItemStack> type, List<ItemStack> restored) {
-        if (restored != null) {
+        if (restored != null) { // Player receives items after death
             for (int i = 0; i < restored.size(); i++) {
                 if (!restored.get(i).isEmpty()) { type.set(i, restored.get(i)); } // Added all items on Player inventory
             }
         }
     }
 
-    // Player normally drop all items when death
     @SubscribeEvent
     public static void activatedEternalEnchantmentOnPlayerDeath(LivingDeathEvent event) {
-        // Entity is player
-        if (event.getEntity() instanceof Player player) {
-            UUID playerUUID = player.getUUID(); // Player id
+        if (event.getEntity() instanceof Player player) { // Entity is player
+            UUID playerUUID = player.getUUID(); // Player UUID
             List<ItemStack> vaultItems = new ArrayList<>(); // Added rest items on Vault item
             // Added all Inventory slots, Armor slots and Offhand slot
             List<ItemStack> inventoryPreserve = new ArrayList<>(Collections.nCopies(36, ItemStack.EMPTY));
@@ -862,31 +836,25 @@ public class ModEvents {
             setPreservedVault(player.getInventory().items, inventoryPreserve, vaultItems);
             setPreservedVault(player.getInventory().armor, armorPreserve, vaultItems);
             setPreservedVault(player.getInventory().offhand, offhandPreserve, vaultItems);
-            // Save data
+            // Save items data
             preservedItems.put(playerUUID, inventoryPreserve);
             preservedArmor.put(playerUUID, armorPreserve);
             preservedOffhand.put(playerUUID, offhandPreserve);
             preservedExperience.put(playerUUID, experienceData);
-            // Reset to prevent drop
+            // Reset EXPERIENCE to prevent drop
             player.experienceLevel = 0;
             player.experienceProgress = 0;
             player.totalExperience = 0;
-            // Get position and time
-            BlockPos pos = player.blockPosition(); // Player X, Y and Z positions
-            // Display PLAYER NAME, death (X, Y and Z) positions and TIME showing (Hours::Minutes::Seconds)
-            Component displayName = itemChatMessage(player, pos, ChatFormatting.GREEN);
-            // Saves items from the Vault
-            if (!vaultItems.isEmpty()) {
+            // Display PLAYER NAME, Player death (X, Y and Z) positions and TIME showing (Hours::Minutes::Seconds)
+            Component displayName = itemChatMessage(player, player.blockPosition(), ChatFormatting.GREEN);
+            if (!vaultItems.isEmpty()) { // Saves items from the Vault
                 ItemStack vaultItem = new ItemStack(ModItems.VAULT.get());
                 CompoundTag vaultTag = new CompoundTag();
                 ListTag itemListTag = new ListTag();
-                // Create VaultItem with the items data
                 vaultItems.forEach(item -> { CompoundTag itemTag = new CompoundTag(); item.save(itemTag);
-                    itemListTag.add(itemTag); });
-                // Added information on Vault item
-                vaultTag.put("VaultItems", itemListTag);
-                // Save custom name in NBT
-                vaultTag.putString("DisplayName", displayName.toString());
+                    itemListTag.add(itemTag); }); // Create VaultItem with the items data
+                vaultTag.put("VaultItems", itemListTag); // Added information on Vault item
+                vaultTag.putString("DisplayName", displayName.toString()); // Save custom name in NBT
                 vaultItem.setTag(vaultTag);
                 vaultItem.setHoverName(displayName);
                 /* Temporarily saved for the clone event;
@@ -899,9 +867,8 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void activatedEternalEnchantmentOnPlayerClone(PlayerEvent.Clone event) {
-        // Ensures that it only runs after death
-        if (event.isWasDeath()) {
-            UUID playerUUID = event.getOriginal().getUUID(); // Get Player id
+        if (event.isWasDeath()) { // Ensures that it only runs AFTER death
+            UUID playerUUID = event.getOriginal().getUUID(); // Get Player UUID
             Player newPlayer = event.getEntity(); // Entity is Player -> After death
             Player original = event.getOriginal(); // Old player -> Before death
             BlockPos blockPos = original.blockPosition(); // Player position after death
@@ -926,9 +893,8 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Crop replant
-    // Custom method - Damage tool
     private static void damageToolIfHoe(ItemStack tool, Player player) {
-        if (tool.getItem() instanceof HoeItem) {
+        if (tool.getItem() instanceof HoeItem) { // CUSTOM METHOD - Damage tool
             tool.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
         }
     }
@@ -941,9 +907,8 @@ public class ModEvents {
         damageToolIfHoe(tool, player); // Spend tool durability
     }
 
-    // Crop automatically replant
     @SubscribeEvent
-    public static void cropReplant(BlockEvent.BreakEvent event) {
+    public static void cropReplant(BlockEvent.BreakEvent event) { // Crop automatically replant
         Level level = (Level) event.getLevel();
         BlockPos pos = event.getPos();
         BlockState state = level.getBlockState(pos);
@@ -953,8 +918,8 @@ public class ModEvents {
             if (!(!heldItem.isEmpty() && heldItem.getItem() instanceof HoeItem)) { return; }
             Block block = state.getBlock();
             // Check if it is a plantation that can be replanted is Wheat, Carrot, Potato, Beet, etc.
-            if (block instanceof CropBlock crop) {  // Check if it is ripe
-                if (crop.isMaxAge(state)) { crop(crop, state, level, pos, player, event, heldItem); }
+            if (block instanceof CropBlock crop) {
+                if (crop.isMaxAge(state)) { crop(crop, state, level, pos, player, event, heldItem); } // Check if it is ripe
             }
             else if (block.equals(Blocks.NETHER_WART) && state.getValue(NetherWartBlock.AGE).equals(3)) { // Nether Wart
                 crop(Blocks.NETHER_WART, state, level, pos, player, event, heldItem);
@@ -990,8 +955,8 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - ANVIL disenchanted event
-    // CUSTOM METHOD - Drop enchanted book and base item on ground [world]
     private static void dropItem(ServerLevel world, BlockPos pos, ItemStack stack) {
+        // CUSTOM METHOD - Drop enchanted book and base item on ground [world]
         world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, stack));
     }
 
@@ -1070,8 +1035,7 @@ public class ModEvents {
     // CUSTOM EVENT - NOTHING custom effect
     @SubscribeEvent
     public static void activatedNothingEffect(EntityJoinLevelEvent event) {
-        if (event.getEntity() instanceof Warden warden) {
-            // Checks if there is a player with the effect active nearby
+        if (event.getEntity() instanceof Warden warden) { // Checks if there is a player with the effect active nearby
             List<Player> players = warden.level().getEntitiesOfClass(Player.class, warden.getBoundingBox().inflate(32));
             for (Player player : players) {
                 if (player.hasEffect(ModEffects.NOTHING_EFFECT.get())) {
