@@ -300,7 +300,7 @@
   "enchantment.minecraft.binding_curse.desc": "When applied on armor the player not remove the item of inventory.",
   "enchantment.minecraft.vanishing_curse.desc": "When applied on tool or armor if player killed the item disappears of inventory.",
 
-  "enchantment.mccourse.glowing_mobs.desc": "When applied on helmet armor all entities are detected with X-Ray of mobs.",
+  "enchantment.mccourse.glowing_mobs.desc": "When applied on helmet armor all entities are detected with X-Ray of mobs. (Press M key to activated or disabled)",
   "enchantment.mccourse.glowing_blocks.desc": "When applied on helmet armor all ores blocks are detected with X-Ray of blocks. (Press G key to activated or disabled)",
   "enchantment.mccourse.lightning_striker.desc": "When applied on sword when player hits on entities appears lightning, but player receive damage if attacked.",
 
@@ -313,5 +313,6 @@
   "enchantment.mccourse.recover.desc": "When applied to tools, armor, etc. are regenerate on Player's inventory.",
 
   "key.category.mccourse": "Mccourse",
-  "key.mccourse_glowing_blocks": "Glowing Blocks"
+  "key.mccourse_glowing_blocks": "Glowing Blocks",
+  "key.mccourse_glowing_mobs": "Glowing Mobs"
 }

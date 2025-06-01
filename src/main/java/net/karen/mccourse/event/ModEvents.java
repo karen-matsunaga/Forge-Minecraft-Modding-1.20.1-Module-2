@@ -68,6 +68,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
+import net.minecraft.world.scores.Scoreboard;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
@@ -77,7 +78,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -332,37 +332,48 @@ public class ModEvents {
 
     // Credits by Lykrast - https://github.com/Lykrast/MeetYourFight/blob/master/LICENSE - Distributed under MIT
     // CUSTOM EVENT - Glowing Mobs's custom enchantment - Using code with some modifications
+    private static final Map<UUID, Boolean> glowingState = new HashMap<>(); // GLOWING MOBS state (ON/OFF)
+
     @SubscribeEvent
-    public static void activatedGlowingMobsEnchantment(LivingEvent event) {
-        int GLOWING_EYES = 10; // Range of Glowing effect on mobs
-        if (event.getEntity() instanceof Player player) { // Player is an entity
-            ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD); // Player has an item on helmet slot
-            // Player has a helmet inputted on slot and Glowing Mobs enchantment level
-            if (helmet.isEnchanted() || enchant(helmet, ModEnchantments.GLOWING_MOBS.get()) > 0) {
-                /* Key - Entities colors -> Each group represent with some color (Color)
-                   Value - Entities groups -> Represent as Tag (Group tag name) */
+    public static void activatedGlowingMobsEnchantment(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        if (event.phase == TickEvent.Phase.END) {
+            ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD); // Player has an item on HELMET slot
+            UUID playerUUID = player.getUUID(); // Player UUID -> Detected GLOWING MOBS stage
+            boolean isEnchanted = helmet.isEnchanted() && enchant(helmet, ModEnchantments.GLOWING_MOBS.get()) > 0;
+            if (!isEnchanted) { glowingState.remove(playerUUID); } // Player hasn't GLOWING MOBS is disabled
+            boolean current = glowingState.getOrDefault(playerUUID, false); // GLOWING MOBS default stage is FALSE
+            if (KeyBinding.GLOWING_MOBS_KEY.consumeClick() && KeyBinding.GLOWING_MOBS_KEY.isDown()) { // Press [M] key input
+                if (isEnchanted) { // Player has a HELMET inputted on slot and GLOWING MOBS enchantment level
+                    boolean newState = !current; // Default stage is FALSE
+                    glowingState.put(playerUUID, newState); // Adapted "newState" of "current" stage
+                    messageStage(player, newState ? "Glowing Mobs: ON!" : "Glowing Mobs: OFF!",
+                    newState ? ChatFormatting.GREEN : ChatFormatting.RED); // Toggle ON/OFF
+                }
+                else { messageStage(player, "Glowing Mobs: Enchanted helmet!", ChatFormatting.DARK_RED); } // Hasn't item
+            }
+            if (current && isEnchanted) {
+                /* Key (Color) - Entities colors -> Each group represent with some color
+                   Value (Group tag name) - Entities groups -> Represent as Tag */
                 Map<ChatFormatting, TagKey<EntityType<?>>> entitiesTag = Map.ofEntries(
                 Map.entry(ChatFormatting.RED, ModTags.Entities.MONSTERS), // Monsters
                 Map.entry(ChatFormatting.BLUE, ModTags.Entities.ANIMALS), // Animal and Flying entities
                 Map.entry(ChatFormatting.YELLOW, ModTags.Entities.WATER_ANIMALS), // Water animals
                 Map.entry(ChatFormatting.DARK_PURPLE, ModTags.Entities.VILLAGER)); // Villagers
-                entitiesTag.forEach((key, value) -> { // Added GLOWING EFFECT for each GROUP
-                    String teamName = value.location().getPath();
+                entitiesTag.forEach((color, tag) -> { // Added GLOWING effect for each GROUP
+                    String teamName = tag.location().getPath();
                     List<LivingEntity> entities = player.level().getEntitiesOfClass(LivingEntity.class,
-                    player.getBoundingBox().inflate(GLOWING_EYES),
-                    entity -> entity.getType().is(value) && entity != player);
+                    player.getBoundingBox().inflate(10), // Range of GLOWING effect on mobs
+                    entity -> entity.getType().is(tag) && entity != player);
                     if (!entities.isEmpty()) { // Groups not empty
-                        PlayerTeam team = player.getScoreboard().getPlayerTeam(teamName);
+                        Scoreboard score = player.getScoreboard();
+                        PlayerTeam team = score.getPlayerTeam(teamName);
                         // Added each entity on group with specif tag and color on entitiesTag
-                        if (team == null) {
-                            team = player.getScoreboard().addPlayerTeam(teamName);
-                            team.setColor(key); // Color
-                        }
-                        // Each entity received Glowing effect with specif color on entityColors
-                        PlayerTeam finalTeam = team;
-                        entities.forEach(entity -> { entity.addEffect(new MobEffectInstance(MobEffects.GLOWING,
-                                100, 1, true, false, false));
-                            player.getScoreboard().addPlayerToTeam(entity.getScoreboardName(), finalTeam);
+                        if (team == null) { team = score.addPlayerTeam(teamName); team.setColor(color); }
+                        PlayerTeam finalTeam = team; // Each entity received GLOWING effect with specif color on entitiesTag
+                        entities.forEach(entity -> { entity.addEffect(new MobEffectInstance(
+                            MobEffects.GLOWING, 20, 1, true, false, false));
+                            score.addPlayerToTeam(entity.getScoreboardName(), finalTeam);
                         });
                     }
                 });
@@ -673,7 +684,7 @@ public class ModEvents {
     }
 
     private static void messageStage(Player player, String name, ChatFormatting color) {
-        player.displayClientMessage(Component.translatable("Glowing Blocks: " + name)
+        player.displayClientMessage(Component.translatable(name)
                 .setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD)), true);
     }
 
@@ -686,16 +697,18 @@ public class ModEvents {
             GlowingBlocksNetworkMessage.World worldVar = GlowingBlocksNetworkMessage.World.get(world);
             boolean hasItem = helmet.isEnchanted() && enchant(helmet, ModEnchantments.GLOWING_BLOCKS.get()) > 0 ||
                     has(player, EquipmentSlot.MAINHAND).is(ModItems.METAL_DETECTOR.get());
-            if (KeyBinding.GLOWING_KEY.isDown() && KeyBinding.GLOWING_KEY.consumeClick()) {
-                if (hasItem) {
-                    boolean newState = !worldVar.xray;
+            if (KeyBinding.GLOWING_BLOCKS_KEY.isDown() && KeyBinding.GLOWING_BLOCKS_KEY.consumeClick()) {
+                if (hasItem) { // Has enchanted HELMET or Metal Detector
+                    boolean newState = !worldVar.xray; // Adapted "newState" of "worldVar.xray" stage
                     change(worldVar, newState, world);
-                    messageStage(player, newState ? "Activated" : "Disabled",
-                            newState ? ChatFormatting.DARK_GREEN : ChatFormatting.DARK_RED);
+                    messageStage(player, newState ? "Glowing Blocks: Activated" : "Glowing Blocks: Disabled",
+                    newState ? ChatFormatting.GREEN : ChatFormatting.DARK_RED); // Toggle ON/OFF
                 }
-                else { messageStage(player, "Use a enchanted helmet or a metal detector!", ChatFormatting.RED); }
+                else { // Hasn't item
+                    messageStage(player, "Glowing Blocks: Enchanted helmet or Metal detector!", ChatFormatting.RED);
+                }
             }
-            if (!hasItem && worldVar.xray) { change(worldVar, false, world); }
+            if (!hasItem && worldVar.xray) { change(worldVar, false, world); } // Glowing Blocks disabled
         }
     }
 
