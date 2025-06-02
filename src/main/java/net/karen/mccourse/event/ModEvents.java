@@ -9,89 +9,55 @@ import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.command.*;
 import net.karen.mccourse.effect.ModEffects;
-import net.karen.mccourse.enchantment.ModEnchantments;
-import net.karen.mccourse.item.ModItems;
-import net.karen.mccourse.item.ModesPickaxe;
-import net.karen.mccourse.item.custom.HammerItem;
-import net.karen.mccourse.item.custom.ModesPickaxeItem;
-import net.karen.mccourse.network.MccourseElevatorKeyInputMessage;
-import net.karen.mccourse.network.ModNetworks;
-import net.karen.mccourse.network.GlowingBlocksNetworkMessage;
-import net.karen.mccourse.network.ServerHammerBlockRenderMessage;
-import net.karen.mccourse.util.KeyBinding;
-import net.karen.mccourse.util.ModTags;
-import net.karen.mccourse.villager.ModVillagers;
+import net.karen.mccourse.enchantment.*;
+import net.karen.mccourse.item.*;
+import net.karen.mccourse.item.custom.*;
+import net.karen.mccourse.network.*;
+import net.karen.mccourse.util.*;
+import net.karen.mccourse.villager.*;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.*;
+import net.minecraft.client.multiplayer.*;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.core.*;
+import net.minecraft.nbt.*;
 import net.minecraft.network.chat.*;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
+import net.minecraft.server.level.*;
+import net.minecraft.tags.*;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.*;
+import net.minecraft.world.effect.*;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.monster.warden.Warden;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.entity.player.Abilities;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.npc.*;
+import net.minecraft.world.entity.player.*;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.enchantment.*;
+import net.minecraft.world.item.trading.*;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.scores.PlayerTeam;
-import net.minecraft.world.scores.Scoreboard;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraft.world.level.block.state.*;
+import net.minecraft.world.phys.*;
+import net.minecraft.world.scores.*;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.*;
+import net.minecraftforge.event.entity.*;
+import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.event.village.VillagerTradesEvent;
-import net.minecraftforge.event.village.WandererTradesEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.village.*;
+import net.minecraftforge.eventbus.api.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.command.ConfigCommand;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
-
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -187,8 +153,8 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Custom Villager's professions and Custom Villager Wandering trades
-    private static VillagerTrades.ItemListing createTrade(List<Item> items, List<Integer> levelCount,
-                                                          float multiplier) {
+    private static VillagerTrades.ItemListing createTrade(List<Item> items,
+                                                          List<Integer> levelCount, float multiplier) {
         return (pTrader, pRandom) -> new MerchantOffer(new ItemStack(items.get(0), levelCount.get(0)),
                 new ItemStack(items.get(1), levelCount.get(1)), levelCount.get(2), levelCount.get(3), multiplier);
     }
@@ -662,10 +628,10 @@ public class ModEvents {
                     boolean newState = !worldVar.xray; // Adapted "newState" of "worldVar.xray" stage
                     change(worldVar, newState, world);
                     messageStage(player, newState ? "Glowing Blocks: Activated" : "Glowing Blocks: Disabled",
-                    newState ? ChatFormatting.GREEN : ChatFormatting.DARK_RED); // Toggle ON/OFF
+                    newState ? ChatFormatting.GREEN : ChatFormatting.RED); // Toggle ON/OFF
                 }
                 else { // Hasn't item
-                    messageStage(player, "Glowing Blocks: Enchanted helmet or Metal detector!", ChatFormatting.RED);
+                    messageStage(player, "Glowing Blocks: Enchanted helmet or Metal detector!", ChatFormatting.DARK_RED);
                 }
             }
             if (!hasItem && worldVar.xray) { change(worldVar, false, world); } // Glowing Blocks disabled
