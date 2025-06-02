@@ -269,7 +269,7 @@
   "enchantment.minecraft.swift_sneak.desc": "When applied on leggings armor walk more quickly while sneaking.",
   "enchantment.minecraft.feather_falling.desc": "When applied on boots armor reduces fall damage the player takes, but it does not affect falling speed.",
   "enchantment.minecraft.depth_strider.desc": "When applied on boots armor increases underwater movement speed.",
-  "enchantment.minecraft.frost_walker.desc": "When applied on boots amor creates frosted ice blocks when walking over water, and causes the wearer to be immune to damage from certain blocks such as campfires and magma blocks when stepped on, but not working with lava.",
+  "enchantment.minecraft.frost_walker.desc": "When applied on boots armor creates frosted ice blocks when walking over water, and causes the wearer to be immune to damage from certain blocks such as campfires and magma blocks when stepped on, but not working with lava.",
   "enchantment.minecraft.soul_speed.desc": "When applied on boots armor walk more quickly on soul sand and soul soil blocks.",
 
   "enchantment.minecraft.sharpness.desc": "When applied on sword or axe increases melee damage attack on entities.",

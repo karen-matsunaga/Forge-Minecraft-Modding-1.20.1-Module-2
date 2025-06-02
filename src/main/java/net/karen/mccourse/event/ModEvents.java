@@ -167,8 +167,8 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - An event example that to show if player hit on sheep entity using specific items
-    private static void chat(String message, Player player) {
-        MCCourseMod.LOGGER.info(message, player.getName().getString()); // CUSTOM METHOD - Chat message on prompt
+    private static void chat(String message, Player player) { // CUSTOM METHOD - Chat message on prompt
+        MCCourseMod.LOGGER.info("Sheep was hit with {} by {}", message, player.getName().getString());
     }
 
     private static boolean item(Player player, Item item) {
@@ -179,11 +179,9 @@ public class ModEvents {
     public static void livingDamage(LivingDamageEvent event) {
         if (event.getEntity() instanceof Sheep) {
             if (event.getSource().getDirectEntity() instanceof Player player) {
-                if (item(player, ModItems.ALEXANDRITE_AXE.get())) {
-                    chat("Sheep was hit with Alexandrite Axe by {}", player);
-                }
-                else if (item(player, Items.DIAMOND)) { chat("Sheep was hit with DIAMOND by {}", player); }
-                else { chat("Sheep was hit with something else by {}", player); }
+                if (item(player, ModItems.ALEXANDRITE_AXE.get())) { chat("Alexandrite Axe", player); }
+                else if (item(player, Items.DIAMOND)) { chat("Diamond", player); }
+                else { chat("something else", player); }
             }
         }
     }
