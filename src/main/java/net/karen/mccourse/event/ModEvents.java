@@ -112,14 +112,13 @@ public class ModEvents {
         if (HARVESTED_BLOCKS.contains(initalBlockPos)) { return; } // Different type of blocks
         // If player destroyed a block with Hammer tool
         if (mainHandItem.getItem() instanceof HammerItem hammer && player instanceof ServerPlayer serverPlayer) {
-            int radius = hammer.getRadius(); // Radius declared on ModItems with HammerItem class
             // Player's position to break a block with Hammer tool
-            for (BlockPos pos : HammerItem.getBlocksToBeDestroyed(radius, initalBlockPos, serverPlayer)) {
+            for (BlockPos pos : HammerItem.getBlocksToBeDestroyed(hammer.getRadius(), initalBlockPos, serverPlayer)) {
                 boolean item = hammer.isCorrectToolForDrops(mainHandItem, event.getLevel().getBlockState(pos));
                 if (pos == initalBlockPos || !item) { continue; }
                 // Have to add them to a Set otherwise, the same code right here will get called for each block!
-                HARVESTED_BLOCKS.add(pos); // Player destroyed block with Hammer tool
-                serverPlayer.gameMode.destroyBlock(pos);
+                HARVESTED_BLOCKS.add(pos);
+                serverPlayer.gameMode.destroyBlock(pos); // Player destroyed block with Hammer tool
                 HARVESTED_BLOCKS.remove(pos);
             }
         }
@@ -167,8 +166,9 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - An event example that to show if player hit on sheep entity using specific items
-    private static void chat(String message, Player player) { // CUSTOM METHOD - Chat message on prompt
-        MCCourseMod.LOGGER.info("Sheep was hit with {} by {}", message, player.getName().getString());
+    private static void chat(String item, Player player) {
+        // CUSTOM METHOD - Chat message on prompt
+        MCCourseMod.LOGGER.info("Sheep was hit with {} by {}", item, player.getName().getString());
     }
 
     private static boolean item(Player player, Item item) {
@@ -220,9 +220,8 @@ public class ModEvents {
         }
         // Custom Villager's SOUNDMASTER profession - List of all trades that the player can trade
         if (event.getType() == ModVillagers.SOUND_MASTER.get()) {
-            // Received Sound Block with Villager's level 1
             normal(trades, List.of(Items.EMERALD, ModBlocks.SOUND_BLOCK.get().asItem()), 1,
-                    List.of(25, 1, 2, 5), 0.06f);
+                    List.of(25, 1, 2, 5), 0.06f); // Received Sound Block with Villager's level 1
         }
     }
 
@@ -263,8 +262,7 @@ public class ModEvents {
         ItemStack tool = player.getMainHandItem();
         int fortune = enchant(tool, Enchantments.BLOCK_FORTUNE);
         int moreOres = enchant(tool, ModEnchantments.MORE_ORES.get());
-        // RAINBOW ENCHANTMENT
-        if (enchant(tool, ModEnchantments.RAINBOW.get()) > 0) {
+        if (enchant(tool, ModEnchantments.RAINBOW.get()) > 0) { // * RAINBOW ENCHANTMENT *
             Map<Block, TagKey<Block>> rainbowMap = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL,
             Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER, Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND,
             Blocks.EMERALD_BLOCK, Tags.Blocks.ORES_EMERALD, Blocks.GOLD_BLOCK, Tags.Blocks.ORES_GOLD,
@@ -280,8 +278,7 @@ public class ModEvents {
         if (world instanceof ServerLevel serverLevel) {
             boolean cancelVanillaDrop = false; // Adapt the drop according to the enchantment being true
             List<ItemStack> finalDrops = new ArrayList<>(); // Items caused by enchantments are stored in the list
-            // AUTO SMELT ENCHANTMENT
-            if (enchant(tool, ModEnchantments.AUTO_SMELT.get()) > 0) {
+            if (enchant(tool, ModEnchantments.AUTO_SMELT.get()) > 0) { // * AUTO SMELT ENCHANTMENT *
                 Optional<SmeltingRecipe> recipe = serverLevel.getRecipeManager().getRecipeFor(RecipeType.SMELTING,
                         new SimpleContainer(new ItemStack(state.getBlock())), serverLevel);
                 if (recipe.isPresent()) { // Has recipe
@@ -291,8 +288,7 @@ public class ModEvents {
                     cancelVanillaDrop = true;
                 }
             }
-            // MORE ORES ENCHANTMENT
-            if (moreOres > 0) {
+            if (moreOres > 0) { // * MORE ORES ENCHANTMENT *
                 List<TagKey<Block>> oresTags = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS,
                 ModTags.Blocks.MORE_ORES_TWO_DROPS, ModTags.Blocks.MORE_ORES_THREE_DROPS,
                 ModTags.Blocks.MORE_ORES_FOUR_DROPS, ModTags.Blocks.MORE_ORES_FIVE_DROPS);
@@ -306,8 +302,7 @@ public class ModEvents {
                     }
                 }
             }
-            // MAGNETIC ENCHANTMENT
-            if (enchant(tool, ModEnchantments.MAGNETIC.get()) > 0 && !state.isAir()) {
+            if (enchant(tool, ModEnchantments.MAGNETIC.get()) > 0 && !state.isAir()) {  // * MAGNETIC ENCHANTMENT *
                 if (finalDrops.isEmpty()) { // FinalDrops empty list added all items on it is
                     finalDrops.addAll(Block.getDrops(state, serverLevel, pos, null, player, tool));
                 }
@@ -346,8 +341,7 @@ public class ModEvents {
                 else { messageStage(player, "Glowing Mobs: Enchanted helmet!", ChatFormatting.DARK_RED); } // Hasn't item
             }
             if (current && isEnchanted) {
-                /* Key (Color) - Entities colors -> Each group represent with some color
-                   Value (Group tag name) - Entities groups -> Represent as Tag */
+                // Key (Color) -> Each group represent with some color. Value (Group tag name) -> Represent as Tag.
                 Map<ChatFormatting, TagKey<EntityType<?>>> entitiesTag = Map.ofEntries(
                 Map.entry(ChatFormatting.RED, ModTags.Entities.MONSTERS), // Monsters
                 Map.entry(ChatFormatting.BLUE, ModTags.Entities.ANIMALS), // Animal and Flying entities
@@ -389,13 +383,12 @@ public class ModEvents {
         if (!stack.isEmpty() && stack.isEnchanted() || stack.getItem() == Items.ENCHANTED_BOOK) {
             if (!enchantments.isEmpty()) {
                 for (int i = 0; i < tooltip.size(); i++) {
-                    String raw = ChatFormatting.stripFormatting(tooltip.get(i).getString()); // Detected line
+                    String raw = ChatFormatting.stripFormatting(tooltip.get(i).getString()); // Detected old line
                     for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
                         Enchantment enchantment = entry.getKey();
                         int level = entry.getValue();
                         String expected = Component.translatable(enchantment.getDescriptionId()).getString();
-                        // Raw equals expected line replace old tooltip to new tooltip
-                        if (raw != null && raw.startsWith(expected)) {
+                        if (raw != null && raw.startsWith(expected)) { // Raw has "expected" line replace old to new tooltip
                             boolean isCurse = enchantment.isCurse();
                             ChatFormatting color = isCurse ? ChatFormatting.RED :
                                 switch (enchantment.category) { // Replace this line with custom styled version
@@ -405,14 +398,12 @@ public class ModEvents {
                                     case WEARABLE -> ChatFormatting.GREEN; case FISHING_ROD -> ChatFormatting.YELLOW;
                                     case BREAKABLE -> ChatFormatting.DARK_GREEN; case VANISHABLE -> ChatFormatting.RED; };
                             String enchant = enchantment.getDescriptionId();
-                            String descriptionValue = enchant + ".desc";
-                            /* Enchantment Levels with Arabic numerals and Enchantment Descriptions with
-                               JSON file -> I18n = en_us.json */
-                            if (level > 0 || enchantment.getMaxLevel() > 0 || I18n.exists(descriptionValue)) {
+                            String descriptionValue = enchant + ".desc"; // JSON file -> I18n = en_us.json
+                            if (level > 0 || I18n.exists(descriptionValue)) {
                                 MutableComponent name = description(enchant, color, List.of(!isCurse, isCurse))
                                         .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level)))
-                                        .append(CommonComponents.NEW_LINE);
-                                // Number line of enchantment names and enchantment descriptions
+                                        .append(CommonComponents.NEW_LINE); // Enchantment Level with Arabic numeral
+                                // Number line of enchantments and enchantment descriptions
                                 tooltip.set(i, name.append(description(descriptionValue, color, List.of(false, false))));
                             }
                             break;
@@ -444,9 +435,9 @@ public class ModEvents {
             x += mc.font.width(text); // Mode Text
             screen(event, mc, mode.toString().replace("_", " "), x + 5, y, 0xFF5555); // Mode Type
             /* drawString method parameters:
-               MC.FONT: The source object used to draw the text; modeTEXT: The text component to be drawn;
-               X/Y: X/Y position when the text will be drawn on screen; 0x0000FF: Text color on hexadecimal format;
-               FALSE: Boolean that indicates if the text should have a shadow (false = without shadow). */
+               * mc.font: The source object used to draw the text; * modeText: The text component to be drawn;
+               * X/Y: X/Y position when the text will be drawn on screen; * 0x0000FF: Text color on hexadecimal format;
+               * FALSE: Boolean that indicates if the text should have a shadow (false = without shadow). */
         }
     }
 
@@ -459,13 +450,11 @@ public class ModEvents {
         Player player = event.player;
         if ((event.phase == TickEvent.Phase.END) && !player.level().isClientSide()) {
             Abilities abilities = player.getAbilities();
-            // Player used FULL ARMOR or has FLY EFFECT
             boolean hasItem = (slot(player, EquipmentSlot.HEAD, ModTags.Items.HELMET_FLY) &&
-            slot(player, EquipmentSlot.CHEST, ModTags.Items.CHESTPLATE_FLY) &&
+            slot(player, EquipmentSlot.CHEST, ModTags.Items.CHESTPLATE_FLY) && // Player used FULL ARMOR or FLY EFFECT
             slot(player, EquipmentSlot.LEGS, ModTags.Items.LEGGINGS_FLY) &&
             slot(player, EquipmentSlot.FEET, ModTags.Items.BOOTS_FLY)) || player.hasEffect(ModEffects.FLY_EFFECT.get());
-            // Player has FULL ARMOR or FLY EFFECT
-            if (hasItem) { if (!abilities.mayfly) { abilities.mayfly = true; } }
+            if (hasItem) { if (!abilities.mayfly) { abilities.mayfly = true; } } // Player has FULL ARMOR or FLY EFFECT
             // Player hasn't FULL ARMOR or FLY EFFECT
             else { if (abilities.mayfly && !player.isCreative()) { abilities.mayfly = false; abilities.flying = false; } }
             player.onUpdateAbilities();
@@ -488,12 +477,9 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) { // Player is on world
-        Player player = event.getEntity();
-        if (!player.level().isClientSide()) {
-            sendPacket(player, var(player, 1));
-            sendPacket(player, var(player, 2));
-        }
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity(); // Player is on world
+        if (!player.level().isClientSide()) { sendPacket(player, var(player, 1)); sendPacket(player, var(player, 2)); }
     }
 
     @SubscribeEvent
@@ -511,7 +497,7 @@ public class ModEvents {
     private static Matrix4f projectionMatrix = null;
     private static final boolean worldCoordinate = true;
     private static final Vec3 offset = Vec3.ZERO;
-    private static int currentStage, targetStage = 0; // NONE: 0, SKY: 1, WORLD: 2
+    private static int currentStage, targetStage = 0; // NONE: 0; SKY: 1; WORLD: 2.
     private static final Map<TagKey<Block>, Integer> renderColors = Map.ofEntries(
     Map.entry(Tags.Blocks.ORES_COAL, 0xFFa9a9a9), Map.entry(Tags.Blocks.ORES_COPPER, 0xFFff8c00),
     Map.entry(Tags.Blocks.ORES_DIAMOND, 0xFF00FEFF), Map.entry(Tags.Blocks.ORES_EMERALD, 0xFF31c831),
@@ -521,13 +507,11 @@ public class ModEvents {
     Map.entry(ModTags.Blocks.SPECIAL_METAL_DETECTOR_VALUABLES, 0xFF157ccb));
 
     private static void add(double x, double y, double z, int color) {
-        // Added all blocks shape with respective color
-        if (bufferBuilder == null || !bufferBuilder.building()) { return; }
+        if (bufferBuilder == null || !bufferBuilder.building()) { return; } // Added all blocks shape with respective color
         if (format == DefaultVertexFormat.POSITION_COLOR) { bufferBuilder.vertex(x, y, z).color(color).endVertex(); }
     }
 
-    private static boolean begin() {
-        // Building all block shape with respective mode and format
+    private static boolean begin() { // Building all block shape with respective mode and format
         if (ModEvents.bufferBuilder == null || !ModEvents.bufferBuilder.building()) {
             clear();
             if (vertexBuffer == null) {
@@ -541,13 +525,11 @@ public class ModEvents {
         return false;
     }
 
-    private static void clear() {
-        // Before creating the blocks, cleaning is done
+    private static void clear() { // Before creating the blocks, cleaning is done
         if (vertexBuffer != null) { vertexBuffer.close(); vertexBuffer = null; }
     }
 
-    private static void end() {
-        // After creating the block
+    private static void end() { // After creating the block
         if (bufferBuilder == null || !bufferBuilder.building()) { return; }
         if (vertexBuffer != null) { vertexBuffer.close(); }
         vertexBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
@@ -564,15 +546,9 @@ public class ModEvents {
         float i, j, k;
         if (worldCoordinate) {
             Vec3 pos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-            i = (float) (x - pos.x());
-            j = (float) (y - pos.y());
-            k = (float) (z - pos.z());
+            i = (float) (x - pos.x()); j = (float) (y - pos.y()); k = (float) (z - pos.z());
         }
-        else {
-            i = (float) x;
-            j = (float) y;
-            k = (float) z;
-        }
+        else { i = (float) x; j = (float) y; k = (float) z; }
         poseStack.pushPose();
         poseStack.translate(i, j, k);
         poseStack.mulPose(Axis.YN.rotationDegrees(0));
@@ -639,10 +615,7 @@ public class ModEvents {
                                 if (level.getBlockState(position).is(key)) {
                                     RenderSystem.depthMask(false);
                                     RenderSystem.disableDepthTest();
-                                    if (begin()) {
-                                        for (int[] c : cubeCoordinates) { add(c[0], c[1], c[2], value); }
-                                        end();
-                                    }
+                                    if (begin()) { for (int[] c : cubeCoordinates) { add(c[0], c[1], c[2], value); } end(); }
                                     if (currentStage == 2) {
                                         ModEvents.targetStage = 2;
                                         renderShape(vertexBuffer, posX, posY, posZ, value);
@@ -955,7 +928,7 @@ public class ModEvents {
     // CUSTOM EVENT - ANVIL disenchanted event
     private static void dropItem(ServerLevel world, BlockPos pos, ItemStack stack) {
         // CUSTOM METHOD - Drop enchanted book and base item on ground [world]
-        world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, stack));
+        world.addFreshEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5, stack));
     }
 
     @SubscribeEvent
@@ -990,12 +963,10 @@ public class ModEvents {
                             ItemStack baseItem = item.copy();
                             EnchantmentHelper.setEnchantments(Map.of(), baseItem);
                             baseItem.removeTagKey("StoredEnchantments");
-                            if (baseItem.getTag() != null && baseItem.hasTag() && baseItem.getTag().isEmpty()) {
-                                baseItem.setTag(null); // Clean up tag if empty
-                            }
-                            // Drop enchanted book WITH enchantments and item WITHOUT enchantments
-                            dropItem(world, blockBelow, groupedBooks);
-                            dropItem(world, blockBelow, baseItem);
+                            CompoundTag tag = baseItem.getTag(); // Clean up tag if empty
+                            if (tag != null && baseItem.hasTag() && tag.isEmpty()) { baseItem.setTag(null); }
+                            dropItem(world, blockBelow, groupedBooks); // Drop enchanted book WITH enchantments
+                            dropItem(world, blockBelow, baseItem); // Drop item WITHOUT enchantments
                         }
                         else if (isBook) { // Book with multiple enchantments
                             enchantments.forEach((key, value) -> { // Split each enchantment into individual books
@@ -1016,9 +987,8 @@ public class ModEvents {
     public static void activatedRecoverEnchantment(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         if ((event.phase == TickEvent.Phase.END) || !player.level().isClientSide()) {
-            /* Desired value for level.getGameTime() % X != 0 (1 second = 20 ticks)
-            Once every [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks */
-            if (player.level().getGameTime() % 40 != 0) { return; }
+            // Desired value for level.getGameTime() % X != 0 -> [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks
+            if (player.level().getGameTime() % 40 != 0) { return; } // Example: 1 second = 20 ticks
             List<NonNullList<ItemStack>> playerSlots = List.of(player.getInventory().items,
             player.getInventory().armor, player.getInventory().offhand);
             playerSlots.forEach(itemStacks -> itemStacks.forEach(stack -> {
