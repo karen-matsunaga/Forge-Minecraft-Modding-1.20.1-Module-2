@@ -1,11 +1,8 @@
 package net.karen.mccourse.datagen;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
-import net.karen.mccourse.datagen.custom.CraftRecipeBuilder;
-import net.karen.mccourse.datagen.custom.EnchantedRecipeBuilder;
 import net.karen.mccourse.datagen.custom.GemEmpoweringRecipeBuilder;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
@@ -14,9 +11,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
@@ -26,11 +21,7 @@ import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
@@ -267,18 +258,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         // My Disenchanted custom block
         itemTransformBlock(List.of(ModBlocks.DISENCHANTED_BLOCK.get(), Blocks.OBSIDIAN), pWriter);
 
-        // My custom recipe builders (DEMO)
-//        new CraftRecipeBuilder(List.of(Ingredient.of(Items.BOOK), Ingredient.of(Items.DIAMOND)), // Ingredients
-//                List.of(1, 2), // Ingredient counts
-//                Items.ENCHANTED_BOOK) // Output
-//                .unlockedBy("has_diamond", has(Items.DIAMOND))
-//                .save(pWriter);
-//
-//        new EnchantedRecipeBuilder(Enchantments.BLOCK_EFFICIENCY, 10,
-//                List.of(Ingredient.of(Items.DIAMOND),
-//                Ingredient.of(Items.BOOK)),
-//                List.of(512, 1), Items.ENCHANTED_BOOK).save(pWriter);
-
         // Luck custom generator enchanted book
         luckItem(List.of(ModItems.LUCK.get(), Items.LAPIS_LAZULI, Items.COPPER_INGOT, Items.BOOK), pWriter);
         luckItem(List.of(ModItems.PICKAXE_LUCK.get(), Items.LAPIS_LAZULI, Items.DIAMOND,
@@ -293,6 +272,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         craftSeven(List.of(ModItems.FARMER.get(), Items.BONE_MEAL), pWriter);
         craftSeven(List.of(ModItems.RESTORE.get(), Items.BOOK), pWriter); // Restore item
         craftSeven(List.of(ModBlocks.MAGIC_BOOK_BLOCK.get(), ModBlocks.MAGIC_BLOCK.get()), pWriter);
+        craftSeven(List.of(ModBlocks.BOOK_DISENCHANTED_BLOCK.get(), Items.ANVIL), pWriter);
 
         // Two items
         craftSevenItems(List.of(ModBlocks.MCCOURSE_GENERATOR.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(),
@@ -497,9 +477,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // Sorts enchantments by level and then by ID
         enchantments.entrySet().stream()
-
-                .sorted(// Enchantment level
-                        Comparator.comparingInt(Map.Entry<Enchantment, Integer>::getValue)
+                .sorted(Comparator.comparingInt(Map.Entry<Enchantment, Integer>::getValue) // Enchantment level
                         // Enchantment name
                         .thenComparing(e ->
                                 Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(e.getKey())).toString()))
@@ -564,36 +542,26 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             @Override
             public JsonObject serializeAdvancement() {
                 JsonObject advancement = new JsonObject();
-
                 advancement.addProperty("parent", "minecraft:recipes/root");
-
                 JsonObject criteria = new JsonObject();
                 JsonObject trigger = new JsonObject();
                 trigger.addProperty("trigger", "minecraft:inventory_changed");
-
                 JsonObject conditions = new JsonObject();
                 JsonArray items = new JsonArray();
                 JsonObject itemObject = new JsonObject();
-
                 // Item to unlock on Recipe Book
                 itemObject.addProperty("item",
                         Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(2).asItem())).toString());
-
                 items.add(itemObject);
                 conditions.add("items", items);
-
                 trigger.add("conditions", conditions);
                 criteria.add("has_item", trigger);
-
                 advancement.add("criteria", criteria);
-
                 JsonObject rewards = new JsonObject();
                 JsonArray recipes = new JsonArray();
                 recipes.add(getId().toString());
                 rewards.add("recipes", recipes);
-
                 advancement.add("rewards", rewards);
-
                 return advancement;
             }
 

@@ -154,6 +154,7 @@
   "block.mccourse.mccourse_elevator": "Mccourse Elevator",
   "block.mccourse.magic": "Magic",
   "block.mccourse.magic_book": "Magic Book Block",
+  "block.mccourse.book_disenchanted_block": "Book Disenchanted Block",
 
   "item.mccourse.mccourse_hammer": "Mccourse Hammer",
   "item.mccourse.vault": "Vault",

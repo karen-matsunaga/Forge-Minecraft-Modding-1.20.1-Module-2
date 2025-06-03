@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-17T11:06:52.6701027	Recipes
+// 1.20.1	2025-06-02T21:25:44.1218328	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -36,6 +36,7 @@ e638de98327fcefb8ed9720908bdc58ddbdf818b data/mccourse/advancements/recipes/misc
 5bde72fe8621cd820f99a052daea489b3bbaa29e data/mccourse/advancements/recipes/misc/alexandrite_from_smelting_nether_alexandrite_ore.json
 548f5248251721a2524e6f58cb4fb0b409fb7cd1 data/mccourse/advancements/recipes/misc/alexandrite_from_smelting_raw_alexandrite.json
 9692490ef4adb1817d3b2a64a470fa1f738a0e11 data/mccourse/advancements/recipes/misc/blaze_rod_block.json
+c4542e33e6d300a53015e0e76b8c468e821022de data/mccourse/advancements/recipes/misc/book_disenchanted_block.json
 51818ba7e6621546a9e2177ffd272ed3126da9b6 data/mccourse/advancements/recipes/misc/craft_crafting_table.json
 d8e1a096fc60f6670b3b247196b7a0ac0843d2d1 data/mccourse/advancements/recipes/misc/disenchanted.json
 d3c788c38d8460512af52b075d307257d121f481 data/mccourse/advancements/recipes/misc/ender_pearl_block.json
@@ -150,6 +151,7 @@ f19276a6f9abefb221d5109b54046ef1680079bc data/mccourse/recipes/alexandrite_sword
 ad6b98f206db5cdc20386bfe3ed1171c00ed4b38 data/mccourse/recipes/black_ender_pearl_block.json
 9b58e5a9bb757b2f1436040556f3fa916ebd4d9d data/mccourse/recipes/blaze_rod_block.json
 b339ac2db6661dd17cc58fc69594a8e4e3e30342 data/mccourse/recipes/blue_ender_pearl_block.json
+97a37e2e9856c1a149a268e96130af810866f521 data/mccourse/recipes/book_disenchanted_block.json
 41a2c2083cb22de5a0f456244918120e827e040e data/mccourse/recipes/brown_ender_pearl_block.json
 defb0ca9e55f7ecfbe7c6ccde329588ec28aa818 data/mccourse/recipes/copper_axe.json
 14be5c351b263a1e5de58b0d5012c0e3de103698 data/mccourse/recipes/copper_boots.json

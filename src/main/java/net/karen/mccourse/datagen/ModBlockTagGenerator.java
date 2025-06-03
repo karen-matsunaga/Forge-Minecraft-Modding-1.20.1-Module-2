@@ -5,13 +5,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
+import net.minecraftforge.common.data.*;
+import org.jetbrains.annotations.*;
 import java.util.concurrent.CompletableFuture;
-
 import static net.karen.mccourse.block.ModBlocks.*;
 import static net.karen.mccourse.util.ModTags.Blocks.*;
 import static net.minecraftforge.common.Tags.Blocks.*;
@@ -33,28 +29,24 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         // Add Mineable's tags - Pickaxe's tag, Alexandrite hammer's tag, etc.
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(SOUND_BLOCK.get(), // Blocks
-                     ALEXANDRITE_STAIRS.get(), // Stairs
-                     ALEXANDRITE_SLABS.get(), // Slabs
-                     GEM_EMPOWERING_STATION.get(), KAUPEN_FURNACE_BLOCK.get(),
-                     GREEN_ENDER_PEARL_BLOCK.get(), BLACK_ENDER_PEARL_BLOCK.get(), // Custom blocks
-                     MAGENTA_ENDER_PEARL_BLOCK.get(), PURPLE_ENDER_PEARL_BLOCK.get(),
-                     ORANGE_ENDER_PEARL_BLOCK.get(), PINK_ENDER_PEARL_BLOCK.get(),
-                     CYAN_ENDER_PEARL_BLOCK.get(), BROWN_ENDER_PEARL_BLOCK.get(),
-                     GRAY_ENDER_PEARL_BLOCK.get(), RED_ENDER_PEARL_BLOCK.get(),
-                     LIME_GREEN_ENDER_PEARL_BLOCK.get(), YELLOW_ENDER_PEARL_BLOCK.get(),
+                .add(ALEXANDRITE_STAIRS.get(), ALEXANDRITE_SLABS.get(), // Stairs and slabs
+                     GEM_EMPOWERING_STATION.get(), KAUPEN_FURNACE_BLOCK.get(), DICE_BLOCK.get(), SOUND_BLOCK.get(), // Custom blocks
+                     GREEN_ENDER_PEARL_BLOCK.get(), BLACK_ENDER_PEARL_BLOCK.get(), MAGENTA_ENDER_PEARL_BLOCK.get(),
+                     PURPLE_ENDER_PEARL_BLOCK.get(), ORANGE_ENDER_PEARL_BLOCK.get(), PINK_ENDER_PEARL_BLOCK.get(),
+                     CYAN_ENDER_PEARL_BLOCK.get(), BROWN_ENDER_PEARL_BLOCK.get(), GRAY_ENDER_PEARL_BLOCK.get(),
+                     RED_ENDER_PEARL_BLOCK.get(), LIME_GREEN_ENDER_PEARL_BLOCK.get(), YELLOW_ENDER_PEARL_BLOCK.get(),
                      BLUE_ENDER_PEARL_BLOCK.get(), WHITE_ENDER_PEARL_BLOCK.get(),
-                     DISENCHANTED_BLOCK.get(), CRAFT_CRAFTING_TABLE.get(),
-                     MCCOURSE_GENERATOR.get(), MCCOURSE_ELEVATOR.get(),
-                     MAGIC_BLOCK.get(), MAGIC_BOOK_BLOCK.get(), DICE_BLOCK.get())
+                     DISENCHANTED_BLOCK.get(), CRAFT_CRAFTING_TABLE.get(), MCCOURSE_GENERATOR.get(), MCCOURSE_ELEVATOR.get(),
+                     MAGIC_BLOCK.get(), MAGIC_BOOK_BLOCK.get(), BOOK_DISENCHANTED_BLOCK.get(),
+                     RUBY_BLOCK.get(), RUBY_BLOCK_1.get(), RUBY_BLOCK_2.get(), RUBY_BLOCK_3.get(),
+                     WAXED_RUBY_BLOCK.get(), WAXED_RUBY_BLOCK_1.get(), WAXED_RUBY_BLOCK_2.get(), WAXED_RUBY_BLOCK_3.get())
                 .addTag(MOBS_BLOCKS_DROPS).addTag(MCCOURSE_ORES).addTag(MCCOURSE_ORES_BLOCK);
 
         // Iron's tool tag
         this.tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(ALEXANDRITE_ORE.get(), PINK_ORE.get(), // Ores
                      SOUND_BLOCK.get(), // Custom Advanced Block
-                     ALEXANDRITE_STAIRS.get(), // Stairs
-                     ALEXANDRITE_SLABS.get()) // Slabs
+                     ALEXANDRITE_STAIRS.get(), ALEXANDRITE_SLABS.get()) // Stairs and slabs
                 .addTag(MCCOURSE_ORES_BLOCK);
 
         // Diamond's tool tag

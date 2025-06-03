@@ -7,26 +7,19 @@ import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.sound.ModSounds;
 import net.karen.mccourse.util.ModWoodTypes;
 import net.karen.mccourse.worldgen.tree.WalnutTreeGrower;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.*;
+import net.minecraft.sounds.*;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.effect.*;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-
+import net.minecraftforge.registries.*;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -35,7 +28,6 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, MCCourseMod.MOD_ID);
 
     // Adding custom blocks
-
     // Blocks - First block
     public static final RegistryObject<Block> ALEXANDRITE_BLOCK = registerBlock("alexandrite_block",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE)
@@ -86,7 +78,8 @@ public class ModBlocks {
 
     // Button block
     public static final RegistryObject<Block> ALEXANDRITE_BUTTON = registerBlock("alexandrite_button",
-            () -> new ButtonBlock(BlockBehaviour.Properties.copy(Blocks.GRANITE_SLAB).sound(SoundType.METAL), BlockSetType.IRON, 10, true));
+            () -> new ButtonBlock(BlockBehaviour.Properties.copy(Blocks.GRANITE_SLAB).sound(SoundType.METAL),
+                    BlockSetType.IRON, 10, true));
 
     // Fence block
     public static final RegistryObject<Block> ALEXANDRITE_FENCE = registerBlock("alexandrite_fence",
@@ -94,7 +87,8 @@ public class ModBlocks {
 
     // Fence gate block
     public static final RegistryObject<Block> ALEXANDRITE_FENCE_GATE = registerBlock("alexandrite_fence_gate",
-            () -> new FenceGateBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), SoundEvents.FENCE_GATE_OPEN, SoundEvents.FENCE_GATE_CLOSE));
+            () -> new FenceGateBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK), SoundEvents.FENCE_GATE_OPEN,
+                    SoundEvents.FENCE_GATE_CLOSE));
 
     // Wall block
     public static final RegistryObject<Block> ALEXANDRITE_WALL = registerBlock("alexandrite_wall",
@@ -110,9 +104,10 @@ public class ModBlocks {
 
     // Alexandrite's custom lamp and custom sound
     public static final RegistryObject<Block> ALEXANDRITE_LAMP = registerBlock("alexandrite_lamp",
-            () -> new AlexandriteLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).sound(ModSounds.ALEXANDRITE_LAMP_SOUNDS)
-                      .strength(1f)
-                      .lightLevel(state -> state.getValue(AlexandriteLampBlock.CLICKED) ? 15 : 0)));
+            () -> new AlexandriteLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE)
+                    .sound(ModSounds.ALEXANDRITE_LAMP_SOUNDS)
+                    .strength(1f)
+                    .lightLevel(state -> state.getValue(AlexandriteLampBlock.CLICKED) ? 15 : 0)));
 
     // Kohlrabi's crop block
     public static final RegistryObject<Block> KOHLRABI_CROP = BLOCKS.register("kohlrabi_crop",
@@ -124,7 +119,8 @@ public class ModBlocks {
 
     // Snapdragon's pot flower
     public static final RegistryObject<Block> POTTED_SNAPDRAGON = registerBlock("potted_snapdragon",
-            () -> new FlowerPotBlock((() -> (FlowerPotBlock) Blocks.FLOWER_POT), SNAPDRAGON, BlockBehaviour.Properties.copy(Blocks.POTTED_ALLIUM)));
+            () -> new FlowerPotBlock((() -> (FlowerPotBlock) Blocks.FLOWER_POT), SNAPDRAGON,
+                    BlockBehaviour.Properties.copy(Blocks.POTTED_ALLIUM)));
 
     // Gem Empowering Station's custom block model
     public static final RegistryObject<Block> GEM_EMPOWERING_STATION = registerBlock("gem_empowering_station",
@@ -210,7 +206,8 @@ public class ModBlocks {
 
     // Kaupen custom portal block
     public static final RegistryObject<Block> KAUPEN_PORTAL = registerBlock("kaupen_portal",
-            () -> new KaupenPortalBlock(BlockBehaviour.Properties.copy(Blocks.NETHER_PORTAL).noLootTable().noOcclusion().noCollission()));
+            () -> new KaupenPortalBlock(BlockBehaviour.Properties.copy(Blocks.NETHER_PORTAL)
+                    .noLootTable().noOcclusion().noCollission()));
 
     // Ruby custom oxidizable block
     public static final RegistryObject<Block> RUBY_BLOCK = registerBlock("ruby_block",
@@ -430,6 +427,13 @@ public class ModBlocks {
     // Magic Book block
     public static final RegistryObject<Block> MAGIC_BOOK_BLOCK = registerBlock("magic_book",
             () -> new MagicBookBlock(BlockBehaviour.Properties.of()
+                    .lightLevel(state -> 15)
+                    .sound(SoundType.ANVIL)
+                    .strength(5F, 3600000.0F)));
+
+    // Book Disenchanted block
+    public static final RegistryObject<Block> BOOK_DISENCHANTED_BLOCK = registerBlock("book_disenchanted_block",
+            () -> new BookDisenchantedBlock(BlockBehaviour.Properties.of()
                     .lightLevel(state -> 15)
                     .sound(SoundType.ANVIL)
                     .strength(5F, 3600000.0F)));
