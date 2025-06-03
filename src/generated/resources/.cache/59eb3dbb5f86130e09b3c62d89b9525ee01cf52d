@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-02T21:23:52.3656466	Loot Tables
+// 1.20.1	2025-06-03T20:37:20.4882019	Loot Tables
 3c04bafc8e377b8b3a0acec4fb355ebe506bd32a data/mccourse/loot_tables/blocks/alexandrite_block.json
 5ee80a3f0dae7a738f12360934f26b319920a8a3 data/mccourse/loot_tables/blocks/alexandrite_button.json
 3cf926928d6232271016b028304beb66caa9effe data/mccourse/loot_tables/blocks/alexandrite_door.json
@@ -42,6 +42,7 @@ b77c5c7fe17b19d017b68cf68952ff7eb071d241 data/mccourse/loot_tables/blocks/nether
 82bf98aa9cfc7a60e82ef2b2f179b5b3b8791934 data/mccourse/loot_tables/blocks/nether_pink_ore.json
 f28dc78627aa96d457cb1bf427ae6d4b2ef427b4 data/mccourse/loot_tables/blocks/nether_star_block.json
 e99b85a5bd0c2a5c6295da0236365b7e5f004bec data/mccourse/loot_tables/blocks/orange_ender_pearl_block.json
+3144bffcc5c36154641874b4d1ad3203292250fd data/mccourse/loot_tables/blocks/phantom_membrane_block.json
 e1db82eaeeb4dac83b0256336ce0a1647b3da314 data/mccourse/loot_tables/blocks/pink_block.json
 4c5a1a7eed35dc805de0afc78fc5be5583ff1b2b data/mccourse/loot_tables/blocks/pink_ender_pearl_block.json
 61de0ad482efd5e74b74f76cc385ef0a866e72ce data/mccourse/loot_tables/blocks/pink_ore.json

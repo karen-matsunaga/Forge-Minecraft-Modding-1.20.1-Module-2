@@ -2,28 +2,25 @@ package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
-import net.karen.mccourse.block.custom.AlexandriteLampBlock;
-import net.karen.mccourse.block.custom.CattailCropBlock;
-import net.karen.mccourse.block.custom.KohlrabiCropBlock;
+import net.karen.mccourse.block.custom.*;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.*;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
 public class ModBlockStateProvider extends BlockStateProvider {
-    public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) { super(output, MCCourseMod.MOD_ID, exFileHelper); }
+    public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
+        super(output, MCCourseMod.MOD_ID, exFileHelper);
+    }
 
     // Registry all blocks - JSON file is created automatically
     @Override
@@ -166,6 +163,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.GUNPOWDER_BLOCK);
         blockWithItem(ModBlocks.ROTTEN_FLESH_BLOCK);
         blockWithItem(ModBlocks.BLAZE_ROD_BLOCK);
+        blockWithItem(ModBlocks.PHANTOM_MEMBRANE_BLOCK);
 
         // My custom ore
         blockWithItem(ModBlocks.PINK_BLOCK);

@@ -357,6 +357,7 @@ public class ModBlocks {
                     .lightLevel(state -> 50) // Light block
             ));
 
+    // Custom Mobs blocks
     public static final RegistryObject<Block> NETHER_STAR_BLOCK = registerBlock("nether_star_block",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.BELL)
                     .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
@@ -370,6 +371,10 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
 
     public static final RegistryObject<Block> BLAZE_ROD_BLOCK = registerBlock("blaze_rod_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.BIT)
+                    .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> PHANTOM_MEMBRANE_BLOCK = registerBlock("phantom_membrane_block",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.BIT)
                     .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
 

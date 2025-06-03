@@ -1,8 +1,7 @@
 package net.karen.mccourse.datagen.loot;
 
 import net.karen.mccourse.block.ModBlocks;
-import net.karen.mccourse.block.custom.CattailCropBlock;
-import net.karen.mccourse.block.custom.KohlrabiCropBlock;
+import net.karen.mccourse.block.custom.*;
 import net.karen.mccourse.item.ModItems;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -12,14 +11,11 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.functions.*;
+import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Set;
 
 public class ModBlockLootTables extends BlockLootSubProvider {
@@ -50,8 +46,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.ALEXANDRITE_STAIRS.get());
 
         // Slabs - Drops are different because to put twice blocks
-        this.add(ModBlocks.ALEXANDRITE_SLABS.get(),
-                block -> createSlabItemTable(ModBlocks.ALEXANDRITE_SLABS.get()));
+        this.add(ModBlocks.ALEXANDRITE_SLABS.get(), block -> createSlabItemTable(ModBlocks.ALEXANDRITE_SLABS.get()));
 
         // Pressure Plate block
         this.dropSelf(ModBlocks.ALEXANDRITE_PREASSURE_PLATE.get());
@@ -67,8 +62,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.ALEXANDRITE_WALL.get());
 
         // Door block
-        this.add(ModBlocks.ALEXANDRITE_DOOR.get(),
-                block -> createDoorTable(ModBlocks.ALEXANDRITE_DOOR.get()));
+        this.add(ModBlocks.ALEXANDRITE_DOOR.get(), block -> createDoorTable(ModBlocks.ALEXANDRITE_DOOR.get()));
 
         // Trapdoor block
         this.dropSelf(ModBlocks.ALEXANDRITE_TRAPDOOR.get());
@@ -84,8 +78,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
         // Snapdragon's flower and pot flower
         this.dropSelf(ModBlocks.SNAPDRAGON.get());
-        this.add(ModBlocks.POTTED_SNAPDRAGON.get(),
-                createPotFlowerItemTable(ModBlocks.POTTED_SNAPDRAGON.get()));
+        this.add(ModBlocks.POTTED_SNAPDRAGON.get(), createPotFlowerItemTable(ModBlocks.POTTED_SNAPDRAGON.get()));
 
         // Gem Empowering Station's custom block model
         this.dropSelf(ModBlocks.GEM_EMPOWERING_STATION.get());
@@ -102,21 +95,18 @@ public class ModBlockLootTables extends BlockLootSubProvider {
                 createLeavesDrops(block, ModBlocks.WALNUT_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
 
         // Walnut's custom sign
-        this.add(ModBlocks.WALNUT_SIGN.get(), block ->
-                createSingleItemTable(ModItems.WALNUT_SIGN.get()));
-        this.add(ModBlocks.WALNUT_WALL_SIGN.get(), block ->
-                createSingleItemTable(ModItems.WALNUT_SIGN.get()));
-        this.add(ModBlocks.WALNUT_HANGING_SIGN.get(), block ->
-                createSingleItemTable(ModItems.WALNUT_HANGING_SIGN.get()));
-        this.add(ModBlocks.WALNUT_WALL_HANGING_SIGN.get(), block ->
-                createSingleItemTable(ModItems.WALNUT_HANGING_SIGN.get()));
+        this.add(ModBlocks.WALNUT_SIGN.get(), block -> createSingleItemTable(ModItems.WALNUT_SIGN.get()));
+        this.add(ModBlocks.WALNUT_WALL_SIGN.get(), block -> createSingleItemTable(ModItems.WALNUT_SIGN.get()));
+        this.add(ModBlocks.WALNUT_HANGING_SIGN.get(), block -> createSingleItemTable(ModItems.WALNUT_HANGING_SIGN.get()));
+        this.add(ModBlocks.WALNUT_WALL_HANGING_SIGN.get(), block -> createSingleItemTable(ModItems.WALNUT_HANGING_SIGN.get()));
 
         // Colored custom block
         this.dropSelf(ModBlocks.COLORED_LEAVES.get());
 
         // Cattail custom crop
         // THIS IF ONLY TOP BLOCK SHOULD DROP SOMETHING
-        //LootItemCondition.Builder lootitemcondition$builder2 = LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.CATTAIL_CROP.get())
+        //LootItemCondition.Builder lootitemcondition$builder2 =
+        // LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.CATTAIL_CROP.get())
         //        .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CattailCropBlock.AGE, 8));
         //this.add(ModBlocks.CATTAIL_CROP.get(), this.createCropDrops(ModBlocks.CATTAIL_CROP.get(),
         //        ModItems.CATTAIL.get(), ModItems.CATTAIL_SEEDS.get(), lootitemcondition$builder2));
@@ -124,9 +114,8 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         LootItemCondition.Builder lootitemcondition$builder2 = LootItemBlockStatePropertyCondition
                 .hasBlockStateProperties(ModBlocks.CATTAIL_CROP.get())
                 .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CattailCropBlock.AGE, 7))
-                .or(LootItemBlockStatePropertyCondition
-                        .hasBlockStateProperties(ModBlocks.CATTAIL_CROP.get())
-                        .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CattailCropBlock.AGE, 8)));
+                .or(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.CATTAIL_CROP.get())
+                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CattailCropBlock.AGE, 8)));
 
         this.add(ModBlocks.CATTAIL_CROP.get(), createCropDrops(ModBlocks.CATTAIL_CROP.get(), ModItems.CATTAIL.get(),
                 ModItems.CATTAIL_SEEDS.get(), lootitemcondition$builder2));
@@ -167,17 +156,14 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.GUNPOWDER_BLOCK.get());
         this.dropSelf(ModBlocks.ROTTEN_FLESH_BLOCK.get());
         this.dropSelf(ModBlocks.BLAZE_ROD_BLOCK.get());
+        this.dropSelf(ModBlocks.PHANTOM_MEMBRANE_BLOCK.get());
 
         // My custom ores
         this.dropSelf(ModBlocks.PINK_BLOCK.get());
-        this.add(ModBlocks.PINK_ORE.get(),
-                block -> createOreDrop(ModBlocks.PINK_ORE.get(), ModItems.PINK.get()));
-        this.add(ModBlocks.DEEPSLATE_PINK_ORE.get(),
-                block -> createOreDrop(ModBlocks.DEEPSLATE_PINK_ORE.get(), ModItems.PINK.get()));
-        this.add(ModBlocks.END_STONE_PINK_ORE.get(),
-                block -> createOreDrop(ModBlocks.END_STONE_PINK_ORE.get(), ModItems.PINK.get()));
-        this.add(ModBlocks.NETHER_PINK_ORE.get(),
-                block -> createOreDrop(ModBlocks.NETHER_PINK_ORE.get(), ModItems.PINK.get()));
+        this.add(ModBlocks.PINK_ORE.get(), block -> createOreDrop(ModBlocks.PINK_ORE.get(), ModItems.PINK.get()));
+        this.add(ModBlocks.DEEPSLATE_PINK_ORE.get(), block -> createOreDrop(ModBlocks.DEEPSLATE_PINK_ORE.get(), ModItems.PINK.get()));
+        this.add(ModBlocks.END_STONE_PINK_ORE.get(), block -> createOreDrop(ModBlocks.END_STONE_PINK_ORE.get(), ModItems.PINK.get()));
+        this.add(ModBlocks.NETHER_PINK_ORE.get(), block -> createOreDrop(ModBlocks.NETHER_PINK_ORE.get(), ModItems.PINK.get()));
 
         // My disenchanted block
         this.dropSelf(ModBlocks.DISENCHANTED_BLOCK.get());
@@ -192,15 +178,16 @@ public class ModBlockLootTables extends BlockLootSubProvider {
     }
 
     // Custom ore's drops
-    protected LootTable.@NotNull Builder createOreDrop(@NotNull Block pBlock, @NotNull Item pItem) {
-        return createSilkTouchDispatchTable(pBlock, this.applyExplosionDecay(pBlock,
-                LootItem.lootTableItem(pItem)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 5.0f)))
+    protected LootTable.@NotNull Builder createOreDrop(@NotNull Block block, @NotNull Item item) {
+        return createSilkTouchDispatchTable(block, this.applyExplosionDecay(block,
+                LootItem.lootTableItem(item).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 5.0f)))
                         .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
                         .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 1))));
     }
 
     // Return all registries in deferred registry
     @Override
-    protected @NotNull Iterable<Block> getKnownBlocks() { return ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator; }
+    protected @NotNull Iterable<Block> getKnownBlocks() {
+        return ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;
+    }
 }

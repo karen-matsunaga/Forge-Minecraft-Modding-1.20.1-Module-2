@@ -170,6 +170,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         itemTransformBlock(List.of(ModBlocks.BLAZE_ROD_BLOCK.get(), Items.BLAZE_ROD), pWriter);
         blockTransformItem(List.of(Items.BLAZE_ROD, ModBlocks.BLAZE_ROD_BLOCK.get()), pWriter);
 
+        itemTransformBlock(List.of(ModBlocks.PHANTOM_MEMBRANE_BLOCK.get(), Items.PHANTOM_MEMBRANE), pWriter);
+        blockTransformItem(List.of(Items.PHANTOM_MEMBRANE, ModBlocks.PHANTOM_MEMBRANE_BLOCK.get()), pWriter);
+
         // Ore
         itemTransformBlock(List.of(ModBlocks.PINK_BLOCK.get(), ModItems.PINK.get()), pWriter);
         blockTransformItem(List.of(ModItems.PINK.get(), ModBlocks.PINK_BLOCK.get()), pWriter);

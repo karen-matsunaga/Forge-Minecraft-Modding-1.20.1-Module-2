@@ -88,7 +88,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         // Mobs Blocks
         this.tag(MOBS_BLOCKS_DROPS).add(ENDER_PEARL_BLOCK.get(), NETHER_STAR_BLOCK.get(),
-                 GUNPOWDER_BLOCK.get(), ROTTEN_FLESH_BLOCK.get(), BLAZE_ROD_BLOCK.get());
+                 GUNPOWDER_BLOCK.get(), ROTTEN_FLESH_BLOCK.get(), BLAZE_ROD_BLOCK.get(), PHANTOM_MEMBRANE_BLOCK.get());
 
         // Mccourse ores tags
         this.tag(PINK_ORES).add(PINK_ORE.get(), DEEPSLATE_PINK_ORE.get(), END_STONE_PINK_ORE.get(), NETHER_PINK_ORE.get());

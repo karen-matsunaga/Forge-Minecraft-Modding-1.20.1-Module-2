@@ -144,7 +144,7 @@ public class ModCreativeModeTabs {
                         // Dice's custom projectile item
                         output.accept(ModItems.DICE.get());
 
-                        // Boats's custom boats
+                        // Boat's custom boats
                         output.accept(ModItems.WALNUT_BOAT.get());
                         output.accept(ModItems.WALNUT_CHEST_BOAT.get());
 
@@ -172,7 +172,7 @@ public class ModCreativeModeTabs {
                         // Kaupen's custom furnace
                         output.accept(ModBlocks.KAUPEN_FURNACE_BLOCK.get());
 
-                        // My custom armor and tool
+                        // Custom armor and tool
                         output.accept(ModItems.PINK_HELMET.get());
                         output.accept(ModItems.PINK_CHESTPLATE.get());
                         output.accept(ModItems.PINK_LEGGINGS.get());
@@ -197,20 +197,19 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.COPPER_AXE.get());
                         output.accept(ModItems.COPPER_HOE.get());
 
-                        // My custom ender pearl
+                        // Custom ender pearl
                         output.accept(ModItems.BOUNCY_BALLS.get());
                         output.accept(ModItems.BOUNCY_BALLS_PARTICLES.get());
 
-                        // My custom Mining Modes
+                        // Custom Mining Modes
                         output.accept(ModItems.BLUE_MODES.get());
                         output.accept(ModItems.GREEN_MODES.get());
                         output.accept(ModItems.PURPLE_MODES.get());
                         output.accept(ModItems.ORANGE_MODES.get());
                         output.accept(ModItems.PINK_MODES.get());
 
-                        // My custom block
+                        // Custom blocks
                         output.accept(ModBlocks.ENDER_PEARL_BLOCK.get());
-
                         output.accept(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get());
                         output.accept(ModBlocks.BLACK_ENDER_PEARL_BLOCK.get());
                         output.accept(ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get());
@@ -226,12 +225,14 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.BLUE_ENDER_PEARL_BLOCK.get());
                         output.accept(ModBlocks.WHITE_ENDER_PEARL_BLOCK.get());
 
+                        // Custom Mobs
                         output.accept(ModBlocks.NETHER_STAR_BLOCK.get());
                         output.accept(ModBlocks.GUNPOWDER_BLOCK.get());
                         output.accept(ModBlocks.ROTTEN_FLESH_BLOCK.get());
                         output.accept(ModBlocks.BLAZE_ROD_BLOCK.get());
+                        output.accept(ModBlocks.PHANTOM_MEMBRANE_BLOCK.get());
 
-                        // My custom item
+                        // Custom Hammer
                         output.accept(ModItems.COPPER_HAMMER.get());
                         output.accept(ModItems.DIAMOND_HAMMER.get());
                         output.accept(ModItems.GOLD_HAMMER.get());
@@ -241,6 +242,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.WOODEN_HAMMER.get());
                         output.accept(ModItems.STONE_HAMMER.get());
 
+                        // Custom Paxel
                         output.accept(ModItems.DIAMOND_PAXEL.get());
                         output.accept(ModItems.GOLD_PAXEL.get());
                         output.accept(ModItems.IRON_PAXEL.get());
