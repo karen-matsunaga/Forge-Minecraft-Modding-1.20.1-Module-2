@@ -4,8 +4,7 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.*;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.karen.mccourse.MCCourseMod;
@@ -13,13 +12,8 @@ import net.karen.mccourse.block.ModBlocks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapedRecipe;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
+import net.minecraft.world.item.crafting.*;
+import org.jetbrains.annotations.*;
 
 public class CraftCraftingTableRecipeCategory implements IRecipeCategory<CraftingRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MCCourseMod.MOD_ID, "craft_crafting_table");
@@ -51,16 +45,14 @@ public class CraftCraftingTableRecipeCategory implements IRecipeCategory<Craftin
     public @Nullable IDrawable getIcon() { return icon; }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, CraftingRecipe recipe, @NotNull IFocusGroup focuses) {
-        List<Ingredient> ingredients = recipe.getIngredients();
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull CraftingRecipe recipe, @NotNull IFocusGroup focuses) {
+        int slotIndex = 0;
         for (int row = 0; row < 7; row++) {
             for (int col = 0; col < 7; col++) {
-                int index = row * 7 + col;
-                if (index < ingredients.size()) {
-                    int x = 8 + col * 18;
-                    int y = 6 + row * 18;
-                    builder.addSlot(RecipeIngredientRole.INPUT, x, y).addIngredients(ingredients.get(index));
-                }
+                int x = 8 + col * 18;
+                int y = 6 + row * 18;
+                builder.addSlot(RecipeIngredientRole.INPUT, x, y).addIngredients(recipe.getIngredients().get(slotIndex));
+                slotIndex++;
             }
         }
         builder.addSlot(RecipeIngredientRole.OUTPUT, 148, 35).addItemStack(recipe.getResultItem(null));
