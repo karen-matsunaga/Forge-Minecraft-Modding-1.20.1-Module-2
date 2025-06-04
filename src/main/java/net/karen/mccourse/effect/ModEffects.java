@@ -1,14 +1,10 @@
 package net.karen.mccourse.effect;
 
 import net.karen.mccourse.MCCourseMod;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.effect.*;
+import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.*;
 
 public class ModEffects {
     public static final DeferredRegister<MobEffect> MOB_EFFECTS =
@@ -18,19 +14,17 @@ public class ModEffects {
     // Slimey's effect
     public static final RegistryObject<MobEffect> SLIMEY_EFFECT = MOB_EFFECTS.register("slimey",
             () -> new SlimeyEffect(MobEffectCategory.NEUTRAL, 0x36ebab).addAttributeModifier(Attributes.MOVEMENT_SPEED,
-                  "7107DE5E-7CE8-4030-940E-514C1F160890", -0.25f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            "7107DE5E-7CE8-4030-940E-514C1F160890", -0.25f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     // Fly's effect
     public static final RegistryObject<MobEffect> FLY_EFFECT = MOB_EFFECTS.register("fly",
-            () -> new FlyEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)
-                  .addAttributeModifier(Attributes.FLYING_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf7",
-                      1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL) // Flying speed
-                  .addAttributeModifier(Attributes.MOVEMENT_SPEED, "f81d4fae-7dec-11d0-a765-00a0c91e6bf8",
-                      1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL)); // Player speed
+            () -> new FlyEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00).addAttributeModifier(Attributes.FLYING_SPEED,
+            "f81d4fae-7dec-11d0-a765-00a0c91e6bf7", 1.00f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     // Nothing's effect
     public static final RegistryObject<MobEffect> NOTHING_EFFECT = MOB_EFFECTS.register("nothing",
             () -> new NothingEffect(MobEffectCategory.NEUTRAL, 0x333366));
 
-    public static void register(IEventBus eventBus) { MOB_EFFECTS.register(eventBus); } // Registry all effects on Forge
+    // Registry all effects on Forge
+    public static void register(IEventBus eventBus) { MOB_EFFECTS.register(eventBus); }
 }
