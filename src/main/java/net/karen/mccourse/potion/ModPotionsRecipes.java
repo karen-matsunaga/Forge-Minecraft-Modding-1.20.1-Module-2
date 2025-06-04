@@ -1,13 +1,10 @@
 package net.karen.mccourse.potion;
 
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.alchemy.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.common.brewing.BrewingRecipe;
-import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.brewing.*;
 
 public class ModPotionsRecipes {
     // CUSTOM METHOD - Added all CUSTOM POTIONS RECIPES
