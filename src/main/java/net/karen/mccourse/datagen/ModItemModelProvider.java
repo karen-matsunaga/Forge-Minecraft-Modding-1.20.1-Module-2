@@ -4,14 +4,24 @@ import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.item.ModItems;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
+import net.minecraft.resources.*;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.armortrim.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.*;
+import java.util.*;
 
 public class ModItemModelProvider extends ItemModelProvider {
+    private static final LinkedHashMap<ResourceKey<TrimMaterial>, Float> trimMaterials = new LinkedHashMap<>();
+    static { trimMaterials.put(TrimMaterials.QUARTZ, 0.1F); trimMaterials.put(TrimMaterials.IRON, 0.2F);
+        trimMaterials.put(TrimMaterials.NETHERITE, 0.3F); trimMaterials.put(TrimMaterials.REDSTONE, 0.4F);
+        trimMaterials.put(TrimMaterials.COPPER, 0.5F); trimMaterials.put(TrimMaterials.GOLD, 0.6F);
+        trimMaterials.put(TrimMaterials.EMERALD, 0.7F); trimMaterials.put(TrimMaterials.DIAMOND, 0.8F);
+        trimMaterials.put(TrimMaterials.LAPIS, 0.9F); trimMaterials.put(TrimMaterials.AMETHYST, 1.0F); }
+
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, MCCourseMod.MOD_ID, existingFileHelper);
     }
@@ -57,17 +67,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Alexandrite hammer
         handheldItem(ModItems.ALEXANDRITE_HAMMER);
 
-        // Alexandrite player's armor
-//        simpleItem(ModItems.ALEXANDRITE_HELMET);
-//        simpleItem(ModItems.ALEXANDRITE_CHESTPLATE);
-//        simpleItem(ModItems.ALEXANDRITE_LEGGINGS);
-//        simpleItem(ModItems.ALEXANDRITE_BOOTS);
-
         // Alexandrite horse's armor
         simpleItem(ModItems.ALEXANDRITE_HORSE_ARMOR);
-
-        // Data tablet item
-        // simpleItem(ModItems.DATA_TABLET);
 
         // Kohlrabi's seeds
         simpleItem(ModItems.KOHLRABI_SEEDS);
@@ -174,6 +175,20 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.MAGNET);
         simpleItem(ModItems.FARMER);
         simpleItem(ModItems.RESTORE);
+
+        // Custom armor TRIM
+        trimmedArmorItem(ModItems.ALEXANDRITE_HELMET); // ALEXANDRITE armor
+        trimmedArmorItem(ModItems.ALEXANDRITE_CHESTPLATE);
+        trimmedArmorItem(ModItems.ALEXANDRITE_LEGGINGS);
+        trimmedArmorItem(ModItems.ALEXANDRITE_BOOTS);
+        trimmedArmorItem(ModItems.COPPER_HELMET); // COPPER armor
+        trimmedArmorItem(ModItems.COPPER_CHESTPLATE);
+        trimmedArmorItem(ModItems.COPPER_LEGGINGS);
+        trimmedArmorItem(ModItems.COPPER_BOOTS);
+        trimmedArmorItem(ModItems.PINK_HELMET); // PINK armor
+        trimmedArmorItem(ModItems.PINK_CHESTPLATE);
+        trimmedArmorItem(ModItems.PINK_LEGGINGS);
+        trimmedArmorItem(ModItems.PINK_BOOTS);
     }
 
     // Registry all sapling item's models
@@ -226,5 +241,30 @@ public class ModItemModelProvider extends ItemModelProvider {
     private ItemModelBuilder simpleItem(RegistryObject<Item> item) {
         return withExistingParent(item.getId().getPath(), new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(MCCourseMod.MOD_ID,"item/" + item.getId().getPath()));
+    }
+
+    // Shoutout to El_Redstoniano for making this -> Registry all custom armor trims
+    private void trimmedArmorItem(RegistryObject<Item> itemRegistryObject) {
+        final String MOD_ID = MCCourseMod.MOD_ID;
+        if (itemRegistryObject.get() instanceof ArmorItem armorItem) {
+            trimMaterials.forEach((trimMaterial, value) -> {
+                String armorType = switch (armorItem.getEquipmentSlot()) { case HEAD -> "helmet"; case CHEST -> "chestplate";
+                case LEGS -> "leggings"; case FEET -> "boots"; default -> ""; };
+                String currentTrimName = "item/" + armorItem + "_" + trimMaterial.location().getPath() + "_trim";
+                ResourceLocation trimResLoc = new ResourceLocation("trims/items/" + armorType +
+                        "_trim_" + trimMaterial.location().getPath()); // minecraft namespace
+                /* This is used for making the ExistingFileHelper acknowledge that this texture exist,
+                   so this will avoid an IllegalArgumentException */
+                existingFileHelper.trackGenerated(trimResLoc, PackType.CLIENT_RESOURCES, ".png", "textures");
+                // Trimmed armorItem files
+                getBuilder(currentTrimName).parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", new ResourceLocation(MOD_ID, "item/" + armorItem)).texture("layer1", trimResLoc);
+                // Non-trimmed armorItem file (normal variant)
+                this.withExistingParent(itemRegistryObject.getId().getPath(), mcLoc("item/generated"))
+                .override().model(new ModelFile.UncheckedModelFile(new ResourceLocation(MOD_ID, currentTrimName)))
+                .predicate(mcLoc("trim_type"), value).end()
+                .texture("layer0", new ResourceLocation(MOD_ID, "item/" + itemRegistryObject.getId().getPath()));
+            });
+        }
     }
 }

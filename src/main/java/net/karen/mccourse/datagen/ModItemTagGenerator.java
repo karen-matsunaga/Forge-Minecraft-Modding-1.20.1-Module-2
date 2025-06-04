@@ -2,8 +2,6 @@ package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
-import net.karen.mccourse.item.ModItems;
-import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -11,10 +9,10 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
+import org.jetbrains.annotations.*;
 import java.util.concurrent.CompletableFuture;
+import static net.karen.mccourse.item.ModItems.*;
+import static net.karen.mccourse.util.ModTags.Items.*;
 
 public class ModItemTagGenerator extends ItemTagsProvider {
     public ModItemTagGenerator(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> future,
@@ -27,11 +25,10 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         // Add Item Tags here
 
         // Trimmable's armor item tag
-        this.tag(ItemTags.TRIMMABLE_ARMOR).add(ModItems.ALEXANDRITE_HELMET.get(), ModItems.ALEXANDRITE_CHESTPLATE.get(),
-                 ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.ALEXANDRITE_BOOTS.get());
+        this.tag(ItemTags.TRIMMABLE_ARMOR).addTag(ALEXANDRITE_ARMOR).addTag(COPPER_ARMOR).addTag(PINK_ARMOR);
 
         // Bar Brawl's music disc tag
-        this.tag(ItemTags.MUSIC_DISCS).add(ModItems.BAR_BRAWL_RECORD.get());
+        this.tag(ItemTags.MUSIC_DISCS).add(BAR_BRAWL_RECORD.get());
 
         // Walnut's custom wood tag
         this.tag(ItemTags.LOGS_THAT_BURN).add(ModBlocks.WALNUT_LOG.get().asItem(), ModBlocks.WALNUT_WOOD.get().asItem(),
@@ -40,36 +37,38 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ItemTags.PLANKS).add(ModBlocks.WALNUT_PLANKS.get().asItem());
 
         // MCCOURSE custom items
-        this.tag(ModTags.Items.MCCOURSE_ITEMS).add(ModItems.PINK.get(), ModItems.ALEXANDRITE.get());
+        this.tag(MCCOURSE_ITEMS).add(PINK.get(), ALEXANDRITE.get());
 
-        this.tag(ModTags.Items.MCCOURSE_ORES_ITEMS).addTag(ModTags.Items.PINK_ORES_ITEMS)
-                .addTag(ModTags.Items.ALEXANDRITE_ORES_ITEMS);
+        this.tag(MCCOURSE_ORES_ITEMS).addTag(PINK_ORES_ITEMS).addTag(ALEXANDRITE_ORES_ITEMS);
 
-        this.tag(ModTags.Items.ALEXANDRITE_ORES_ITEMS).add(ModBlocks.ALEXANDRITE_BLOCK.get().asItem(),
+        this.tag(ALEXANDRITE_ORES_ITEMS).add(ModBlocks.ALEXANDRITE_BLOCK.get().asItem(),
                  ModBlocks.ALEXANDRITE_ORE.get().asItem(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get().asItem(),
                  ModBlocks.END_STONE_ALEXANDRITE_ORE.get().asItem(), ModBlocks.NETHER_ALEXANDRITE_ORE.get().asItem());
 
-        this.tag(ModTags.Items.PINK_ORES_ITEMS).add(ModBlocks.PINK_BLOCK.get().asItem(), ModBlocks.PINK_ORE.get().asItem(),
+        this.tag(PINK_ORES_ITEMS).add(ModBlocks.PINK_BLOCK.get().asItem(), ModBlocks.PINK_ORE.get().asItem(),
                  ModBlocks.DEEPSLATE_PINK_ORE.get().asItem(), ModBlocks.END_STONE_PINK_ORE.get().asItem(),
                  ModBlocks.NETHER_PINK_ORE.get().asItem());
 
         // Active Fly effect tag
-        this.tag(ModTags.Items.HELMET_FLY)
-                .add(ModItems.ALEXANDRITE_HELMET.get(), ModItems.PINK_HELMET.get(), ModItems.COPPER_HELMET.get());
+        this.tag(HELMET_FLY).add(ALEXANDRITE_HELMET.get(), PINK_HELMET.get(), COPPER_HELMET.get());
 
-        this.tag(ModTags.Items.CHESTPLATE_FLY)
-                .add(ModItems.ALEXANDRITE_CHESTPLATE.get(), ModItems.PINK_CHESTPLATE.get(), ModItems.COPPER_CHESTPLATE.get());
+        this.tag(CHESTPLATE_FLY).add(ALEXANDRITE_CHESTPLATE.get(), PINK_CHESTPLATE.get(), COPPER_CHESTPLATE.get());
 
-        this.tag(ModTags.Items.LEGGINGS_FLY)
-                .add(ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.PINK_LEGGINGS.get(), ModItems.COPPER_LEGGINGS.get());
+        this.tag(LEGGINGS_FLY).add(ALEXANDRITE_LEGGINGS.get(), PINK_LEGGINGS.get(), COPPER_LEGGINGS.get());
 
-        this.tag(ModTags.Items.BOOTS_FLY)
-                .add(ModItems.ALEXANDRITE_BOOTS.get(), ModItems.PINK_BOOTS.get(), ModItems.COPPER_BOOTS.get());
+        this.tag(BOOTS_FLY).add(ALEXANDRITE_BOOTS.get(), PINK_BOOTS.get(), COPPER_BOOTS.get());
 
         // Restore blacklist items tag
-        this.tag(ModTags.Items.RESTORE_BLACKLIST_ITEMS)
-                .add(ModItems.BLUE_MODES.get(), ModItems.GREEN_MODES.get(), ModItems.ORANGE_MODES.get(),
-                     ModItems.PINK_MODES.get(), ModItems.PURPLE_MODES.get(), Items.ENCHANTED_BOOK);
+        this.tag(RESTORE_BLACKLIST_ITEMS).add(BLUE_MODES.get(), GREEN_MODES.get(), ORANGE_MODES.get(),
+                 PINK_MODES.get(), PURPLE_MODES.get(), Items.ENCHANTED_BOOK);
+
+        // Custom armors
+        this.tag(ALEXANDRITE_ARMOR).add(ALEXANDRITE_HELMET.get(), ALEXANDRITE_CHESTPLATE.get(),
+                 ALEXANDRITE_LEGGINGS.get(), ALEXANDRITE_BOOTS.get());
+
+        this.tag(COPPER_ARMOR).add(COPPER_HELMET.get(), COPPER_CHESTPLATE.get(), COPPER_LEGGINGS.get(), COPPER_BOOTS.get());
+
+        this.tag(PINK_ARMOR).add(PINK_HELMET.get(), PINK_CHESTPLATE.get(), PINK_LEGGINGS.get(), PINK_BOOTS.get());
     }
 
     @Override

@@ -1,8 +1,7 @@
 {
   "values": [
-    "mccourse:alexandrite_helmet",
-    "mccourse:alexandrite_chestplate",
-    "mccourse:alexandrite_leggings",
-    "mccourse:alexandrite_boots"
+    "#mccourse:items/alexandrite_armor",
+    "#mccourse:items/copper_armor",
+    "#mccourse:items/pink_armor"
   ]
 }

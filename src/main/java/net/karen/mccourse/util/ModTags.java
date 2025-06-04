@@ -3,9 +3,7 @@ package net.karen.mccourse.util;
 import net.karen.mccourse.MCCourseMod;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
+import net.minecraft.tags.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -30,6 +28,11 @@ public class ModTags {
 
         // Restore item blacklist
         public static final TagKey<Item> RESTORE_BLACKLIST_ITEMS = tag("items/restore_blacklist_items");
+
+        // Custom armors
+        public static final TagKey<Item> ALEXANDRITE_ARMOR = tag("items/alexandrite_armor");
+        public static final TagKey<Item> COPPER_ARMOR = tag("items/copper_armor");
+        public static final TagKey<Item> PINK_ARMOR = tag("items/pink_armor");
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass item id
