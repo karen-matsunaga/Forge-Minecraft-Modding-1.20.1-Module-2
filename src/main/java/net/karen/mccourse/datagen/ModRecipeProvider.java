@@ -284,6 +284,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 Items.BOOK), pWriter); // Gem Empowering Station
         craftSevenItems(List.of(ModBlocks.MAGIC_BLOCK.get(), Items.ENCHANTING_TABLE, Items.ANVIL,
                 Items.BOOK), pWriter);
+
+        // Custom trims
+        trimSmithing(pWriter, ModItems.KAUPEN_SMITHING_TEMPLATE.get(), new ResourceLocation(MCCourseMod.MOD_ID, "kaupen"));
     }
 
     // Smelting

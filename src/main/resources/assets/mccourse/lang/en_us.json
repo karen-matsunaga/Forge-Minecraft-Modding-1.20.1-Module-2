@@ -164,6 +164,10 @@
   "item.mccourse.farmer": "Farmer",
   "item.mccourse.restore": "Restore",
 
+  "item.mccourse.kaupen_armor_trim_smithing_template": "Kaupen Trim Template",
+  "trim_pattern.mccourse.kaupen": "Kaupen Armor Trim",
+  "trim_material.mccourse.alexandrite": "Alexandrite Material",
+
   "item.mccourse.blue_modes": "Blue Modes",
   "item.mccourse.green_modes": "Green Modes",
   "item.mccourse.purple_modes": "Purple Modes",

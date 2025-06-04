@@ -1,0 +1,7 @@
+{
+  "asset_id": "mccourse:kaupen",
+  "description": {
+    "translate": "trim_pattern.mccourse.kaupen"
+  },
+  "template_item": "mccourse:kaupen_armor_trim_smithing_template"
+}

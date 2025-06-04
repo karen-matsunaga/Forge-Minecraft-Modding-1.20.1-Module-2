@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-04T11:10:03.5408215	Item Models: mccourse
+// 1.20.1	2025-06-04T14:59:23.2211838	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -124,6 +124,7 @@ adde97377356ebe6f2897fc806b87e8f185023a3 assets/mccourse/models/item/gold_hammer
 82eea53e86a0ed26e9558cdc28774f2be66cde9f assets/mccourse/models/item/green_modes.json
 dca02707f240b4f62e52dcb7581ab555d004fef7 assets/mccourse/models/item/iron_hammer.json
 b27190e2df26eff5a924d16e4f2d9cf0308838f1 assets/mccourse/models/item/iron_paxel.json
+0ba45fa0b9fa861a6995c3a85d8bc1c786ed1fa6 assets/mccourse/models/item/kaupen_armor_trim_smithing_template.json
 6349d1adee80001ce5a46b787665a782e5c25798 assets/mccourse/models/item/kohlrabi.json
 39b609a6c230f85321604bec3c0fbf1976247e24 assets/mccourse/models/item/kohlrabi_seeds.json
 9d058e094f13da8740c0c0f6447da092d20d6345 assets/mccourse/models/item/luck.json

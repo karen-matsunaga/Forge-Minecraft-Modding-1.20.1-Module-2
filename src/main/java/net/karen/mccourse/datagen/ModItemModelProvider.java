@@ -175,6 +175,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.MAGNET);
         simpleItem(ModItems.FARMER);
         simpleItem(ModItems.RESTORE);
+        simpleItem(ModItems.KAUPEN_SMITHING_TEMPLATE);
 
         // Custom armor TRIM
         trimmedArmorItem(ModItems.ALEXANDRITE_HELMET); // ALEXANDRITE armor

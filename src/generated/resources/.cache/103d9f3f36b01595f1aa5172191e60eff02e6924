@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-16T16:33:18.4647574	Registries
+// 1.20.1	2025-06-04T14:46:44.2564233	Registries
 ec16b8f0442363bcec63055381d85c079115bbbe data/mccourse/dimension/kaupendim.json
 e241e971aacde6f4d0236c622c99d6c9caeb981e data/mccourse/dimension_type/kaupendim_type.json
 5136caf25339dc6923d72d193c4f2fcf875476a7 data/mccourse/forge/biome_modifier/add_alexandrite_geode.json
@@ -11,6 +11,8 @@ a4a2b6f7912693f4a1d5fb555eb671c63fc2b70b data/mccourse/forge/biome_modifier/add_
 5672729abec0d2f7b9ad142bb5ac6625da735cae data/mccourse/forge/biome_modifier/add_snapdragon.json
 869e69065b7a620d3e209020f8766f08cebbe760 data/mccourse/forge/biome_modifier/add_tree_walnut.json
 9c8b9c47c51361b629955f0999bc27e7e7672730 data/mccourse/forge/biome_modifier/spawn_rhino.json
+2eeaf5f34ea034faa3810fd69062bc09d3eed28a data/mccourse/trim_material/alexandrite.json
+2fdf80ead3b34ff6f1f0c3fb9cccda75f16b35ba data/mccourse/trim_pattern/kaupen.json
 7b0e15c4f6a4253f518954bcc42ab0d606a7e9f9 data/mccourse/worldgen/biome/test_biome.json
 7b0e15c4f6a4253f518954bcc42ab0d606a7e9f9 data/mccourse/worldgen/biome/test_biome_2.json
 3a6e2351900a984034e83cd556802aa77a1813a3 data/mccourse/worldgen/configured_feature/alexandrite_geode.json

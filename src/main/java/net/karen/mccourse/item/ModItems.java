@@ -375,6 +375,10 @@ public class ModItems {
     public static final RegistryObject<Item> RESTORE = ITEMS.register("restore",
             () -> new RestoreItem(new Item.Properties().fireResistant().stacksTo(64)));
 
+    // Custom trim
+    public static final RegistryObject<Item> KAUPEN_SMITHING_TEMPLATE = ITEMS.register("kaupen_armor_trim_smithing_template",
+            () -> SmithingTemplateItem.createArmorTrimTemplate(new ResourceLocation(MCCourseMod.MOD_ID, "kaupen")));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }

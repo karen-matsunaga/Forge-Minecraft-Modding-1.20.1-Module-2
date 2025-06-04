@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-03T20:37:20.4899477	Recipes
+// 1.20.1	2025-06-04T13:51:59.9354899	Recipes
 a052bed88e42924de2158a3c90b7129a99a0be98 data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -43,6 +43,7 @@ d3c788c38d8460512af52b075d307257d121f481 data/mccourse/advancements/recipes/misc
 6526a922c663f6443ba632c39f5ea8a845a4c3b3 data/mccourse/advancements/recipes/misc/farmer.json
 0137aefba1e224b1aa2179228e1016c1b3a4c814 data/mccourse/advancements/recipes/misc/gem_empowering_station.json
 77a7598b4b9531e1b3a8d671cf9b769ad0090873 data/mccourse/advancements/recipes/misc/gunpowder_block.json
+7ca270323ec9917d317c2ddf45c66095bd27690b data/mccourse/advancements/recipes/misc/kaupen.json
 73768cbf7a92ae82377edaf219535db458af024b data/mccourse/advancements/recipes/misc/kaupen_furnace.json
 63a2622375606bbd10400d982766ec3fe4f26e3d data/mccourse/advancements/recipes/misc/leather_from_blasting_rotten_flesh.json
 abb3ba54b4fd9f450bbc55178c640d44fcc92134 data/mccourse/advancements/recipes/misc/leather_from_smelting_rotten_flesh.json
@@ -181,6 +182,7 @@ d99f34263a3ad822101bf313ea22e27a213a0cc9 data/mccourse/recipes/gem_empowering_st
 98f66b88a90b829f06ff62f33158eb8a456bef71 data/mccourse/recipes/gunpowder_block.json
 e5e732d008b6fa24c7cf0776be896352974562ce data/mccourse/recipes/iron_hammer.json
 9c056291032ceaf89308a6b02e84bc37f5c9dd60 data/mccourse/recipes/iron_paxel.json
+20ded92d79c4756f3854b8ddd36861f7ba9a217a data/mccourse/recipes/kaupen.json
 fd1a0f83192d92e18206a8c2115d07bcde4069ed data/mccourse/recipes/kaupen_furnace.json
 cfca0327ee4afe090c262e7f6a84a3d74fa64730 data/mccourse/recipes/leather_from_blasting_rotten_flesh.json
 ca9b2dea94e33aa7da754e5135f32d3a3c41c806 data/mccourse/recipes/leather_from_smelting_rotten_flesh.json

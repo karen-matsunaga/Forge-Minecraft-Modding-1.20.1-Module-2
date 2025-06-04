@@ -24,9 +24,6 @@ public class ModItemTagGenerator extends ItemTagsProvider {
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         // Add Item Tags here
 
-        // Trimmable's armor item tag
-        this.tag(ItemTags.TRIMMABLE_ARMOR).addTag(ALEXANDRITE_ARMOR).addTag(COPPER_ARMOR).addTag(PINK_ARMOR);
-
         // Bar Brawl's music disc tag
         this.tag(ItemTags.MUSIC_DISCS).add(BAR_BRAWL_RECORD.get());
 
@@ -69,6 +66,11 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(COPPER_ARMOR).add(COPPER_HELMET.get(), COPPER_CHESTPLATE.get(), COPPER_LEGGINGS.get(), COPPER_BOOTS.get());
 
         this.tag(PINK_ARMOR).add(PINK_HELMET.get(), PINK_CHESTPLATE.get(), PINK_LEGGINGS.get(), PINK_BOOTS.get());
+
+        // Trimmable's armor item tag
+        this.tag(ItemTags.TRIMMABLE_ARMOR).addTag(ALEXANDRITE_ARMOR).addTag(COPPER_ARMOR).addTag(PINK_ARMOR);
+        this.tag(ItemTags.TRIM_MATERIALS).add(ALEXANDRITE.get());
+        this.tag(ItemTags.TRIM_TEMPLATES).add(KAUPEN_SMITHING_TEMPLATE.get());
     }
 
     @Override

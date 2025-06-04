@@ -2,22 +2,17 @@ package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.*;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeAdvancementProvider;
+import net.minecraftforge.common.data.*;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Mod.EventBusSubscriber(modid = MCCourseMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
-
     // Adds all the data calling in specific time
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
@@ -39,7 +34,8 @@ public class DataGenerators {
         generator.addProvider(event.includeServer(), blockTagsProvider);
 
         // Item Tag Generator
-        generator.addProvider(event.includeServer(), new ModItemTagGenerator(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
+        generator.addProvider(event.includeServer(), new ModItemTagGenerator(packOutput, lookupProvider,
+                blockTagsProvider.contentsGetter(), existingFileHelper));
 
         // Item Model Provider
         generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, existingFileHelper));
@@ -55,19 +51,20 @@ public class DataGenerators {
         generator.addProvider(event.includeClient(), new ModGlobalLootModifierProvider(packOutput));
 
         // Mod Painting Variant Tag Provider
-        generator.addProvider(event.includeClient(), new ModPaintingVariantTagProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeClient(),
+                new ModPaintingVariantTagProvider(packOutput, lookupProvider, existingFileHelper));
 
         // Mod Poi Type Tags Provider
         generator.addProvider(event.includeClient(), new ModPoiTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
         // Mod Advancement Provider
-        generator.addProvider(event.includeClient(), new ForgeAdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of(new ModAdvancementProvider())));
+        generator.addProvider(event.includeClient(), new ForgeAdvancementProvider(packOutput, lookupProvider, existingFileHelper,
+                List.of(new ModAdvancementProvider())));
 
         // Mod Fluid Tags Provider
         generator.addProvider(event.includeClient(), new ModFluidTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
-        // Mod World Gen Provider
-        generator.addProvider(event.includeClient(), new ModWorldGenProvider(packOutput, lookupProvider));
-
+        // Mod Datapack Entries Provider
+        generator.addProvider(event.includeServer(), new ModDatapackEntries(packOutput, lookupProvider));
     }
 }
