@@ -7,17 +7,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class KaupenFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
     // List of items that burned on Kaupen custom furnace using ticks
@@ -42,9 +37,7 @@ public class KaupenFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
     // CUSTOM METHOD - List of items that burned on Kaupen custom furnace
     public static List<ItemStack> getValidFuels() {
         List<ItemStack> fuels = new ArrayList<>();
-        ForgeRegistries.ITEMS.forEach(item -> {
-            if (BURN_DURATION_MAP.containsKey(item)) { fuels.add(new ItemStack(item)); }
-        });
+        ForgeRegistries.ITEMS.forEach(item -> { if (BURN_DURATION_MAP.containsKey(item)) { fuels.add(new ItemStack(item)); } });
         return fuels;
     }
 }
