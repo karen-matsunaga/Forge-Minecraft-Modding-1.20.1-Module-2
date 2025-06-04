@@ -51,6 +51,10 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> RECOVER = ENCHANTMENTS.register("recover",
             () -> new RecoverEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
 
+    // Elytra Boost enchantment - Elytra enchantment
+    public static final RegistryObject<Enchantment> ELYTRA_BOOST = ENCHANTMENTS.register("elytra_boost",
+            () -> new ElytraBoostEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.ARMOR_CHEST, EquipmentSlot.CHEST));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }

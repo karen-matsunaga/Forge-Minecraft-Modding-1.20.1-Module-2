@@ -979,4 +979,26 @@ public class ModEvents {
             }
         }
     }
+
+    // CUSTOM EVENT - ELYTRA custom enchantment
+    @SubscribeEvent
+    public static void activatedElytraEnchantment(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        if (!player.isCreative() && !player.level().isClientSide()) {
+            ItemStack elytra = new ItemStack(Items.ELYTRA);
+            int elytraLevel = enchant(elytra, ModEnchantments.ELYTRA_BOOST.get());
+            if (elytra.isEnchanted() && has(player, EquipmentSlot.CHEST).is(elytra.getItem()) && elytraLevel > 0) {
+                double boostFactor = 1.0;
+                switch (elytraLevel) {
+                    case 1 -> boostFactor = 1.0 + 0.5 * elytraLevel; // 50% speed
+                    case 2 -> boostFactor = 1.0 + 1.0 * elytraLevel; // 100% speed
+                    case 3 -> boostFactor = 1.0 + 1.5 * elytraLevel; // 150% speed
+                    case 4 -> boostFactor = 1.0 + 2.0 * elytraLevel; // 200% speed
+                    case 5 -> boostFactor = 1.0 + 5.0 * elytraLevel; // 500% speed
+                }
+                player.setDeltaMovement(player.getDeltaMovement().multiply(boostFactor, 1.0, boostFactor));
+                player.hurtMarked = true;
+            }
+        }
+    }
 }
