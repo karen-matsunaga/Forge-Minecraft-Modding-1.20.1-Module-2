@@ -13,6 +13,6 @@ public class EternalEnchantment extends Enchantment {
 
     @Override
     public boolean checkCompatibility(@NotNull Enchantment enchant) {
-        return super.checkCompatibility(enchant) && enchant != Enchantments.VANISHING_CURSE;
+        return super.checkCompatibility(enchant) && enchant != Enchantments.BINDING_CURSE && enchant != Enchantments.VANISHING_CURSE;
     }
 }
