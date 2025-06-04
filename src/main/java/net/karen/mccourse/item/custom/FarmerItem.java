@@ -1,28 +1,20 @@
 package net.karen.mccourse.item.custom;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.core.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.tags.ITagManager;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
+import org.jetbrains.annotations.*;
 import java.util.Collections;
-
 import static net.karen.mccourse.util.ModTags.Blocks.*;
 
 public class FarmerItem extends Item {
@@ -36,21 +28,21 @@ public class FarmerItem extends Item {
         ItemStack stack = context.getItemInHand();
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
-        @Nullable ITagManager<Block> blockTag = ForgeRegistries.BLOCKS.tags(); // Checks if the block is in the tag
-        if (!level.isClientSide() && player != null) {
-            if (isBlock(blockTag, FARMER_BONEMEAL_GROWABLES, block) && block instanceof BonemealableBlock grow &&
+        ITagManager<Block> blockTag = ForgeRegistries.BLOCKS.tags(); // Checks if the block is in the tag
+        if (!level.isClientSide() && player != null && blockTag != null) {
+            if (isBlock(blockTag, FARMER_TREE_GROWABLES, block) && block instanceof BonemealableBlock grow &&
                 grow.isValidBonemealTarget(level, pos, state, false)) {
                 grow.performBonemeal((ServerLevel) level, level.random, pos, state); // Standard Bonemealable
-                if (isBlock(blockTag, FARMER_CROPS_GROWABLES, block)) {
-                    BlockState newState = level.getBlockState(pos);
-                    for (Property<?> property : newState.getProperties()) {
-                        if (property.getName().equals("age") && property instanceof IntegerProperty age) {
-                            grow(level, pos, newState.setValue(age, Collections.max(age.getPossibleValues())), 2);
-                            break;
-                        }
+                return consumeAndSucceed(stack, player); // Used Farmer on TREES
+            }
+            if (isBlock(blockTag, FARMER_CROPS_GROWABLES, block)) {
+                for (Property<?> property : state.getProperties()) {
+                    if (property.getName().equals("age") && property instanceof IntegerProperty age) {
+                        grow(level, pos, state.setValue(age, Collections.max(age.getPossibleValues())), 2);
+                        break;
                     }
                 }
-                return consumeAndSucceed(stack, player); // Used Farmer on CROPS or TREES
+                return consumeAndSucceed(stack, player); // Used Farmer on CROPS
             }
             if (isBlock(blockTag, FARMER_VERTICAL_GROWABLES, block)) {
                 int height = 0;
@@ -85,6 +77,6 @@ public class FarmerItem extends Item {
     }
 
     private boolean isBlock(ITagManager<Block> registry, TagKey<Block> blocks, Block block) {
-        return registry != null && registry.getTag(blocks).contains(block);
+        return registry.getTag(blocks).contains(block);
     }
 }

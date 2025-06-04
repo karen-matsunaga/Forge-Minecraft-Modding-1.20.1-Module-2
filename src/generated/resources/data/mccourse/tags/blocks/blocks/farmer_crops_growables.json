@@ -1,6 +1,7 @@
 {
   "values": [
     "mccourse:kohlrabi_crop",
+    "mccourse:cattail_crop",
     "#minecraft:crops"
   ]
 }

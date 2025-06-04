@@ -99,11 +99,11 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         // Farmer block tag
         this.tag(FARMER_BONEMEAL_GROWABLES).addTag(FARMER_CROPS_GROWABLES).addTag(FARMER_TREE_GROWABLES);
-        this.tag(FARMER_CROPS_GROWABLES).add(KOHLRABI_CROP.get()).addTag(BlockTags.CROPS);
+        this.tag(FARMER_CROPS_GROWABLES).add(KOHLRABI_CROP.get(), CATTAIL_CROP.get()).addTag(BlockTags.CROPS);
         this.tag(FARMER_TREE_GROWABLES).addTag(BlockTags.SAPLINGS);
         this.tag(FARMER_VERTICAL_GROWABLES).addTag(VERTICAL_BLOCKS);
-        this.tag(FARMER_AGE_GROWABLES).add(Blocks.NETHER_WART, Blocks.TWISTING_VINES,
-                 Blocks.WEEPING_VINES, Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS);
+        this.tag(FARMER_AGE_GROWABLES).add(Blocks.NETHER_WART, Blocks.TWISTING_VINES, Blocks.WEEPING_VINES,
+                 Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS);
 
         // Crop replant tags
         // Mushroom crop
