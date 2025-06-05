@@ -4,6 +4,7 @@ import com.google.gson.*;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.datagen.custom.GemEmpoweringRecipeBuilder;
+import net.karen.mccourse.datagen.custom.KaupenFurnaceRecipeBuilder;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -72,12 +73,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         // Gem Empowering Station custom recipes
         new GemEmpoweringRecipeBuilder(ModItems.RAW_ALEXANDRITE.get(), ModItems.ALEXANDRITE.get(),
-                3, 160, 50,
-                new FluidStack(Fluids.WATER, 2000))
+                3, 160, 50, new FluidStack(Fluids.WATER, 2000))
                 .unlockedBy("has_raw_alexandrite", has(ModItems.RAW_ALEXANDRITE.get())).save(pWriter);
 
         new GemEmpoweringRecipeBuilder(Items.COAL, Items.DIAMOND, 7, 40, 150,
                 new FluidStack(Fluids.LAVA, 500))
+                .unlockedBy("has_diamond", has(Items.DIAMOND)).save(pWriter);
+
+        // Kaupen Furnace custom recipes
+        new KaupenFurnaceRecipeBuilder(Items.IRON_INGOT, Items.RAW_IRON, 0.5f, 50)
+                .unlockedBy("has_raw_iron", has(Items.RAW_IRON)).save(pWriter);
+
+        new KaupenFurnaceRecipeBuilder(Items.COAL, Items.DIAMOND, 0.5f, 50)
                 .unlockedBy("has_diamond", has(Items.DIAMOND)).save(pWriter);
 
         // My custom mod
