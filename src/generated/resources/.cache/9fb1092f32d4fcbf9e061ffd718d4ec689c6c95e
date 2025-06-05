@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-05T15:26:16.7504415	Recipes
+// 1.20.1	2025-06-05T18:04:21.9175171	Recipes
 dd52e5950ac294c207bf9b9441d3b97e76c9739e data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -14,6 +14,7 @@ f2e9155826ca7bc86765f9a06d2ce1a5d8597490 data/mccourse/advancements/recipes/buil
 88d5bcb115e7039a9549cbf1da1967e51c1454fb data/mccourse/advancements/recipes/building_blocks/red_ender_pearl_block.json
 6c997e0b233fb7e9ceabd08010fcc17c3183a039 data/mccourse/advancements/recipes/building_blocks/white_ender_pearl_block.json
 870745c6c16f57204f5826684936ef2463fe368b data/mccourse/advancements/recipes/building_blocks/yellow_ender_pearl_block.json
+e0dd9a2a672a13d6497fe0970fe307548219f018 data/mccourse/advancements/recipes/custom/10_enchanted.json
 f59844b56157b0e6ac93b56857f2c05413264b73 data/mccourse/advancements/recipes/custom/1_enchanted.json
 6708ef9ad8da0998bd68b83e41886852f8ddb686 data/mccourse/advancements/recipes/custom/2_enchanted.json
 5e1b9fa7dce6ead3849ea7b56cb54f12b26c4c63 data/mccourse/advancements/recipes/custom/3_enchanted.json
@@ -117,6 +118,7 @@ fb2ce543d70b5fa0da5ec6bef04797684687f6b7 data/mccourse/advancements/recipes/tool
 ba488c7a13e6efff558803d00cacf384edfbadef data/mccourse/advancements/recipes/tools/stone_paxel.json
 53ee0c2459bf5e1288b197c53a1c204dc2d8f031 data/mccourse/advancements/recipes/tools/wooden_hammer.json
 b832e868b788a127b80dfafd49aa1182275a6660 data/mccourse/advancements/recipes/tools/wooden_paxel.json
+381e1ccd65226521080de214bf9f1e5fd1163fe7 data/mccourse/recipes/10_enchanted.json
 eb9be47322b74d7417b148ca7ff35758d18221bd data/mccourse/recipes/1_enchanted.json
 b6cec17aa4440f963f611fefd6847246e998e7b0 data/mccourse/recipes/2_enchanted.json
 d783524a9bfa936412e28beaa5b07aac71e83bfe data/mccourse/recipes/3_enchanted.json

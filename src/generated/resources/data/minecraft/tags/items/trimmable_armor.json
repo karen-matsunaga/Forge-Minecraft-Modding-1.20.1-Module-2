@@ -2,6 +2,7 @@
   "values": [
     "#mccourse:items/alexandrite_armor",
     "#mccourse:items/copper_armor",
-    "#mccourse:items/pink_armor"
+    "#mccourse:items/pink_armor",
+    "mccourse:miner_helmet"
   ]
 }

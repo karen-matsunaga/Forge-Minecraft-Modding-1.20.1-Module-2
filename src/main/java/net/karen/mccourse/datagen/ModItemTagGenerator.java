@@ -68,7 +68,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(PINK_ARMOR).add(PINK_HELMET.get(), PINK_CHESTPLATE.get(), PINK_LEGGINGS.get(), PINK_BOOTS.get());
 
         // Trimmable's armor item tag
-        this.tag(ItemTags.TRIMMABLE_ARMOR).addTag(ALEXANDRITE_ARMOR).addTag(COPPER_ARMOR).addTag(PINK_ARMOR);
+        this.tag(ItemTags.TRIMMABLE_ARMOR).addTag(ALEXANDRITE_ARMOR).addTag(COPPER_ARMOR).addTag(PINK_ARMOR).add(MINER_HELMET.get());
         this.tag(ItemTags.TRIM_MATERIALS).add(ALEXANDRITE.get());
         this.tag(ItemTags.TRIM_TEMPLATES).add(KAUPEN_SMITHING_TEMPLATE.get());
     }

@@ -375,6 +375,10 @@ public class ModItems {
     public static final RegistryObject<Item> RESTORE = ITEMS.register("restore",
             () -> new RestoreItem(new Item.Properties().fireResistant().stacksTo(64)));
 
+    // MINER helmet
+    public static final RegistryObject<Item> MINER_HELMET = ITEMS.register("miner_helmet",
+            () -> new ModHelmetItem(ModArmorMaterials.MINER, ArmorItem.Type.HELMET, new Item.Properties().fireResistant()));
+
     // Custom trim
     public static final RegistryObject<Item> KAUPEN_SMITHING_TEMPLATE = ITEMS.register("kaupen_armor_trim_smithing_template",
             () -> SmithingTemplateItem.createArmorTrimTemplate(new ResourceLocation(MCCourseMod.MOD_ID, "kaupen")));

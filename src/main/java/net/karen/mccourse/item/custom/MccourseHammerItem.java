@@ -35,6 +35,7 @@ public class MccourseHammerItem extends DiggerItem implements Vanishable {
         positions(Direction.SOUTH, x, y, z, entity, world);
         positions(Direction.WEST, x, y, z, entity, world);
         positions(Direction.EAST, x, y, z, entity, world);
+        positions(Direction.UP, x, y, z, entity, world);
     }
 
     // Appears tooltip on screen of Hammer, Paxel, etc.

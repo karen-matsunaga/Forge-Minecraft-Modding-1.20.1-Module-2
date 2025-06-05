@@ -190,6 +190,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.PINK_CHESTPLATE);
         trimmedArmorItem(ModItems.PINK_LEGGINGS);
         trimmedArmorItem(ModItems.PINK_BOOTS);
+        trimmedArmorItem(ModItems.MINER_HELMET); // MINER armor
     }
 
     // Registry all sapling item's models

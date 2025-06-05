@@ -246,6 +246,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                         Enchantments.BLOCK_FORTUNE, 7, Enchantments.MENDING, 1),
                 List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 9, pWriter);
 
+        enchantItem(List.of(ModItems.MINER_HELMET.get(), Items.TORCH, Items.COPPER_BLOCK),
+                Map.of(ModEnchantments.GLOWING_MOBS.get(), 1),
+                List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 10, pWriter);
+
         // Colored blocks
         coloredBlocks(List.of(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), Items.GREEN_DYE), pWriter);
         coloredBlocks(List.of(ModBlocks.LIME_GREEN_ENDER_PEARL_BLOCK.get(), Items.LIME_DYE), pWriter);

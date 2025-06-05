@@ -284,6 +284,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.FARMER.get());
                         output.accept(ModItems.RESTORE.get());
 
+                        // MINER helmet
+                        output.accept(ModItems.MINER_HELMET.get());
+
                         // Custom trim
                         output.accept(ModItems.KAUPEN_SMITHING_TEMPLATE.get());
                     }).build());

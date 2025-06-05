@@ -41,6 +41,11 @@ public enum ModArmorMaterials implements ArmorMaterial {
         map.put(ArmorItem.Type.HELMET, 5);
     }), 15, SoundEvents.ARMOR_EQUIP_DIAMOND, 3.0F, 0.1F,
             () -> Ingredient.of(Items.COPPER_INGOT)),
+
+    MINER("miner", 2, Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
+        map.put(ArmorItem.Type.HELMET, 4);
+    }), 1, SoundEvents.ANVIL_PLACE, 1.0F, 0.1F, () -> Ingredient.of(Items.TORCH)),
+
     ; // Custom armor
 
     public static final StringRepresentable.EnumCodec<ArmorMaterials> CODEC =

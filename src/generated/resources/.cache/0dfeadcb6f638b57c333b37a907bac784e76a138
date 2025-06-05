@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-04T14:59:23.2211838	Item Models: mccourse
+// 1.20.1	2025-06-05T18:04:21.9018196	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -131,6 +131,17 @@ b27190e2df26eff5a924d16e4f2d9cf0308838f1 assets/mccourse/models/item/iron_paxel.
 9e8e9f4872a343311972a9d8e6de13235b0a6791 assets/mccourse/models/item/magnet.json
 faf15074e0b43be5fa09cf3411c543621e6ee3f2 assets/mccourse/models/item/mccourse_hammer.json
 23f99234f647aa805541635819a0a2a8b1552d81 assets/mccourse/models/item/metal_detector.json
+5b7331bfbfe07c27ea477daa07bb3edd4fac98bb assets/mccourse/models/item/miner_helmet.json
+5c095685c4b2b9f979e074d8ba052da7eb839e21 assets/mccourse/models/item/miner_helmet_amethyst_trim.json
+04ab168569db135b96ba5f7476470f1af27d89ad assets/mccourse/models/item/miner_helmet_copper_trim.json
+92d79bad8f7126c2951cec0f1eb4efff62bb4dce assets/mccourse/models/item/miner_helmet_diamond_trim.json
+0eb81d9bc61316b287c9f92a3cfbd93425e0213f assets/mccourse/models/item/miner_helmet_emerald_trim.json
+6be0688d67377988ac2640aa9c61cf228325f5b3 assets/mccourse/models/item/miner_helmet_gold_trim.json
+28b8bf190bc2e85b8bb602ece37c22e1da06613b assets/mccourse/models/item/miner_helmet_iron_trim.json
+e83bebe6caf334c8b8ede19ef2b9c2591b072e3a assets/mccourse/models/item/miner_helmet_lapis_trim.json
+c84af5e97e888b084b83c8f83d9423e5eb7d34f7 assets/mccourse/models/item/miner_helmet_netherite_trim.json
+733a9088f090a95ba196548c071376fa7e6615c7 assets/mccourse/models/item/miner_helmet_quartz_trim.json
+0663becdad4169be40076a6263ffc4a65811d283 assets/mccourse/models/item/miner_helmet_redstone_trim.json
 596fdd257bfa8c7c7df9692546761c1c5e5ff1c9 assets/mccourse/models/item/netherite_hammer.json
 79b240ec7ed516998ce448af32b9ba1ad9ca4dea assets/mccourse/models/item/netherite_paxel.json
 e5336f4140d4b01d724048034a0d5ff017bd57c2 assets/mccourse/models/item/orange_modes.json
