@@ -55,6 +55,10 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> ELYTRA_BOOST = ENCHANTMENTS.register("elytra_boost",
             () -> new ElytraBoostEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.ARMOR_CHEST, EquipmentSlot.CHEST));
 
+    // Peaceful Mobs enchantment - Leggings enchantment
+    public static final RegistryObject<Enchantment> PEACEFUL_MOBS = ENCHANTMENTS.register("peaceful_mobs",
+            () -> new PeacefulMobs(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.ARMOR_LEGS, EquipmentSlot.LEGS));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }

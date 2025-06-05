@@ -249,14 +249,20 @@
   "block.mccourse.nether_pink_ore": "Nether Pink Ore",
 
   "enchantment.mccourse.lightning_striker": "Lightning Striker",
+
   "enchantment.mccourse.glowing_mobs": "Glowing Mobs",
   "enchantment.mccourse.glowing_blocks": "Glowing Blocks",
+
   "enchantment.mccourse.elytra_boost": "Elytra Boost",
+
+  "enchantment.mccourse.peaceful_mobs": "Peaceful Mobs",
+
   "enchantment.mccourse.more_ores": "More Ores",
   "enchantment.mccourse.magnetic": "Magnetic",
   "enchantment.mccourse.auto_smelt": "Auto Smelt",
   "enchantment.mccourse.rainbow": "Rainbow",
   "enchantment.mccourse.block_fly": "Block Fly",
+
   "enchantment.mccourse.eternal": "Eternal",
   "enchantment.mccourse.recover": "Recover",
 
@@ -306,6 +312,8 @@
 
   "enchantment.minecraft.binding_curse.desc": "When applied on armor the player not remove the item of inventory.",
   "enchantment.minecraft.vanishing_curse.desc": "When applied on tool or armor if player killed the item disappears of inventory.",
+
+  "enchantment.mccourse.peaceful_mobs.desc": "When applied on leggings armor all entities not attack Player.",
 
   "enchantment.mccourse.glowing_mobs.desc": "When applied on helmet armor all entities are detected with X-Ray of mobs. (Press M key to activated or disabled)",
   "enchantment.mccourse.glowing_blocks.desc": "When applied on helmet armor all ores blocks are detected with X-Ray of blocks. (Press G key to activated or disabled)",

@@ -35,6 +35,7 @@
     "AnvilScreenMixin",
     "SculkShriekerBlockEntityMixin",
     "VibrationListenerMixin",
-    "SignBlockEntityMixin"
+    "SignBlockEntityMixin",
+    "LivingEntityMixin"
   ]
 }
