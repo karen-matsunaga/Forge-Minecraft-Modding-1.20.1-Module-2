@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:raw_iron"
+              "minecraft:obsidian"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:raw_iron"
+        "recipe": "minecraft:obsidian"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,8 +28,8 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:raw_iron"
+      "minecraft:obsidian"
     ]
   },
-  "sends_telemetry_event": false
+  "sends_telemetry_event": true
 }

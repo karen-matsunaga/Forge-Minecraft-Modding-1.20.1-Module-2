@@ -72,20 +72,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 0.25f, 200, "alexandrite");
 
         // Gem Empowering Station custom recipes
-        new GemEmpoweringRecipeBuilder(ModItems.RAW_ALEXANDRITE.get(), ModItems.ALEXANDRITE.get(),
-                3, 160, 50, new FluidStack(Fluids.WATER, 2000))
-                .unlockedBy("has_raw_alexandrite", has(ModItems.RAW_ALEXANDRITE.get())).save(pWriter);
-
-        new GemEmpoweringRecipeBuilder(Items.COAL, Items.DIAMOND, 7, 40, 150,
-                new FluidStack(Fluids.LAVA, 500))
-                .unlockedBy("has_diamond", has(Items.DIAMOND)).save(pWriter);
+        gemEmpoweringStation(ModItems.RAW_ALEXANDRITE.get(), ModItems.ALEXANDRITE.get(), 3, 160, 50,
+                new FluidStack(Fluids.WATER, 2000), pWriter);
+        gemEmpoweringStation(Items.COAL, Items.DIAMOND, 7, 40, 150,
+                new FluidStack(Fluids.LAVA, 500), pWriter);
+        gemEmpoweringStation(Items.COBBLESTONE, Items.OBSIDIAN, 1, 100, 200,
+                new FluidStack(Fluids.LAVA, 1000), pWriter);
 
         // Kaupen Furnace custom recipes
-        new KaupenFurnaceRecipeBuilder(Items.IRON_INGOT, Items.RAW_IRON, 0.5f, 50)
-                .unlockedBy("has_raw_iron", has(Items.RAW_IRON)).save(pWriter);
-
-        new KaupenFurnaceRecipeBuilder(Items.COAL, Items.DIAMOND, 0.5f, 50)
-                .unlockedBy("has_diamond", has(Items.DIAMOND)).save(pWriter);
+        kaupenFurnace(Items.IRON_INGOT, Items.RAW_IRON, 0.5f, 50, pWriter);
+        kaupenFurnace(Items.COAL, Items.DIAMOND, 0.5f, 50, pWriter);
+        kaupenFurnace(Items.BONE_MEAL, Items.PHANTOM_MEMBRANE, 10.0f, 100, pWriter);
 
         // My custom mod
         // Hammer
@@ -296,6 +293,20 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         trimSmithing(pWriter, ModItems.KAUPEN_SMITHING_TEMPLATE.get(), new ResourceLocation(MCCourseMod.MOD_ID, "kaupen"));
     }
 
+    // CUSTOM RECIPES
+    protected static void gemEmpoweringStation(ItemLike ingredient, ItemLike result, int count,
+                                               int craftTime, int energyAmount, FluidStack fluidStack,
+                                               Consumer<FinishedRecipe> pWriter) {
+        new GemEmpoweringRecipeBuilder(ingredient, result, count, craftTime, energyAmount, fluidStack)
+                .unlockedBy("has_item", has(result)).save(pWriter);
+    }
+
+    protected static void kaupenFurnace(ItemLike ingredient, ItemLike result, float experience,
+                                        int cookingTime, Consumer<FinishedRecipe> pWriter) {
+        new KaupenFurnaceRecipeBuilder(ingredient, result, experience, cookingTime)
+                .unlockedBy("has_item", has(result)).save(pWriter);
+    }
+
     // Smelting
     protected static void oreSmelting(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer,
                                       List<ItemLike> pIngredients, @NotNull RecipeCategory pCategory,
@@ -460,14 +471,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     // Custom color blocks
-    public static void coloredBlocks(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
+    protected static void coloredBlocks(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, item.get(0), 1)
                 .requires(item.get(1)).requires(ModBlocks.ENDER_PEARL_BLOCK.get())
                 .unlockedBy("has_item", has(item.get(1))).save(pWriter);
     }
 
     // Luck custom items
-    public static void luckItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
+    protected static void luckItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0), 1)
                 .pattern("ABA").pattern("BCB").pattern("ABA")
                 .define('A', item.get(1)).define('B', item.get(2)).define('C', item.get(3))
@@ -475,13 +486,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     // Custom enchanted item or enchanted book
-    public static void enchantItem(List<ItemLike> result, Map<Enchantment, Integer> enchantments,
-                                   List<String> format, List<String> letters, boolean isBook,
-                                   boolean unbreakable, int number, Consumer<FinishedRecipe> writer) {
+    protected static void enchantItem(List<ItemLike> result, Map<Enchantment, Integer> enchantments,
+                                   List<String> format, List<String> letters, boolean isBook, boolean unbreakable,
+                                   int number, Consumer<FinishedRecipe> writer) {
+        String MOD_ID = MCCourseMod.MOD_ID;
+        var item = ForgeRegistries.ITEMS;
+        var enchant = ForgeRegistries.ENCHANTMENTS;
+
         // Registry item = Result Index 0
         JsonObject resultJson = new JsonObject();
-        resultJson.addProperty("item",
-                Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(0).asItem())).toString());
+        resultJson.addProperty("item", Objects.requireNonNull(item.getKey(result.get(0).asItem())).toString());
         resultJson.addProperty("count", 1);
 
         // Registry enchantments
@@ -491,13 +505,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         // Sorts enchantments by level and then by ID
         enchantments.entrySet().stream()
                 .sorted(Comparator.comparingInt(Map.Entry<Enchantment, Integer>::getValue) // Enchantment level
-                        // Enchantment name
-                        .thenComparing(e ->
-                                Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(e.getKey())).toString()))
+                .thenComparing(e -> Objects.requireNonNull(enchant.getKey(e.getKey())).toString())) // Enchantment name
                 .forEach(entry -> {
                     JsonObject enchantmentTag = new JsonObject();
-                    enchantmentTag.addProperty("id",
-                            Objects.requireNonNull(ForgeRegistries.ENCHANTMENTS.getKey(entry.getKey())).toString());
+                    enchantmentTag.addProperty("id", Objects.requireNonNull(enchant.getKey(entry.getKey())).toString());
                     enchantmentTag.addProperty("lvl", entry.getValue());
                     enchantmentArray.add(enchantmentTag);
                 });
@@ -505,10 +516,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         nbt.add(isBook ? "StoredEnchantments" : "Enchantments", enchantmentArray);
 
         // Unbreakable tag
-        if (unbreakable) {
-            nbt.addProperty("Unbreakable", 1);
-        }
-
+        if (unbreakable) { nbt.addProperty("Unbreakable", 1); }
         resultJson.add("nbt", nbt);
 
         // Registry recipe
@@ -519,17 +527,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         for (String s : format) { pattern.add(s); }
         recipeJson.add("pattern", pattern);
 
-        JsonObject key = new JsonObject();
-
-        // Registry ingredients = Result Index 1 and 2
-        JsonObject aKey = new JsonObject();
-        JsonObject bKey = new JsonObject();
-
+        JsonObject key = new JsonObject(); // Registry ingredients = Result Index 1 and 2
+        JsonObject aKey = new JsonObject(), bKey = new JsonObject();
         List<JsonObject> jsonObjectList = List.of(aKey, bKey);
 
         for (int i = 0; i < letters.size(); i++) {
-            jsonObjectList.get(i).addProperty("item",
-                    Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(i+1).asItem())).toString());
+            jsonObjectList.get(i).addProperty("item", Objects.requireNonNull(item.getKey(result.get(i+1).asItem())).toString());
             key.add(letters.get(i), jsonObjectList.get(i));
         }
 
@@ -545,9 +548,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             }
 
             @Override
-            public @NotNull ResourceLocation getId() {
-                return new ResourceLocation(MCCourseMod.MOD_ID, number + "_enchanted");
-            }
+            public @NotNull ResourceLocation getId() { return new ResourceLocation(MOD_ID, number + "_enchanted"); }
 
             @Override
             public @NotNull RecipeSerializer<?> getType() { return RecipeSerializer.SHAPED_RECIPE; }
@@ -563,8 +564,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 JsonArray items = new JsonArray();
                 JsonObject itemObject = new JsonObject();
                 // Item to unlock on Recipe Book
-                itemObject.addProperty("item",
-                        Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(result.get(2).asItem())).toString());
+                itemObject.addProperty("item", Objects.requireNonNull(item.getKey(result.get(2).asItem())).toString());
                 items.add(itemObject);
                 conditions.add("items", items);
                 trigger.add("conditions", conditions);
@@ -580,7 +580,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
             @Override
             public ResourceLocation getAdvancementId() {
-                return new ResourceLocation(MCCourseMod.MOD_ID, "recipes/custom/" + number + "_enchanted");
+                return new ResourceLocation(MOD_ID, "recipes/custom/" + number + "_enchanted");
             }
         });
     }

@@ -3,10 +3,7 @@ package net.karen.mccourse.datagen.custom;
 import com.google.gson.JsonObject;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.recipe.KaupenFurnaceRecipe;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +11,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class KaupenFurnaceRecipeBuilder implements RecipeBuilder {
@@ -33,19 +31,20 @@ public class KaupenFurnaceRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public RecipeBuilder unlockedBy(String pCriterionName, CriterionTriggerInstance pCriterionTrigger) {
+    public @NotNull RecipeBuilder unlockedBy(@NotNull String pCriterionName,
+                                             @NotNull CriterionTriggerInstance pCriterionTrigger) {
         this.advancement.addCriterion(pCriterionName, pCriterionTrigger);
         return this;
     }
 
     @Override
-    public RecipeBuilder group(@Nullable String pGroupName) { return this; }
+    public @NotNull RecipeBuilder group(@Nullable String pGroupName) { return this; }
 
     @Override
-    public Item getResult() { return this.result; }
+    public @NotNull Item getResult() { return this.result; }
 
     @Override
-    public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pRecipeId) {
+    public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, @NotNull ResourceLocation pRecipeId) {
         this.advancement.parent(new ResourceLocation("recipes/root"))
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pRecipeId))
                 .rewards(AdvancementRewards.Builder.recipe(pRecipeId)).requirements(RequirementsStrategy.OR);
@@ -79,19 +78,19 @@ public class KaupenFurnaceRecipeBuilder implements RecipeBuilder {
         public void serializeRecipeData(JsonObject json) {
             json.addProperty("category", RecipeCategory.MISC.toString().toLowerCase());
             json.add("ingredient", this.ingredient.toJson());
-            json.addProperty("result", ForgeRegistries.ITEMS.getKey(this.result).toString());
+            json.addProperty("result", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.result)).toString());
             json.addProperty("experience", this.experience);
             json.addProperty("cookingtime", this.cookingTime);
         }
 
         @Override
-        public ResourceLocation getId() {
+        public @NotNull ResourceLocation getId() {
             return new ResourceLocation(MCCourseMod.MOD_ID,
-                    ForgeRegistries.ITEMS.getKey(this.result).getPath() + "_from_kaupen_furnace");
+                    Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.result)).getPath() + "_from_kaupen_furnace");
         }
 
         @Override
-        public RecipeSerializer<?> getType() { return KaupenFurnaceRecipe.Serializer.INSTANCE; }
+        public @NotNull RecipeSerializer<?> getType() { return KaupenFurnaceRecipe.Serializer.INSTANCE; }
 
         @javax.annotation.Nullable
         public JsonObject serializeAdvancement() { return this.advancement.serializeToJson(); }

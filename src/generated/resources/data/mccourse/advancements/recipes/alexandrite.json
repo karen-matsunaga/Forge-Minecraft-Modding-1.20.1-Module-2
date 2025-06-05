@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_raw_alexandrite": {
+    "has_item": {
       "conditions": {
         "items": [
           {
             "items": [
-              "mccourse:raw_alexandrite"
+              "mccourse:alexandrite"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_raw_alexandrite",
+      "has_item",
       "has_the_recipe"
     ]
   ],

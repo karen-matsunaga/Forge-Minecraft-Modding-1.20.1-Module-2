@@ -2,7 +2,7 @@ package net.karen.mccourse.compat;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.drawable.*;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.*;
@@ -26,12 +26,15 @@ public class KaupenFurnaceRecipeCategory implements IRecipeCategory<KaupenFurnac
     public static final RecipeType<KaupenFurnaceRecipe> KAUPEN_FURNACE_TYPE =
             new RecipeType<>(UID, KaupenFurnaceRecipe.class);
 
-    private final IDrawable background;
-    private final IDrawable icon;
+    private final IDrawable background, icon;
+    private final IDrawableAnimated arrow, flame;
 
     public KaupenFurnaceRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 83);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.KAUPEN_FURNACE_BLOCK.get()));
+        // flame and arrow area texture (x, y, width, height)
+        this.flame = drawAnimated(helper, 0, 14, 14, 300, IDrawableAnimated.StartDirection.TOP, true);
+        this.arrow = drawAnimated(helper, 14, 24, 17, 200, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
@@ -62,14 +65,21 @@ public class KaupenFurnaceRecipeCategory implements IRecipeCategory<KaupenFurnac
         float seconds = recipe.getCookingTime(); // Cooking time
         float experience = recipe.getExperience(); // Experience
         if (seconds > 0 || experience > 0) {
-            showInfo(fontRenderer, guiGraphics, "gui.jei.category.smelting.time.seconds", seconds, 110,60); // Time
-            showInfo(fontRenderer, guiGraphics, "gui.jei.category.smelting.experience", experience, 110, 20); // Experience
+            showInfo(fontRenderer, guiGraphics, "gui.jei.category.smelting.time.seconds", seconds, 60); // Time
+            showInfo(fontRenderer, guiGraphics, "gui.jei.category.smelting.experience", experience, 20); // Experience
         }
+        flame.draw(guiGraphics, 56, 36); // flame animated - x = 56, y = 36
+        arrow.draw(guiGraphics, 79, 34); // arrow animated - x = 79, y = 34
     }
 
     // CUSTOM METHOD - Show info of cooking time, experience, etc. for each Kaupen Furnace recipe
-    private void showInfo(Font font, GuiGraphics gui, String key, float value, int x, int y) {
+    private void showInfo(Font font, GuiGraphics gui, String key, float value, int y) {
         Component info = Component.translatable(key, value);
-        gui.drawString(font, info, x, y, 0xFF808080, false);
+        gui.drawString(font, info, 110, y, 0xFF808080, false);
+    }
+
+    private IDrawableAnimated drawAnimated(IGuiHelper helper, int v, int width, int height, int i,
+                                           IDrawableAnimated.StartDirection direction, boolean has) {
+        return helper.createAnimatedDrawable(helper.createDrawable(TEXTURE, 176, v, width, height), i, direction, has);
     }
 }
