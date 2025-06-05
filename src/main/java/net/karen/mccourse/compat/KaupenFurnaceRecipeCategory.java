@@ -3,15 +3,16 @@ package net.karen.mccourse.compat;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.*;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.block.entity.KaupenFurnaceBlockEntity;
 import net.karen.mccourse.recipe.KaupenFurnaceRecipe;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -51,5 +52,24 @@ public class KaupenFurnaceRecipeCategory implements IRecipeCategory<KaupenFurnac
         builder.addSlot(RecipeIngredientRole.INPUT, 56, 17).addIngredients(recipe.getIngredients().get(0));
         builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 56, 53).addItemStacks(KaupenFurnaceBlockEntity.getValidFuels());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 116, 35).addItemStack(recipe.getResultItem(null));
+    }
+
+    @Override
+    public void draw(@NotNull KaupenFurnaceRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView,
+                     @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Font fontRenderer = minecraft.font;
+        float seconds = recipe.getCookingTime(); // Cooking time
+        float experience = recipe.getExperience(); // Experience
+        if (seconds > 0 || experience > 0) {
+            showInfo(fontRenderer, guiGraphics, "gui.jei.category.smelting.time.seconds", seconds, 110,60); // Time
+            showInfo(fontRenderer, guiGraphics, "gui.jei.category.smelting.experience", experience, 110, 20); // Experience
+        }
+    }
+
+    // CUSTOM METHOD - Show info of cooking time, experience, etc. for each Kaupen Furnace recipe
+    private void showInfo(Font font, GuiGraphics gui, String key, float value, int x, int y) {
+        Component info = Component.translatable(key, value);
+        gui.drawString(font, info, x, y, 0xFF808080, false);
     }
 }
