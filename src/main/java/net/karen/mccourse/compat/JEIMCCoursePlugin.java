@@ -5,17 +5,13 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.*;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
-import net.karen.mccourse.recipe.GemEmpoweringRecipe;
-import net.karen.mccourse.recipe.KaupenFurnaceRecipe;
+import net.karen.mccourse.recipe.*;
 import net.karen.mccourse.screen.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 @JeiPlugin
@@ -77,13 +73,17 @@ public class JEIMCCoursePlugin implements IModPlugin {
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         // Register all custom recipe transfer handlers
-        // [CUSTOM ITEM] Input Start - Input End
-        // Player's Inventory Start (9 hotbar + 27 inventory slots) - Inventory End
+        // [CUSTOM ITEM] Input Start [i] - Input End [i1]
+        // Player's Inventory Start [i2] (9 hotbar + 27 inventory slots) - Inventory End [i3]
         registration.addRecipeTransferHandler(CraftCraftingTableMenu.class, // Menu Class, Menu Type and Recipe Type
         ModMenuTypes.CRAFT_CRAFTING_TABLE_MENU.get(), CraftCraftingTableRecipeCategory.CRAFT_CRAFTING_TABLE_TYPE,
         1, 49, 50, 36);
 
         registration.addRecipeTransferHandler(KaupenFurnaceMenu.class, // Menu Class, Menu Type and Recipe Type
         ModMenuTypes.KAUPEN_FURNACE_MENU.get(), KaupenFurnaceRecipeCategory.KAUPEN_FURNACE_TYPE, 0, 1, 3, 36);
+
+        // GEM EMPOWERING STATION -> OUTPUT slot wrong
+//        registration.addRecipeTransferHandler(GemEmpoweringStationMenu.class,
+//                ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringRecipeCategory.GEM_EMPOWERING_TYPE, 0, 3, 4, 36);
     }
 }

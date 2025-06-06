@@ -7,10 +7,8 @@ import net.minecraftforge.energy.IEnergyStorage;
 import java.util.List;
 
 /* BluSunrize - Copyright (c) 2021
-   This code is licensed under "Blu's License of Common Sense"
-   https://github.com/BluSunrize/ImmersiveEngineering/blob/1.19.2/LICENSE
+   This code is licensed under "Blu's License of Common Sense" - https://github.com/BluSunrize/ImmersiveEngineering/blob/1.19.2/LICENSE
    Slightly Modified Version by: Kaupenjoe */
-
 public class EnergyDisplayTooltipArea {
     private final int xPos;
     private final int yPos;
