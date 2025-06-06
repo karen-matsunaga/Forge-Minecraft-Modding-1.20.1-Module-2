@@ -4,8 +4,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
-public class PeacefulMobs extends Enchantment {
-    protected PeacefulMobs(Rarity rarity, EnchantmentCategory category, EquipmentSlot... equipmentSlots) {
+public class PeacefulMobsEnchantment extends Enchantment {
+    protected PeacefulMobsEnchantment(Rarity rarity, EnchantmentCategory category, EquipmentSlot... equipmentSlots) {
         super(rarity, category, equipmentSlots);
     }
 
