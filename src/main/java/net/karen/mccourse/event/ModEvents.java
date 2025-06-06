@@ -228,6 +228,7 @@ public class ModEvents {
         ItemStack tool = player.getMainHandItem();
         int fortune = enchant(tool, Enchantments.BLOCK_FORTUNE);
         int moreOres = enchant(tool, ModEnchantments.MORE_ORES.get());
+        int multiplier = enchant(tool, ModEnchantments.MULTIPLIER.get());
         if (enchant(tool, ModEnchantments.RAINBOW.get()) > 0) { // * RAINBOW ENCHANTMENT *
             Map<Block, TagKey<Block>> rainbowMap = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL,
             Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER, Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND,
@@ -276,6 +277,15 @@ public class ModEvents {
                     if (!player.getInventory().add(drop)) { player.drop(drop, false); }});
                 block(serverLevel, pos, Blocks.AIR, event);
                 return;
+            }
+            if (multiplier > 0 && !finalDrops.isEmpty()) { // * MULTIPLIER ENCHANTMENT *
+                List<ItemStack> multipliedDrops = new ArrayList<>();
+                finalDrops.forEach(drop -> {
+                    ItemStack multiplied = drop.copy(); // Copy ORIGINAL drop
+                    multiplied.setCount(drop.getCount() * (fortune + multiplier)); // Duplicate drops with Fortune and Multiplier
+                    multipliedDrops.add(multiplied);});
+                finalDrops.clear();
+                finalDrops.addAll(multipliedDrops);
             }
             if (cancelVanillaDrop) { // FinalDrops list accumulate drop on world
                 finalDrops.forEach(drop -> dropItem(serverLevel, pos, drop));
@@ -704,10 +714,10 @@ public class ModEvents {
     }
 
     private static void newSpeed(PlayerEvent.BreakSpeed event, boolean hasEnchant,
-                                 Player player, float value) { 
+                                 Player player, int value) {
         if (hasEnchant) { // CUSTOM METHOD - Set newSpeed adapt with Efficiency enchantment -> Fixed speed mining
             if ((!player.onGround() && !player.isUnderWater()) || player.isUnderWater()) {
-                event.setNewSpeed(event.getOriginalSpeed() * value);
+                event.setNewSpeed(event.getOriginalSpeed() * ((float) Math.sqrt(value) + 1));
             }
         }
     }
@@ -1041,5 +1051,22 @@ public class ModEvents {
 
     private static int enchantLevel(Enchantment enchantment, Player player) {
         return EnchantmentHelper.getEnchantmentLevel(enchantment, player);
+    }
+
+    // CUSTOM EVENT - MULTIPLIER custom enchantment
+    @SubscribeEvent
+    public static void activatedMultiplierEnchantment(LivingDropsEvent event) {
+        if (event.getSource().getEntity() instanceof Player player) {
+            ItemStack item = player.getMainHandItem();
+            int level = enchant(item, ModEnchantments.MULTIPLIER.get());
+            if (level > 1) {
+                List<ItemEntity> originalDrops = new ArrayList<>(event.getDrops());
+                for (ItemEntity drop : originalDrops) {
+                    ItemStack stack = drop.getItem().copy();
+                    stack.setCount(stack.getCount() * level); // Multiplier adapt on level
+                    event.getDrops().add(new ItemEntity(drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack));
+                }
+            }
+        }
     }
 }
