@@ -696,10 +696,18 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedBlockFlyEnchantment(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity(); // Entity is a player
-        if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BLOCK_FLY.get(), player) > 0) { // There is Block Fly enchantment
+        boolean efficiency = enchantLevel(Enchantments.BLOCK_EFFICIENCY, player) > 0;
+        boolean blockFly = enchantLevel(ModEnchantments.BLOCK_FLY.get(), player) > 0;
+        newSpeed(event, blockFly, player, 5); // There is Block Fly enchantment -> OLD speed * NEW speed (5)
+        // There is Block Fly and Efficiency enchantments -> OLD speed * (NEW speed (5) * efficiency level)
+        newSpeed(event, blockFly && efficiency, player, (5 + enchantLevel(Enchantments.BLOCK_EFFICIENCY, player)));
+    }
+
+    private static void newSpeed(PlayerEvent.BreakSpeed event, boolean hasEnchant,
+                                 Player player, float value) { 
+        if (hasEnchant) { // CUSTOM METHOD - Set newSpeed adapt with Efficiency enchantment -> Fixed speed mining
             if ((!player.onGround() && !player.isUnderWater()) || player.isUnderWater()) {
-                float oldSpeed = event.getOriginalSpeed(); // Old speed
-                event.setNewSpeed(oldSpeed * 5); // New speed -> Fixed speed mining
+                event.setNewSpeed(event.getOriginalSpeed() * value);
             }
         }
     }
@@ -980,25 +988,58 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - ELYTRA custom enchantment
+    // CUSTOM EVENT - ELYTRA BOOST custom enchantment
     @SubscribeEvent
-    public static void activatedElytraEnchantment(TickEvent.PlayerTickEvent event) {
+    public static void activatedElytraBoostEnchantment(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         if (!player.isCreative() && !player.level().isClientSide()) {
             ItemStack elytra = new ItemStack(Items.ELYTRA);
             int elytraLevel = enchant(elytra, ModEnchantments.ELYTRA_BOOST.get());
             if (elytra.isEnchanted() && has(player, EquipmentSlot.CHEST).is(elytra.getItem()) && elytraLevel > 0) {
-                double boostFactor = 1.0;
-                switch (elytraLevel) {
-                    case 1 -> boostFactor = 1.0 + 0.5 * elytraLevel; // 50% speed
-                    case 2 -> boostFactor = 1.0 + 1.0 * elytraLevel; // 100% speed
-                    case 3 -> boostFactor = 1.0 + 1.5 * elytraLevel; // 150% speed
-                    case 4 -> boostFactor = 1.0 + 2.0 * elytraLevel; // 200% speed
-                    case 5 -> boostFactor = 1.0 + 5.0 * elytraLevel; // 500% speed
-                }
+                double boostFactor = setElytraSpeed(elytraLevel);
                 player.setDeltaMovement(player.getDeltaMovement().multiply(boostFactor, 1.0, boostFactor));
                 player.hurtMarked = true;
             }
         }
+    }
+
+    private static double setElytraSpeed(int elytraLevel) {
+        double boostFactor = 1.0; // CUSTOM METHOD - Set Elytra Boost speed enchantment
+        switch (elytraLevel) {
+            case 1 -> boostFactor = setSpeed(0.5F, elytraLevel); // 50% speed
+            case 2 -> boostFactor = setSpeed(1.0F, elytraLevel); // 100% speed
+            case 3 -> boostFactor = setSpeed(1.5F, elytraLevel); // 150% speed
+            case 4 -> boostFactor = setSpeed(2.0F, elytraLevel); // 200% speed
+            case 5 -> boostFactor = setSpeed(5.0F, elytraLevel); // 500% speed
+        }
+        return boostFactor;
+    }
+
+    private static double setSpeed(float value, int elytra) { 
+        return 1.0 + value * elytra;
+    }
+
+    // CUSTOM EVENT - XP BOOST custom enchantment
+    @SubscribeEvent
+    public static void activatedXpBoostEnchantment(LivingExperienceDropEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            if (event.getAttackingPlayer() != null) { // Attacked entities
+                int level = enchantLevel(ModEnchantments.XP_BOOST.get(), player);
+                if (level > 0) {
+                    int bonus = Math.round(event.getOriginalExperience() * (1.0f * level));
+                    event.setDroppedExperience(event.getDroppedExperience() + bonus);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPickupXpBoostEnchantment(PlayerXpEvent.PickupXp event) {
+        int level = enchantLevel(ModEnchantments.XP_BOOST.get(), event.getEntity()); // Mined blocks or Picked furnace items
+        if (level > 0) { event.getOrb().value += Math.round(event.getOrb().getValue() * (1.0f * level)); }
+    }
+
+    private static int enchantLevel(Enchantment enchantment, Player player) {
+        return EnchantmentHelper.getEnchantmentLevel(enchantment, player);
     }
 }

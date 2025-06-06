@@ -17,9 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class MccourseHammerItem extends DiggerItem implements Vanishable {
-    public MccourseHammerItem(Tier tier, float pAttackDamageModifier, float pAttackSpeedModifier,
-                        TagKey<Block> blockTags, Properties properties) {
-        super(pAttackDamageModifier, pAttackSpeedModifier, tier, blockTags, properties);
+    public MccourseHammerItem(Tier tier, float attackDamageModifier, float attackSpeedModifier,
+                              TagKey<Block> blockTags, Properties properties) {
+        super(attackDamageModifier, attackSpeedModifier, tier, blockTags, properties);
     }
 
     @Override
@@ -35,7 +35,6 @@ public class MccourseHammerItem extends DiggerItem implements Vanishable {
         positions(Direction.SOUTH, x, y, z, entity, world);
         positions(Direction.WEST, x, y, z, entity, world);
         positions(Direction.EAST, x, y, z, entity, world);
-        positions(Direction.UP, x, y, z, entity, world);
     }
 
     // Appears tooltip on screen of Hammer, Paxel, etc.
@@ -48,10 +47,7 @@ public class MccourseHammerItem extends DiggerItem implements Vanishable {
 
     private void positions(Direction direction, double x, double y, double z,
                            Entity entity, LevelAccessor world) {
-        if (entity.getDirection() == direction) {
-            { blocks(x, y, z, world); }
-            { blocks(x, y - 1, z, world); }
-        }
+        if (entity.getDirection() == direction) { { blocks(x, y, z, world); } { blocks(x, y - 1, z, world); } }
     }
 
     private void blocks(double x, double y, double z, LevelAccessor world) {

@@ -59,6 +59,10 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> PEACEFUL_MOBS = ENCHANTMENTS.register("peaceful_mobs",
             () -> new PeacefulMobs(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.ARMOR_LEGS, EquipmentSlot.LEGS));
 
+    // Experience enchantment - Armor and Tools enchantment
+    public static final RegistryObject<Enchantment> XP_BOOST = ENCHANTMENTS.register("xp_boost",
+            () -> new XpBoostEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }
