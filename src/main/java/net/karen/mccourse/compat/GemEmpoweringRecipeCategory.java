@@ -4,6 +4,7 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -22,7 +23,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpoweringRecipe> {
@@ -33,13 +33,15 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
     public static final RecipeType<GemEmpoweringRecipe> GEM_EMPOWERING_TYPE =
             new RecipeType<>(UID, GemEmpoweringRecipe.class);
 
-    private final IDrawable background;
-    private final IDrawable icon;
+    private final IDrawable background, icon;
+    private final IDrawableAnimated arrow;
 
     public GemEmpoweringRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 83);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
                 new ItemStack(ModBlocks.GEM_EMPOWERING_STATION.get()));
+        this.arrow = helper.createAnimatedDrawable(helper.createDrawable(TEXTURE, 176, 0, 10, 30),
+                200, IDrawableAnimated.StartDirection.TOP, false);
     }
 
     @Override
@@ -81,6 +83,7 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
         ModEnergyStorage storage = energyStorage(recipe);
         EnergyDisplayTooltipArea energy = energyTooltip(storage);
         energy.render(guiGraphics); // Draws the power bar
+        arrow.draw(guiGraphics, 85, 30); // Draw animated arrow
     }
 
     // Energy Renderer on screen
@@ -93,7 +96,6 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
             ModEnergyStorage storage = energyStorage(recipe);
             return energyTooltip(storage).getTooltips();
         }
-
         return List.of(); // No tooltip outside the bar
     }
 
