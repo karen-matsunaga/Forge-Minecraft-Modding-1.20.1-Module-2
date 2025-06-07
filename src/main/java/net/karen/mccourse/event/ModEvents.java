@@ -209,14 +209,8 @@ public class ModEvents {
         return stack.getEnchantmentLevel(enchantment);
     }
 
-    private static void block(LevelAccessor world, BlockPos pos, Block block,
-                              BlockEvent.BreakEvent event) {
-        world.setBlock(pos, block.defaultBlockState(), 3);
-        event.setCanceled(true);
-    }
-
     public static boolean is(BlockState state, Block block,
-                                  float chance, ItemStack item, int type) {
+                             float chance, ItemStack item, int type) {
         int moreOres = enchant(item, ModEnchantments.MORE_ORES.get());
         boolean hasEnchant = state.is(block) && (Math.random() < chance) && (moreOres > 6);
         switch (type) {
@@ -224,6 +218,18 @@ public class ModEvents {
             case 2 -> hasEnchant = state.is(block) && (Math.random() < chance) && (moreOres == 6);
         }
         return hasEnchant;
+    }
+
+    private static void block(LevelAccessor world, BlockPos pos, Block block,
+                              BlockEvent.BreakEvent event) {
+        event.setCanceled(true);
+        if (world instanceof ServerLevel serverLevel) { serverLevel.setBlockAndUpdate(pos, block.defaultBlockState()); }
+        else { world.setBlock(pos, block.defaultBlockState(), 3); }
+    }
+
+    private static void dropXp(BlockState state, ServerLevel serverLevel, BlockPos pos, int fortune) {
+        int exp = state.getExpDrop(serverLevel, serverLevel.random, pos, fortune, 0);
+        if (exp > 0) { state.getBlock().popExperience(serverLevel, pos, exp); }
     }
 
     @SubscribeEvent
@@ -270,9 +276,9 @@ public class ModEvents {
                         new SimpleContainer(new ItemStack(state.getBlock())), serverLevel);
                 if (recipe.isPresent()) { // Has recipe
                     ItemStack result = recipe.get().getResultItem(serverLevel.registryAccess()).copy();
-                    int count = 1;
-                    if (state.is(ModTags.Blocks.ALL_ORES) && fortune > 0) { count += serverLevel.random.nextInt(fortune + 1); }
-                    for (int i = 0; i < count; i++) { finalDrops.add(result.copy()); }
+                    int drop = 1;
+                    if (state.is(ModTags.Blocks.ALL_ORES) && fortune > 0) { drop += serverLevel.random.nextInt(fortune + 1); }
+                    for (int i = 0; i < drop; i++) { finalDrops.add(result.copy()); }
                     cancelVanillaDrop = true;
                 }
             }
@@ -280,7 +286,7 @@ public class ModEvents {
                 List<ItemStack> multipliedDrops = new ArrayList<>();
                 finalDrops.forEach(drop -> {
                     ItemStack multiplied = drop.copy(); // Copy ORIGINAL drop
-                    multiplied.setCount(drop.getCount() * (fortune + multiplier)); // Duplicate drops with Fortune and Multiplier
+                    multiplied.setCount(drop.getCount() * multiplier); // Duplicate drops with Multiplier
                     multipliedDrops.add(multiplied);
                 });
                 finalDrops.clear(); // Remove the non-multiplied originals
@@ -293,11 +299,13 @@ public class ModEvents {
                 finalDrops.forEach(drop -> { // FinalDrops list added on Player's inventory
                     if (!player.getInventory().add(drop)) { player.drop(drop, false); }});
                 block(serverLevel, pos, Blocks.AIR, event);
+                dropXp(state, serverLevel, pos, fortune);
                 return;
             }
             if (cancelVanillaDrop) { // FinalDrops list accumulate drop on world
-                finalDrops.forEach(drop -> dropItem(serverLevel, pos, drop));
                 block(serverLevel, pos, Blocks.AIR, event);
+                finalDrops.forEach(drop -> dropItem(serverLevel, pos, drop));
+                dropXp(state, serverLevel, pos, fortune);
             }
         }
     }
@@ -920,7 +928,9 @@ public class ModEvents {
     // CUSTOM EVENT - ANVIL disenchanted event
     private static void dropItem(ServerLevel world, BlockPos pos, ItemStack stack) {
         // CUSTOM METHOD - Drop enchanted book and base item on ground [world]
-        world.addFreshEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5, stack));
+        ItemEntity item = new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, stack);
+        item.setDeltaMovement(Vec3.ZERO);
+        world.addFreshEntity(item);
     }
 
     @SubscribeEvent
