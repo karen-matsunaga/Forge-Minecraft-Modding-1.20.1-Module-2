@@ -1078,7 +1078,6 @@ public class ModEvents {
         if (event.getSource().getEntity() instanceof Player player) {
             ItemStack weapon = player.getMainHandItem();
             int mobsCritical = enchant(weapon, ModEnchantments.MOBS_CRITICAL.get());
-            // If it wasn't a natural critic, add the extra damage
             if (mobsCritical > 0 && (!(player.fallDistance > 0) || !player.onGround())) {
                 float baseDamage = event.getAmount();
                 event.setAmount(baseDamage + (baseDamage * (0.5F * mobsCritical))); // Critical damage (50% extra) per level
