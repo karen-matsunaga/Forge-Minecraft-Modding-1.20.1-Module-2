@@ -1,5 +1,6 @@
-// 1.20.1	2025-06-04T11:26:46.019815	Block Tags
+// 1.20.1	2025-06-06T20:44:20.8390285	Block Tags
 16bc8d1b9b571914b59b5fad5f245361e5bfe539 data/mccourse/tags/blocks/blocks/alexandrite_ores.json
+edcc423584ff5ffbb15c906b9b243525680dfd75 data/mccourse/tags/blocks/blocks/all_ores.json
 98a6b17f43b7700939b408265be7513b394137da data/mccourse/tags/blocks/blocks/farmer_age_growables.json
 6527dc5007f3b0595e621ca8c35f74180d8b522e data/mccourse/tags/blocks/blocks/farmer_bonemeal_growables.json
 ff26ab6c65d2442b5f4f080570d97de570ba22e5 data/mccourse/tags/blocks/blocks/farmer_crops_growables.json
@@ -13,13 +14,14 @@ ed55ae35c47237708c0967e2d75d1532412996c6 data/mccourse/tags/blocks/blocks/pink_o
 7d78d30b1cc01fb43cfb8364ed31026ee0640387 data/mccourse/tags/blocks/blocks/vertical_blocks.json
 1042355386c9659aa330e3a97a816b5e088c7648 data/mccourse/tags/blocks/blocks/vertical_grow_blocks.json
 501ba4dec7d8b548d8a897d1a3cd7f659282d5d8 data/mccourse/tags/blocks/metal_detector_colors.json
-edcc423584ff5ffbb15c906b9b243525680dfd75 data/mccourse/tags/blocks/metal_detector_valuables.json
+d552ed7f41c37158d518551bd872739c8288fd34 data/mccourse/tags/blocks/metal_detector_valuables.json
 64ba52a0503fe733de3f3907b7f157cb0821a8e3 data/mccourse/tags/blocks/mineable/paxel.json
 08e816d84dd5a9806309e91f51915a5605841bb8 data/mccourse/tags/blocks/needs_alexandrite_tool.json
-a3b034ba6dfc318ff77dbd2fedd47a18e2872e02 data/mccourse/tags/blocks/ores/more_ores_five_drops.json
+c1c4b8eca5edd47e1e04044d1e84b02f729cb0f6 data/mccourse/tags/blocks/ores/more_ores_five_drops.json
 0abc82aa03f891a64f49dc09081006eeac8be8e0 data/mccourse/tags/blocks/ores/more_ores_four_drops.json
-11c035d5833688a03d1bbd9d4d8dd6aa96ce0146 data/mccourse/tags/blocks/ores/more_ores_modes_pickaxe_drops.json
+5750a7c6dc711db2068ec36542555ff7699eafa4 data/mccourse/tags/blocks/ores/more_ores_modes_pickaxe_drops.json
 402e2ec91b2030071324095365da7c8e3573c790 data/mccourse/tags/blocks/ores/more_ores_one_drops.json
+a3b034ba6dfc318ff77dbd2fedd47a18e2872e02 data/mccourse/tags/blocks/ores/more_ores_six_drops.json
 7b9951a96f44c21b24724332c83c49c1dc358b0a data/mccourse/tags/blocks/ores/more_ores_three_drops.json
 76e1074a2f2f826c8f45cc1ab2a7d876f28710d8 data/mccourse/tags/blocks/ores/more_ores_two_drops.json
 db54a62a991dd498c37615be9aec236435b1513c data/mccourse/tags/blocks/special_metal_detector_valuables.json

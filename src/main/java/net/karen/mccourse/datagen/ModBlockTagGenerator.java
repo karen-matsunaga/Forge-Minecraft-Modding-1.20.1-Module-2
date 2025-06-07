@@ -23,7 +23,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         // Add Block Tags here
         // Metal Detector tags
-        this.tag(METAL_DETECTOR_VALUABLES).addTag(ORES).addTag(ORES_IN_GROUND_DEEPSLATE).addTag(MCCOURSE_ORES);
+        this.tag(METAL_DETECTOR_VALUABLES).addTag(ALL_ORES);
         this.tag(METAL_DETECTOR_COLORS).addTag(ORES_GOLD).addTag(ORES_COPPER);
         this.tag(SPECIAL_METAL_DETECTOR_VALUABLES).add(Blocks.SPAWNER, Blocks.END_PORTAL_FRAME, Blocks.CHEST, Blocks.TRAPPED_CHEST);
 
@@ -75,16 +75,17 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         this.tag(BlockTags.PLANKS).add(WALNUT_PLANKS.get());
 
-        // More Ores's tags -> More Ores I, II, III, IV, V
+        // More Ores's tags -> More Ores I, II, III, IV, V, VI
         this.tag(MORE_ORES_ONE_DROPS).add(Blocks.COAL_ORE, Blocks.COPPER_ORE);
         this.tag(MORE_ORES_TWO_DROPS).add(Blocks.IRON_ORE, Blocks.LAPIS_ORE);
         this.tag(MORE_ORES_THREE_DROPS).add(Blocks.REDSTONE_ORE, Blocks.GOLD_ORE);
         this.tag(MORE_ORES_FOUR_DROPS).add(Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE);
-        this.tag(MORE_ORES_FIVE_DROPS).add(Blocks.ANCIENT_DEBRIS, Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE);
+        this.tag(MORE_ORES_FIVE_DROPS).add(PINK_ORE.get(), ALEXANDRITE_ORE.get());
+        this.tag(MORE_ORES_SIX_DROPS).add(Blocks.ANCIENT_DEBRIS, Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE);
 
         // Modes Pickaxe's tag -  Modes Pickaxe's Mores Ores mode
         this.tag(MORE_ORES_MODES_PICKAXE_DROPS).addTag(ORES_IN_GROUND_STONE)
-                .addTag(ORES_IN_GROUND_NETHERRACK).addTag(ORES_NETHERITE_SCRAP);
+                .addTag(ORES_IN_GROUND_NETHERRACK).addTag(ORES_NETHERITE_SCRAP).add(PINK_ORE.get(), ALEXANDRITE_ORE.get());
 
         // Mobs Blocks
         this.tag(MOBS_BLOCKS_DROPS).add(ENDER_PEARL_BLOCK.get(), NETHER_STAR_BLOCK.get(),
@@ -112,6 +113,9 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         // Vertical crop
         this.tag(VERTICAL_BLOCKS).add(Blocks.BAMBOO, Blocks.SUGAR_CANE, Blocks.CACTUS);
         this.tag(VERTICAL_GROW_BLOCKS).add(Blocks.GRASS_BLOCK, Blocks.SAND, Blocks.DIRT);
+
+        // Ores
+        this.tag(ALL_ORES).addTag(ORES).addTag(ORES_IN_GROUND_DEEPSLATE).addTag(MCCOURSE_ORES);
     }
 
     @Override

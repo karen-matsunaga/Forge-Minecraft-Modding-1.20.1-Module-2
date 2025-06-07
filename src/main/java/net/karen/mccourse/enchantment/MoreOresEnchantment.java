@@ -10,5 +10,5 @@ public class MoreOresEnchantment extends Enchantment {
     }
 
     @Override
-    public int getMaxLevel() { return 5; } // More Ores enchantment max level
+    public int getMaxLevel() { return 6; } // More Ores enchantment max level
 }
