@@ -21,9 +21,12 @@ import net.minecraft.client.multiplayer.*;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.*;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.*;
 import net.minecraft.server.level.*;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.*;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
@@ -719,11 +722,11 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedBlockFlyEnchantment(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity(); // Entity is a player
-        boolean efficiency = enchantLevel(Enchantments.BLOCK_EFFICIENCY, player) > 0;
-        boolean blockFly = enchantLevel(ModEnchantments.BLOCK_FLY.get(), player) > 0;
-        newSpeed(event, blockFly, player, 5); // There is Block Fly enchantment -> OLD speed * NEW speed (5)
+        int efficiency = hasEnchant(Enchantments.BLOCK_EFFICIENCY, player);
+        int blockFly = hasEnchant(ModEnchantments.BLOCK_FLY.get(), player);
+        newSpeed(event, blockFly > 0, player, 5); // There is Block Fly enchantment -> OLD speed * NEW speed (5)
         // There is Block Fly and Efficiency enchantments -> OLD speed * (NEW speed (5) * efficiency level)
-        newSpeed(event, blockFly && efficiency, player, (5 + enchantLevel(Enchantments.BLOCK_EFFICIENCY, player)));
+        newSpeed(event, blockFly > 0 && efficiency > 0, player, (5 + efficiency));
     }
 
     private static void newSpeed(PlayerEvent.BreakSpeed event, boolean hasEnchant,
@@ -1019,29 +1022,13 @@ public class ModEvents {
         Player player = event.player;
         if (!player.isCreative() && !player.level().isClientSide()) {
             ItemStack elytra = new ItemStack(Items.ELYTRA);
-            int elytraLevel = enchant(elytra, ModEnchantments.ELYTRA_BOOST.get());
-            if (elytra.isEnchanted() && has(player, EquipmentSlot.CHEST).is(elytra.getItem()) && elytraLevel > 0) {
-                double boostFactor = setElytraSpeed(elytraLevel);
+            int elytraBoost = enchant(elytra, ModEnchantments.ELYTRA_BOOST.get());
+            if (elytra.isEnchanted() && has(player, EquipmentSlot.CHEST).is(elytra.getItem()) && elytraBoost > 0) {
+                double boostFactor = 1.0 + (0.5 * elytraBoost); // Elytra speed (50% extra) per level
                 player.setDeltaMovement(player.getDeltaMovement().multiply(boostFactor, 1.0, boostFactor));
                 player.hurtMarked = true;
             }
         }
-    }
-
-    private static double setElytraSpeed(int elytraLevel) {
-        double boostFactor = 1.0; // CUSTOM METHOD - Set Elytra Boost speed enchantment
-        switch (elytraLevel) {
-            case 1 -> boostFactor = setSpeed(0.5F, elytraLevel); // 50% speed
-            case 2 -> boostFactor = setSpeed(1.0F, elytraLevel); // 100% speed
-            case 3 -> boostFactor = setSpeed(1.5F, elytraLevel); // 150% speed
-            case 4 -> boostFactor = setSpeed(2.0F, elytraLevel); // 200% speed
-            case 5 -> boostFactor = setSpeed(5.0F, elytraLevel); // 500% speed
-        }
-        return boostFactor;
-    }
-
-    private static double setSpeed(float value, int elytra) { 
-        return 1.0 + value * elytra;
     }
 
     // CUSTOM EVENT - XP BOOST custom enchantment
@@ -1049,7 +1036,7 @@ public class ModEvents {
     public static void activatedXpBoostEnchantment(LivingExperienceDropEvent event) {
         if (event.getEntity() instanceof Player player) {
             if (event.getAttackingPlayer() != null) { // Attacked entities
-                int level = enchantLevel(ModEnchantments.XP_BOOST.get(), player);
+                int level = hasEnchant(ModEnchantments.XP_BOOST.get(), player);
                 if (level > 0) {
                     int bonus = Math.round(event.getOriginalExperience() * (1.0f * level));
                     event.setDroppedExperience(event.getDroppedExperience() + bonus);
@@ -1060,11 +1047,11 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onPickupXpBoostEnchantment(PlayerXpEvent.PickupXp event) {
-        int level = enchantLevel(ModEnchantments.XP_BOOST.get(), event.getEntity()); // Mined blocks or Picked furnace items
+        int level = hasEnchant(ModEnchantments.XP_BOOST.get(), event.getEntity()); // Mined blocks or Picked furnace items
         if (level > 0) { event.getOrb().value += Math.round(event.getOrb().getValue() * (1.0f * level)); }
     }
 
-    private static int enchantLevel(Enchantment enchantment, Player player) {
+    private static int hasEnchant(Enchantment enchantment, Player player) {
         return EnchantmentHelper.getEnchantmentLevel(enchantment, player);
     }
 
@@ -1081,6 +1068,25 @@ public class ModEvents {
                     stack.setCount(stack.getCount() * level); // Multiplier adapt on level
                     event.getDrops().add(new ItemEntity(drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack));
                 }
+            }
+        }
+    }
+
+    // CUSTOM EVENT - MOBS CRITICAL custom enchantment
+    @SubscribeEvent
+    public static void activatedMobsCriticalEnchantment(LivingHurtEvent event) {
+        if (event.getSource().getEntity() instanceof Player player) {
+            ItemStack weapon = player.getMainHandItem();
+            int mobsCritical = enchant(weapon, ModEnchantments.MOBS_CRITICAL.get());
+            // If it wasn't a natural critic, add the extra damage
+            if (mobsCritical > 0 && (!(player.fallDistance > 0) || !player.onGround())) {
+                float baseDamage = event.getAmount();
+                event.setAmount(baseDamage + (baseDamage * (0.5F * mobsCritical))); // Critical damage (50% extra) per level
+                player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_ATTACK_CRIT,
+                        SoundSource.PLAYERS, 1.0F, 1.0F); // Particle effect and sound
+                ((ServerLevel) player.level()).sendParticles(ParticleTypes.CRIT, event.getEntity().getX(),
+                        event.getEntity().getY(0.5), event.getEntity().getZ(), 5,
+                        0.2, 0.2, 0.2, 0.1);
             }
         }
     }

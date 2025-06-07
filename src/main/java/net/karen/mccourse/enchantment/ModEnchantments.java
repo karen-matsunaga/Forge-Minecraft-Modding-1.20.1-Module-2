@@ -67,6 +67,10 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> MULTIPLIER = ENCHANTMENTS.register("multiplier",
             () -> new MultiplierEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.BREAKABLE, EquipmentSlot.MAINHAND));
 
+    // Mobs Critical enchantment - Sword enchantment
+    public static final RegistryObject<Enchantment> MOBS_CRITICAL = ENCHANTMENTS.register("mobs_critical",
+            () -> new MobsCriticalEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }
