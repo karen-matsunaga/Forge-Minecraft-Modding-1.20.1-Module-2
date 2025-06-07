@@ -249,10 +249,8 @@ public class ModEvents {
             Blocks.IRON_BLOCK, Tags.Blocks.ORES_IRON, Blocks.LAPIS_BLOCK, Tags.Blocks.ORES_LAPIS,
             Blocks.REDSTONE_BLOCK, Tags.Blocks.ORES_REDSTONE, Blocks.NETHERITE_BLOCK, Tags.Blocks.ORES_NETHERITE_SCRAP);
             for (Map.Entry<Block, TagKey<Block>> entry : rainbowMap.entrySet()) {
-                if (state.is(entry.getValue())) {
-                    block(world, pos, entry.getKey(), event); // Blocks normal break
-                    return; // Other enchantments are not applied
-                }
+                // block(...) -> Blocks normal break || return; -> Other enchantments are not applied
+                if (state.is(entry.getValue())) { block(world, pos, entry.getKey(), event); return; }
             }
         }
         if (world instanceof ServerLevel serverLevel) {
@@ -263,32 +261,31 @@ public class ModEvents {
                 ModTags.Blocks.MORE_ORES_THREE_DROPS, ModTags.Blocks.MORE_ORES_FOUR_DROPS, ModTags.Blocks.MORE_ORES_FIVE_DROPS,
                 ModTags.Blocks.MORE_ORES_SIX_DROPS);
                 if (is(state, Blocks.STONE, 0.1f, tool, 1) || is(state, Blocks.NETHERRACK, 0.01f, tool, 2)) {
-                    var tagManager = ForgeRegistries.BLOCKS.tags();
-                    if (tagManager != null) { // Break block and ore chance drop
-                        tagManager.getTag(oresTags.get(moreOres - 1)).getRandomElement(RandomSource.create())
-                                  .ifPresent(block -> finalDrops.add(new ItemStack(block)));
+                    var blockTag = ForgeRegistries.BLOCKS.tags();
+                    if (blockTag != null) { // Break block and ore chance drop
+                        blockTag.getTag(oresTags.get(moreOres - 1)).getRandomElement(RandomSource.create()).ifPresent(block -> {
+                                ItemStack drop = new ItemStack(block); // Increase ore drop with Multiplier enchantment
+                                if (multiplier > 1) { drop.setCount(drop.getCount() * multiplier); }
+                                finalDrops.add(drop); });
                         cancelVanillaDrop = true;
                     }
                 }
             }
             if (enchant(tool, ModEnchantments.AUTO_SMELT.get()) > 0) { // * AUTO SMELT ENCHANTMENT *
-                Optional<SmeltingRecipe> recipe = serverLevel.getRecipeManager().getRecipeFor(RecipeType.SMELTING,
-                        new SimpleContainer(new ItemStack(state.getBlock())), serverLevel);
-                if (recipe.isPresent()) { // Has recipe
-                    ItemStack result = recipe.get().getResultItem(serverLevel.registryAccess()).copy();
+                serverLevel.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(
+                new ItemStack(state.getBlock())), serverLevel).ifPresent(recipe -> {
+                    ItemStack result = recipe.getResultItem(serverLevel.registryAccess()).copy();
                     int drop = 1;
                     if (state.is(ModTags.Blocks.ALL_ORES) && fortune > 0) { drop += serverLevel.random.nextInt(fortune + 1); }
-                    for (int i = 0; i < drop; i++) { finalDrops.add(result.copy()); }
-                    cancelVanillaDrop = true;
-                }
+                    for (int i = 0; i < drop; i++) { finalDrops.add(result.copy()); } });
+                cancelVanillaDrop = true;
             }
-            if (multiplier > 0 && !finalDrops.isEmpty() && state.is(ModTags.Blocks.ALL_ORES)) { // * MULTIPLIER ENCHANTMENT *
+            if (multiplier > 1 && !finalDrops.isEmpty() && state.is(ModTags.Blocks.ALL_ORES)) { // * MULTIPLIER ENCHANTMENT *
                 List<ItemStack> multipliedDrops = new ArrayList<>();
                 finalDrops.forEach(drop -> {
                     ItemStack multiplied = drop.copy(); // Copy ORIGINAL drop
                     multiplied.setCount(drop.getCount() * multiplier); // Duplicate drops with Multiplier
-                    multipliedDrops.add(multiplied);
-                });
+                    multipliedDrops.add(multiplied); });
                 finalDrops.clear(); // Remove the non-multiplied originals
                 finalDrops.addAll(multipliedDrops); // Adds the multiplied values
             }
