@@ -8,9 +8,11 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.*;
 import java.util.concurrent.CompletableFuture;
+import static net.karen.mccourse.block.ModBlocks.*;
 import static net.karen.mccourse.item.ModItems.*;
 import static net.karen.mccourse.util.ModTags.Items.*;
 
@@ -71,6 +73,15 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ItemTags.TRIMMABLE_ARMOR).addTag(ALEXANDRITE_ARMOR).addTag(COPPER_ARMOR).addTag(PINK_ARMOR).add(MINER_HELMET.get());
         this.tag(ItemTags.TRIM_MATERIALS).add(ALEXANDRITE.get());
         this.tag(ItemTags.TRIM_TEMPLATES).add(KAUPEN_SMITHING_TEMPLATE.get());
+
+        // Ores
+        this.tag(ALL_ORES_ITEMS).addTag(Tags.Items.ORES).addTag(MULTIPLIER_ORES);
+
+        // All ores
+        this.tag(MULTIPLIER_ORES).add(PINK_ORE.get().asItem(), DEEPSLATE_PINK_ORE.get().asItem(),
+            END_STONE_PINK_ORE.get().asItem(), NETHER_PINK_ORE.get().asItem(),
+            ALEXANDRITE_ORE.get().asItem(), DEEPSLATE_ALEXANDRITE_ORE.get().asItem(),
+            END_STONE_ALEXANDRITE_ORE.get().asItem(), NETHER_ALEXANDRITE_ORE.get().asItem());
     }
 
     @Override

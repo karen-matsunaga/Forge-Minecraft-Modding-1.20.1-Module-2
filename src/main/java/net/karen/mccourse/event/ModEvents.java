@@ -259,6 +259,7 @@ public class ModEvents {
         if (world instanceof ServerLevel serverLevel) {
             boolean cancelVanillaDrop = false; // Adapt the drop according to the enchantment being true
             List<ItemStack> finalDrops = new ArrayList<>(); // Items caused by enchantments are stored in the list
+            int oresFortune = serverLevel.random.nextInt(fortune + 1);
             if (moreOres > 0) { // * MORE ORES ENCHANTMENT *
                 List<TagKey<Block>> oresTags = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS, ModTags.Blocks.MORE_ORES_TWO_DROPS,
                 ModTags.Blocks.MORE_ORES_THREE_DROPS, ModTags.Blocks.MORE_ORES_FOUR_DROPS, ModTags.Blocks.MORE_ORES_FIVE_DROPS,
@@ -268,7 +269,7 @@ public class ModEvents {
                     if (blockTag != null) { // Break block and ore chance drop
                         blockTag.getTag(oresTags.get(moreOres - 1)).getRandomElement(RandomSource.create()).ifPresent(block -> {
                                 ItemStack drop = new ItemStack(block); // Increase ore drop with Multiplier enchantment
-                                if (multiplier > 1) { drop.setCount(drop.getCount() * multiplier); }
+                                if (fortune > 0) { drop.setCount(drop.getCount() * (1 + oresFortune)); }
                                 finalDrops.add(drop); });
                         cancelVanillaDrop = true;
                     }
@@ -279,16 +280,19 @@ public class ModEvents {
                 new ItemStack(state.getBlock())), serverLevel).ifPresent(recipe -> {
                     ItemStack result = recipe.getResultItem(serverLevel.registryAccess()).copy();
                     int drop = 1;
-                    if (state.is(ModTags.Blocks.ALL_ORES) && fortune > 0) { drop += serverLevel.random.nextInt(fortune + 1); }
+                    if (state.is(ModTags.Blocks.ALL_ORES) && fortune > 0) { drop += oresFortune; }
                     for (int i = 0; i < drop; i++) { finalDrops.add(result.copy()); } });
                 cancelVanillaDrop = true;
             }
-            if (multiplier > 1 && !finalDrops.isEmpty() && state.is(ModTags.Blocks.ALL_ORES)) { // * MULTIPLIER ENCHANTMENT *
+            if (multiplier > 1 && !finalDrops.isEmpty()) { // * MULTIPLIER ENCHANTMENT *
                 List<ItemStack> multipliedDrops = new ArrayList<>();
                 finalDrops.forEach(drop -> {
                     ItemStack multiplied = drop.copy(); // Copy ORIGINAL drop
-                    multiplied.setCount(drop.getCount() * multiplier); // Duplicate drops with Multiplier
-                    multipliedDrops.add(multiplied); });
+                    if (drop.is(ModTags.Items.ALL_ORES_ITEMS)) {
+                        multiplied.setCount(drop.getCount() * multiplier); // Duplicate drops with Multiplier
+                        multipliedDrops.add(multiplied);
+                    }
+                    else { multipliedDrops.add(multiplied); }});
                 finalDrops.clear(); // Remove the non-multiplied originals
                 finalDrops.addAll(multipliedDrops); // Adds the multiplied values
             }
