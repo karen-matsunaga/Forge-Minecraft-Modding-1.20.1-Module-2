@@ -1066,7 +1066,9 @@ public class ModEvents {
                 for (ItemEntity drop : originalDrops) {
                     ItemStack stack = drop.getItem().copy();
                     stack.setCount(stack.getCount() * level); // Multiplier adapt on level
-                    event.getDrops().add(new ItemEntity(drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack));
+                    ItemEntity drops = new ItemEntity(drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack);
+                    drops.setDeltaMovement(Vec3.ZERO);
+                    event.getDrops().add(drops);
                 }
             }
         }
@@ -1086,6 +1088,33 @@ public class ModEvents {
                 ((ServerLevel) player.level()).sendParticles(ParticleTypes.CRIT, event.getEntity().getX(),
                         event.getEntity().getY(0.5), event.getEntity().getZ(), 5,
                         0.2, 0.2, 0.2, 0.1);
+            }
+        }
+    }
+
+    // CUSTOM EVENT - ANVIL enchantment compatibilities
+    @SubscribeEvent
+    public static void onAnvilUpdate(AnvilUpdateEvent event) {
+        ItemStack left = event.getLeft();   // Base item
+        ItemStack right = event.getRight(); // Book or Second item
+        if (!left.isEmpty() && !right.isEmpty()) {
+            ItemStack output = left.copy(); // Result of Base item + Book or Second item
+            boolean modified = false;
+            Map<Enchantment, Integer> leftEnchantments = EnchantmentHelper.getEnchantments(left);
+            Map<Enchantment, Integer> rightEnchantments = EnchantmentHelper.getEnchantments(right);
+            for (Map.Entry<Enchantment, Integer> entry : rightEnchantments.entrySet()) {
+                Enchantment ench = entry.getKey(); // Enchantment
+                int rightLevel = entry.getValue(); // Enchantment level
+                int leftLevel = leftEnchantments.getOrDefault(ench, 0); // Book or Second item enchantment level
+                int newLevel = leftLevel == rightLevel ? rightLevel + 1 : Math.max(leftLevel, rightLevel); // Output with new level
+                leftEnchantments.put(ench, Math.min(ench.getMaxLevel(), newLevel)); // Here we ignore the compatibility check.
+                modified = true;
+            }
+            if (modified) { // Output item
+                EnchantmentHelper.setEnchantments(leftEnchantments, output);
+                event.setOutput(output);
+                event.setCost(1); // Cost at levels
+                event.setMaterialCost(1); // Cost of materials (e.g. books, diamonds etc.)
             }
         }
     }
