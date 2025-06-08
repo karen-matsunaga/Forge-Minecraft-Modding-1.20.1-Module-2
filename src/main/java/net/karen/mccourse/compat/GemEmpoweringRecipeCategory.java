@@ -38,10 +38,9 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
 
     public GemEmpoweringRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 83);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
-                new ItemStack(ModBlocks.GEM_EMPOWERING_STATION.get()));
-        this.arrow = helper.createAnimatedDrawable(helper.createDrawable(TEXTURE, 176, 0, 10, 30),
-                200, IDrawableAnimated.StartDirection.TOP, false);
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.GEM_EMPOWERING_STATION.get()));
+        this.arrow = helper.createAnimatedDrawable(helper.createDrawable(TEXTURE, 176, 0, 10, 30), 200,
+                IDrawableAnimated.StartDirection.TOP, false);
     }
 
     @Override
@@ -63,11 +62,12 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
 
         // Recipe FLUID renderer slot on screen
         builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 26, 11)
-                .addIngredients(ForgeTypes.FLUID_STACK, List.of(new FluidStack(recipe.getFluidStack(),
-                        recipe.getFluidStack().getAmount()))).setFluidRenderer(64000, true, 16, 39);
+               .addIngredients(ForgeTypes.FLUID_STACK, List.of(new FluidStack(recipe.getFluidStack().getFluid(),
+                               recipe.getFluidStack().getAmount())))
+               .setFluidRenderer(64000, true, 16, 39);
 
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 59) // FLUID render
-                .addItemStack(new ItemStack(recipe.getFluidStack().getFluid().getBucket()));
+               .addItemStack(new ItemStack(recipe.getFluidStack().getFluid().getBucket()));
 
         // Recipe ENERGY renderer slot on screen
         builder.addSlot(RecipeIngredientRole.INPUT, 134, 59).addItemStack(new ItemStack(ModItems.KOHLRABI.get()));
@@ -80,9 +80,7 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
     @Override
     public void draw(@NotNull GemEmpoweringRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView,
                      @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        ModEnergyStorage storage = energyStorage(recipe);
-        EnergyDisplayTooltipArea energy = energyTooltip(storage);
-        energy.render(guiGraphics); // Draws the power bar
+        energyTooltip(energyStorage(recipe)).render(guiGraphics); // Draws the power bar
         arrow.draw(guiGraphics, 85, 30); // Draw animated arrow
     }
 
@@ -93,16 +91,14 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
                                                       double mouseX, double mouseY) {
         int x = 156, y = 11, width = 8, height = 64;
         if (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height) {
-            ModEnergyStorage storage = energyStorage(recipe);
-            return energyTooltip(storage).getTooltips();
+            return energyTooltip(energyStorage(recipe)).getTooltips();
         }
         return List.of(); // No tooltip outside the bar
     }
 
     private ModEnergyStorage energyStorage(GemEmpoweringRecipe recipe) {
         ModEnergyStorage energy = new ModEnergyStorage(64000, 200) {
-            @Override
-            public void onEnergyChanged() {}
+            @Override public void onEnergyChanged() {}
         };
         energy.setEnergy(recipe.getEnergyAmount());
         return energy;
