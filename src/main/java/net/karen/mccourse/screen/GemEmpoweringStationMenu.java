@@ -22,7 +22,8 @@ public class GemEmpoweringStationMenu extends AbstractContainerMenu {
         this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
-    public GemEmpoweringStationMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+    public GemEmpoweringStationMenu(int pContainerId, Inventory inv,
+                                    BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.GEM_EMPOWERING_MENU.get(), pContainerId);
         checkContainerSize(inv, 4);
         blockEntity = ((GemEmpoweringStationBlockEntity) entity);
@@ -35,16 +36,16 @@ public class GemEmpoweringStationMenu extends AbstractContainerMenu {
 
         // Create a box slot to each item on custom block entity menu depends on the image inserted
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler -> {
-            this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 11));
-            this.addSlot(new SlotItemHandler(iItemHandler, 1, 26, 59));
-            this.addSlot(new SlotItemHandler(iItemHandler, 2, 80, 59));
-            this.addSlot(new SlotItemHandler(iItemHandler, 3, 134, 59));
+            this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 11)); // INPUT slot
+            this.addSlot(new SlotItemHandler(iItemHandler, 1, 26, 59)); // FLUID slot
+            this.addSlot(new SlotItemHandler(iItemHandler, 2, 134, 59)); // ENERGY FE slot
+            this.addSlot(new SlotItemHandler(iItemHandler, 3, 80, 59) { // OUTPUT slot
+                @Override public boolean mayPlace(@NotNull ItemStack stack) { return false; } });
         });
 
         // Return all items on inventory
         addDataSlots(data);
     }
-
 
     public boolean isCrafting() { return data.get(0) > 0; }
 
@@ -75,42 +76,36 @@ public class GemEmpoweringStationMenu extends AbstractContainerMenu {
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int pIndex) {
         Slot sourceSlot = slots.get(pIndex);
-        if (!sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
+        if (!sourceSlot.hasItem()) { return ItemStack.EMPTY; } // EMPTY_ITEM
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
-
         // Check if the slot clicked is one of the vanilla container slots
         if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
             // This is a vanilla container slot so merge the stack into the tile inventory
             if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;  // EMPTY_ITEM
-            }
-        } else if (pIndex < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
+                    + TE_INVENTORY_SLOT_COUNT, false)) { return ItemStack.EMPTY; } // EMPTY_ITEM
+        }
+        else if (pIndex < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
             // This is a TE slot so merge the stack into the players inventory
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;
-            }
-        } else {
+            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX,
+                    VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) { return ItemStack.EMPTY; }
+        }
+        else {
             System.out.println("Invalid slotIndex:" + pIndex);
             return ItemStack.EMPTY;
         }
         // If stack size == 0 (the entire stack was moved) set slot contents to null
-        if (sourceStack.getCount() == 0) {
-            sourceSlot.set(ItemStack.EMPTY);
-        } else {
-            sourceSlot.setChanged();
-        }
+        if (sourceStack.getCount() == 0) { sourceSlot.set(ItemStack.EMPTY); }
+        else { sourceSlot.setChanged(); }
         sourceSlot.onTake(playerIn, sourceStack);
         return copyOfSourceStack;
     }
 
-
     // Player click on block to open the menu
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                player, ModBlocks.GEM_EMPOWERING_STATION.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player,
+               ModBlocks.GEM_EMPOWERING_STATION.get());
     }
 
     // Player's inventory
@@ -123,8 +118,6 @@ public class GemEmpoweringStationMenu extends AbstractContainerMenu {
     }
 
     private void addPlayerHotbar(Inventory playerInventory) { // Player's hotbar slot
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
-        }
+        for (int i = 0; i < 9; ++i) { this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142)); }
     }
 }
