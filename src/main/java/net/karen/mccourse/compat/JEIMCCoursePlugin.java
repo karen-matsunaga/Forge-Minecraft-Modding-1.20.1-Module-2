@@ -82,8 +82,8 @@ public class JEIMCCoursePlugin implements IModPlugin {
         registration.addRecipeTransferHandler(KaupenFurnaceMenu.class, // Menu Class, Menu Type and Recipe Type
         ModMenuTypes.KAUPEN_FURNACE_MENU.get(), KaupenFurnaceRecipeCategory.KAUPEN_FURNACE_TYPE, 0, 1, 3, 36);
 
-        // GEM EMPOWERING STATION
-//        registration.addRecipeTransferHandler(GemEmpoweringStationMenu.class,
-//                ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringRecipeCategory.GEM_EMPOWERING_TYPE, 0, 3, 4, 36);
+        // GEM EMPOWERING STATION - DEMO
+        registration.addRecipeTransferHandler(GemEmpoweringStationMenu.class,
+                ModMenuTypes.GEM_EMPOWERING_MENU.get(), GemEmpoweringRecipeCategory.GEM_EMPOWERING_TYPE, 0, 3, 0, 36);
     }
 }

@@ -59,8 +59,8 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
                 case 0 -> true; // Input an item = Item input slot
                 // Input a fluid item = Fluid input slot
                 case 1 -> stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
-                case 2 -> false; // Output an item = Item output slot
-                case 3 -> stack.getItem() == ModItems.KOHLRABI.get(); // Transform an item on energy = Energy item slot
+                case 2 -> stack.getItem() == ModItems.KOHLRABI.get(); // Transform an item on energy = Energy item slot
+                case 3 -> false; // Output an item = Item output slot
                 default -> super.isItemValid(slot, stack);
             };
         }
@@ -69,8 +69,8 @@ public class GemEmpoweringStationBlockEntity extends BlockEntity implements Menu
     // Constants are the items inserted on custom block entity
     private static final int INPUT_SLOT = 0;
     private static final int FLUID_INPUT_SLOT = 1;
-    private static final int OUTPUT_SLOT = 2;
-    private static final int ENERGY_ITEM_SLOT = 3;
+    private static final int ENERGY_ITEM_SLOT = 2;
+    private static final int OUTPUT_SLOT = 3;
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
