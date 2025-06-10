@@ -17,6 +17,8 @@ import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.recipe.GemEmpoweringRecipe;
 import net.karen.mccourse.screen.renderer.EnergyDisplayTooltipArea;
 import net.karen.mccourse.util.ModEnergyStorage;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -80,6 +82,13 @@ public class GemEmpoweringRecipeCategory implements IRecipeCategory<GemEmpowerin
     @Override
     public void draw(@NotNull GemEmpoweringRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView,
                      @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Font fontRenderer = minecraft.font;
+        float seconds = recipe.getCraftTime(); // Craft Time
+        if (seconds > 0) {
+            Component info = Component.translatable("gui.jei.category.smelting.time.seconds", seconds);
+            guiGraphics.drawString(fontRenderer, info, 120, 45, 0xFF808080, false);
+        }
         energyTooltip(energyStorage(recipe)).render(guiGraphics); // Draws the power bar
         arrow.draw(guiGraphics, 85, 30); // Draw animated arrow
     }
