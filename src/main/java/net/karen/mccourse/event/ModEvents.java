@@ -1142,17 +1142,14 @@ public class ModEvents {
     @SubscribeEvent
     public static void onItemToss(ItemTossEvent event) {
         ItemEntity entity = event.getEntity();
-        if (!entity.level().isClientSide()) {
-            activatedImmortalEnchantment(entity, entity.getItem());
-        }
+        if (!entity.level().isClientSide()) { activatedImmortalEnchantment(entity, entity.getItem()); }
     }
 
     @SubscribeEvent
     public static void onItemSpawn(EntityJoinLevelEvent event) {
-        if (!event.getEntity().level().isClientSide()) {
-            if (event.getEntity() instanceof ItemEntity itemEntity) {
-                activatedImmortalEnchantment(itemEntity, itemEntity.getItem());
-            }
+        Entity entity = event.getEntity();
+        if (!entity.level().isClientSide()) {
+            if (entity instanceof ItemEntity itemEntity) { activatedImmortalEnchantment(itemEntity, itemEntity.getItem()); }
         }
     }
 
@@ -1177,11 +1174,12 @@ public class ModEvents {
                         Player nearestPlayer = event.level.getNearestPlayer(item, 64); // Find the nearest player
                         if (nearestPlayer != null) { // Teleports the item to the player
                             item.teleportTo(nearestPlayer.getX(), nearestPlayer.getY() + 1, nearestPlayer.getZ());
-                            // Optional: Sets the speed for "flying to player"
+                            // Sets the speed for "flying to player"
                             Vec3 motion = nearestPlayer.position().subtract(item.position()).normalize().scale(0.5);
                             item.setDeltaMovement(motion);
                         }
-                        else { item.teleportTo(item.getX(), 100, item.getZ()); } // If no player nearby, pick up the item as before
+                        // If no player nearby, pick up the item as before
+                        else { item.teleportTo(item.getX(), 100, item.getZ()); }
                     }
                 }
             }
