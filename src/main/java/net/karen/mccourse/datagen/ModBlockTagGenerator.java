@@ -116,6 +116,10 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         // Ores
         this.tag(ALL_ORES).addTag(ORES).addTag(ORES_IN_GROUND_DEEPSLATE).addTag(MCCOURSE_ORES);
+
+        // Block Fly
+        this.tag(BLOCK_FLY_BLOCK_SPEED).add(Blocks.GRAVEL, Blocks.SAND, Blocks.RED_SAND,
+                 Blocks.ICE, Blocks.PACKED_ICE, Blocks.BLUE_ICE, Blocks.GLOWSTONE).addTag(GLASS);
     }
 
     @Override

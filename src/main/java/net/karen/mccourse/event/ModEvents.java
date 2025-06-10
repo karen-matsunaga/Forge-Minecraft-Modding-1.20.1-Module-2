@@ -50,9 +50,12 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.*;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.village.*;
 import net.minecraftforge.eventbus.api.*;
 import net.minecraftforge.fml.common.Mod;
@@ -736,8 +739,12 @@ public class ModEvents {
     private static void newSpeed(PlayerEvent.BreakSpeed event, boolean hasEnchant,
                                  Player player, int value) {
         if (hasEnchant) { // CUSTOM METHOD - Set newSpeed adapt with Efficiency enchantment -> Fixed speed mining
+            BlockState state = event.getState();
             if ((!player.onGround() && !player.isUnderWater()) || player.isUnderWater()) {
                 event.setNewSpeed(event.getOriginalSpeed() * ((float) Math.sqrt(value) + 1));
+            }
+            if (state.is(ModTags.Blocks.BLOCK_FLY_BLOCK_SPEED)) {
+                event.setNewSpeed(event.getOriginalSpeed() * 2.5F + ((float) Math.sqrt(value) + 1));
             }
         }
     }
@@ -1119,6 +1126,64 @@ public class ModEvents {
                 event.setOutput(output);
                 event.setCost(1); // Cost at levels
                 event.setMaterialCost(1); // Cost of materials (e.g. books, diamonds etc.)
+            }
+        }
+    }
+
+    // CUSTOM EVENT - IMMORTAL custom enchantment
+    private static void activatedImmortalEnchantment(ItemEntity entity, ItemStack item) {
+        if (enchant(item, ModEnchantments.IMMORTAL.get()) > 0) {
+            entity.setInvulnerable(true);
+            entity.setUnlimitedLifetime(); // Does not disappear over time
+            entity.setPickUpDelay(10); // It can be collected after 0.5s
+        }
+    }
+
+    @SubscribeEvent
+    public static void onItemToss(ItemTossEvent event) {
+        ItemEntity entity = event.getEntity();
+        if (!entity.level().isClientSide()) {
+            activatedImmortalEnchantment(entity, entity.getItem());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onItemSpawn(EntityJoinLevelEvent event) {
+        if (!event.getEntity().level().isClientSide()) {
+            if (event.getEntity() instanceof ItemEntity itemEntity) {
+                activatedImmortalEnchantment(itemEntity, itemEntity.getItem());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onExplosion(ExplosionEvent.Detonate event) {
+        event.getAffectedEntities().removeIf(entity -> entity instanceof ItemEntity itemEntity &&
+                enchant(itemEntity.getItem(), ModEnchantments.IMMORTAL.get()) > 0);
+    }
+
+    @SubscribeEvent
+    public static void onItemExpire(ItemExpireEvent event) { // Never disappears
+        if (enchant(event.getEntity().getItem(), ModEnchantments.IMMORTAL.get()) > 0) { event.setCanceled(true); }
+    }
+
+    @SubscribeEvent
+    public static void onEntityTick(TickEvent.LevelTickEvent event) {
+        if (event.phase == TickEvent.Phase.END && !event.level.isClientSide()) {
+            for (Entity entity : event.level.getEntities(null,
+                    AABB.ofSize(new Vec3(0, -100, 0), 10000, 500, 10000))) {
+                if (entity instanceof ItemEntity item && enchant(item.getItem(), ModEnchantments.IMMORTAL.get()) > 0) {
+                    if (item.getY() < -64) {
+                        Player nearestPlayer = event.level.getNearestPlayer(item, 64); // Find the nearest player
+                        if (nearestPlayer != null) { // Teleports the item to the player
+                            item.teleportTo(nearestPlayer.getX(), nearestPlayer.getY() + 1, nearestPlayer.getZ());
+                            // Optional: Sets the speed for "flying to player"
+                            Vec3 motion = nearestPlayer.position().subtract(item.position()).normalize().scale(0.5);
+                            item.setDeltaMovement(motion);
+                        }
+                        else { item.teleportTo(item.getX(), 100, item.getZ()); } // If no player nearby, pick up the item as before
+                    }
+                }
             }
         }
     }

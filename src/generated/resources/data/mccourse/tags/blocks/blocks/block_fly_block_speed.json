@@ -1,0 +1,12 @@
+{
+  "values": [
+    "minecraft:gravel",
+    "minecraft:sand",
+    "minecraft:red_sand",
+    "minecraft:ice",
+    "minecraft:packed_ice",
+    "minecraft:blue_ice",
+    "minecraft:glowstone",
+    "#forge:glass"
+  ]
+}

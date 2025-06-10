@@ -100,6 +100,9 @@ public class ModTags {
         // Ores
         public static final TagKey<Block> ALL_ORES = tag("blocks/all_ores");
 
+        // Block Fly enchantment
+        public static final TagKey<Block> BLOCK_FLY_BLOCK_SPEED = tag("blocks/block_fly_block_speed");
+
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass block id
         }

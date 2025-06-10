@@ -71,6 +71,10 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> MOBS_CRITICAL = ENCHANTMENTS.register("mobs_critical",
             () -> new MobsCriticalEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND));
 
+    // Immortal enchantment - Armor and Tools enchantment
+    public static final RegistryObject<Enchantment> IMMORTAL = ENCHANTMENTS.register("immortal",
+            () -> new ImmortalEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }
