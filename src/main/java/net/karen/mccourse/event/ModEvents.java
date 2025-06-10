@@ -1185,4 +1185,35 @@ public class ModEvents {
             }
         }
     }
+
+    // CUSTOM EVENT - Item Teleport
+    private static void teleportPlayerIfHoldingTool(Player player, ItemStack stack) {
+        if (!player.level().isClientSide()) {
+            if (!stack.isEmpty()) { // Check if holding a tool or fishing rod
+                Item item = stack.getItem();
+                if (item instanceof SwordItem || item instanceof PickaxeItem || item instanceof FishingRodItem) {
+                    double reachDistance = 5.0; // How many blocks ahead to ray trace
+                    Vec3 lookVec = player.getLookAngle(); // Get the direction the player is looking
+                    Vec3 start = player.getEyePosition(); // It starts from the eyes
+                    Vec3 end = start.add(lookVec.scale(reachDistance));
+                    BlockHitResult hitResult = player.level().clip(new ClipContext( // Ray trace until it hits a block
+                            start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+                    if (hitResult.getType() == HitResult.Type.BLOCK) {
+                        BlockPos blockPos = hitResult.getBlockPos(); // Teleports to the top of the block hit (+1 height)
+                        double x = blockPos.getX() + 0.5;
+                        double y = blockPos.getY() + 1.0;
+                        double z = blockPos.getZ() + 0.5;
+                        ((ServerPlayer) player).teleportTo((ServerLevel) player.level(), x, y, z,
+                                player.getYRot(), player.getXRot());
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
+        // Teleport when using item (like fishing rod, sword, pickaxe, etc.)
+        teleportPlayerIfHoldingTool(event.getEntity(), event.getItemStack());
+    }
 }
