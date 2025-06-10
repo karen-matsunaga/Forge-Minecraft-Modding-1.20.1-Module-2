@@ -36,6 +36,7 @@
     "SculkShriekerBlockEntityMixin",
     "VibrationListenerMixin",
     "SignBlockEntityMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "ServerPlayerMixin"
   ]
 }
