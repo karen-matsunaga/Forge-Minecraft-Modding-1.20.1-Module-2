@@ -103,6 +103,9 @@ public class ModTags {
         // Block Fly enchantment
         public static final TagKey<Block> BLOCK_FLY_BLOCK_SPEED = tag("blocks/block_fly_block_speed");
 
+        // Accumulator enchantment
+        public static final TagKey<Block> ACCUMULATOR_EXPERIENCE = tag("blocks/accumulator_experience");
+
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass block id
         }

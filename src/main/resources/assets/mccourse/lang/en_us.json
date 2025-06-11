@@ -271,6 +271,9 @@
   "enchantment.mccourse.recover": "Recover",
   "enchantment.mccourse.xp_boost": "Xp Boost",
   "enchantment.mccourse.immortal": "Immortal",
+  "enchantment.mccourse.accumulator": "Accumulator",
+
+  "enchantment.mccourse.agile_fishing": "Agile Fishing",
 
   "enchantment.minecraft.efficiency.desc": "When applied on axe, pickaxe, shovel or hoe increases mining speed.",
   "enchantment.minecraft.silk_touch.desc": "When applied on axe, pickaxe, shovel or hoe receives the broken block.",
@@ -340,6 +343,9 @@
   "enchantment.mccourse.xp_boost.desc": "When applied to tools, armor, etc. gain more experience orb when killing mobs, mining blocks or cooking items.",
   "enchantment.mccourse.multiplier.desc": "When applied to tools, armor, etc. multiplier Looting, Fortune or More Ores drops adapt level.",
   "enchantment.mccourse.immortal.desc": "When applied to tools, armor, etc., it prevents the loss of the item in cactus, TNT, lava, void, etc.",
+  "enchantment.mccourse.accumulator.desc": "When applied to tools, armor, etc., gain experience orb when player walking, mining, attacking, etc.",
+
+  "enchantment.mccourse.agile_fishing.desc": "Reduces time to catch fish when fishing.",
 
   "key.category.mccourse": "Mccourse",
   "key.mccourse_glowing_blocks": "Glowing Blocks",

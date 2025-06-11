@@ -1,0 +1,12 @@
+{
+  "values": [
+    "minecraft:stone",
+    "minecraft:dirt",
+    "minecraft:pumpkin",
+    "minecraft:melon",
+    "#forge:glass",
+    "#mccourse:blocks/farmer_vertical_growables",
+    "#mccourse:blocks/farmer_age_growables",
+    "#mccourse:blocks/farmer_crops_growables"
+  ]
+}

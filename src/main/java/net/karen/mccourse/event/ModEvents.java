@@ -47,6 +47,7 @@ import net.minecraft.world.item.trading.*;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.*;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.scores.*;
 import net.minecraftforge.client.event.*;
@@ -237,7 +238,7 @@ public class ModEvents {
     }
 
     private static void dropXp(BlockState state, ServerLevel serverLevel, BlockPos pos, int fortune) {
-        int exp = state.getExpDrop(serverLevel, serverLevel.random, pos, fortune, 0);
+        int exp = state.getExpDrop(serverLevel, serverLevel.random, pos, fortune, 1);
         if (exp > 0) { state.getBlock().popExperience(serverLevel, pos, exp); }
     }
 
@@ -309,12 +310,14 @@ public class ModEvents {
                 finalDrops.forEach(drop -> { // FinalDrops list added on Player's inventory
                     if (!player.getInventory().add(drop)) { player.drop(drop, false); }});
                 block(serverLevel, pos, Blocks.AIR, event);
+                setPlayerXP(player, serverLevel, fortune * multiplier);
                 dropXp(state, serverLevel, pos, fortune);
                 return;
             }
             if (cancelVanillaDrop) { // FinalDrops list accumulate drop on world
                 block(serverLevel, pos, Blocks.AIR, event);
                 finalDrops.forEach(drop -> dropItem(serverLevel, pos, drop));
+                setPlayerXP(player, serverLevel, fortune * multiplier);
                 dropXp(state, serverLevel, pos, fortune);
             }
         }
@@ -909,6 +912,12 @@ public class ModEvents {
             else if (block.equals(Blocks.NETHER_WART) && state.getValue(NetherWartBlock.AGE).equals(3)) { // Nether Wart
                 crop(Blocks.NETHER_WART, state, level, pos, player, event, heldItem);
             }
+            else if (block.equals(Blocks.COCOA) && state.getValue(CocoaBlock.AGE).equals(2)) {
+                crop(Blocks.COCOA, state, level, pos, player, event, heldItem);
+            }
+            else if (block == Blocks.CAVE_VINES || block == Blocks.CAVE_VINES_PLANT) {
+                if (state.getValue(BlockStateProperties.BERRIES)) { setPlayerXP(player, level, 10); }
+            }
             else if (block.defaultBlockState().is(ModTags.Blocks.VERTICAL_BLOCKS)) { // Sugar cane, Bamboo or Cactus
                 BlockPos basePos = pos.below(); // Only replant if there is correct soil below
                 BlockState baseState = level.getBlockState(basePos);
@@ -1221,6 +1230,12 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Overlay: X Y Z coordinates and Light
+    private static void renderLight(RenderGuiOverlayEvent event, Font font,
+                                    String message, int y, int bool) {
+        if (bool > 6) { event.getGuiGraphics().drawString(font, message, 10, y, 0x32FC76); } // Green color
+        else { event.getGuiGraphics().drawString(font, message, 10, y, 0xFF1818); } // Red color
+    }
+
     @SubscribeEvent
     public static void overlayCoordinateLight(RenderGuiOverlayEvent event) {
         Minecraft mc = Minecraft.getInstance();
@@ -1234,12 +1249,61 @@ public class ModEvents {
                 int totalLight = Math.max(blockLight, skyLight);
                 Font font = mc.font;
                 GuiGraphics guiGraphics = event.getGuiGraphics();
-                String text = String.format("X: %.3f  Y: %.5f  Z: %.3f | Light: %d | Sky: %d | Block: %d",
-                                             x, y, z, totalLight, skyLight, blockLight); // Text to be displayed
-                // Render text on screen
-                if (blockLight > 6) { guiGraphics.drawString(font, text, 10, 20, 0x32FC76); } // Green color
-                else { guiGraphics.drawString(font, text, 10, 20, 0xFF1818); } // Red color
+                // Text to be displayed on screen
+                guiGraphics.drawString(font, String.format("X: %.3f  Y: %.5f  Z: %.3f", x, y, z), 10, 10, 0xFFFFFF);
+                renderLight(event, font, String.format("Light: %d", totalLight), 20, totalLight);
+                renderLight(event, font, String.format("Sky: %d", skyLight), 30, skyLight);
+                renderLight(event, font, String.format("Block: %d", blockLight), 40, blockLight);
             }
+        }
+    }
+
+    // CUSTOM EVENT - ACCUMULATOR custom enchantment
+    private static void setPlayerXP(Player player, Level level, int xp) {
+        Vec3 position = new Vec3(player.getBlockX(), player.getBlockY(), player.getBlockZ());
+        ExperienceOrb.award((ServerLevel) level, position, xp);
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(BlockEvent.BreakEvent event) { // Gain experience orb when mined block
+        Level level = (Level) event.getLevel();
+        if (!level.isClientSide()) {
+            Player player = event.getPlayer();
+            BlockState state = event.getState();
+            // Checks if the broken block is one that usually does not give XP
+            if (state.is(ModTags.Blocks.ACCUMULATOR_EXPERIENCE)) {
+                ItemStack item = player.getMainHandItem();
+                int accumulator = enchant(item, ModEnchantments.ACCUMULATOR.get());
+                int multiplier = enchant(item, ModEnchantments.MULTIPLIER.get());
+                int xp = 3; // Amount of XP you want to give - Default 3 experience orb
+                if (accumulator > 0) { xp = 3 * accumulator; } // Gain 30 experience orb
+                else if (multiplier > 0) { xp = 3 * accumulator * multiplier; } // Gain 300 experience orb
+                setPlayerXP(player, level, xp);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerWakeUp(PlayerWakeUpEvent event) { // Gain experience orb when mined block
+        Player player = event.getEntity();
+        Level level = player.level();
+        if (!level.isClientSide()) { setPlayerXP(player, level, 10); }
+    }
+
+    @SubscribeEvent
+    public static void onEntityKill(LivingDeathEvent event) { // Gain experience orb when killed entities
+        if (event.getSource().getEntity() instanceof Player player) {
+            Level level = player.level();
+            if (!level.isClientSide()) { setPlayerXP(player, level, 10); }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onItemFished(ItemFishedEvent event) { // Gain experience orb when fished
+        Player player = event.getEntity();
+        Level level = player.level();
+        if (level.isClientSide()) {
+            if (!event.getDrops().isEmpty()) { setPlayerXP(player, level, 4); }
         }
     }
 }

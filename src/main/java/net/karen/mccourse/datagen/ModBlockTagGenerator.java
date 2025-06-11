@@ -120,6 +120,10 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         // Block Fly
         this.tag(BLOCK_FLY_BLOCK_SPEED).add(Blocks.GRAVEL, Blocks.SAND, Blocks.RED_SAND,
                  Blocks.ICE, Blocks.PACKED_ICE, Blocks.BLUE_ICE, Blocks.GLOWSTONE).addTag(GLASS);
+
+        // Accumulator
+        this.tag(ACCUMULATOR_EXPERIENCE).add(Blocks.STONE, Blocks.DIRT, Blocks.PUMPKIN, Blocks.MELON)
+                .addTag(GLASS).addTag(FARMER_VERTICAL_GROWABLES).addTag(FARMER_AGE_GROWABLES).addTag(FARMER_CROPS_GROWABLES);
     }
 
     @Override
