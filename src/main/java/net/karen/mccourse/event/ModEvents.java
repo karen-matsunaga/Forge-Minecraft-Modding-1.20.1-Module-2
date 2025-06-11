@@ -17,7 +17,10 @@ import net.karen.mccourse.util.*;
 import net.karen.mccourse.villager.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.*;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.*;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.*;
@@ -1215,5 +1218,28 @@ public class ModEvents {
     public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
         // Teleport when using item (like fishing rod, sword, pickaxe, etc.)
         teleportPlayerIfHoldingTool(event.getEntity(), event.getItemStack());
+    }
+
+    // CUSTOM EVENT - Overlay: X Y Z coordinates and Light
+    @SubscribeEvent
+    public static void overlayCoordinateLight(RenderGuiOverlayEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        LocalPlayer player = mc.player;
+        if (!mc.options.renderDebug && mc.screen == null) {
+            if (player != null && mc.level != null) { // Render only when the player is in the game and not in the menu
+                double x = player.getX(), y = player.getY(), z = player.getZ(); // Player x, y, z coordinates
+                BlockPos pos = player.blockPosition();
+                int blockLight = mc.level.getLightEngine().getLayerListener(LightLayer.BLOCK).getLightValue(pos);
+                int skyLight = mc.level.getLightEngine().getLayerListener(LightLayer.SKY).getLightValue(pos);
+                int totalLight = Math.max(blockLight, skyLight);
+                Font font = mc.font;
+                GuiGraphics guiGraphics = event.getGuiGraphics();
+                String text = String.format("X: %.3f  Y: %.5f  Z: %.3f | Light: %d | Sky: %d | Block: %d",
+                                             x, y, z, totalLight, skyLight, blockLight); // Text to be displayed
+                // Render text on screen
+                if (blockLight > 6) { guiGraphics.drawString(font, text, 10, 20, 0x32FC76); } // Green color
+                else { guiGraphics.drawString(font, text, 10, 20, 0xFF1818); } // Red color
+            }
+        }
     }
 }
