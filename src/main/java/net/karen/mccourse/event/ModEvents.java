@@ -47,6 +47,7 @@ import net.minecraft.world.item.trading.*;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.*;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.scores.*;
 import net.minecraftforge.client.event.*;
@@ -366,10 +367,10 @@ public class ModEvents {
                 if (isEnchanted) { // Player has a HELMET inputted on slot and GLOWING MOBS enchantment level
                     boolean newState = !current; // Default stage is FALSE
                     glowingState.put(playerUUID, newState); // Adapted "newState" of "current" stage
-                    messageStage(player, newState ? "Glowing Mobs: ON!" : "Glowing Mobs: OFF!",
-                    newState ? ChatFormatting.GREEN : ChatFormatting.RED); // Toggle ON/OFF
+                    // Toggle ON/OFF
+                    glow(player, newState ? "Mobs: ON!" : "Mobs: OFF!", newState ? ChatFormatting.GREEN : ChatFormatting.RED);
                 }
-                else { messageStage(player, "Glowing Mobs: Enchanted helmet!", ChatFormatting.DARK_RED); } // Hasn't item
+                else { glow(player, "Mobs: Enchanted helmet!", ChatFormatting.DARK_RED); } // Hasn't item
             }
             if (current && isEnchanted) {
                 // Key (Color) -> Each group represent with some color. Value (Group tag name) -> Represent as Tag.
@@ -702,8 +703,8 @@ public class ModEvents {
         if (worldVar.xray != item) { worldVar.xray = item; worldVar.syncData(world); }
     }
 
-    private static void messageStage(Player player, String name, ChatFormatting color) {
-        player.displayClientMessage(Component.translatable(name)
+    private static void glow(Player player, String name, ChatFormatting color) {
+        player.displayClientMessage(Component.translatable("Glowing " + name)
                 .setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD)), true);
     }
 
@@ -720,12 +721,10 @@ public class ModEvents {
                 if (hasItem) { // Has enchanted HELMET or Metal Detector
                     boolean newState = !worldVar.xray; // Adapted "newState" of "worldVar.xray" stage
                     change(worldVar, newState, world);
-                    messageStage(player, newState ? "Glowing Blocks: Activated" : "Glowing Blocks: Disabled",
-                    newState ? ChatFormatting.GREEN : ChatFormatting.RED); // Toggle ON/OFF
+                    glow(player, newState ? "Blocks: Activated" : "Blocks: Disabled",
+                         newState ? ChatFormatting.GREEN : ChatFormatting.RED); // Toggle ON/OFF
                 }
-                else { // Hasn't item
-                    messageStage(player, "Glowing Blocks: Enchanted helmet or Metal detector!", ChatFormatting.DARK_RED);
-                }
+                else { glow(player, "Blocks: Enchanted helmet or Metal detector!", ChatFormatting.DARK_RED); } // Hasn't item
             }
             if (!hasItem && worldVar.xray) { change(worldVar, false, world); } // Glowing Blocks disabled
         }
@@ -935,6 +934,10 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Crop replant
+    private static boolean cropAge(BlockState state, Block block, IntegerProperty property, int value) {
+        return state.getBlock().equals(block) && state.getValue(property).equals(value);
+    }
+
     private static void damageToolIfHoe(ItemStack tool, Player player) {
         if (tool.getItem() instanceof HoeItem) { // CUSTOM METHOD - Damage tool
             tool.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
@@ -945,6 +948,7 @@ public class ModEvents {
                              Player player, BlockEvent.BreakEvent event, ItemStack tool) {
         event.setCanceled(true); // Cancels pattern break
         Block.dropResources(state, level, pos, null, player, tool); // Drops items as if they had broken normally
+        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3); // Removes block crop
         level.setBlock(pos, block.defaultBlockState(), 3); // Replants the initial stage of the plantation
         damageToolIfHoe(tool, player); // Spend tool durability
     }
@@ -963,10 +967,10 @@ public class ModEvents {
             if (block instanceof CropBlock crop) {
                 if (crop.isMaxAge(state)) { crop(crop, state, level, pos, player, event, heldItem); } // Check if it is ripe
             }
-            else if (block.equals(Blocks.NETHER_WART) && state.getValue(NetherWartBlock.AGE).equals(3)) { // Nether Wart
+            else if (cropAge(state, Blocks.NETHER_WART, NetherWartBlock.AGE, 3)) { // Nether Wart
                 crop(Blocks.NETHER_WART, state, level, pos, player, event, heldItem);
             }
-            else if (block.equals(Blocks.COCOA) && state.getValue(CocoaBlock.AGE).equals(2)) {
+            else if (cropAge(state, Blocks.COCOA, CocoaBlock.AGE, 2)) { // Cocoa
                 crop(Blocks.COCOA, state, level, pos, player, event, heldItem);
             }
             else if (block.defaultBlockState().is(ModTags.Blocks.VERTICAL_BLOCKS)) { // Sugar cane, Bamboo or Cactus
