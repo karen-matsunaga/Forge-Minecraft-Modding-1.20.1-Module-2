@@ -123,7 +123,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         // Accumulator
         this.tag(ACCUMULATOR_EXPERIENCE).add(Blocks.STONE, Blocks.DIRT, Blocks.PUMPKIN, Blocks.MELON)
-                .addTag(GLASS).addTag(FARMER_VERTICAL_GROWABLES).addTag(FARMER_AGE_GROWABLES).addTag(FARMER_CROPS_GROWABLES);
+                .addTag(GLASS).addTag(FARMER_VERTICAL_GROWABLES).addTag(FARMER_AGE_GROWABLES).addTag(FARMER_CROPS_GROWABLES)
+                .addTag(ALL_ORES);
     }
 
     @Override

@@ -7,6 +7,7 @@
     "#forge:glass",
     "#mccourse:blocks/farmer_vertical_growables",
     "#mccourse:blocks/farmer_age_growables",
-    "#mccourse:blocks/farmer_crops_growables"
+    "#mccourse:blocks/farmer_crops_growables",
+    "#mccourse:blocks/all_ores"
   ]
 }
