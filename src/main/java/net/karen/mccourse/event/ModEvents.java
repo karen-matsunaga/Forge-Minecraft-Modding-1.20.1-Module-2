@@ -47,7 +47,6 @@ import net.minecraft.world.item.trading.*;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.*;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.scores.*;
 import net.minecraftforge.client.event.*;
@@ -238,7 +237,7 @@ public class ModEvents {
     }
 
     private static void dropXp(BlockState state, ServerLevel serverLevel, BlockPos pos, int fortune) {
-        int exp = state.getExpDrop(serverLevel, serverLevel.random, pos, fortune, 1);
+        int exp = state.getExpDrop(serverLevel, serverLevel.random, pos, fortune, 0);
         if (exp > 0) { state.getBlock().popExperience(serverLevel, pos, exp); }
     }
 
@@ -310,14 +309,12 @@ public class ModEvents {
                 finalDrops.forEach(drop -> { // FinalDrops list added on Player's inventory
                     if (!player.getInventory().add(drop)) { player.drop(drop, false); }});
                 block(serverLevel, pos, Blocks.AIR, event);
-                setPlayerXP(player, serverLevel, fortune * multiplier);
                 dropXp(state, serverLevel, pos, fortune);
                 return;
             }
             if (cancelVanillaDrop) { // FinalDrops list accumulate drop on world
                 block(serverLevel, pos, Blocks.AIR, event);
                 finalDrops.forEach(drop -> dropItem(serverLevel, pos, drop));
-                setPlayerXP(player, serverLevel, fortune * multiplier);
                 dropXp(state, serverLevel, pos, fortune);
             }
         }
@@ -608,9 +605,7 @@ public class ModEvents {
                     for (int zi = -RadiusSquare; zi <= RadiusSquare; zi++) {
                         // Execute the desired statements within the square/cube
                         if (GlowingBlocksNetworkMessage.World.get(level).xray) {
-                            double posX = Math.floor(pos.x + xi);
-                            double posY = Math.floor(pos.y + i);
-                            double posZ = Math.floor(pos.z + zi);
+                            double posX = Math.floor(pos.x + xi), posY = Math.floor(pos.y + i), posZ = Math.floor(pos.z + zi);
                             BlockPos position = BlockPos.containing(posX, posY, posZ);
                             int[][] cubeCoordinates = { {0,0,0},{1,0,0},{1,0,0},{1,0,1},{1,0,1},{0,0,1},
                             {0,0,1},{0,0,0},{0,0,0},{0,1,0},{1,0,0},{1,1,0},
@@ -914,9 +909,6 @@ public class ModEvents {
             }
             else if (block.equals(Blocks.COCOA) && state.getValue(CocoaBlock.AGE).equals(2)) {
                 crop(Blocks.COCOA, state, level, pos, player, event, heldItem);
-            }
-            else if (block == Blocks.CAVE_VINES || block == Blocks.CAVE_VINES_PLANT) {
-                if (state.getValue(BlockStateProperties.BERRIES)) { setPlayerXP(player, level, 10); }
             }
             else if (block.defaultBlockState().is(ModTags.Blocks.VERTICAL_BLOCKS)) { // Sugar cane, Bamboo or Cactus
                 BlockPos basePos = pos.below(); // Only replant if there is correct soil below
@@ -1302,8 +1294,6 @@ public class ModEvents {
     public static void onItemFished(ItemFishedEvent event) { // Gain experience orb when fished
         Player player = event.getEntity();
         Level level = player.level();
-        if (level.isClientSide()) {
-            if (!event.getDrops().isEmpty()) { setPlayerXP(player, level, 4); }
-        }
+        if (level.isClientSide()) { if (!event.getDrops().isEmpty()) { setPlayerXP(player, level, 4); } }
     }
 }
