@@ -1,37 +1,36 @@
 package net.karen.mccourse.block.custom;
 
 import net.karen.mccourse.item.ModItems;
+import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-
-import java.util.List;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MccourseGeneratorBlock extends Block {
-    List<Item> items;
-    public MccourseGeneratorBlock(Properties pProperties, List<Item> itemList) {
-        super(pProperties);
-        this.items = itemList;
-    }
+    public MccourseGeneratorBlock(Properties properties) { super(properties); }
 
     @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest,
-                                       FluidState fluid) {
-        ItemStack heldItem = player.getMainHandItem();
-        boolean destroy = player.isCreative() || heldItem.is(ModItems.PINK_PICKAXE.get());
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
+                                       boolean willHarvest, FluidState fluid) {
+        boolean destroy = player.isCreative() || player.getMainHandItem().is(ModItems.PINK_PICKAXE.get());
         if (!level.isClientSide()) {
-            if (destroy) { // ENABLES destruction on CREATIVE mode or uses PINK PICKAXE, but not received DROP items
-                return level.destroyBlock(pos, false); }
+            // ENABLES destruction on CREATIVE mode or uses PINK PICKAXE, but not received DROP items
+            if (destroy) { return level.destroyBlock(pos, false); }
             else {
-                for (Item item : items) { // Items generated only on SURVIVAL mode
-                    Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(item));
+                if (state.getBlock().equals(this)) { // Is Mccourse Generator custom block
+                    var blockTag = ForgeRegistries.BLOCKS.tags();
+                    if (blockTag != null) {
+                        blockTag.getTag(ModTags.Blocks.ALL_ORES).getRandomElement(RandomSource.create()).ifPresent(drop ->
+                        Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(drop)));
+                    }
                 }
                 level.sendBlockUpdated(pos, state, state, 3); // PREVENTS destruction of block
                 return false;
