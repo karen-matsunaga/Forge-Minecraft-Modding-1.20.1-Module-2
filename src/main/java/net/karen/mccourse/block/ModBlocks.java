@@ -413,8 +413,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> MCCOURSE_GENERATOR = registerBlock("mccourse_generator",
             () -> new MccourseGeneratorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
                     .instrument(NoteBlockInstrument.BASEDRUM)
-                    .strength(5F, 3600000.0F),
-                    List.of(Items.DIAMOND, Items.ENCHANTED_BOOK)));
+                    .strength(5F, 3600000.0F)));
 
     // Elevator block
     public static final RegistryObject<Block> MCCOURSE_ELEVATOR = registerBlock("mccourse_elevator",
