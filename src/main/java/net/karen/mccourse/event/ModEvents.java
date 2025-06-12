@@ -241,6 +241,25 @@ public class ModEvents {
         if (exp > 0) { state.getBlock().popExperience(serverLevel, pos, exp); }
     }
 
+    private static void setPlayerXP(Player player, Level level, int xp) {
+        Vec3 position = new Vec3(player.getBlockX(), player.getBlockY(), player.getBlockZ());
+        ExperienceOrb.award((ServerLevel) level, position, xp);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerWakeUp(PlayerWakeUpEvent event) { // Gain experience orb when sleep
+        Player player = event.getEntity();
+        Level level = player.level();
+        if (!level.isClientSide()) { setPlayerXP(player, level, 10); }
+    }
+
+    @SubscribeEvent
+    public static void onItemFished(ItemFishedEvent event) { // Gain experience orb when fished
+        Player player = event.getEntity();
+        Level level = player.level();
+        if (level.isClientSide()) { if (!event.getDrops().isEmpty()) { setPlayerXP(player, level, 4); } }
+    }
+
     @SubscribeEvent
     public static void onBlockBreakWithCustomEnchantments(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
@@ -248,9 +267,11 @@ public class ModEvents {
         BlockPos pos = event.getPos();
         BlockState state = event.getState();
         ItemStack tool = player.getMainHandItem();
+        Level level = (Level) event.getLevel();
         int fortune = enchant(tool, Enchantments.BLOCK_FORTUNE);
         int moreOres = enchant(tool, ModEnchantments.MORE_ORES.get());
         int multiplier = enchant(tool, ModEnchantments.MULTIPLIER.get());
+        int accumulator = enchant(tool, ModEnchantments.ACCUMULATOR.get());
         if (enchant(tool, ModEnchantments.RAINBOW.get()) > 0) { // * RAINBOW ENCHANTMENT *
             Map<Block, TagKey<Block>> rainbowMap = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL,
             Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER, Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND,
@@ -301,6 +322,14 @@ public class ModEvents {
                     else { multipliedDrops.add(multiplied); }});
                 finalDrops.clear(); // Remove the non-multiplied originals
                 finalDrops.addAll(multipliedDrops); // Adds the multiplied values
+            }
+            if (accumulator > 0 && !player.level().isClientSide()) { // * ACCUMULATOR ENCHANTMENT *
+                // Gain experience orb when mined block and checks if the broken block is one that usually does not give XP
+                if (state.is(ModTags.Blocks.ACCUMULATOR_EXPERIENCE)) {
+                    int xp = accumulator; // Amount of XP you want to give - Default gain 1 experience orb per level
+                    if (multiplier > 1) { xp = accumulator * multiplier; } // Gain 2 experience orb per level
+                    setPlayerXP(player, level, xp);
+                }
             }
             if (enchant(tool, ModEnchantments.MAGNETIC.get()) > 0 && !state.isAir()) { // * MAGNETIC ENCHANTMENT *
                 if (finalDrops.isEmpty()) { // FinalDrops empty list added all items on it is
@@ -443,6 +472,36 @@ public class ModEvents {
         }
     }
 
+    // CUSTOM EVENT - Overlay: X Y Z coordinates and Light
+    private static void renderLight(RenderGuiOverlayEvent event, Font font,
+                                    String message, int y, int bool) {
+        if (bool > 6) { event.getGuiGraphics().drawString(font, message, 10, y, 0x32FC76); } // Green color
+        else { event.getGuiGraphics().drawString(font, message, 10, y, 0xFF1818); } // Red color
+    }
+
+    @SubscribeEvent
+    public static void overlayCoordinateLight(RenderGuiOverlayEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        LocalPlayer player = mc.player;
+        if (!mc.options.renderDebug && mc.screen == null) {
+            if (player != null && mc.level != null) { // Render only when the player is in the game and not in the menu
+                double x = player.getX(), y = player.getY(), z = player.getZ(); // Player x, y, z coordinates
+                BlockPos pos = player.blockPosition();
+                int blockLight = mc.level.getLightEngine().getLayerListener(LightLayer.BLOCK).getLightValue(pos);
+                int skyLight = mc.level.getLightEngine().getLayerListener(LightLayer.SKY).getLightValue(pos);
+                int totalLight = Math.max(blockLight, skyLight);
+                Font font = mc.font;
+                GuiGraphics guiGraphics = event.getGuiGraphics();
+                // Text to be displayed on screen
+                guiGraphics.drawString(font, String.format("X: %.3f  Y: %.5f  Z: %.3f", x, y, z), 10, 10, 0xFFFFFF);
+                renderLight(event, font, String.format("Light: %d", totalLight), 20, totalLight);
+                renderLight(event, font, String.format("Sky: %d", skyLight), 30, skyLight);
+                renderLight(event, font, String.format("Block: %d", blockLight), 40, blockLight);
+            }
+        }
+    }
+
+    // CUSTOM EVENT - FLY custom effect
     private static boolean slot(Player player, EquipmentSlot slot, TagKey<Item> item) {
         return player.getItemBySlot(slot).is(item); // Active Fly with Item
     }
@@ -1190,110 +1249,27 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - Item Teleport
-    private static void teleportPlayerIfHoldingTool(Player player, ItemStack stack) {
-        if (!player.level().isClientSide()) {
-            if (!stack.isEmpty()) { // Check if holding a tool or fishing rod
-                Item item = stack.getItem();
-                if (item instanceof SwordItem || item instanceof PickaxeItem || item instanceof FishingRodItem) {
-                    double reachDistance = 5.0; // How many blocks ahead to ray trace
-                    Vec3 lookVec = player.getLookAngle(); // Get the direction the player is looking
-                    Vec3 start = player.getEyePosition(); // It starts from the eyes
-                    Vec3 end = start.add(lookVec.scale(reachDistance));
-                    BlockHitResult hitResult = player.level().clip(new ClipContext( // Ray trace until it hits a block
-                            start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
-                    if (hitResult.getType() == HitResult.Type.BLOCK) {
-                        BlockPos blockPos = hitResult.getBlockPos(); // Teleports to the top of the block hit (+1 height)
-                        double x = blockPos.getX() + 0.5;
-                        double y = blockPos.getY() + 1.0;
-                        double z = blockPos.getZ() + 0.5;
-                        ((ServerPlayer) player).teleportTo((ServerLevel) player.level(), x, y, z,
-                                player.getYRot(), player.getXRot());
-                    }
+    // CUSTOM EVENT - TELEPORT custom item
+    @SubscribeEvent
+    public static void teleportOnItemRightClick(PlayerInteractEvent.RightClickItem event) {
+        Player player = event.getEntity();
+        ItemStack stack = event.getItemStack();
+        Item item = stack.getItem();
+        if (!player.level().isClientSide()) { // Teleport when using item (like fishing rod, tools, etc.)
+            if (!stack.isEmpty() && item instanceof SwordItem || item instanceof PickaxeItem ||
+                item instanceof FishingRodItem) { // Check if holding a tool or fishing rod
+                double distance = 5.0; // How many blocks ahead to ray trace (reach distance)
+                // Get the direction the player is looking; It starts from the eyes; Block render distance.
+                Vec3 look = player.getLookAngle(), start = player.getEyePosition(), end = start.add(look.scale(distance));
+                BlockHitResult hitResult = player.level().clip(new ClipContext(start, end,
+                ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)); // Ray trace until it hits a block
+                if (hitResult.getType() == HitResult.Type.BLOCK) {
+                    BlockPos blockPos = hitResult.getBlockPos(); // Teleports to the top of the block hit (+1 height)
+                    double x = blockPos.getX() + 0.5, y = blockPos.getY() + 1.0, z = blockPos.getZ() + 0.5;
+                    float xRot = player.getXRot(), yRot = player.getYRot();
+                    ((ServerPlayer) player).teleportTo((ServerLevel) player.level(), x, y, z, yRot, xRot);
                 }
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
-        // Teleport when using item (like fishing rod, sword, pickaxe, etc.)
-        teleportPlayerIfHoldingTool(event.getEntity(), event.getItemStack());
-    }
-
-    // CUSTOM EVENT - Overlay: X Y Z coordinates and Light
-    private static void renderLight(RenderGuiOverlayEvent event, Font font,
-                                    String message, int y, int bool) {
-        if (bool > 6) { event.getGuiGraphics().drawString(font, message, 10, y, 0x32FC76); } // Green color
-        else { event.getGuiGraphics().drawString(font, message, 10, y, 0xFF1818); } // Red color
-    }
-
-    @SubscribeEvent
-    public static void overlayCoordinateLight(RenderGuiOverlayEvent event) {
-        Minecraft mc = Minecraft.getInstance();
-        LocalPlayer player = mc.player;
-        if (!mc.options.renderDebug && mc.screen == null) {
-            if (player != null && mc.level != null) { // Render only when the player is in the game and not in the menu
-                double x = player.getX(), y = player.getY(), z = player.getZ(); // Player x, y, z coordinates
-                BlockPos pos = player.blockPosition();
-                int blockLight = mc.level.getLightEngine().getLayerListener(LightLayer.BLOCK).getLightValue(pos);
-                int skyLight = mc.level.getLightEngine().getLayerListener(LightLayer.SKY).getLightValue(pos);
-                int totalLight = Math.max(blockLight, skyLight);
-                Font font = mc.font;
-                GuiGraphics guiGraphics = event.getGuiGraphics();
-                // Text to be displayed on screen
-                guiGraphics.drawString(font, String.format("X: %.3f  Y: %.5f  Z: %.3f", x, y, z), 10, 10, 0xFFFFFF);
-                renderLight(event, font, String.format("Light: %d", totalLight), 20, totalLight);
-                renderLight(event, font, String.format("Sky: %d", skyLight), 30, skyLight);
-                renderLight(event, font, String.format("Block: %d", blockLight), 40, blockLight);
-            }
-        }
-    }
-
-    // CUSTOM EVENT - ACCUMULATOR custom enchantment
-    private static void setPlayerXP(Player player, Level level, int xp) {
-        Vec3 position = new Vec3(player.getBlockX(), player.getBlockY(), player.getBlockZ());
-        ExperienceOrb.award((ServerLevel) level, position, xp);
-    }
-
-    @SubscribeEvent
-    public static void onBlockBreak(BlockEvent.BreakEvent event) { // Gain experience orb when mined block
-        Level level = (Level) event.getLevel();
-        if (!level.isClientSide()) {
-            Player player = event.getPlayer();
-            BlockState state = event.getState();
-            // Checks if the broken block is one that usually does not give XP
-            if (state.is(ModTags.Blocks.ACCUMULATOR_EXPERIENCE)) {
-                ItemStack item = player.getMainHandItem();
-                int accumulator = enchant(item, ModEnchantments.ACCUMULATOR.get());
-                int multiplier = enchant(item, ModEnchantments.MULTIPLIER.get());
-                int xp = 3; // Amount of XP you want to give - Default 3 experience orb
-                if (accumulator > 0) { xp = 3 * accumulator; } // Gain 30 experience orb
-                else if (multiplier > 0) { xp = 3 * accumulator * multiplier; } // Gain 300 experience orb
-                setPlayerXP(player, level, xp);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerWakeUp(PlayerWakeUpEvent event) { // Gain experience orb when mined block
-        Player player = event.getEntity();
-        Level level = player.level();
-        if (!level.isClientSide()) { setPlayerXP(player, level, 10); }
-    }
-
-    @SubscribeEvent
-    public static void onEntityKill(LivingDeathEvent event) { // Gain experience orb when killed entities
-        if (event.getSource().getEntity() instanceof Player player) {
-            Level level = player.level();
-            if (!level.isClientSide()) { setPlayerXP(player, level, 10); }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onItemFished(ItemFishedEvent event) { // Gain experience orb when fished
-        Player player = event.getEntity();
-        Level level = player.level();
-        if (level.isClientSide()) { if (!event.getDrops().isEmpty()) { setPlayerXP(player, level, 4); } }
     }
 }
