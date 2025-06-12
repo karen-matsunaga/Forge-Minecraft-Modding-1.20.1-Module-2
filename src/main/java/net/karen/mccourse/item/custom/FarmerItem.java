@@ -38,30 +38,39 @@ public class FarmerItem extends Item {
             if (isBlock(blockTag, FARMER_CROPS_GROWABLES, block)) {
                 for (Property<?> property : state.getProperties()) {
                     if (property.getName().equals("age") && property instanceof IntegerProperty age) {
-                        grow(level, pos, state.setValue(age, Collections.max(age.getPossibleValues())), 2);
-                        break;
+                        int currentAge = state.getValue(age), maxAge = Collections.max(age.getPossibleValues());
+                        if (currentAge < maxAge) {
+                            grow(level, pos, state.setValue(age, maxAge), 2);
+                            return consumeAndSucceed(stack, player); // Used Farmer on CROPS
+                        }
+                        else { return InteractionResult.SUCCESS; } // Crops are max age level
                     }
                 }
-                return consumeAndSucceed(stack, player); // Used Farmer on CROPS
             }
             if (isBlock(blockTag, FARMER_VERTICAL_GROWABLES, block)) {
                 int height = 0;
                 BlockState contains = block.defaultBlockState();
                 BlockPos.MutableBlockPos current = pos.mutable();
                 while (level.getBlockState(current.above()).is(block) && height++ < 16) { current.move(Direction.UP); }
+                boolean grew = false; // Vertical grow not max level
                 for (int i = 0; i < 3; i++) {
                     BlockPos above = current.above();
                     if (level.isEmptyBlock(above) && contains.canSurvive(level, above)) {
                         grow(level, above, contains, 3);
                         current = above.mutable();
+                        grew = true; // Vertical grow max age level
                     }
                     else { break; }
                 }
-                return consumeAndSucceed(stack, player); // Vertical growth (if tagged) - Used Farmer on GROW VERTICALLY
+                // Vertical growth (if tagged) - Used Farmer on GROW VERTICALLY
+                return grew ? consumeAndSucceed(stack, player) : InteractionResult.SUCCESS;
             }
             if (isBlock(blockTag, FARMER_AGE_GROWABLES, block) && state.hasProperty(BlockStateProperties.AGE_3)) {
-                grow(level, pos, state.setValue(BlockStateProperties.AGE_3, 3), 2);
-                return consumeAndSucceed(stack, player); // Used Farmer on NETHER WART
+                if (state.getValue(BlockStateProperties.AGE_3) < 3) {
+                    grow(level, pos, state.setValue(BlockStateProperties.AGE_3, 3), 2);
+                    return consumeAndSucceed(stack, player); // Used Farmer on NETHER WART
+                }
+                else { return InteractionResult.SUCCESS; } // Nether Wart is max age level
             }
         }
         return InteractionResult.PASS;
