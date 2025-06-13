@@ -380,8 +380,17 @@ public class ModItems {
             () -> new ModHelmetItem(ModArmorMaterials.MINER, ArmorItem.Type.HELMET, new Item.Properties().fireResistant()));
 
     // Custom trim
-    public static final RegistryObject<Item> KAUPEN_SMITHING_TEMPLATE = ITEMS.register("kaupen_armor_trim_smithing_template",
+    public static final RegistryObject<Item> KAUPEN_SMITHING_TEMPLATE =
+            ITEMS.register("kaupen_armor_trim_smithing_template",
             () -> SmithingTemplateItem.createArmorTrimTemplate(new ResourceLocation(MCCourseMod.MOD_ID, "kaupen")));
+
+    // Level Charger Plus
+    public static final RegistryObject<Item> LEVEL_CHARGER_PLUS = ITEMS.register("level_charger_plus",
+            () -> new LevelChargerItem(new Item.Properties().fireResistant().stacksTo(64), 1));
+
+    // Level Charger Minus
+    public static final RegistryObject<Item> LEVEL_CHARGER_MINUS = ITEMS.register("level_charger_minus",
+            () -> new LevelChargerItem(new Item.Properties().fireResistant().stacksTo(64), -1));
 
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }

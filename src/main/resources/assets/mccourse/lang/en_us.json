@@ -154,7 +154,6 @@
 
   "block.mccourse.mccourse_generator": "Mccourse Generator",
   "block.mccourse.mccourse_elevator": "Mccourse Elevator",
-  "block.mccourse.magic": "Magic",
   "block.mccourse.magic_book": "Magic Book Block",
   "block.mccourse.book_disenchanted_block": "Book Disenchanted Block",
 
@@ -165,6 +164,8 @@
   "item.mccourse.magnet": "Magnet",
   "item.mccourse.farmer": "Farmer",
   "item.mccourse.restore": "Restore",
+  "item.mccourse.level_charger_plus": "Level Charger Plus",
+  "item.mccourse.level_charger_minus": "Level Charger Minus",
 
   "item.mccourse.kaupen_armor_trim_smithing_template": "Kaupen Trim Template",
   "trim_pattern.mccourse.kaupen": "Kaupen Armor Trim",
@@ -273,8 +274,6 @@
   "enchantment.mccourse.immortal": "Immortal",
   "enchantment.mccourse.accumulator": "Accumulator",
 
-  "enchantment.mccourse.agile_fishing": "Agile Fishing",
-
   "enchantment.minecraft.efficiency.desc": "When applied on axe, pickaxe, shovel or hoe increases mining speed.",
   "enchantment.minecraft.silk_touch.desc": "When applied on axe, pickaxe, shovel or hoe receives the broken block.",
   "enchantment.minecraft.fortune.desc": "When applied on axe, pickaxe, shovel or hoe receives bonus loot drops of ores.",
@@ -344,8 +343,6 @@
   "enchantment.mccourse.multiplier.desc": "When applied to tools, armor, etc. multiplier Looting, Fortune or More Ores drops adapt level.",
   "enchantment.mccourse.immortal.desc": "When applied to tools, armor, etc., it prevents the loss of the item in cactus, TNT, lava, void, etc.",
   "enchantment.mccourse.accumulator.desc": "When applied to tools, armor, etc., gain experience orb when player walking, mining, attacking, etc.",
-
-  "enchantment.mccourse.agile_fishing.desc": "Reduces time to catch fish when fishing.",
 
   "key.category.mccourse": "Mccourse",
   "key.mccourse_glowing_blocks": "Glowing Blocks",

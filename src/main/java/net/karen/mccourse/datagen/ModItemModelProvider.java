@@ -191,6 +191,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.PINK_LEGGINGS);
         trimmedArmorItem(ModItems.PINK_BOOTS);
         trimmedArmorItem(ModItems.MINER_HELMET); // MINER armor
+
+        // Level Charger
+        simpleItem(ModItems.LEVEL_CHARGER_PLUS);
+        simpleItem(ModItems.LEVEL_CHARGER_MINUS);
+
     }
 
     // Registry all sapling item's models
