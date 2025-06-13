@@ -5,6 +5,7 @@ import net.karen.mccourse.block.custom.*;
 import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.sound.ModSounds;
+import net.karen.mccourse.util.ModTags;
 import net.karen.mccourse.util.ModWoodTypes;
 import net.karen.mccourse.worldgen.tree.WalnutTreeGrower;
 import net.minecraft.core.*;
@@ -413,7 +414,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> MCCOURSE_GENERATOR = registerBlock("mccourse_generator",
             () -> new MccourseGeneratorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
                     .instrument(NoteBlockInstrument.BASEDRUM)
-                    .strength(5F, 3600000.0F)));
+                    .strength(5F, 3600000.0F), "ALL", ModTags.Blocks.ALL_ORES));
 
     // Elevator block
     public static final RegistryObject<Block> MCCOURSE_ELEVATOR = registerBlock("mccourse_elevator",
