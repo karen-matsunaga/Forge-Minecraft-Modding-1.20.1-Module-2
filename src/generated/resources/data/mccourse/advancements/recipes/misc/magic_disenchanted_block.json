@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mccourse:book_disenchanted_block"
+        "recipe": "mccourse:magic_disenchanted_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "mccourse:book_disenchanted_block"
+      "mccourse:magic_disenchanted_block"
     ]
   },
   "sends_telemetry_event": false

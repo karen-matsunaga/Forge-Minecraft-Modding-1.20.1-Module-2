@@ -13,8 +13,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
-public class BookDisenchantedBlock extends Block {
-    public BookDisenchantedBlock(Properties properties) { super(properties); }
+public class MagicDisenchantedBlock extends Block {
+    public MagicDisenchantedBlock(Properties properties) { super(properties); }
 
     @Override
     public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
@@ -55,9 +55,9 @@ public class BookDisenchantedBlock extends Block {
         for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
             Enchantment enchantment = entry.getKey();
             int level = entry.getValue();
-            // Enchantment level 9 or below (INDIVIDUAL books with enchantment level 1)
-            if (level <= 9) { for (int i = 0; i < level; i++) { result.add(createBook(enchantment, 1)); } }
-            else { // Enchantment level 10 or above (INDIVIDUAL books with enchantment level 10 + remaining enchantment level)
+            // Enchantment level 10 or below (INDIVIDUAL books with enchantment level 1)
+            if (level <= 10) { for (int i = 0; i < level; i++) { result.add(createBook(enchantment, 1)); } }
+            else { // Enchantment level 11 or above (INDIVIDUAL books with enchantment level 10 + remaining enchantment level)
                 int tens = level / 10, remainder = level % 10;
                 for (int i = 0; i < tens; i++) result.add(createBook(enchantment, 10));
                 if (remainder > 0) { result.add(createBook(enchantment, remainder)); }

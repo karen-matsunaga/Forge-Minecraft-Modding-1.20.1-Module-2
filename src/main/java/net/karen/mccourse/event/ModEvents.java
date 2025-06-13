@@ -209,9 +209,7 @@ public class ModEvents {
         // Received KOHLRABI like Generic Trades
         wandering(generic, List.of(Items.EMERALD, ModItems.KOHLRABI.get()), List.of(2, 6, 10, 2), 0.02f);
         // Received KOHLRABI SEEDS like Rare Trades
-        wandering(rare, List.of(Items.EMERALD, ModItems.KOHLRABI_SEEDS.get()), List.of(5, 1, 3, 2), 0.02f);
-        // Magic Book custom block
-        wandering(rare, List.of(Items.EMERALD, ModBlocks.MAGIC_BOOK_BLOCK.get().asItem()), List.of(64, 1, 9, 10), 0.06f);
+        wandering(rare, List.of(Items.EMERALD, ModItems.KOHLRABI_SEEDS.get()), List.of(5, 1, 3, 2), 0.01f);
     }
 
     // CUSTOM EVENT - RAINBOW | AUTO SMELT | MORE ORES | MAGNETIC custom enchantments

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "mccourse:block/book_disenchanted_block"
+    "all": "mccourse:block/magic_enchanted_block"
   }
 }

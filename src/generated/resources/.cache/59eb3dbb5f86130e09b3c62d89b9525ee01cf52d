@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-13T11:45:05.4048546	Loot Tables
+// 1.20.1	2025-06-13T15:48:34.0414103	Loot Tables
 3c04bafc8e377b8b3a0acec4fb355ebe506bd32a data/mccourse/loot_tables/blocks/alexandrite_block.json
 5ee80a3f0dae7a738f12360934f26b319920a8a3 data/mccourse/loot_tables/blocks/alexandrite_button.json
 3cf926928d6232271016b028304beb66caa9effe data/mccourse/loot_tables/blocks/alexandrite_door.json
@@ -14,7 +14,6 @@ c46d46cedc0380bb5b61d869693cf91106bda1e7 data/mccourse/loot_tables/blocks/alexan
 d1aa311ceac4c952108962a6a694abdef1472ee5 data/mccourse/loot_tables/blocks/black_ender_pearl_block.json
 ce8a402490b756dc8e00f8e49f8b118de76f44f7 data/mccourse/loot_tables/blocks/blaze_rod_block.json
 ad47e9767e40817692d3e3390f028b3e73a4f8cc data/mccourse/loot_tables/blocks/blue_ender_pearl_block.json
-0ff83aa120783ddc4fe0e91c49a79e59e83f19e6 data/mccourse/loot_tables/blocks/book_disenchanted_block.json
 9e51a6f83b4acf722d36f8a6c3e7575b4051b902 data/mccourse/loot_tables/blocks/brown_ender_pearl_block.json
 721a12dfca84141982832817c5032407702d3766 data/mccourse/loot_tables/blocks/cattail_crop.json
 847f01dfdaf854700edfeefcf42e2dc0692ca81d data/mccourse/loot_tables/blocks/colored_leaves.json
@@ -34,7 +33,8 @@ cb63cc6bd8d6a5e0a3ad72205bb93e51d0426adc data/mccourse/loot_tables/blocks/green_
 f1e02b0627adf1ecddd380ae8e3ff41d994246d4 data/mccourse/loot_tables/blocks/kohlrabi_crop.json
 54c6d25444a230eaa6d2e5334398b1595efb57ca data/mccourse/loot_tables/blocks/lime_green_ender_pearl_block.json
 5c64b5a77b62be72c1777532d88f14c56d45713e data/mccourse/loot_tables/blocks/magenta_ender_pearl_block.json
-924a0137f6e4a0cf74139e879a4447445fd0918d data/mccourse/loot_tables/blocks/magic_book.json
+a2140c9cd5fea94d61fe317ed7228d930e058529 data/mccourse/loot_tables/blocks/magic_disenchanted_block.json
+3782889650c282d22fba18d7acdbbc17927e386a data/mccourse/loot_tables/blocks/magic_enchanted_block.json
 58104e91969996740beb3708844da5b5a23e42e2 data/mccourse/loot_tables/blocks/mccourse_elevator.json
 e5c7a271f89c7b044654cc5c7a854f86e2ed4e62 data/mccourse/loot_tables/blocks/mccourse_generator.json
 b77c5c7fe17b19d017b68cf68952ff7eb071d241 data/mccourse/loot_tables/blocks/nether_alexandrite_ore.json

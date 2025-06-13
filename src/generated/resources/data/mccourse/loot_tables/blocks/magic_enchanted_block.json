@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "mccourse:magic_book"
+          "name": "mccourse:magic_enchanted_block"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mccourse:blocks/magic_book"
+  "random_sequence": "mccourse:blocks/magic_enchanted_block"
 }

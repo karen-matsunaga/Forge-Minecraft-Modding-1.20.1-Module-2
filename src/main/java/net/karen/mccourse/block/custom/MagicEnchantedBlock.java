@@ -19,8 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class MagicBookBlock extends Block {
-    public MagicBookBlock(Properties properties) { super(properties); }
+public class MagicEnchantedBlock extends Block {
+    public MagicEnchantedBlock(Properties properties) { super(properties); }
 
     @Override
     public void stepOn(Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {

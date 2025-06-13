@@ -282,8 +282,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         craftSeven(List.of(ModBlocks.MCCOURSE_ELEVATOR.get(), Items.WHITE_WOOL), pWriter);
         craftSeven(List.of(ModItems.FARMER.get(), Items.BONE_MEAL), pWriter);
         craftSeven(List.of(ModItems.RESTORE.get(), Items.BOOK), pWriter); // Restore item
-        craftSeven(List.of(ModBlocks.MAGIC_BOOK_BLOCK.get(), Items.ENCHANTING_TABLE), pWriter);
-        craftSeven(List.of(ModBlocks.BOOK_DISENCHANTED_BLOCK.get(), Items.ANVIL), pWriter);
+        craftSeven(List.of(ModBlocks.MAGIC_ENCHANTED_BLOCK.get(), Items.ENCHANTING_TABLE), pWriter);
+        craftSeven(List.of(ModBlocks.MAGIC_DISENCHANTED_BLOCK.get(), Items.ANVIL), pWriter);
 
         // Two items
         craftSevenItems(List.of(ModBlocks.MCCOURSE_GENERATOR.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(),
