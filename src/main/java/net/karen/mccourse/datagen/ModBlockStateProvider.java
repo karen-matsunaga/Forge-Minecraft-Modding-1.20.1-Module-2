@@ -181,7 +181,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
         // Block generator
         blockWithItem(ModBlocks.MCCOURSE_GENERATOR);
         blockWithItem(ModBlocks.MCCOURSE_ELEVATOR);
-        blockWithItem(ModBlocks.MAGIC_BLOCK);
         blockWithItem(ModBlocks.MAGIC_BOOK_BLOCK);
         blockWithItem(ModBlocks.BOOK_DISENCHANTED_BLOCK);
 

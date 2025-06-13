@@ -37,7 +37,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                      RED_ENDER_PEARL_BLOCK.get(), LIME_GREEN_ENDER_PEARL_BLOCK.get(), YELLOW_ENDER_PEARL_BLOCK.get(),
                      BLUE_ENDER_PEARL_BLOCK.get(), WHITE_ENDER_PEARL_BLOCK.get(),
                      DISENCHANTED_BLOCK.get(), CRAFT_CRAFTING_TABLE.get(), MCCOURSE_GENERATOR.get(), MCCOURSE_ELEVATOR.get(),
-                     MAGIC_BLOCK.get(), MAGIC_BOOK_BLOCK.get(), BOOK_DISENCHANTED_BLOCK.get(),
+                     MAGIC_BOOK_BLOCK.get(), BOOK_DISENCHANTED_BLOCK.get(),
                      RUBY_BLOCK.get(), RUBY_BLOCK_1.get(), RUBY_BLOCK_2.get(), RUBY_BLOCK_3.get(),
                      WAXED_RUBY_BLOCK.get(), WAXED_RUBY_BLOCK_1.get(), WAXED_RUBY_BLOCK_2.get(), WAXED_RUBY_BLOCK_3.get())
                 .addTag(MOBS_BLOCKS_DROPS).addTag(MCCOURSE_ORES).addTag(MCCOURSE_ORES_BLOCK);

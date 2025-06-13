@@ -277,7 +277,6 @@ public class ModCreativeModeTabs {
 
                         // Destroyer
                         output.accept(ModItems.DESTROYER.get());
-                        output.accept(ModBlocks.MAGIC_BLOCK.get());
                         output.accept(ModBlocks.MAGIC_BOOK_BLOCK.get());
                         output.accept(ModBlocks.BOOK_DISENCHANTED_BLOCK.get());
                         output.accept(ModItems.MAGNET.get());

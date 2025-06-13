@@ -79,10 +79,6 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> ACCUMULATOR = ENCHANTMENTS.register("accumulator",
             () -> new AccumulatorEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
 
-    // Agile Fishing enchantment - Armor and Tools enchantment
-    public static final RegistryObject<Enchantment> AGILE_FISHING = ENCHANTMENTS.register("agile_fishing",
-            () -> new AgileFishingEnchantment(Enchantment.Rarity.UNCOMMON, EnchantmentCategory.FISHING_ROD, EquipmentSlot.MAINHAND));
-
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }

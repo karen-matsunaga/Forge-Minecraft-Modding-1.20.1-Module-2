@@ -282,7 +282,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         craftSeven(List.of(ModBlocks.MCCOURSE_ELEVATOR.get(), Items.WHITE_WOOL), pWriter);
         craftSeven(List.of(ModItems.FARMER.get(), Items.BONE_MEAL), pWriter);
         craftSeven(List.of(ModItems.RESTORE.get(), Items.BOOK), pWriter); // Restore item
-        craftSeven(List.of(ModBlocks.MAGIC_BOOK_BLOCK.get(), ModBlocks.MAGIC_BLOCK.get()), pWriter);
+        craftSeven(List.of(ModBlocks.MAGIC_BOOK_BLOCK.get(), Items.ENCHANTING_TABLE), pWriter);
         craftSeven(List.of(ModBlocks.BOOK_DISENCHANTED_BLOCK.get(), Items.ANVIL), pWriter);
 
         // Two items
@@ -290,8 +290,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 Items.NETHER_STAR, Items.ENCHANTED_GOLDEN_APPLE), pWriter);
         craftSevenItems(List.of(ModBlocks.GEM_EMPOWERING_STATION.get(), Items.FURNACE, ModItems.ALEXANDRITE.get(),
                 Items.BOOK), pWriter); // Gem Empowering Station
-        craftSevenItems(List.of(ModBlocks.MAGIC_BLOCK.get(), Items.ENCHANTING_TABLE, Items.ANVIL,
-                Items.BOOK), pWriter);
 
         // Custom trims
         trimSmithing(pWriter, ModItems.KAUPEN_SMITHING_TEMPLATE.get(), new ResourceLocation(MCCourseMod.MOD_ID, "kaupen"));

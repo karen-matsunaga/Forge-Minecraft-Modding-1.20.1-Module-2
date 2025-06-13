@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.*;
-import java.util.List;
 import java.util.function.Supplier;
 
 public class ModBlocks {
@@ -421,13 +420,6 @@ public class ModBlocks {
             () -> new MccourseElevatorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOL)
                     .sound(SoundType.WOOL)
                     .strength(5F, 1200.F)));
-
-    // Magic block
-    public static final RegistryObject<Block> MAGIC_BLOCK = registerBlock("magic",
-            () -> new MagicBlock(BlockBehaviour.Properties.of()
-                    .lightLevel(state -> 15)
-                    .sound(SoundType.LARGE_AMETHYST_BUD)
-                    .strength(5F, 3600000.0F)));
 
     // Magic Book block
     public static final RegistryObject<Block> MAGIC_BOOK_BLOCK = registerBlock("magic_book",

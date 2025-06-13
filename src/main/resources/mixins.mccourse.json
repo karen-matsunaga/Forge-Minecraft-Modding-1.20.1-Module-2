@@ -37,7 +37,6 @@
     "VibrationListenerMixin",
     "SignBlockEntityMixin",
     "LivingEntityMixin",
-    "ServerPlayerMixin",
-    "FishingHookMixin"
+    "ServerPlayerMixin"
   ]
 }
