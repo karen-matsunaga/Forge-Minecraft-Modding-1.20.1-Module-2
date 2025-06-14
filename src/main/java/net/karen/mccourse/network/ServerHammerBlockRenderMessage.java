@@ -32,7 +32,7 @@ public class ServerHammerBlockRenderMessage {
 
             if (!(held.getItem() instanceof HammerItem hammer)) { return; }
 
-            List<BlockPos> toHighlight = HammerItem.getBlocksToBeDestroyed(hammer.getRadius(), pos, player);
+            List<BlockPos> toHighlight = HammerItem.getBlocksToBeDestroyed(hammer.getDistance(), hammer.getRadius(), pos, player);
 
             ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player),
                     new ClientHammerBlockRenderMessage(toHighlight));

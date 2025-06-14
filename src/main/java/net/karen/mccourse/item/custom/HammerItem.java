@@ -34,42 +34,58 @@ import java.util.List;
 // https://github.com/drkhodakarami/uio/blob/master/src/main/java/jiraiyah/uio/item/HammerItem.java
 // Distributed under MIT - Using with some modifications
 public class HammerItem extends DiggerItem implements Vanishable {
-    private final int radius;
+    private final int radius, distance;
     private final boolean infinite;
 
-    public HammerItem(Tier tier, float pAttackDamageModifier, float pAttackSpeedModifier,
-                      TagKey<Block> blockTags, Properties properties, int radius, boolean infinite) {
-        super(pAttackDamageModifier, pAttackSpeedModifier, tier, blockTags, properties);
-        this.radius = radius - 1; // Radius declared on ModItems
-        this.infinite = infinite;
+    public HammerItem(Tier tier, float attackDamageModifier, float attackSpeedModifier,
+                      Properties properties, TagKey<Block> blockTags, int radius, boolean infinite, int distance) {
+        super(attackDamageModifier, attackSpeedModifier, tier, blockTags, properties);
+        this.radius = radius - 1; // Break X x Y RADIUS declared on ModItems
+        this.infinite = infinite; // Insert UNBREAKABLE tag
+        this.distance = distance; // Break X x Y x Z + straight break DISTANCE
     }
 
-    public int getRadius() { return this.radius; } // Declared radius activated on ModEvents
+    public int getRadius() { return this.radius; } // Declared RADIUS activated on ModEvents
 
-    // Player to receive the blocks destroyed
-    public static List<BlockPos> getBlocksToBeDestroyed(int radius, BlockPos initalBlockPos,
-                                                        ServerPlayer player) {
-        List<BlockPos> positions = new ArrayList<>(); // Block direction position
-        BlockHitResult traceResult = player.level().clip(new ClipContext(player.getEyePosition(1f),
-                (player.getEyePosition(1f).add(player.getViewVector(1f).scale(6f))),
-                ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+    public int getDistance() { return this.distance; } // Declared DISTANCE activated on ModEvents
+
+    // CUSTOM METHOD - Player to receive the blocks destroyed
+    public static List<BlockPos> getBlocksToBeDestroyed(int distance, int radius,
+                                                        BlockPos initialBlockPos, ServerPlayer player) {
+        List<BlockPos> positions = new ArrayList<>();
+        Vec3 eye = player.getEyePosition(1f), look = player.getViewVector(1f),
+             reach = eye.add(look.scale(6f));
+
+        BlockHitResult traceResult = player.level().clip(new ClipContext(eye, reach, ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE, player));
 
         if (traceResult.getType() == HitResult.Type.MISS) { return positions; }
 
-        // Directions in that player broken a block - (DOWN/UP, NORTH/SOUTH and EAST/WEST)
-        // Check which face of the block was hit to determine the breaking plane
-        blockPos(traceResult, List.of(Direction.DOWN, Direction.UP), positions, initalBlockPos, radius);
-        blockPos(traceResult, List.of(Direction.NORTH, Direction.SOUTH), positions, initalBlockPos, radius);
-        blockPos(traceResult, List.of(Direction.EAST, Direction.WEST), positions, initalBlockPos, radius);
+        Direction direction = traceResult.getDirection(); // Determines the direction the player is facing
+
+        // For each step along the direction (up to the desired distance)
+        for (int i = 0; i <= distance; i++) {
+            BlockPos offsetPos = initialBlockPos.relative(direction, i);
+            addCube(offsetPos, radius, positions);
+        }
         return positions;
     }
 
-    // Appears tooltip on screen of Hammer.
+    // CUSTOM METHOD - Adds all blocks inside the X x Y x Z cube around the center position
+    private static void addCube(BlockPos center, int radius, List<BlockPos> positions) {
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) { positions.add(center.offset(x, y, z)); }
+            }
+        }
+    }
+
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level,
                                 @NotNull List<Component> components, @NotNull TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, level, components, tooltipFlag);
-        components.add(Component.translatable("Hammer breaks: " + (this.radius * 2 + 1) + "x" + (this.radius * 2 + 1)));
+        super.appendHoverText(stack, level, components, tooltipFlag); // Appears tooltip on screen of Hammer.
+        int range = this.radius * 2 + 1;
+        components.add(Component.translatable("Hammer breaks: " + range + "x" + range + "x" + this.distance));
     }
 
     @Override
@@ -81,30 +97,17 @@ public class HammerItem extends DiggerItem implements Vanishable {
         }
     }
 
-    private static void blockPos(BlockHitResult hit, List<Direction> dir, List<BlockPos> pos,
-                                 BlockPos block, int rad) {
-        if (hit.getDirection() == dir.get(0) || hit.getDirection() == dir.get(1)) {
-            for (int x = -rad; x <= rad; x++) {
-                for (int y = -rad; y <= rad; y++) {
-                    switch (dir.get(0)) {
-                        case DOWN, UP -> pos.add(new BlockPos(block.getX() + x, block.getY(), block.getZ() + y));
-                        case NORTH, SOUTH -> pos.add(new BlockPos(block.getX() + x, block.getY() + y, block.getZ()));
-                        case EAST, WEST -> pos.add(new BlockPos(block.getX(), block.getY() + y, block.getZ() + x));
-                    }
-                }
-            }
-        }
-    }
-
-    // Hammer Highlight Block
+    // CUSTOM METHOD - Create Render HAMMER Highlight Block
     private static List<BlockPos> highlightedBlocks = List.of(); // Preview Blocks
     private static int ticksRemaining = 0;
 
+    // CUSTOM METHOD - Create Render HIGHLIGHT blocks
     public static void setHighlightedBlocks(List<BlockPos> blocks) {
         highlightedBlocks = blocks;
         ticksRemaining = 20; // 1 second highlight disappears
     }
 
+    // CUSTOM METHOD - Render HIGHLIGHT ticks
     public static void clientTick() {
         if (ticksRemaining > 0) {
             ticksRemaining--;
@@ -112,7 +115,7 @@ public class HammerItem extends DiggerItem implements Vanishable {
         }
     }
 
-    // Render highlight blocks
+    // CUSTOM METHOD - Render HIGHLIGHT blocks
     public static void renderHighlight(PoseStack pose, Camera camera, MultiBufferSource buffer) {
         if (!highlightedBlocks.isEmpty()) {
             Vec3 camPos = camera.getPosition(); // Player position
@@ -121,7 +124,7 @@ public class HammerItem extends DiggerItem implements Vanishable {
         }
     }
 
-    // Draw Box to highlight blocks
+    // CUSTOM METHOD - Draw BOX to highlight blocks
     public static void drawBox(PoseStack pose, MultiBufferSource buffer, AABB box,
                                float r, float g, float b, float alpha) {
         VertexConsumer builder = buffer.getBuffer(RenderType.lines());
