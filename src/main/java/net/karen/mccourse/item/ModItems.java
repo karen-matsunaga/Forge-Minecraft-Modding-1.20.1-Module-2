@@ -388,6 +388,10 @@ public class ModItems {
     public static final RegistryObject<Item> LEVEL_CHARGER_MINUS = ITEMS.register("level_charger_minus",
             () -> new LevelChargerItem(new Item.Properties().fireResistant().stacksTo(64), -1));
 
+    // Mccourse Bottle
+    public static final RegistryObject<Item> MCCOURSE_BOTTLE = ITEMS.register("mccourse_bottle",
+            () -> new MccourseBottleItem(new Item.Properties().fireResistant().stacksTo(1), 100000, 1));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }

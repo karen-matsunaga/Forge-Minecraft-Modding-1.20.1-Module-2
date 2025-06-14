@@ -196,6 +196,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.LEVEL_CHARGER_PLUS);
         simpleItem(ModItems.LEVEL_CHARGER_MINUS);
 
+        // Mccourse bottle
+        simpleItem(ModItems.MCCOURSE_BOTTLE);
     }
 
     // Registry all sapling item's models

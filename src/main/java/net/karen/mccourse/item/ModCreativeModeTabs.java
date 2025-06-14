@@ -288,6 +288,9 @@ public class ModCreativeModeTabs {
 
                         // Custom trim
                         output.accept(ModItems.KAUPEN_SMITHING_TEMPLATE.get());
+
+                        // Mccourse bottle
+                        output.accept(ModItems.MCCOURSE_BOTTLE.get());
                     }).build());
 
     // Registry Creative Mode Tab

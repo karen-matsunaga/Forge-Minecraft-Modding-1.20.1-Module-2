@@ -114,6 +114,9 @@ public class MCCourseMod {
                     ClientHammerBlockRenderMessage::new, ClientHammerBlockRenderMessage::handler); // CLIENT
             ModNetworks.addNetworkMessage(ServerHammerBlockRenderMessage.class, ServerHammerBlockRenderMessage::buffer,
                     ServerHammerBlockRenderMessage::new, ServerHammerBlockRenderMessage::handler); // SERVER
+            // Mccourse Bottle Item
+            ModNetworks.addNetworkMessage(MccourseBottleKeyInputMessage.class, MccourseBottleKeyInputMessage::buffer,
+                    MccourseBottleKeyInputMessage::new, MccourseBottleKeyInputMessage::handler); // SERVER
         });
     }
 

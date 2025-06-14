@@ -1275,4 +1275,19 @@ public class ModEvents {
             }
         }
     }
+
+    // CUSTOM EVENT - Mccourse Bottle item
+    @SubscribeEvent
+    public static void mccourseBottleKeyInputEvent(TickEvent.ClientTickEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player != null && mc.level != null && (event.phase == TickEvent.Phase.END)) {
+            if (mc.options.keyAttack.isDown()) {
+                ItemStack stack = mc.player.getMainHandItem();
+                if (stack.getItem() instanceof MccourseBottleItem) {
+                    boolean shift = InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT);
+                    ModNetworks.PACKET_HANDLER.sendToServer(new MccourseBottleKeyInputMessage(shift));
+                }
+            }
+        }
+    }
 }
