@@ -30,10 +30,28 @@ public class FarmerItem extends Item {
         Block block = state.getBlock();
         ITagManager<Block> blockTag = ForgeRegistries.BLOCKS.tags(); // Checks if the block is in the tag
         if (!level.isClientSide() && player != null && blockTag != null) {
-            if (isBlock(blockTag, FARMER_TREE_GROWABLES, block) && block instanceof BonemealableBlock grow &&
-                grow.isValidBonemealTarget(level, pos, state, false)) {
-                grow.performBonemeal((ServerLevel) level, level.random, pos, state); // Standard Bonemealable
-                return consumeAndSucceed(stack, player); // Used Farmer on TREES
+            if (isBlock(blockTag, FARMER_TREE_GROWABLES, block)) {
+                if (block instanceof SaplingBlock sapling) {
+                    if (sapling.isValidBonemealTarget(level, pos, state, false)) {
+                        sapling.advanceTree((ServerLevel) level, pos, state, level.random);
+                        return consumeAndSucceed(stack, player);
+                    }
+                    else { return  InteractionResult.SUCCESS; }
+                }
+                if (block instanceof MangrovePropaguleBlock mangrove) {
+                    if (mangrove.isValidBonemealTarget(level, pos, state, false)) {
+                        mangrove.advanceTree((ServerLevel) level, pos, state, level.random);
+                        return consumeAndSucceed(stack, player);
+                    }
+                    else { return  InteractionResult.SUCCESS; }
+                }
+                if (block instanceof BonemealableBlock grow) {
+                    if (grow.isValidBonemealTarget(level, pos, state, false)) {
+                        grow.performBonemeal((ServerLevel) level, level.random, pos, state); // Standard Bonemealable
+                        return consumeAndSucceed(stack, player); // Used Farmer on TREES
+                    }
+                    else { return  InteractionResult.SUCCESS; }
+                }
             }
             if (isBlock(blockTag, FARMER_CROPS_GROWABLES, block)) {
                 for (Property<?> property : state.getProperties()) {
@@ -43,7 +61,7 @@ public class FarmerItem extends Item {
                             grow(level, pos, state.setValue(age, maxAge), 2);
                             return consumeAndSucceed(stack, player); // Used Farmer on CROPS
                         }
-                        else { return InteractionResult.SUCCESS; } // Crops are max age level
+                        else { return  InteractionResult.SUCCESS; } // Crops are max age level
                     }
                 }
             }
@@ -63,14 +81,14 @@ public class FarmerItem extends Item {
                     else { break; }
                 }
                 // Vertical growth (if tagged) - Used Farmer on GROW VERTICALLY
-                return grew ? consumeAndSucceed(stack, player) : InteractionResult.SUCCESS;
+                return grew ? consumeAndSucceed(stack, player) :  InteractionResult.SUCCESS;
             }
             if (isBlock(blockTag, FARMER_AGE_GROWABLES, block) && state.hasProperty(BlockStateProperties.AGE_3)) {
                 if (state.getValue(BlockStateProperties.AGE_3) < 3) {
                     grow(level, pos, state.setValue(BlockStateProperties.AGE_3, 3), 2);
                     return consumeAndSucceed(stack, player); // Used Farmer on NETHER WART
                 }
-                else { return InteractionResult.SUCCESS; } // Nether Wart is max age level
+                else { return  InteractionResult.SUCCESS; } // Nether Wart is max age level
             }
         }
         return InteractionResult.PASS;
