@@ -37,6 +37,9 @@
     "VibrationListenerMixin",
     "SignBlockEntityMixin",
     "LivingEntityMixin",
-    "ServerPlayerMixin"
+    "ServerPlayerMixin",
+    "EnchantmentMenuMixin",
+    "AbstractContainerMenuMixin",
+    "ItemStackMixin"
   ]
 }
