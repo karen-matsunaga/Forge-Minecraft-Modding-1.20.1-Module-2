@@ -1,16 +1,20 @@
 package net.karen.mccourse.block.custom;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.*;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class MagicDisenchantedBlock extends Block {
@@ -74,5 +78,17 @@ public class MagicDisenchantedBlock extends Block {
     }
 
     // CUSTOM METHOD - Remove enchantment tags
-    private static void removeTag(List<String> tags, ItemStack item) { tags.forEach(item::removeTagKey); }
+    private static void removeTag(List<String> tags, ItemStack item) {
+        tags.forEach(item::removeTagKey);
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable BlockGetter pLevel,
+                                @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+        tooltip.add(Component.literal("1. Enchanted Tool NEAR -> Grouped book + Tool without enchantments")
+                .withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.literal("2. Enchanted Tool FAR -> Separate book + Tool without enchantments")
+                .withStyle(ChatFormatting.DARK_AQUA));
+        super.appendHoverText(stack, pLevel, tooltip, flag);
+    }
 }
