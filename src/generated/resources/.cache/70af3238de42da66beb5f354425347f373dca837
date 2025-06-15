@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-13T15:48:34.0497609	Block Tags
+// 1.20.1	2025-06-14T22:13:00.0999022	Block Tags
 d3eae0416629d4b60831fef096a497e5702a421e data/mccourse/tags/blocks/blocks/accumulator_experience.json
 16bc8d1b9b571914b59b5fad5f245361e5bfe539 data/mccourse/tags/blocks/blocks/alexandrite_ores.json
 edcc423584ff5ffbb15c906b9b243525680dfd75 data/mccourse/tags/blocks/blocks/all_ores.json
@@ -19,6 +19,7 @@ ed55ae35c47237708c0967e2d75d1532412996c6 data/mccourse/tags/blocks/blocks/pink_o
 d552ed7f41c37158d518551bd872739c8288fd34 data/mccourse/tags/blocks/metal_detector_valuables.json
 64ba52a0503fe733de3f3907b7f157cb0821a8e3 data/mccourse/tags/blocks/mineable/paxel.json
 08e816d84dd5a9806309e91f51915a5605841bb8 data/mccourse/tags/blocks/needs_alexandrite_tool.json
+c3c42acab7b9b7ba3668f28377bb4589fbed87e0 data/mccourse/tags/blocks/ores/more_ores_all_drops.json
 c1c4b8eca5edd47e1e04044d1e84b02f729cb0f6 data/mccourse/tags/blocks/ores/more_ores_five_drops.json
 0abc82aa03f891a64f49dc09081006eeac8be8e0 data/mccourse/tags/blocks/ores/more_ores_four_drops.json
 5750a7c6dc711db2068ec36542555ff7699eafa4 data/mccourse/tags/blocks/ores/more_ores_modes_pickaxe_drops.json

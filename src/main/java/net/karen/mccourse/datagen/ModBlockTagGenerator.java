@@ -75,13 +75,15 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         this.tag(BlockTags.PLANKS).add(WALNUT_PLANKS.get());
 
-        // More Ores's tags -> More Ores I, II, III, IV, V, VI
+        // More Ores's tags -> More Ores I, II, III, IV, V, VI, Max level
         this.tag(MORE_ORES_ONE_DROPS).add(Blocks.COAL_ORE, Blocks.COPPER_ORE);
         this.tag(MORE_ORES_TWO_DROPS).add(Blocks.IRON_ORE, Blocks.LAPIS_ORE);
         this.tag(MORE_ORES_THREE_DROPS).add(Blocks.REDSTONE_ORE, Blocks.GOLD_ORE);
         this.tag(MORE_ORES_FOUR_DROPS).add(Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE);
         this.tag(MORE_ORES_FIVE_DROPS).add(PINK_ORE.get(), ALEXANDRITE_ORE.get());
         this.tag(MORE_ORES_SIX_DROPS).add(Blocks.ANCIENT_DEBRIS, Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE);
+        this.tag(MORE_ORES_ALL_DROPS).addTag(MORE_ORES_ONE_DROPS).addTag(MORE_ORES_TWO_DROPS).addTag(MORE_ORES_THREE_DROPS)
+                                     .addTag(MORE_ORES_FOUR_DROPS).addTag(MORE_ORES_FIVE_DROPS).addTag(MORE_ORES_SIX_DROPS);
 
         // Modes Pickaxe's tag -  Modes Pickaxe's Mores Ores mode
         this.tag(MORE_ORES_MODES_PICKAXE_DROPS).addTag(ORES_IN_GROUND_STONE)

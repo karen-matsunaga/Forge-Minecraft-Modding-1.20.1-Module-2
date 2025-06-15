@@ -223,10 +223,11 @@ public class ModEvents {
     public static boolean is(BlockState state, Block block,
                              float chance, ItemStack item, int type) {
         int moreOres = enchant(item, ModEnchantments.MORE_ORES.get());
-        boolean hasEnchant = state.is(block) && (Math.random() < chance) && (moreOres > 6);
+        boolean hasEnchant = state.is(block) && (Math.random() < chance);
         switch (type) {
             case 1 -> hasEnchant = state.is(block) && (Math.random() < chance) && (moreOres < 6);
             case 2 -> hasEnchant = state.is(block) && (Math.random() < chance) && (moreOres == 6);
+            case 3 -> hasEnchant = state.is(block) && (Math.random() < chance) && (moreOres >= 7);
         }
         return hasEnchant;
     }
@@ -274,6 +275,7 @@ public class ModEvents {
         int moreOres = enchant(tool, ModEnchantments.MORE_ORES.get());
         int multiplier = enchant(tool, ModEnchantments.MULTIPLIER.get());
         int accumulator = enchant(tool, ModEnchantments.ACCUMULATOR.get());
+        var blockTag = ForgeRegistries.BLOCKS.tags();
         if (enchant(tool, ModEnchantments.RAINBOW.get()) > 0) { // * RAINBOW ENCHANTMENT *
             Map<Block, TagKey<Block>> rainbowMap = Map.of(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL,
             Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER, Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND,
@@ -293,13 +295,22 @@ public class ModEvents {
                 List<TagKey<Block>> oresTags = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS, ModTags.Blocks.MORE_ORES_TWO_DROPS,
                 ModTags.Blocks.MORE_ORES_THREE_DROPS, ModTags.Blocks.MORE_ORES_FOUR_DROPS, ModTags.Blocks.MORE_ORES_FIVE_DROPS,
                 ModTags.Blocks.MORE_ORES_SIX_DROPS);
-                if (is(state, Blocks.STONE, 0.1f, tool, 1) || is(state, Blocks.NETHERRACK, 0.01f, tool, 2)) {
-                    var blockTag = ForgeRegistries.BLOCKS.tags();
-                    if (blockTag != null) { // Break block and ore chance drop
+                if (blockTag != null) {
+                    if (is(state, Blocks.STONE, 0.1f, tool, 1) ||
+                        is(state, Blocks.NETHERRACK, 0.01f, tool, 2)) {
                         blockTag.getTag(oresTags.get(moreOres - 1)).getRandomElement(RandomSource.create()).ifPresent(block -> {
-                                ItemStack drop = new ItemStack(block); // Increase ore drop with Multiplier enchantment
-                                if (fortune > 0) { drop.setCount(drop.getCount() * (1 + oresFortune)); }
-                                finalDrops.add(drop); });
+                            ItemStack drop = new ItemStack(block); // Increase ore drop with Multiplier enchantment
+                            if (fortune > 0) { drop.setCount(drop.getCount() * (1 + oresFortune)); }
+                            finalDrops.add(drop); // Break block and ore chance drop
+                        });
+                        cancelVanillaDrop = true;
+                    }
+                    else if (is(state, Blocks.STONE, 0.05f, tool, 3)) {
+                        blockTag.getTag(ModTags.Blocks.MORE_ORES_ALL_DROPS).forEach(block -> {
+                            ItemStack drop = new ItemStack(block.asItem());
+                            if (fortune > 0) { drop.setCount(drop.getCount() * (1 + oresFortune)); }
+                            finalDrops.add(drop);
+                        });
                         cancelVanillaDrop = true;
                     }
                 }

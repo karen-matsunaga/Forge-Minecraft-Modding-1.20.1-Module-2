@@ -64,13 +64,14 @@ public class ModTags {
         // Created Alexandrite Paxel's tag
         public static final TagKey<Block> PAXEL_MINEABLE = tag("mineable/paxel");
 
-        // Created More Ores's drops - More Ores I, II, III, IV, V, VI
+        // Created More Ores's drops - More Ores I, II, III, IV, V, VI, Max Level
         public static final TagKey<Block> MORE_ORES_ONE_DROPS = tag("ores/more_ores_one_drops");
         public static final TagKey<Block> MORE_ORES_TWO_DROPS = tag("ores/more_ores_two_drops");
         public static final TagKey<Block> MORE_ORES_THREE_DROPS = tag("ores/more_ores_three_drops");
         public static final TagKey<Block> MORE_ORES_FOUR_DROPS = tag("ores/more_ores_four_drops");
         public static final TagKey<Block> MORE_ORES_FIVE_DROPS = tag("ores/more_ores_five_drops");
         public static final TagKey<Block> MORE_ORES_SIX_DROPS = tag("ores/more_ores_six_drops");
+        public static final TagKey<Block> MORE_ORES_ALL_DROPS = tag("ores/more_ores_all_drops");
 
         // Created More Ores's alternative drops - Modes Pickaxe's More Ores mode
         public static final TagKey<Block> MORE_ORES_MODES_PICKAXE_DROPS =
