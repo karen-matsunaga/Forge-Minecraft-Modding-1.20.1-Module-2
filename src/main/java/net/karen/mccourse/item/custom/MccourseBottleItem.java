@@ -40,16 +40,29 @@ public class MccourseBottleItem extends Item {
                 }
                 else { screen(player, "Bottle is empty.", ChatFormatting.RED); }
             }
-            else { screen(player, "Shift + Right Click to restore levels.", ChatFormatting.YELLOW); } // There's nothing
+            else {
+                if (storedLevels > 0) {
+                    serverPlayer.giveExperienceLevels(1);
+                    tag.putInt("StoredLevels", storedLevels - 1);
+                    screen(player, "Restored 1 level.", ChatFormatting.GREEN);
+                }
+                else { screen(player, "Shift + Right Click to restore levels.", ChatFormatting.YELLOW); } // There's nothing
+            }
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+    }
+
+    @Override
+    public @NotNull Component getName(ItemStack stack) {
+        return Component.translatable(stack.getDescriptionId()).withStyle(ChatFormatting.DARK_GREEN);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, @NotNull TooltipFlag flag) {
         int xp = stack.getOrCreateTag().getInt("StoredLevels");
         tooltip.add(Component.literal("Stored XP: " + xp + " / " + storeXp).withStyle(ChatFormatting.YELLOW));
-        tooltip.add(Component.literal("Left click: Store XP-").withStyle(ChatFormatting.RED));
+        tooltip.add(Component.literal("Left click: Store 1 XP- level").withStyle(ChatFormatting.RED));
+        tooltip.add(Component.literal("Right click: Restore 1 XP+ level").withStyle(ChatFormatting.GREEN));
         tooltip.add(Component.literal("Shift + Left click: Store all XP-").withStyle(ChatFormatting.RED));
         tooltip.add(Component.literal("Shift + Right click: Restore all XP+").withStyle(ChatFormatting.GREEN));
         super.appendHoverText(stack, level, tooltip, flag);
