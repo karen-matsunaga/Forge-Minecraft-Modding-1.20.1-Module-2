@@ -19,6 +19,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.multiplayer.*;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
@@ -40,6 +41,7 @@ import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.npc.*;
 import net.minecraft.world.entity.player.*;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.*;
@@ -1289,5 +1291,37 @@ public class ModEvents {
                 }
             }
         }
+    }
+
+    // CUSTOM EVENT - Infinite item
+    @SubscribeEvent
+    public static void onMouseClick(ScreenEvent.MouseButtonPressed.Pre event) {
+        if (!(event.getScreen() instanceof AbstractContainerScreen<?> screen)) { return; }
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) { return; }
+        ItemStack carried = mc.player.containerMenu.getCarried();
+        if (!(carried.getItem() instanceof InfiniteItem)) { return; }
+        double mouseX = event.getMouseX(), mouseY = event.getMouseY();
+        int button = event.getButton();
+        if (button != 0) { return; }
+        for (Slot slot : screen.getMenu().slots) {
+            if (isHovering(slot, mouseX, mouseY, screen)) {
+                ItemStack target = slot.getItem();
+                if (target.isEmpty() || target == carried) { return; }
+                // Send to the server
+                ModNetworks.PACKET_HANDLER.sendToServer(new InfiniteInventorySlotMessage(slot.index));
+                // Consume item on client (immediate visual effect)
+                if (!mc.player.getAbilities().instabuild) { carried.shrink(1); }
+                event.setCanceled(true);
+                return;
+            }
+        }
+    }
+
+    private static boolean isHovering(Slot slot, double mouseX, double mouseY,
+                                      AbstractContainerScreen<?> screen) {
+        int x = screen.getGuiLeft() + slot.x;
+        int y = screen.getGuiTop() + slot.y;
+        return mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16;
     }
 }

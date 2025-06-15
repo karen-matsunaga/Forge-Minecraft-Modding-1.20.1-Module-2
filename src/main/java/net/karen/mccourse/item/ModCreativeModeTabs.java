@@ -291,6 +291,7 @@ public class ModCreativeModeTabs {
 
                         // Mccourse bottle
                         output.accept(ModItems.MCCOURSE_BOTTLE.get());
+                        output.accept(ModItems.INFINITE.get());
                     }).build());
 
     // Registry Creative Mode Tab

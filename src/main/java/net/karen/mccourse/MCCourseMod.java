@@ -117,6 +117,9 @@ public class MCCourseMod {
             // Mccourse Bottle Item
             ModNetworks.addNetworkMessage(MccourseBottleKeyInputMessage.class, MccourseBottleKeyInputMessage::buffer,
                     MccourseBottleKeyInputMessage::new, MccourseBottleKeyInputMessage::handler); // SERVER
+            // Infinite item
+            ModNetworks.addNetworkMessage(InfiniteInventorySlotMessage.class, InfiniteInventorySlotMessage::buffer,
+                    InfiniteInventorySlotMessage::new, InfiniteInventorySlotMessage::handler); // SERVER
         });
     }
 

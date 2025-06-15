@@ -392,6 +392,10 @@ public class ModItems {
     public static final RegistryObject<Item> MCCOURSE_BOTTLE = ITEMS.register("mccourse_bottle",
             () -> new MccourseBottleItem(new Item.Properties().fireResistant().stacksTo(1), 100000, 1));
 
+    // Infinite
+    public static final RegistryObject<Item> INFINITE = ITEMS.register("infinite",
+            () -> new InfiniteItem(new Item.Properties().fireResistant().stacksTo(64).fireResistant()));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }

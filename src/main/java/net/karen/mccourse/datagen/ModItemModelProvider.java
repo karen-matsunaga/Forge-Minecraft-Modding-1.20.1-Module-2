@@ -198,6 +198,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         // Mccourse bottle
         simpleItem(ModItems.MCCOURSE_BOTTLE);
+        simpleItem(ModItems.INFINITE);
     }
 
     // Registry all sapling item's models
