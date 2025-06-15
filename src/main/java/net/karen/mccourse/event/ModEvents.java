@@ -486,12 +486,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Overlay: X Y Z coordinates and Light
-    private static void renderLight(RenderGuiOverlayEvent event, Font font,
-                                    String message, int y, int bool) {
-        if (bool > 6) { event.getGuiGraphics().drawString(font, message, 10, y, 0x32FC76); } // Green color
-        else { event.getGuiGraphics().drawString(font, message, 10, y, 0xFF1818); } // Red color
-    }
-
     @SubscribeEvent
     public static void overlayCoordinateLight(RenderGuiOverlayEvent event) {
         Minecraft mc = Minecraft.getInstance();
@@ -506,10 +500,21 @@ public class ModEvents {
                 Font font = mc.font;
                 GuiGraphics guiGraphics = event.getGuiGraphics();
                 // Text to be displayed on screen
-                guiGraphics.drawString(font, String.format("X: %.3f  Y: %.5f  Z: %.3f", x, y, z), 10, 10, 0xFFFFFF);
-                renderLight(event, font, String.format("Light: %d", totalLight), 20, totalLight);
-                renderLight(event, font, String.format("Sky: %d", skyLight), 30, skyLight);
-                renderLight(event, font, String.format("Block: %d", blockLight), 40, blockLight);
+                Component coordinate = Component.literal("X: ")
+                .append(Component.literal(String.format("%.3f", x)).withStyle(ChatFormatting.AQUA))
+                .append(Component.literal("  Y: "))
+                .append(Component.literal(String.format("%.5f", y)).withStyle(ChatFormatting.LIGHT_PURPLE))
+                .append(Component.literal("  Z: "))
+                .append(Component.literal(String.format("%.3f", z)).withStyle(ChatFormatting.GOLD));
+                // LIGHT, SKY, BLOCK
+                Component light = Component.literal("Light: ").append(Component.literal(String.valueOf(totalLight))
+                .setStyle(Style.EMPTY.withColor(totalLight > 6 ? 0x32FC76 : 0xFF1818)))
+                .append(Component.literal("  Sky: ")).append(Component.literal(String.valueOf(skyLight))
+                .setStyle(Style.EMPTY.withColor(skyLight > 6 ? 0x32FC76 : 0xFF1818)))
+                .append(Component.literal("  Block: ")).append(Component.literal(String.valueOf(blockLight))
+                .setStyle(Style.EMPTY.withColor(blockLight > 6 ? 0x32FC76 : 0xFF1818)));
+                guiGraphics.drawString(font, coordinate, 10, 10, 0x5597DF); // X, Y, Z
+                guiGraphics.drawString(font, light, 10, 20, 0xDBE947); // LIGHT
             }
         }
     }
