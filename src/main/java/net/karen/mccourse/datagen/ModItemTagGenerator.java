@@ -12,7 +12,6 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.*;
 import java.util.concurrent.CompletableFuture;
-import static net.karen.mccourse.block.ModBlocks.*;
 import static net.karen.mccourse.item.ModItems.*;
 import static net.karen.mccourse.util.ModTags.Items.*;
 
@@ -75,13 +74,11 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ItemTags.TRIM_TEMPLATES).add(KAUPEN_SMITHING_TEMPLATE.get());
 
         // Ores
-        this.tag(ALL_ORES_ITEMS).addTag(Tags.Items.ORES).addTag(MULTIPLIER_ORES);
-
-        // All ores
-        this.tag(MULTIPLIER_ORES).add(PINK_ORE.get().asItem(), DEEPSLATE_PINK_ORE.get().asItem(),
-            END_STONE_PINK_ORE.get().asItem(), NETHER_PINK_ORE.get().asItem(),
-            ALEXANDRITE_ORE.get().asItem(), DEEPSLATE_ALEXANDRITE_ORE.get().asItem(),
-            END_STONE_ALEXANDRITE_ORE.get().asItem(), NETHER_ALEXANDRITE_ORE.get().asItem());
+        this.tag(MULTIPLIER_ORES).addTag(Tags.Items.ORES).addTag(MCCOURSE_ORES_ITEMS).addTag(Tags.Items.STORAGE_BLOCKS_COAL)
+                .addTag(Tags.Items.STORAGE_BLOCKS_COPPER).addTag(Tags.Items.STORAGE_BLOCKS_DIAMOND)
+                .addTag(Tags.Items.STORAGE_BLOCKS_EMERALD).addTag(Tags.Items.STORAGE_BLOCKS_GOLD)
+                .addTag(Tags.Items.STORAGE_BLOCKS_IRON).addTag(Tags.Items.STORAGE_BLOCKS_LAPIS)
+                .addTag(Tags.Items.STORAGE_BLOCKS_NETHERITE).addTag(Tags.Items.STORAGE_BLOCKS_REDSTONE);
     }
 
     @Override

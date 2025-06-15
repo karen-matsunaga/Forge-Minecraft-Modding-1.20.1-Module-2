@@ -215,7 +215,7 @@ public class ModEvents {
         wandering(rare, List.of(Items.EMERALD, ModItems.KOHLRABI_SEEDS.get()), List.of(5, 1, 3, 2), 0.01f);
     }
 
-    // CUSTOM EVENT - RAINBOW | AUTO SMELT | MORE ORES | MAGNETIC custom enchantments
+    // CUSTOM EVENT - RAINBOW | AUTO SMELT | MORE ORES | MAGNETIC | ACCUMULATOR custom enchantments
     private static int enchant(ItemStack stack, Enchantment enchantment) {
         return stack.getEnchantmentLevel(enchantment);
     }
@@ -328,7 +328,7 @@ public class ModEvents {
                 List<ItemStack> multipliedDrops = new ArrayList<>();
                 finalDrops.forEach(drop -> {
                     ItemStack multiplied = drop.copy(); // Copy ORIGINAL drop
-                    if (drop.is(ModTags.Items.ALL_ORES_ITEMS)) {
+                    if (drop.is(ModTags.Items.MULTIPLIER_ORES)) {
                         multiplied.setCount(drop.getCount() * multiplier); // Duplicate drops with Multiplier
                         multipliedDrops.add(multiplied);
                     }

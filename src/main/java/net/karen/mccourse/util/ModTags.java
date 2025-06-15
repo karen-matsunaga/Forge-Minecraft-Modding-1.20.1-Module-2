@@ -35,7 +35,6 @@ public class ModTags {
         public static final TagKey<Item> PINK_ARMOR = tag("items/pink_armor");
 
         // Ores
-        public static final TagKey<Item> ALL_ORES_ITEMS = tag("blocks/all_ores_items");
         public static final TagKey<Item> MULTIPLIER_ORES = tag("blocks/multiplier_ores");
 
         private static TagKey<Item> tag(String name) {
