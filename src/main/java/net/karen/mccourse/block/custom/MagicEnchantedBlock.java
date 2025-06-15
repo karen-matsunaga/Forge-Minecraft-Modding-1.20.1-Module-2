@@ -37,7 +37,8 @@ public class MagicEnchantedBlock extends Block {
     }
 
     // CUSTOM METHOD - Enchanted book or items on Magic Book area
-    private static List<ItemEntity> findItems(Level level, BlockPos pos, Predicate<ItemEntity> filter) {
+    private static List<ItemEntity> findItems(Level level, BlockPos pos,
+                                              Predicate<ItemEntity> filter) {
         return level.getEntitiesOfClass(ItemEntity.class, new AABB(pos).inflate(0.5), filter);
     }
 
@@ -46,7 +47,9 @@ public class MagicEnchantedBlock extends Block {
                                      Item drop, Level level, BlockPos pos) {
         list.forEach(item -> {
             Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(item.getItem()); // Get item enchantment
-            enchants.forEach((ench, lvl) -> combine.merge(ench, lvl, Integer::sum)); // Added and sum enchantment level
+            enchants.forEach((ench, lvl) -> {
+                if (lvl > 0) { combine.merge(ench, lvl, Integer::sum); } // Added and sum enchantment level
+            });
             item.discard(); // Remove enchanted book or item
         });
         ItemStack newValue = new ItemStack(drop); // Enchanted book or item with new enchantment
@@ -65,10 +68,14 @@ public class MagicEnchantedBlock extends Block {
     private static void applyBookToItem(Level level, BlockPos pos,
                                         ItemEntity bookEntity, ItemEntity toolEntity) {
         ItemStack bookStack = bookEntity.getItem(), toolStack = toolEntity.getItem();
-        Map<Enchantment, Integer> bookEnchantments = EnchantmentHelper.getEnchantments(bookStack);
-        bookEnchantments.forEach(toolStack::enchant);
+        Map<Enchantment, Integer> bookEnchantments = EnchantmentHelper.getEnchantments(bookStack), // Enchanted book
+        toolEnchantments = EnchantmentHelper.getEnchantments(toolStack); // Base item
+        bookEnchantments.forEach((ench, lvl) -> { // Added and sum enchantment level (Book -> Item)
+            if (lvl > 0) { toolEnchantments.merge(ench, lvl, Integer::sum); }
+        });
         ItemStack enchantedTool = toolStack.copy();
-        EnchantmentHelper.setEnchantments(EnchantmentHelper.getEnchantments(toolStack), enchantedTool);
+        toolEnchantments.entrySet().removeIf(entry -> entry.getValue() <= 0);
+        EnchantmentHelper.setEnchantments(toolEnchantments, enchantedTool);
         dropItem(level, pos, enchantedTool); // If you can't deliver, drop it in the world
         toolEntity.discard();
         bookStack.shrink(1);
