@@ -22,18 +22,20 @@ public class InfiniteItem extends Item {
         if (!level.isClientSide()) {
             ItemStack mainHand = player.getMainHandItem();
             if (!mainHand.isEmpty() && mainHand != usedStack) {
-                if (!mainHand.isDamageableItem()) {
+                if (!mainHand.isDamageableItem()) { // Item hasn't durability
                     screen(player, "This item has no durability!", ChatFormatting.RED);
                     return InteractionResultHolder.fail(usedStack);
                 }
-                if (mainHand.getOrCreateTag().getBoolean("Unbreakable")) {
+                if (mainHand.getOrCreateTag().getBoolean("Unbreakable")) { // Item has Unbreakable tag
                     screen(player, "This item is already unbreakable!", ChatFormatting.YELLOW);
                     return InteractionResultHolder.fail(usedStack);
                 }
-                // Apply Unbreakable locally (redundancy, preferable to use via click)
-                mainHand.getOrCreateTag().putBoolean("Unbreakable", true);
-                screen(player, "The tool is now unbreakable!", ChatFormatting.GREEN);
-                if (!player.getAbilities().instabuild) { usedStack.shrink(1); }
+                mainHand.getOrCreateTag().putBoolean("Unbreakable", true); // Apply the Unbreakable tag
+                screen(player, "Item is now unbreakable!", ChatFormatting.GREEN);
+                if (!player.getAbilities().instabuild) {
+                    usedStack.shrink(1);
+                    player.containerMenu.broadcastChanges();
+                }
                 return InteractionResultHolder.success(usedStack);
             }
             else {
@@ -57,7 +59,8 @@ public class InfiniteItem extends Item {
         super.appendHoverText(stack, pLevel, components, flag);
     }
 
-    private static void screen(Player player, String message, ChatFormatting color) {
+    // CUSTOM METHOD - Message appears on screen
+    public static void screen(Player player, String message, ChatFormatting color) {
         player.displayClientMessage(Component.literal(message).withStyle(color), true);
     }
 }

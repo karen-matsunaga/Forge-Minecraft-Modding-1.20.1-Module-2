@@ -1314,8 +1314,9 @@ public class ModEvents {
     public static void onMouseClick(ScreenEvent.MouseButtonPressed.Pre event) {
         if (!(event.getScreen() instanceof AbstractContainerScreen<?> screen)) { return; }
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null) { return; }
-        ItemStack carried = mc.player.containerMenu.getCarried();
+        Player player = mc.player;
+        if (player == null) { return; }
+        ItemStack carried = player.containerMenu.getCarried();
         if (!(carried.getItem() instanceof InfiniteItem)) { return; }
         double mouseX = event.getMouseX(), mouseY = event.getMouseY();
         int button = event.getButton();
@@ -1327,7 +1328,10 @@ public class ModEvents {
                 // Send to the server
                 ModNetworks.PACKET_HANDLER.sendToServer(new InfiniteInventorySlotMessage(slot.index));
                 // Consume item on client (immediate visual effect)
-                if (!mc.player.getAbilities().instabuild) { carried.shrink(1); }
+                if (!player.getAbilities().instabuild) {
+                    carried.shrink(1);
+                    player.containerMenu.broadcastChanges();
+                }
                 event.setCanceled(true);
                 return;
             }
