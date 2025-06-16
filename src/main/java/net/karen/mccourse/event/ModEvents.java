@@ -276,24 +276,32 @@ public class ModEvents {
         int multiplier = enchant(tool, ModEnchantments.MULTIPLIER.get());
         int accumulator = enchant(tool, ModEnchantments.ACCUMULATOR.get());
         var blockTag = ForgeRegistries.BLOCKS.tags();
-        if (enchant(tool, ModEnchantments.RAINBOW.get()) > 0) { // * RAINBOW ENCHANTMENT *
-            Map<Block, TagKey<Block>> rainbowMap = Map.ofEntries(Map.entry(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL),
-            Map.entry(Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER), Map.entry(Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND),
-            Map.entry(Blocks.EMERALD_BLOCK, Tags.Blocks.ORES_EMERALD), Map.entry(Blocks.GOLD_BLOCK, Tags.Blocks.ORES_GOLD),
-            Map.entry(Blocks.IRON_BLOCK, Tags.Blocks.ORES_IRON), Map.entry(Blocks.LAPIS_BLOCK, Tags.Blocks.ORES_LAPIS),
-            Map.entry(Blocks.REDSTONE_BLOCK, Tags.Blocks.ORES_REDSTONE),
-            Map.entry(Blocks.NETHERITE_BLOCK, Tags.Blocks.ORES_NETHERITE_SCRAP),
-            Map.entry(ModBlocks.ALEXANDRITE_BLOCK.get(), ModTags.Blocks.ALEXANDRITE_ORES),
-            Map.entry(ModBlocks.PINK_BLOCK.get(), ModTags.Blocks.PINK_ORES));
-            for (Map.Entry<Block, TagKey<Block>> entry : rainbowMap.entrySet()) {
-                // block(...) -> Blocks normal break || return; -> Other enchantments are not applied
-                if (state.is(entry.getValue())) { block(world, pos, entry.getKey(), event); return; }
-            }
-        }
-        if (world instanceof ServerLevel serverLevel) {
+        if (!level.isClientSide() && world instanceof ServerLevel serverLevel) {
             boolean cancelVanillaDrop = false; // Adapt the drop according to the enchantment being true
             List<ItemStack> finalDrops = new ArrayList<>(); // Items caused by enchantments are stored in the list
             int oresFortune = serverLevel.random.nextInt(fortune + 1);
+            if (enchant(tool, ModEnchantments.RAINBOW.get()) > 0) { // * RAINBOW ENCHANTMENT *
+                Map<Block, TagKey<Block>> rainbowMap = Map.ofEntries(Map.entry(Blocks.COAL_BLOCK, Tags.Blocks.ORES_COAL),
+                Map.entry(Blocks.COPPER_BLOCK, Tags.Blocks.ORES_COPPER), Map.entry(Blocks.DIAMOND_BLOCK, Tags.Blocks.ORES_DIAMOND),
+                Map.entry(Blocks.EMERALD_BLOCK, Tags.Blocks.ORES_EMERALD), Map.entry(Blocks.GOLD_BLOCK, Tags.Blocks.ORES_GOLD),
+                Map.entry(Blocks.IRON_BLOCK, Tags.Blocks.ORES_IRON), Map.entry(Blocks.LAPIS_BLOCK, Tags.Blocks.ORES_LAPIS),
+                Map.entry(Blocks.REDSTONE_BLOCK, Tags.Blocks.ORES_REDSTONE),
+                Map.entry(Blocks.NETHERITE_BLOCK, Tags.Blocks.ORES_NETHERITE_SCRAP),
+                Map.entry(ModBlocks.ALEXANDRITE_BLOCK.get(), ModTags.Blocks.ALEXANDRITE_ORES),
+                Map.entry(ModBlocks.PINK_BLOCK.get(), ModTags.Blocks.PINK_ORES));
+                for (Map.Entry<Block, TagKey<Block>> entry : rainbowMap.entrySet()) {
+                    // block(...) -> Blocks normal break || return; -> Other enchantments are not applied
+                    if (state.is(entry.getValue())) { block(world, pos, entry.getKey(), event); return; }
+                }
+                if (state.is(ModTags.Blocks.RAINBOW_DROPS) && fortune > 0) {
+                    int bonus = 1 + level.random.nextInt(fortune + 1), count = bonus * Math.max(multiplier, 1);
+                    ItemStack rainbowDrop = new ItemStack(state.getBlock());
+                    rainbowDrop.setCount(count);
+                    event.setCanceled(true); // Avoids normal drops
+                    level.destroyBlock(pos, false); // Remove the block without dropping it
+                    Block.popResource(level, pos, rainbowDrop); // Creates new block and drops it
+                }
+            }
             if (moreOres > 0) { // * MORE ORES ENCHANTMENT *
                 List<TagKey<Block>> oresTags = List.of(ModTags.Blocks.MORE_ORES_ONE_DROPS, ModTags.Blocks.MORE_ORES_TWO_DROPS,
                 ModTags.Blocks.MORE_ORES_THREE_DROPS, ModTags.Blocks.MORE_ORES_FOUR_DROPS, ModTags.Blocks.MORE_ORES_FIVE_DROPS,

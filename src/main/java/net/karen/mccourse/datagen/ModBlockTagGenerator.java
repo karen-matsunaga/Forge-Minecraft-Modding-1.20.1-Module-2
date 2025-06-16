@@ -5,6 +5,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.*;
 import org.jetbrains.annotations.*;
 import java.util.concurrent.CompletableFuture;
@@ -127,6 +128,13 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(ACCUMULATOR_EXPERIENCE).add(Blocks.STONE, Blocks.DIRT, Blocks.PUMPKIN, Blocks.MELON)
                 .addTag(GLASS).addTag(FARMER_VERTICAL_GROWABLES).addTag(FARMER_AGE_GROWABLES).addTag(FARMER_CROPS_GROWABLES)
                 .addTag(ALL_ORES);
+
+        // Rainbow
+        this.tag(RAINBOW_DROPS).addTag(Tags.Blocks.STORAGE_BLOCKS_COAL)
+                .addTag(Tags.Blocks.STORAGE_BLOCKS_COPPER).addTag(Tags.Blocks.STORAGE_BLOCKS_DIAMOND)
+                .addTag(Tags.Blocks.STORAGE_BLOCKS_EMERALD).addTag(Tags.Blocks.STORAGE_BLOCKS_GOLD)
+                .addTag(Tags.Blocks.STORAGE_BLOCKS_IRON).addTag(Tags.Blocks.STORAGE_BLOCKS_LAPIS)
+                .addTag(Tags.Blocks.STORAGE_BLOCKS_NETHERITE).addTag(Tags.Blocks.STORAGE_BLOCKS_REDSTONE);
     }
 
     @Override

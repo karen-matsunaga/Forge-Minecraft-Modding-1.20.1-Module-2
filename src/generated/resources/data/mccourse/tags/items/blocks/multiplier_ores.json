@@ -1,15 +1,6 @@
 {
   "values": [
     "#forge:ores",
-    "#mccourse:blocks/mccourse_ores_items",
-    "#forge:storage_blocks/coal",
-    "#forge:storage_blocks/copper",
-    "#forge:storage_blocks/diamond",
-    "#forge:storage_blocks/emerald",
-    "#forge:storage_blocks/gold",
-    "#forge:storage_blocks/iron",
-    "#forge:storage_blocks/lapis",
-    "#forge:storage_blocks/netherite",
-    "#forge:storage_blocks/redstone"
+    "#mccourse:blocks/mccourse_ores_items"
   ]
 }

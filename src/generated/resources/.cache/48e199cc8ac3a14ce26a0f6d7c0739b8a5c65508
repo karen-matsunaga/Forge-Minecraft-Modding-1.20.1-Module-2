@@ -1,8 +1,9 @@
-// 1.20.1	2025-06-15T18:54:19.2189881	Item Tags
+// 1.20.1	2025-06-16T11:32:47.7974985	Item Tags
 86562fd08aff39d08443a35e89d8fabc2114cb9b data/mccourse/tags/items/blocks/alexandrite_ores_items.json
 6a548e7595c02ec5f1b4c5b4c6c0b58ff810a1d2 data/mccourse/tags/items/blocks/mccourse_items.json
 db61beac99e2bb3d0fc7fc595cc200c2f6d245fb data/mccourse/tags/items/blocks/mccourse_ores_items.json
-c06b3b358e98effdad47f4aa3a4d7b152c5f4db6 data/mccourse/tags/items/blocks/multiplier_ores.json
+c7a4d7872bbb3d266a07edceaf3fb749b3fc5839 data/mccourse/tags/items/blocks/multiplier_ores.json
+45bff75cc337c5062ff78b68ea0f8bcbb8da13d1 data/mccourse/tags/items/blocks/ore_block_items.json
 5cb7d7564685ed6eebab24dad92d511b9fe8e2ae data/mccourse/tags/items/blocks/pink_ores_items.json
 c7cf40b65e9f80b0da876b8c7ba47601cc2eef92 data/mccourse/tags/items/items/alexandrite_armor.json
 488d88bfa3bf220ac3efffde7d49c83fe86f4b37 data/mccourse/tags/items/items/boots_fly.json

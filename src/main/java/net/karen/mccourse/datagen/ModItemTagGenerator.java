@@ -74,10 +74,11 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ItemTags.TRIM_TEMPLATES).add(KAUPEN_SMITHING_TEMPLATE.get());
 
         // Ores
-        this.tag(MULTIPLIER_ORES).addTag(Tags.Items.ORES).addTag(MCCOURSE_ORES_ITEMS).addTag(Tags.Items.STORAGE_BLOCKS_COAL)
-                .addTag(Tags.Items.STORAGE_BLOCKS_COPPER).addTag(Tags.Items.STORAGE_BLOCKS_DIAMOND)
-                .addTag(Tags.Items.STORAGE_BLOCKS_EMERALD).addTag(Tags.Items.STORAGE_BLOCKS_GOLD)
-                .addTag(Tags.Items.STORAGE_BLOCKS_IRON).addTag(Tags.Items.STORAGE_BLOCKS_LAPIS)
+        this.tag(MULTIPLIER_ORES).addTag(Tags.Items.ORES).addTag(MCCOURSE_ORES_ITEMS);
+
+        this.tag(ORE_BLOCK_ITEMS).addTag(Tags.Items.STORAGE_BLOCKS_COAL).addTag(Tags.Items.STORAGE_BLOCKS_COPPER)
+                .addTag(Tags.Items.STORAGE_BLOCKS_DIAMOND).addTag(Tags.Items.STORAGE_BLOCKS_EMERALD)
+                .addTag(Tags.Items.STORAGE_BLOCKS_GOLD).addTag(Tags.Items.STORAGE_BLOCKS_IRON).addTag(Tags.Items.STORAGE_BLOCKS_LAPIS)
                 .addTag(Tags.Items.STORAGE_BLOCKS_NETHERITE).addTag(Tags.Items.STORAGE_BLOCKS_REDSTONE);
     }
 

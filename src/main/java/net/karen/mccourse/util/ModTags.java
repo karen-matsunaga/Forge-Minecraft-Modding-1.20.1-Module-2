@@ -37,6 +37,9 @@ public class ModTags {
         // Ores
         public static final TagKey<Item> MULTIPLIER_ORES = tag("blocks/multiplier_ores");
 
+        // Ore block items
+        public static final TagKey<Item> ORE_BLOCK_ITEMS = tag("blocks/ore_block_items");
+
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass item id
         }
@@ -105,6 +108,9 @@ public class ModTags {
 
         // Accumulator enchantment
         public static final TagKey<Block> ACCUMULATOR_EXPERIENCE = tag("blocks/accumulator_experience");
+
+        // Rainbow enchantment
+        public static final TagKey<Block> RAINBOW_DROPS = tag("blocks/rainbow_drops");
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass block id
