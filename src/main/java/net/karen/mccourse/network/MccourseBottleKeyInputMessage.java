@@ -28,11 +28,15 @@ public class MccourseBottleKeyInputMessage {
                 ItemStack stack = player.getMainHandItem(); // Has Mccourse Bottle item on main hand
                 if (!(stack.getItem() instanceof MccourseBottleItem)) { return; }
                 CompoundTag tag = stack.getOrCreateTag();
-                int storedLevels = tag.getInt("StoredLevels"); // NBT tag to store and to restore XP
-                int maxLevels = MccourseBottleItem.storeXp; // Store Levels
-                int availableLevels = player.experienceLevel;
+                // NBT tag to store and to restore XP, Store Levels on Mccourse Bottle, Player XP
+                int storedLevels = tag.getInt("StoredLevels"), maxLevels = MccourseBottleItem.storeXp,
+                    availableLevels = player.experienceLevel;
                 if (availableLevels <= 0) { // Player store XP only has 1+ levels
-                    MccourseBottleItem.screen(player, "You have no XP to store.", ChatFormatting.RED);
+                    MccourseBottleItem.screen(player, "You have no XP to store!", ChatFormatting.RED);
+                    return;
+                }
+                if (player.getCooldowns().isOnCooldown(stack.getItem())) { // Check if it is already on cooldown
+                    MccourseBottleItem.screen(player, "Wait before using again!", ChatFormatting.YELLOW);
                     return;
                 }
                 int toStore = msg.storeAll ? availableLevels : 1;
@@ -40,9 +44,10 @@ public class MccourseBottleKeyInputMessage {
                     int canStore = Math.min(maxLevels - storedLevels, toStore);
                     tag.putInt("StoredLevels", storedLevels + canStore);
                     player.giveExperienceLevels(-canStore);
-                    MccourseBottleItem.screen(player, "Stored " + canStore + " levels.", ChatFormatting.YELLOW);
+                    MccourseBottleItem.screen(player, "Stored " + canStore + " levels!", ChatFormatting.YELLOW);
+                    player.getCooldowns().addCooldown(stack.getItem(), 20); // Applies 1 second cooldown (20 ticks)
                 }
-                else { MccourseBottleItem.screen(player, "XP full or insufficient.", ChatFormatting.RED); }
+                else { MccourseBottleItem.screen(player, "XP full or insufficient!", ChatFormatting.RED); }
             }
         });
     }

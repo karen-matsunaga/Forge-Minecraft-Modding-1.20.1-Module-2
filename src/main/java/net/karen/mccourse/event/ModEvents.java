@@ -73,6 +73,8 @@ import org.lwjgl.glfw.GLFW;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Supplier;
+import static net.karen.mccourse.item.custom.MccourseBottleItem.createMccourseBottleWithXP;
 
 @Mod.EventBusSubscriber(modid = MCCourseMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
@@ -177,6 +179,26 @@ public class ModEvents {
         trade.get(level).add(createTrade(items, levelCount, multiplier));
     }
 
+    public static ItemStack createEnchantedItem(Item item, Enchantment enchantment, int level) {
+        ItemStack stack = new ItemStack(item);
+        stack.enchant(enchantment, level);
+        return stack;
+    }
+
+    public static ItemStack createEnchantedBook(Enchantment enchantment, int level) {
+        ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
+        EnchantedBookItem.addEnchantment(book, new EnchantmentInstance(enchantment, level));
+        return book;
+    }
+
+    private static VillagerTrades.ItemListing normalTrade(ItemStack costStack1, ItemStack costStack2,
+                                                          Supplier<ItemStack> resultSupplier,
+                                                          int maxUses, int villagerXp, float priceMultiplier) {
+        return (pTrader, pRandom) -> { ItemStack result = resultSupplier.get();
+            return new MerchantOffer(costStack1.copy(), costStack2.copy(), result.copy(), maxUses, villagerXp, priceMultiplier);
+        };
+    }
+
     private static void wandering(List<VillagerTrades.ItemListing> trade,
                                   List<Item> items, List<Integer> levelCount, float multiplier) {
         trade.add(createTrade(items, levelCount, multiplier));
@@ -200,7 +222,14 @@ public class ModEvents {
         // Custom Villager's SOUNDMASTER profession - List of all trades that the player can trade
         if (event.getType() == ModVillagers.SOUND_MASTER.get()) {
             normal(trades, List.of(Items.EMERALD, ModBlocks.SOUND_BLOCK.get().asItem()), 1,
-                    List.of(25, 1, 2, 5), 0.06f); // Received Sound Block with Villager's level 1
+                   List.of(25, 1, 2, 5), 0.06f); // Received Sound Block with Villager's level 1
+            // Received Iron pickaxe with Efficiency 4
+            trades.get(2).add(normalTrade(createMccourseBottleWithXP(1000), new ItemStack(Items.IRON_PICKAXE),
+                    () -> createEnchantedItem(Items.IRON_PICKAXE, Enchantments.BLOCK_EFFICIENCY, 4),
+                    20, 100, 0.08f));
+            // Received Enchanted Book with Fortune 4
+            trades.get(3).add(normalTrade(createMccourseBottleWithXP(500), new ItemStack(Items.BOOK),
+                    () -> createEnchantedBook(Enchantments.BLOCK_FORTUNE, 4), 30, 50, 1f));
         }
     }
 
@@ -215,7 +244,7 @@ public class ModEvents {
         wandering(rare, List.of(Items.EMERALD, ModItems.KOHLRABI_SEEDS.get()), List.of(5, 1, 3, 2), 0.01f);
     }
 
-    // CUSTOM EVENT - RAINBOW | AUTO SMELT | MORE ORES | MAGNETIC | ACCUMULATOR custom enchantments
+    // CUSTOM EVENT - RAINBOW | AUTO SMELT | MORE ORES | MAGNETIC | MULTIPLIER | ACCUMULATOR custom enchantments
     private static int enchant(ItemStack stack, Enchantment enchantment) {
         return stack.getEnchantmentLevel(enchantment);
     }
@@ -293,9 +322,9 @@ public class ModEvents {
                     // block(...) -> Blocks normal break || return; -> Other enchantments are not applied
                     if (state.is(entry.getValue())) { block(world, pos, entry.getKey(), event); return; }
                 }
-                if (state.is(ModTags.Blocks.RAINBOW_DROPS) && fortune > 0) {
+                if (state.is(ModTags.Blocks.RAINBOW_DROPS)) {
                     ItemStack rainbowDrop = new ItemStack(state.getBlock());
-                    rainbowDrop.setCount(rainbowDrop.getCount() * (1 + oresFortune));
+                    if (fortune > 0) { rainbowDrop.setCount(rainbowDrop.getCount() * (1 + oresFortune)); }
                     finalDrops.add(rainbowDrop);
                     cancelVanillaDrop = true;
                 }
@@ -479,8 +508,7 @@ public class ModEvents {
     public static void eventHandler(RenderGuiOverlayEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-        int x = 10;
-        int y = event.getWindow().getGuiScaledHeight() - 30;
+        int x = 10 , y = event.getWindow().getGuiScaledHeight() - 30;
         if (player != null && player.getMainHandItem().getItem() instanceof ModesPickaxeItem modesPickaxe) {
             ModesPickaxe mode = modesPickaxe.getModeActual(); // Show text mode actual on screen
             String text = "Mode: "; // Renders text on overlay on same line
@@ -495,6 +523,10 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Overlay: X Y Z coordinates and Light
+    private static int light(Minecraft mc, LightLayer type, BlockPos pos) {
+        return mc.level != null ? mc.level.getLightEngine().getLayerListener(type).getLightValue(pos) : 0;
+    }
+
     @SubscribeEvent
     public static void overlayCoordinateLight(RenderGuiOverlayEvent event) {
         Minecraft mc = Minecraft.getInstance();
@@ -503,9 +535,8 @@ public class ModEvents {
             if (player != null && mc.level != null) { // Render only when the player is in the game and not in the menu
                 double x = player.getX(), y = player.getY(), z = player.getZ(); // Player x, y, z coordinates
                 BlockPos pos = player.blockPosition();
-                int blockLight = mc.level.getLightEngine().getLayerListener(LightLayer.BLOCK).getLightValue(pos);
-                int skyLight = mc.level.getLightEngine().getLayerListener(LightLayer.SKY).getLightValue(pos);
-                int totalLight = Math.max(blockLight, skyLight);
+                int blockLight = light(mc, LightLayer.BLOCK, pos), skyLight = light(mc, LightLayer.SKY, pos),
+                    totalLight = Math.max(blockLight, skyLight);
                 Font font = mc.font;
                 GuiGraphics guiGraphics = event.getGuiGraphics();
                 // Text to be displayed on screen
@@ -960,7 +991,8 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Crop replant
-    private static boolean cropAge(BlockState state, Block block, IntegerProperty property, int value) {
+    private static boolean cropAge(BlockState state, Block block,
+                                   IntegerProperty property, int value) {
         return state.getBlock().equals(block) && state.getValue(property).equals(value);
     }
 
