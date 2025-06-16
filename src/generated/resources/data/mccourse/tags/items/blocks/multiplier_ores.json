@@ -1,6 +1,7 @@
 {
   "values": [
     "#forge:ores",
-    "#mccourse:blocks/mccourse_ores_items"
+    "#mccourse:blocks/mccourse_ores_items",
+    "#mccourse:blocks/ore_block_items"
   ]
 }

@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-16T11:03:08.7228053	Block Tags
+// 1.20.1	2025-06-16T13:38:02.6099319	Block Tags
 d3eae0416629d4b60831fef096a497e5702a421e data/mccourse/tags/blocks/blocks/accumulator_experience.json
 16bc8d1b9b571914b59b5fad5f245361e5bfe539 data/mccourse/tags/blocks/blocks/alexandrite_ores.json
 edcc423584ff5ffbb15c906b9b243525680dfd75 data/mccourse/tags/blocks/blocks/all_ores.json
@@ -13,7 +13,7 @@ b0a036ce5239f217229e254022911a66be5b6545 data/mccourse/tags/blocks/blocks/farmer
 697d7fd664dde0e4dcff3a4e0a65e2aaae675b2c data/mccourse/tags/blocks/blocks/mobs_blocks_drops.json
 08f949771eaf1ded6903b40b92c0af47fb25828b data/mccourse/tags/blocks/blocks/mushroom_blocks.json
 ed55ae35c47237708c0967e2d75d1532412996c6 data/mccourse/tags/blocks/blocks/pink_ores.json
-45bff75cc337c5062ff78b68ea0f8bcbb8da13d1 data/mccourse/tags/blocks/blocks/rainbow_drops.json
+1ae31dc8bb5d5a23ac4854b4d292d972b528b05e data/mccourse/tags/blocks/blocks/rainbow_drops.json
 7d78d30b1cc01fb43cfb8364ed31026ee0640387 data/mccourse/tags/blocks/blocks/vertical_blocks.json
 1042355386c9659aa330e3a97a816b5e088c7648 data/mccourse/tags/blocks/blocks/vertical_grow_blocks.json
 501ba4dec7d8b548d8a897d1a3cd7f659282d5d8 data/mccourse/tags/blocks/metal_detector_colors.json

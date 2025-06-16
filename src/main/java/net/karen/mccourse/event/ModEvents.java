@@ -294,12 +294,10 @@ public class ModEvents {
                     if (state.is(entry.getValue())) { block(world, pos, entry.getKey(), event); return; }
                 }
                 if (state.is(ModTags.Blocks.RAINBOW_DROPS) && fortune > 0) {
-                    int bonus = 1 + level.random.nextInt(fortune + 1), count = bonus * Math.max(multiplier, 1);
                     ItemStack rainbowDrop = new ItemStack(state.getBlock());
-                    rainbowDrop.setCount(count);
-                    event.setCanceled(true); // Avoids normal drops
-                    level.destroyBlock(pos, false); // Remove the block without dropping it
-                    Block.popResource(level, pos, rainbowDrop); // Creates new block and drops it
+                    rainbowDrop.setCount(rainbowDrop.getCount() * (1 + oresFortune));
+                    finalDrops.add(rainbowDrop);
+                    cancelVanillaDrop = true;
                 }
             }
             if (moreOres > 0) { // * MORE ORES ENCHANTMENT *
@@ -318,7 +316,7 @@ public class ModEvents {
                     }
                     else if (is(state, Blocks.STONE, 0.05f, tool, 3)) {
                         blockTag.getTag(ModTags.Blocks.MORE_ORES_ALL_DROPS).forEach(block -> {
-                            ItemStack drop = new ItemStack(block.asItem());
+                            ItemStack drop = new ItemStack(block);
                             if (fortune > 0) { drop.setCount(drop.getCount() * (1 + oresFortune)); }
                             finalDrops.add(drop);
                         });

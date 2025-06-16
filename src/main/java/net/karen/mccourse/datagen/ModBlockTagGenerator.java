@@ -134,7 +134,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .addTag(Tags.Blocks.STORAGE_BLOCKS_COPPER).addTag(Tags.Blocks.STORAGE_BLOCKS_DIAMOND)
                 .addTag(Tags.Blocks.STORAGE_BLOCKS_EMERALD).addTag(Tags.Blocks.STORAGE_BLOCKS_GOLD)
                 .addTag(Tags.Blocks.STORAGE_BLOCKS_IRON).addTag(Tags.Blocks.STORAGE_BLOCKS_LAPIS)
-                .addTag(Tags.Blocks.STORAGE_BLOCKS_NETHERITE).addTag(Tags.Blocks.STORAGE_BLOCKS_REDSTONE);
+                .addTag(Tags.Blocks.STORAGE_BLOCKS_NETHERITE).addTag(Tags.Blocks.STORAGE_BLOCKS_REDSTONE)
+                .add(PINK_BLOCK.get(), ALEXANDRITE_BLOCK.get());
     }
 
     @Override
