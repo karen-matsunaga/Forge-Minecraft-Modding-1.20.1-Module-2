@@ -79,6 +79,10 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> ACCUMULATOR = ENCHANTMENTS.register("accumulator",
             () -> new AccumulatorEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
 
+    // Magnetism enchantment - Leggings enchantment
+    public static final RegistryObject<Enchantment> MAGNETISM = ENCHANTMENTS.register("magnetism",
+            () -> new MagnetismEnchantment(Enchantment.Rarity.UNCOMMON, EnchantmentCategory.ARMOR_LEGS, EquipmentSlot.LEGS));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }

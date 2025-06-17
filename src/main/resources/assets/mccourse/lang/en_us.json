@@ -264,6 +264,7 @@
   "enchantment.mccourse.elytra_boost": "Elytra Boost",
 
   "enchantment.mccourse.peaceful_mobs": "Peaceful Mobs",
+  "enchantment.mccourse.magnetism": "Magnetism",
 
   "enchantment.mccourse.more_ores": "More Ores",
   "enchantment.mccourse.magnetic": "Magnetic",
@@ -326,6 +327,7 @@
   "enchantment.minecraft.vanishing_curse.desc": "When applied on tool or armor if player killed the item disappears of inventory.",
 
   "enchantment.mccourse.peaceful_mobs.desc": "When applied on leggings armor all entities not attack Player.",
+  "enchantment.mccourse.magnetism.desc": "When applied on leggings armor searches for items and Experience Orbs on the ground within a radius and returns them to the Player's inventory.",
 
   "enchantment.mccourse.glowing_mobs.desc": "When applied on helmet armor all entities are detected with X-Ray of mobs. (Press M key to activated or disabled)",
   "enchantment.mccourse.glowing_blocks.desc": "When applied on helmet armor all ores blocks are detected with X-Ray of blocks. (Press G key to activated or disabled)",

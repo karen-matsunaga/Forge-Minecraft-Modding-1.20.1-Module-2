@@ -193,8 +193,8 @@ public class ModEvents {
         return book;
     }
 
-    private static VillagerTrades.ItemListing normalTrade(ItemStack costStack1, ItemStack costStack2,
-                                                          Supplier<ItemStack> resultSupplier,
+    private static VillagerTrades.ItemListing normalTrade(ItemStack costStack1,
+                                                          ItemStack costStack2, Supplier<ItemStack> resultSupplier,
                                                           int maxUses, int villagerXp, float priceMultiplier) {
         return (pTrader, pRandom) -> { ItemStack result = resultSupplier.get();
             return new MerchantOffer(costStack1.copy(), costStack2.copy(), result.copy(), maxUses, villagerXp, priceMultiplier);
@@ -886,11 +886,10 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - ETERNAL custom enchantment
-    private static final Map<UUID, List<ItemStack>> preservedItems = new HashMap<>(); // Map of Main hand + Items
-    private static final Map<UUID, List<ItemStack>> preservedArmor = new HashMap<>(); // Map of Armor
-    private static final Map<UUID, List<ItemStack>> preservedOffhand = new HashMap<>(); // Map of Offhand
-    private static final Map<UUID, int[]> preservedExperience = new HashMap<>(); // Map of Experience
-    private static final Map<UUID, List<ItemStack>> preservedVault = new HashMap<>(); // Map of Vault items
+    // Map of Main hand + Items, Armor, Offhand, Experience and Vault items
+    private static final Map<UUID, List<ItemStack>> preservedItems = new HashMap<>(),
+    preservedArmor = new HashMap<>(), preservedOffhand = new HashMap<>(), preservedVault = new HashMap<>();
+    private static final Map<UUID, int[]> preservedExperience = new HashMap<>();
 
     private static void setPreservedVault(NonNullList<ItemStack> type, List<ItemStack> store,
                                           List<ItemStack> vault) {
@@ -1409,6 +1408,46 @@ public class ModEvents {
                 event.setCanceled(true);
                 return;
             }
+        }
+    }
+
+    // CUSTOM EVENT - Magnetism enchantment
+    private static final int TICK_INTERVAL = 20; // 1 segundo (20 ticks)
+
+    @SubscribeEvent
+    public static void activatedMagnetismEnchantment(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        if (player.level().isClientSide() || event.phase != TickEvent.Phase.END) { return; }
+        ItemStack legging = player.getItemBySlot(EquipmentSlot.LEGS);
+        int level = enchant(legging, ModEnchantments.MAGNETISM.get());
+        // To not run all the time, only every TICK_INTERVAL ticks
+        if (level <= 0 || player.tickCount % TICK_INTERVAL != 0) { return; }
+        double range = 5.0 + level * 2; // Range increases with level
+        // Search for items near the player
+        List<ItemEntity> items = player.level().getEntitiesOfClass(ItemEntity.class,
+                player.getBoundingBox().inflate(range));
+        for (ItemEntity itemEntity : items) {
+            if (itemEntity.isRemoved() || !itemEntity.isAlive()) { continue; }
+            ItemStack stack = itemEntity.getItem().copy();
+            if (player.getInventory().add(stack)) {
+                itemEntity.remove(Entity.RemovalReason.DISCARDED);
+                // Play sound or emit optional particle
+                player.level().playSound(null, player.blockPosition(), SoundEvents.ITEM_PICKUP,
+                SoundSource.PLAYERS, 0.2F, ((player.getRandom().nextFloat() -
+                player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            }
+        }
+        // Search for experience orbs near the player
+        List<ExperienceOrb> orbs = player.level().getEntitiesOfClass(ExperienceOrb.class,
+                player.getBoundingBox().inflate(range));
+        for (ExperienceOrb orb : orbs) {
+            if (!orb.isAlive() || orb.isRemoved()) { continue; }
+            int xpValue = orb.getValue();
+            player.giveExperiencePoints(xpValue); // Adds XP directly to the player
+            orb.discard(); // Remove the orb from the world
+            // Play sound or emit optional particle
+            player.level().playSound(null, player.blockPosition(), SoundEvents.EXPERIENCE_ORB_PICKUP,
+                    SoundSource.PLAYERS, 0.1F, 0.5F + player.getRandom().nextFloat());
         }
     }
 }
