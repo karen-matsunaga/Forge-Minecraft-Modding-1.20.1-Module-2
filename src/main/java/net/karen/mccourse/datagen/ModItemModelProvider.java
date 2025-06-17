@@ -195,6 +195,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Level Charger
         simpleItem(ModItems.LEVEL_CHARGER_PLUS);
         simpleItem(ModItems.LEVEL_CHARGER_MINUS);
+        simpleItem(ModItems.LEVEL_CHARGER_PLUS_FORTUNE);
+        simpleItem(ModItems.LEVEL_CHARGER_MINUS_FORTUNE);
 
         // Mccourse bottle
         simpleItem(ModItems.MCCOURSE_BOTTLE);

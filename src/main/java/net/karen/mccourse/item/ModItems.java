@@ -11,7 +11,9 @@ import net.karen.mccourse.util.ModTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -353,7 +355,8 @@ public class ModItems {
     // Mccourse custom items
     public static final RegistryObject<Item> MCCOURSE_HAMMER = ITEMS.register("mccourse_hammer",
             () -> new MccourseHammerItem(ModToolTiers.PINK, 3, 1,
-                  new Item.Properties().durability(10000).fireResistant(), BlockTags.MINEABLE_WITH_PICKAXE, 2));
+                  new Item.Properties().durability(10000).fireResistant(),
+                    BlockTags.MINEABLE_WITH_PICKAXE, 2));
 
     public static final RegistryObject<Item> SPECIAL_METAL_DETECTOR = ITEMS.register("special_metal_detector",
             () -> new MetalDetectorItem(new Item.Properties().fireResistant().stacksTo(1),
@@ -382,15 +385,30 @@ public class ModItems {
 
     // Level Charger Plus
     public static final RegistryObject<Item> LEVEL_CHARGER_PLUS = ITEMS.register("level_charger_plus",
-            () -> new LevelChargerItem(new Item.Properties().fireResistant().stacksTo(64), 1));
+            () -> new LevelChargerItem(new Item.Properties().fireResistant().stacksTo(64),
+                    1, null));
 
     // Level Charger Minus
     public static final RegistryObject<Item> LEVEL_CHARGER_MINUS = ITEMS.register("level_charger_minus",
-            () -> new LevelChargerItem(new Item.Properties().fireResistant().stacksTo(64), -1));
+            () -> new LevelChargerItem(new Item.Properties().fireResistant().stacksTo(64),
+                    -1, null));
+
+    // Level Charger Plus Fortune
+    public static final RegistryObject<Item> LEVEL_CHARGER_PLUS_FORTUNE =
+            ITEMS.register("level_charger_plus_fortune",
+            () -> new LevelChargerItem(new Item.Properties().fireResistant().stacksTo(64),
+                    1, Enchantments.BLOCK_FORTUNE));
+
+    // Level Charger Minus Fortune
+    public static final RegistryObject<Item> LEVEL_CHARGER_MINUS_FORTUNE =
+            ITEMS.register("level_charger_minus_fortune",
+            () -> new LevelChargerItem(new Item.Properties().fireResistant().stacksTo(64),
+                    -1, Enchantments.BLOCK_FORTUNE));
 
     // Mccourse Bottle
     public static final RegistryObject<Item> MCCOURSE_BOTTLE = ITEMS.register("mccourse_bottle",
-            () -> new MccourseBottleItem(new Item.Properties().fireResistant().stacksTo(1), 100000, 1));
+            () -> new MccourseBottleItem(new Item.Properties().fireResistant().stacksTo(1),
+                    100000, 1));
 
     // Infinite
     public static final RegistryObject<Item> INFINITE = ITEMS.register("infinite",

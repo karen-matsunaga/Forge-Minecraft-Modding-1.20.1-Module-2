@@ -120,6 +120,9 @@ public class MCCourseMod {
             // Infinite item
             ModNetworks.addNetworkMessage(InfiniteInventorySlotMessage.class, InfiniteInventorySlotMessage::buffer,
                     InfiniteInventorySlotMessage::new, InfiniteInventorySlotMessage::handler); // SERVER
+            // Level Charger item
+            ModNetworks.addNetworkMessage(LevelChargerInventorySlotMessage.class, LevelChargerInventorySlotMessage::buffer,
+                    LevelChargerInventorySlotMessage::new, LevelChargerInventorySlotMessage::handler); // SERVER
         });
     }
 

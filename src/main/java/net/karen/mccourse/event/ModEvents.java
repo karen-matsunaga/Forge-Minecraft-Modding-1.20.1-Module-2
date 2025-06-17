@@ -1381,4 +1381,34 @@ public class ModEvents {
             }
         }
     }
+
+    // CUSTOM EVENT - Level Charger item
+    @SubscribeEvent
+    public static void levelChargerOnMouseClick(ScreenEvent.MouseButtonPressed.Pre event) {
+        if (!(event.getScreen() instanceof AbstractContainerScreen<?> screen)) { return; }
+        Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
+        if (player == null) { return; }
+        ItemStack carried = player.containerMenu.getCarried();
+        if (!(carried.getItem() instanceof LevelChargerItem)) { return; }
+        double mouseX = event.getMouseX(), mouseY = event.getMouseY();
+        int button = event.getButton();
+        if (button != 0) { return; }
+        for (Slot slot : screen.getMenu().slots) {
+            int x = screen.getGuiLeft() + slot.x, y = screen.getGuiTop() + slot.y;
+            if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
+                ItemStack target = slot.getItem();
+                if (target.isEmpty() || target == carried) { return; }
+                // Send to the server
+                ModNetworks.PACKET_HANDLER.sendToServer(new LevelChargerInventorySlotMessage(slot.index));
+                // Consume item on client (immediate visual effect)
+                if (!player.getAbilities().instabuild) {
+                    carried.shrink(1);
+                    player.containerMenu.broadcastChanges();
+                }
+                event.setCanceled(true);
+                return;
+            }
+        }
+    }
 }

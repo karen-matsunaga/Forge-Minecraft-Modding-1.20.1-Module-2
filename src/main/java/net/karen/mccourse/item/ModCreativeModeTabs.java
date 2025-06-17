@@ -292,6 +292,12 @@ public class ModCreativeModeTabs {
                         // Mccourse bottle
                         output.accept(ModItems.MCCOURSE_BOTTLE.get());
                         output.accept(ModItems.INFINITE.get());
+
+                        // Level Charger
+                        output.accept(ModItems.LEVEL_CHARGER_PLUS.get());
+                        output.accept(ModItems.LEVEL_CHARGER_MINUS.get());
+                        output.accept(ModItems.LEVEL_CHARGER_PLUS_FORTUNE.get());
+                        output.accept(ModItems.LEVEL_CHARGER_MINUS_FORTUNE.get());
                     }).build());
 
     // Registry Creative Mode Tab

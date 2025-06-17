@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-15T14:23:06.855504	Item Models: mccourse
+// 1.20.1	2025-06-17T09:01:54.298553	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -129,7 +129,9 @@ b27190e2df26eff5a924d16e4f2d9cf0308838f1 assets/mccourse/models/item/iron_paxel.
 6349d1adee80001ce5a46b787665a782e5c25798 assets/mccourse/models/item/kohlrabi.json
 39b609a6c230f85321604bec3c0fbf1976247e24 assets/mccourse/models/item/kohlrabi_seeds.json
 aba4053e29f3086634ca394fe48fddc465fbd1ea assets/mccourse/models/item/level_charger_minus.json
+dd998d73f4cbd3ed7d675c7f86d891f4d35d89de assets/mccourse/models/item/level_charger_minus_fortune.json
 39d9cfd88e738246eae357e46b83988a0217196e assets/mccourse/models/item/level_charger_plus.json
+dd06874e678545a31d36c7baadcf2852a6afcf4d assets/mccourse/models/item/level_charger_plus_fortune.json
 9d058e094f13da8740c0c0f6447da092d20d6345 assets/mccourse/models/item/luck.json
 9e8e9f4872a343311972a9d8e6de13235b0a6791 assets/mccourse/models/item/magnet.json
 9b345ce3fc1dda66adb63dbb1758236c273a597f assets/mccourse/models/item/mccourse_bottle.json
