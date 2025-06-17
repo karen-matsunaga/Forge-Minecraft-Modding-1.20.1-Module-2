@@ -137,6 +137,8 @@ public class ModEvents {
     public static void onCommandsRegister(RegisterCommandsEvent event) { // Register all custom commands
         new SetHomeCommand(event.getDispatcher()); // SET HOME command
         new ReturnHomeCommand(event.getDispatcher()); // RETURN HOME command
+        new DeleteHomeCommand(event.getDispatcher()); // DELETE HOME command
+        new ListHomesCommand(event.getDispatcher()); // LIST ALL HOMES command
         ConfigCommand.register(event.getDispatcher());
     }
 
