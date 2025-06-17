@@ -30,8 +30,8 @@ public class SetHomeCommand {
             homes.put(name, pos);
             data.put("mccourse.homes", homes); // Added set home on list
             // Display the message in the chat
-            context.getSource().sendSuccess(() -> Component.literal("Set home at " +
-                    "[" + x + ", " + y + ", " + z + "]"), true);
+            context.getSource().sendSuccess(() ->
+                    Component.literal("Set home at " + "[X:" + x + ", Y:" + y + ", Z:" + z + "]"), true);
         }
         return 1; // Player's position save with success
     }

@@ -18,17 +18,17 @@ public class DeleteHomeCommand {
 
     private int execute(CommandContext<CommandSourceStack> context) {
         ServerPlayer player = context.getSource().getPlayer();
-        String name = StringArgumentType.getString(context, "name");
+        String name = StringArgumentType.getString(context, "name"); // Home name -> Ex: /delhome tree
         if (player != null) {
             CompoundTag data = player.getPersistentData(), homes = data.getCompound("mccourse.homes");
             if (!homes.contains(name)) { // Home not exist
-                context.getSource().sendFailure(Component.literal("No home named " + name + " exists."));
-                return -1; // Appears FAIL message
+                context.getSource().sendFailure(Component.literal("No home named " + name + " exists!"));
+                return -1; // Appears FAIL message (FALSE)
             }
             homes.remove(name); // Home exist remove from list
             data.put("mccourse.homes", homes);
-            context.getSource().sendSuccess(() -> Component.literal("Deleted home " + name + "."), false);
-            return 1; // Appears SUCCESS message
+            context.getSource().sendSuccess(() -> Component.literal("Deleted home " + name + "!"), false);
+            return 1; // Appears SUCCESS message (TRUE)
         }
         return 0;
     }

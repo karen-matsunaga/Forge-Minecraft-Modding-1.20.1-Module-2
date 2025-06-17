@@ -23,11 +23,11 @@ public class ListHomesCommand {
             Set<String> homeNames = homes.getAllKeys();
             if (homeNames.isEmpty()) { // Player hasn't set home
                 context.getSource().sendFailure(Component.literal("You have no homes set!"));
-                return -1; // Appears FAIL message
+                return -1; // Appears FAIL message (FALSE)
             }
             String homesList = String.join(", ", homeNames); // Player has set homes
             context.getSource().sendSuccess(() -> Component.literal("Your homes: " + homesList), false);
-            return 1; // Appears SUCCESS message
+            return 1; // Appears SUCCESS message (TRUE)
         }
         return 0;
     }

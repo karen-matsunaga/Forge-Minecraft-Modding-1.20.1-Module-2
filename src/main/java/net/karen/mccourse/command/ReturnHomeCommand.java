@@ -23,18 +23,18 @@ public class ReturnHomeCommand {
         if (player != null) {
             CompoundTag homes = player.getPersistentData().getCompound("mccourse.homes");
             if (!homes.contains(name)) { // If there is no Set Home - Display the message in the chat (FAIL)
-                context.getSource().sendFailure(Component.literal("No home named '" + name + "' found!"));
+                context.getSource().sendFailure(Component.literal("No home named " + name + " found!"));
                 return -1; // Player's position not save (FALSE)
             }
             int[] pos = homes.getIntArray(name);
             if (pos.length != 3) { // Display the message in the chat (FAIL)
-                context.getSource().sendFailure(Component.literal("Invalid home position for '" + name + "'!"));
+                context.getSource().sendFailure(Component.literal("Invalid home position for " + name + "!"));
                 return -1; // Player's position not save (FALSE)
             }
             // The Player will return to the saved [X, Y, Z] position
             player.teleportTo(pos[0] + 0.5, pos[1], pos[2] + 0.5); // Player's saved position from /sethome name COMMAND
             // Display the message in the chat (SUCCESS)
-            context.getSource().sendSuccess(() -> Component.literal("Teleported to home '" + name + "'!"), false);
+            context.getSource().sendSuccess(() -> Component.literal("Teleported to home " + name + "!"), false);
             return 1; // Player's position save with success (TRUE)
         }
         return 0; // Depends on result (1 - TRUE) or (-1 - FALSE)
