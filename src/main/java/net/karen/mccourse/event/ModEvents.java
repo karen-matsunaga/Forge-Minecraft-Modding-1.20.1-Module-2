@@ -1354,7 +1354,7 @@ public class ModEvents {
 
     // CUSTOM EVENT - Infinite item
     @SubscribeEvent
-    public static void onMouseClick(ScreenEvent.MouseButtonPressed.Pre event) {
+    public static void infiniteOnMouseClick(ScreenEvent.MouseButtonPressed.Pre event) {
         if (!(event.getScreen() instanceof AbstractContainerScreen<?> screen)) { return; }
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
@@ -1365,7 +1365,8 @@ public class ModEvents {
         int button = event.getButton();
         if (button != 0) { return; }
         for (Slot slot : screen.getMenu().slots) {
-            if (isHovering(slot, mouseX, mouseY, screen)) {
+            int x = screen.getGuiLeft() + slot.x, y = screen.getGuiTop() + slot.y;
+            if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
                 ItemStack target = slot.getItem();
                 if (target.isEmpty() || target == carried) { return; }
                 // Send to the server
@@ -1379,12 +1380,5 @@ public class ModEvents {
                 return;
             }
         }
-    }
-
-    private static boolean isHovering(Slot slot, double mouseX, double mouseY,
-                                      AbstractContainerScreen<?> screen) {
-        int x = screen.getGuiLeft() + slot.x;
-        int y = screen.getGuiTop() + slot.y;
-        return mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16;
     }
 }
