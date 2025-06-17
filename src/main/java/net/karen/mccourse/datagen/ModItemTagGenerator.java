@@ -80,6 +80,8 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .addTag(Tags.Items.STORAGE_BLOCKS_DIAMOND).addTag(Tags.Items.STORAGE_BLOCKS_EMERALD)
                 .addTag(Tags.Items.STORAGE_BLOCKS_GOLD).addTag(Tags.Items.STORAGE_BLOCKS_IRON).addTag(Tags.Items.STORAGE_BLOCKS_LAPIS)
                 .addTag(Tags.Items.STORAGE_BLOCKS_NETHERITE).addTag(Tags.Items.STORAGE_BLOCKS_REDSTONE);
+
+        this.tag(TELEPORT_ITEMS).add(ALEXANDRITE_SWORD.get(), ALEXANDRITE_PAXEL.get());
     }
 
     @Override

@@ -30,6 +30,6 @@
     "minecraft:snow_golem",
     "minecraft:allay",
     "minecraft:bat",
-    "#mccourse:entities/mccourse_entities"
+    "#mccourse:mccourse_entities"
   ]
 }

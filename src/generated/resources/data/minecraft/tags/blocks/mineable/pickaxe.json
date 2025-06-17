@@ -34,8 +34,8 @@
     "mccourse:waxed_ruby_block_1",
     "mccourse:waxed_ruby_block_2",
     "mccourse:waxed_ruby_block_3",
-    "#mccourse:blocks/mobs_blocks_drops",
-    "#mccourse:blocks/mccourse_ores",
-    "#mccourse:blocks/mccourse_ores_block"
+    "#mccourse:mobs_blocks_drops",
+    "#mccourse:mccourse_ores",
+    "#mccourse:mccourse_ores_block"
   ]
 }

@@ -2,6 +2,6 @@
   "values": [
     "#forge:ores",
     "#forge:ores_in_ground/deepslate",
-    "#mccourse:blocks/mccourse_ores"
+    "#mccourse:mccourse_ores"
   ]
 }

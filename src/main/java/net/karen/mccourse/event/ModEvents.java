@@ -1317,12 +1317,10 @@ public class ModEvents {
     public static void teleportOnItemRightClick(PlayerInteractEvent.RightClickItem event) {
         Player player = event.getEntity();
         ItemStack stack = event.getItemStack();
-        Item item = stack.getItem();
-        if (!player.level().isClientSide()) { // Teleport when using item (like fishing rod, tools, etc.)
-            if (!stack.isEmpty() && item instanceof SwordItem || item instanceof PickaxeItem ||
-                item instanceof FishingRodItem) { // Check if holding a tool or fishing rod
+        if (!player.level().isClientSide()) { // Teleport when using item (like tools, etc.)
+            if (!stack.isEmpty() && stack.is(ModTags.Items.TELEPORT_ITEMS)) { // Check if holding a tool
                 double distance = 5.0; // How many blocks ahead to ray trace (reach distance)
-                // Get the direction the player is looking; It starts from the eyes; Block render distance.
+                // 1. Get the direction the player is looking; 2. It starts from the eyes; 3. Block render distance.
                 Vec3 look = player.getLookAngle(), start = player.getEyePosition(), end = start.add(look.scale(distance));
                 BlockHitResult hitResult = player.level().clip(new ClipContext(start, end,
                 ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)); // Ray trace until it hits a block

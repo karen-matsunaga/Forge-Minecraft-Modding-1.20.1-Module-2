@@ -5,6 +5,6 @@
     "mccourse:sound_block",
     "mccourse:alexandrite_stairs",
     "mccourse:alexandrite_slabs",
-    "#mccourse:blocks/mccourse_ores_block"
+    "#mccourse:mccourse_ores_block"
   ]
 }
