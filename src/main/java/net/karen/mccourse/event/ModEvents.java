@@ -19,6 +19,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.*;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.multiplayer.*;
 import net.minecraft.client.player.LocalPlayer;
@@ -1336,16 +1337,34 @@ public class ModEvents {
 
     // CUSTOM EVENT - Mccourse Bottle item
     @SubscribeEvent
-    public static void mccourseBottleKeyInputEvent(TickEvent.ClientTickEvent event) {
+    public static void mccourseBottleLeftShiftInputEvent(TickEvent.ClientTickEvent event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null && mc.level != null && (event.phase == TickEvent.Phase.END)) {
             if (mc.options.keyAttack.isDown()) {
                 ItemStack stack = mc.player.getMainHandItem();
                 if (stack.getItem() instanceof MccourseBottleItem) {
                     boolean shift = InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT);
-                    ModNetworks.PACKET_HANDLER.sendToServer(new MccourseBottleKeyInputMessage(shift));
+                    int amount = shift ? MccourseBottleItem.storeXp : 1;
+                    ModNetworks.PACKET_HANDLER
+                            .sendToServer(new MccourseBottleKeyInputMessage(MccourseBottleActionItem.STORE, amount));
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void mccourseBottleKeysBNInputEvent(InputEvent.Key event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) { return; }
+        boolean shift = Screen.hasShiftDown();
+        int storeAmount = shift ? 100 : 10, restoreAmount = shift ? 100 : 10;
+        if (KeyBinding.MCCOURSE_BOTTLE_STORED_TEN_LEVELS_KEY.consumeClick()) { // Send to server
+            ModNetworks.PACKET_HANDLER
+                    .sendToServer(new MccourseBottleKeyInputMessage(MccourseBottleActionItem.STORE, storeAmount));
+        }
+        if (KeyBinding.MCCOURSE_BOTTLE_RESTORED_TEN_LEVELS_KEY.consumeClick()) { // Send to server
+            ModNetworks.PACKET_HANDLER
+                    .sendToServer(new MccourseBottleKeyInputMessage(MccourseBottleActionItem.RESTORED, restoreAmount));
         }
     }
 

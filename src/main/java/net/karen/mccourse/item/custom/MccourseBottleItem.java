@@ -53,10 +53,14 @@ public class MccourseBottleItem extends Item {
                                 List<Component> tooltip, @NotNull TooltipFlag flag) {
         int xp = stack.getOrCreateTag().getInt("StoredLevels");
         tooltip.add(Component.literal("Stored XP: " + xp + " / " + storeXp).withStyle(ChatFormatting.YELLOW));
-        tooltip.add(Component.literal("Left click: Store 1 XP- level").withStyle(ChatFormatting.RED));
-        tooltip.add(Component.literal("Shift + Left click: Store all XP-").withStyle(ChatFormatting.RED));
-        tooltip.add(Component.literal("Right click: Restore 1 XP+ level").withStyle(ChatFormatting.GREEN));
-        tooltip.add(Component.literal("Shift + Right click: Restore all XP+").withStyle(ChatFormatting.GREEN));
+        tooltip.add(Component.literal("Left click: Store 1 XP level;").withStyle(ChatFormatting.RED));
+        tooltip.add(Component.literal("N: Store 10 XP levels;").withStyle(ChatFormatting.RED));
+        tooltip.add(Component.literal("Shift + N: Store 100 XP levels;").withStyle(ChatFormatting.RED));
+        tooltip.add(Component.literal("Shift + Left click: Store all XP levels;").withStyle(ChatFormatting.RED));
+        tooltip.add(Component.literal("Right click: Restore 1 XP level;").withStyle(ChatFormatting.GREEN));
+        tooltip.add(Component.literal("B: Restore 10 XP levels;").withStyle(ChatFormatting.GREEN));
+        tooltip.add(Component.literal("Shift + B: Restore 100 XP levels;").withStyle(ChatFormatting.GREEN));
+        tooltip.add(Component.literal("Shift + Right click: Restore all XP levels.").withStyle(ChatFormatting.GREEN));
         super.appendHoverText(stack, level, tooltip, flag);
     }
 

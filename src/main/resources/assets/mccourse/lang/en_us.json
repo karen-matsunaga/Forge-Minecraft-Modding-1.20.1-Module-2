@@ -349,8 +349,13 @@
   "enchantment.mccourse.multiplier.desc": "When applied to tools, armor, etc. multiplier Looting, Fortune or More Ores drops adapt level.",
   "enchantment.mccourse.immortal.desc": "When applied to tools, armor, etc., it prevents the loss of the item in cactus, TNT, lava, void, etc.",
   "enchantment.mccourse.accumulator.desc": "When applied to tools, armor, etc., gain experience orb when player walking, mining, attacking, etc.",
+  "enchantment.mccourse.unlock.desc": "When applied to tools, armor, etc., item is locked from being dropped until you press the U key to unlock the item drop.",
 
   "key.category.mccourse": "Mccourse",
   "key.mccourse_glowing_blocks": "Glowing Blocks",
-  "key.mccourse_glowing_mobs": "Glowing Mobs"
+  "key.mccourse_glowing_mobs": "Glowing Mobs",
+  "key.mccourse_mccourse_bottle_stored_ten_levels": "Mccourse Bottle Stored Ten Levels",
+  "key.mccourse_mccourse_bottle_restored_ten_levels": "Mccourse Bottle Restored Ten Levels",
+  "key.mccourse_mccourse_bottle_stored_hundred_levels": "Mccourse Bottle Stored Hundred Levels",
+  "key.mccourse_mccourse_bottle_restored_hundred_levels": "Mccourse Bottle Restored Hundred Levels"
 }

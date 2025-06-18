@@ -61,5 +61,9 @@ public class ModEventClientBusEvents {
         // Register custom Key Input
         event.register(KeyBinding.GLOWING_BLOCKS_KEY); // Glowing Blocks
         event.register(KeyBinding.GLOWING_MOBS_KEY); // Glowing Mobs
+        event.register(KeyBinding.MCCOURSE_BOTTLE_STORED_TEN_LEVELS_KEY); // Mccourse Bottle stored 10 levels
+        event.register(KeyBinding.MCCOURSE_BOTTLE_RESTORED_TEN_LEVELS_KEY); // Mccourse Bottle restored 10 levels
+        event.register(KeyBinding.MCCOURSE_BOTTLE_STORED_HUNDRED_LEVELS_KEY); // Mccourse Bottle stored 100 levels
+        event.register(KeyBinding.MCCOURSE_BOTTLE_RESTORED_HUNDRED_LEVELS_KEY); // Mccourse Bottle restored 100 levels
     }
 }
