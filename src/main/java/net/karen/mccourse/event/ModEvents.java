@@ -1488,8 +1488,29 @@ public class ModEvents {
         Player player = event.getPlayer();
         if (stack.getTag() != null && stack.hasTag() && stack.getTag().getBoolean("Locked")) {
             event.setCanceled(true);
-            player.displayClientMessage(Component.literal("§cThis item is locked!"), true);
+            player.displayClientMessage(Component.literal("§c\uD83D\uDD12 This item is locked!"), true);
             player.getInventory().add(stack);
+        }
+    }
+
+    @SubscribeEvent
+    public static void activatedUnlockOnTooltip(ItemTooltipEvent event) {
+        ItemStack stack = event.getItemStack();
+        List<Component> tooltip = event.getToolTip();
+        if (enchant(stack, ModEnchantments.UNLOCK.get()) > 0) { // Item with Unlock enchantment
+            if (stack.getTag() != null && stack.hasTag()) {
+                boolean locked =  stack.getTag().getBoolean("Locked"); // Locked NBT change stage
+                if (locked) { // Item is LOCKED
+                    tooltip.add(CommonComponents.EMPTY);
+                    tooltip.add(Component.literal("§c\uD83D\uDD12 * Item locked! * ")
+                            .append("§7- Press §eV§7 §cto unlock"));
+                }
+                if (!locked) { // Item is UNLOCKED
+                    tooltip.add(CommonComponents.EMPTY);
+                    tooltip.add(Component.literal("§a\uD83D\uDD13 * Item unlocked! * ")
+                            .append("§7- Press §eV§7 §ato lock"));
+                }
+            }
         }
     }
 }

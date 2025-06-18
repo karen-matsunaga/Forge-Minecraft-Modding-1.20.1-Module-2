@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 public class UnlockNetworkMessage {
     private final boolean locked;
 
+    // MESSAGE TYPE
     public UnlockNetworkMessage(boolean locked) { this.locked = locked; }
 
     // DECODE
@@ -21,15 +22,16 @@ public class UnlockNetworkMessage {
         buf.writeBoolean(msg.locked);
     }
 
+    // CONSUMER
     public static void handler(UnlockNetworkMessage msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player = ctx.get().getSender();
             if (player != null) {
-                ItemStack stack = player.getMainHandItem();
-                if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.UNLOCK.get()) > 0) {
+                ItemStack stack = player.getMainHandItem(); // Player has item on main hand
+                if (!stack.isEmpty() && stack.getEnchantmentLevel(ModEnchantments.UNLOCK.get()) > 0) { // Item with Unlock enchantment
                     stack.getOrCreateTag().putBoolean("Locked", msg.locked); // Changed stage
-                    player.displayClientMessage(Component.literal(msg.locked ? "§cItem locked!" : "§aItem unlocked!"),
-                            true);
+                    player.displayClientMessage(Component.literal(msg.locked ? "§c\uD83D\uDD12 Item locked!"
+                                                                             : "§a\uD83D\uDD13 Item unlocked!"), true);
                 }
             }
         });

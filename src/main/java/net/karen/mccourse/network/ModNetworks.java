@@ -10,7 +10,8 @@ public class ModNetworks {
     // START and END of user code block mod methods
     private static final String NAME = "mccourse";
     private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(NAME, NAME),
+    public static final SimpleChannel PACKET_HANDLER =
+            NetworkRegistry.newSimpleChannel(new ResourceLocation(NAME, NAME),
             () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
     private static int messageID = 0;
 
