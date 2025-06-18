@@ -248,7 +248,7 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - RAINBOW | AUTO SMELT | MORE ORES | MAGNETIC | MULTIPLIER | ACCUMULATOR custom enchantments
-    private static int enchant(ItemStack stack, Enchantment enchantment) {
+    public static int enchant(ItemStack stack, Enchantment enchantment) {
         return stack.getEnchantmentLevel(enchantment);
     }
 
@@ -1428,17 +1428,15 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - Magnetism enchantment
-    private static final int TICK_INTERVAL = 20; // 1 segundo (20 ticks)
-
+    // CUSTOM EVENT - MAGNETISM enchantment
     @SubscribeEvent
     public static void activatedMagnetismEnchantment(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         if (player.level().isClientSide() || event.phase != TickEvent.Phase.END) { return; }
         ItemStack legging = player.getItemBySlot(EquipmentSlot.LEGS);
         int level = enchant(legging, ModEnchantments.MAGNETISM.get());
-        // To not run all the time, only every TICK_INTERVAL ticks
-        if (level <= 0 || player.tickCount % TICK_INTERVAL != 0) { return; }
+        // To not run all the time, only every TICK_INTERVAL = 20 ticks
+        if (level <= 0 || player.tickCount % 20 != 0) { return; } // 1 second (20 ticks)
         double range = 5.0 + level * 2; // Range increases with level
         // Search for items near the player
         List<ItemEntity> items = player.level().getEntitiesOfClass(ItemEntity.class,
@@ -1465,6 +1463,33 @@ public class ModEvents {
             // Play sound or emit optional particle
             player.level().playSound(null, player.blockPosition(), SoundEvents.EXPERIENCE_ORB_PICKUP,
                     SoundSource.PLAYERS, 0.1F, 0.5F + player.getRandom().nextFloat());
+        }
+    }
+
+    // CUSTOM EVENT - UNLOCK custom enchantment
+    @SubscribeEvent
+    public static void activatedUnlockKeyPress(InputEvent.Key event) {
+        Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
+        if (player != null && mc.screen == null) {
+            if (KeyBinding.UNLOCK_KEY.isDown() && KeyBinding.UNLOCK_KEY.consumeClick()) {
+                ItemStack stack = player.getMainHandItem();
+                if (!stack.isEmpty() && stack.getTag() != null) {
+                    boolean currentlyLocked = stack.hasTag() && stack.getTag().getBoolean("Locked");
+                    ModNetworks.PACKET_HANDLER.sendToServer(new UnlockNetworkMessage(!currentlyLocked));
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void activatedUnlockItemToss(ItemTossEvent event) {
+        ItemStack stack = event.getEntity().getItem();
+        Player player = event.getPlayer();
+        if (stack.getTag() != null && stack.hasTag() && stack.getTag().getBoolean("Locked")) {
+            event.setCanceled(true);
+            player.displayClientMessage(Component.literal("§cThis item is locked!"), true);
+            player.getInventory().add(stack);
         }
     }
 }

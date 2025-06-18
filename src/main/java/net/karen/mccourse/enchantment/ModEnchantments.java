@@ -83,6 +83,10 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> MAGNETISM = ENCHANTMENTS.register("magnetism",
             () -> new MagnetismEnchantment(Enchantment.Rarity.UNCOMMON, EnchantmentCategory.ARMOR_LEGS, EquipmentSlot.LEGS));
 
+    // Unlock enchantment - Armor and Tools enchantment
+    public static final RegistryObject<Enchantment> UNLOCK = ENCHANTMENTS.register("unlock",
+            () -> new UnlockEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }

@@ -22,7 +22,8 @@ import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = MCCourseMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = MCCourseMod.MOD_ID,
+                        bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModEventClientBusEvents {
     @SubscribeEvent
     public static void registerParticleFactories(RegisterParticleProvidersEvent event) { // Register custom particles event
@@ -45,7 +46,8 @@ public class ModEventClientBusEvents {
     @SubscribeEvent
     public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
         event.register((pState, pLevel, pPos, pTintIndex) -> pLevel != null && pPos != null
-                ? BiomeColors.getAverageFoliageColor(pLevel, pPos) : FoliageColor.getDefaultColor(), ModBlocks.COLORED_LEAVES.get());
+                ? BiomeColors.getAverageFoliageColor(pLevel, pPos)
+                : FoliageColor.getDefaultColor(), ModBlocks.COLORED_LEAVES.get());
     }
 
     @SubscribeEvent
@@ -59,11 +61,12 @@ public class ModEventClientBusEvents {
     @SubscribeEvent
     public static void registerKeyInput(RegisterKeyMappingsEvent event) {
         // Register custom Key Input
-        event.register(KeyBinding.GLOWING_BLOCKS_KEY); // Glowing Blocks
-        event.register(KeyBinding.GLOWING_MOBS_KEY); // Glowing Mobs
+        event.register(KeyBinding.GLOWING_BLOCKS_KEY); // Glowing Blocks custom enchantment
+        event.register(KeyBinding.GLOWING_MOBS_KEY); // Glowing Mobs custom enchantment
         event.register(KeyBinding.MCCOURSE_BOTTLE_STORED_TEN_LEVELS_KEY); // Mccourse Bottle stored 10 levels
         event.register(KeyBinding.MCCOURSE_BOTTLE_RESTORED_TEN_LEVELS_KEY); // Mccourse Bottle restored 10 levels
         event.register(KeyBinding.MCCOURSE_BOTTLE_STORED_HUNDRED_LEVELS_KEY); // Mccourse Bottle stored 100 levels
         event.register(KeyBinding.MCCOURSE_BOTTLE_RESTORED_HUNDRED_LEVELS_KEY); // Mccourse Bottle restored 100 levels
+        event.register(KeyBinding.UNLOCK_KEY); // Unlock custom enchantment
     }
 }
