@@ -1554,6 +1554,23 @@ public class ModEvents {
     }
 
     @SubscribeEvent
+    public static void activatedUnlockOnDropKey(ScreenEvent.KeyPressed.Pre event) {
+        Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
+        if (!(event.getScreen() instanceof AbstractContainerScreen<?> screen)) { return; }
+        if (player == null) { return; }
+        if (event.getKeyCode() != mc.options.keyDrop.getKey().getValue()) { return; } // Check if the PRESSED key is DROP
+        Slot hoveredSlot = screen.getSlotUnderMouse();
+        if (hoveredSlot == null) { return; }
+        ItemStack stack = hoveredSlot.getItem();
+        if (stack.isEmpty()) { return; }
+        if (stack.getTag() != null && stack.hasTag() && stack.getTag().getBoolean("Locked")) { // Check if the item is LOCKED
+            event.setCanceled(true); // Prevents item movement
+            player.displayClientMessage(Component.literal("§c\uD83D\uDD12 This item is locked!"), true);
+        }
+    }
+
+    @SubscribeEvent
     public static void activatedUnlockItemToss(ItemTossEvent event) {
         ItemStack stack = event.getEntity().getItem();
         ItemStack safeCopy = stack.copy(); // Make a safe copy first
