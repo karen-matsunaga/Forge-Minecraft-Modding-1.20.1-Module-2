@@ -43,6 +43,10 @@ public class ModTags {
         // Teleport item
         public static final TagKey<Item> TELEPORT_ITEMS = tag("teleport_items");
 
+        // Ultra Compactor item
+        public static final TagKey<Item> ULTRA_COMPACTOR_ITEMS = tag("ultra_compactor_items");
+        public static final TagKey<Item> ULTRA_COMPACTOR_RESULT = tag("ultra_compactor_result");
+
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass item id
         }

@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-13T15:48:34.0526558	Recipes
+// 1.20.1	2025-06-18T21:47:54.9648835	Recipes
 dd52e5950ac294c207bf9b9441d3b97e76c9739e data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -67,8 +67,8 @@ ad8b309eb561001c68c45d1b1db54d2853a6bd65 data/mccourse/advancements/recipes/misc
 917c70fd2ca0c5fa54b3d41f766c904269e03f81 data/mccourse/advancements/recipes/misc/pink_from_smelting_nether_pink_ore.json
 d54d3836d1080826937be61efa8939320b72d64f data/mccourse/advancements/recipes/misc/pink_from_smelting_pink.json
 7a7bafbc434e80db912d91a0d3fdf0325a6fdabf data/mccourse/advancements/recipes/misc/pink_from_smelting_pink_ore.json
-e73e936ffd0b7189e92d0e3ee64b131a5231a4c2 data/mccourse/advancements/recipes/misc/raw_alexandrite.json
-763c9ab68f9fa4e33d0336584d47f3a188a3b839 data/mccourse/advancements/recipes/misc/raw_alexandrite_block.json
+e5d781d86c2c214177056f3a9e614dd9f351895f data/mccourse/advancements/recipes/misc/raw_alexandrite.json
+ddb8dac762f39e6020c8c812ddb95e5450a8d5ff data/mccourse/advancements/recipes/misc/raw_alexandrite_block.json
 94489ab55e7b80445c4e06ebab4d75ef596a0c72 data/mccourse/advancements/recipes/misc/restore.json
 e8c9e77bc776affb2fb3317f3b2f915118c06b54 data/mccourse/advancements/recipes/misc/rotten_flesh_block.json
 d8dbc61219c5ecb34ff15cd237fcbdd9a024ca2b data/mccourse/advancements/recipes/misc/weapon_luck.json
@@ -227,8 +227,8 @@ edd828a949e10a1934df2ffcdc9268840bdf1e05 data/mccourse/recipes/pink_pickaxe.json
 ed76d4b6f6043a343ff12d6b94d9adbe5e62e752 data/mccourse/recipes/pink_shovel.json
 fe00d933026de933c871f958616be1dee7725f11 data/mccourse/recipes/pink_sword.json
 6168711e73652cfaf282218e82ae35b02a00e7d9 data/mccourse/recipes/purple_ender_pearl_block.json
-fa966f75ced176721e85d71224f99f6c9c5951e2 data/mccourse/recipes/raw_alexandrite.json
-50de576130ce8388820e9c450b3f8cca21391b4e data/mccourse/recipes/raw_alexandrite_block.json
+3f566789b8486eb50c9a2d52ebcc8efd03f41e80 data/mccourse/recipes/raw_alexandrite.json
+0f76dc14a22da200201fcc58736be6b59160d714 data/mccourse/recipes/raw_alexandrite_block.json
 6f8f1e00e7c6a34b982cd89091645ef7aa2c4714 data/mccourse/recipes/raw_iron_from_kaupen_furnace.json
 ed7e1e703b335a576c29367cb0d452916bfe336d data/mccourse/recipes/red_ender_pearl_block.json
 0f86e715b66b4fdff4e96a2b79da22eee6c2d76a data/mccourse/recipes/restore.json

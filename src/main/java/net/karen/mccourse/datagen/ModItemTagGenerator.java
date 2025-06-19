@@ -12,12 +12,14 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.*;
 import java.util.concurrent.CompletableFuture;
+import static net.karen.mccourse.block.ModBlocks.*;
 import static net.karen.mccourse.item.ModItems.*;
 import static net.karen.mccourse.util.ModTags.Items.*;
 
 public class ModItemTagGenerator extends ItemTagsProvider {
     public ModItemTagGenerator(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> future,
-                               CompletableFuture<TagLookup<Block>> completableFuture, @Nullable ExistingFileHelper existingFileHelper) {
+                               CompletableFuture<TagLookup<Block>> completableFuture,
+                               @Nullable ExistingFileHelper existingFileHelper) {
         super(packOutput, future, completableFuture, MCCourseMod.MOD_ID, existingFileHelper);
     }
 
@@ -35,7 +37,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ItemTags.PLANKS).add(ModBlocks.WALNUT_PLANKS.get().asItem());
 
         // MCCOURSE custom items
-        this.tag(MCCOURSE_ITEMS).add(PINK.get(), ALEXANDRITE.get());
+        this.tag(MCCOURSE_ITEMS).add(PINK.get(), ALEXANDRITE.get(), RAW_ALEXANDRITE.get());
 
         this.tag(MCCOURSE_ORES_ITEMS).addTag(PINK_ORES_ITEMS).addTag(ALEXANDRITE_ORES_ITEMS);
 
@@ -81,7 +83,22 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .addTag(Tags.Items.STORAGE_BLOCKS_GOLD).addTag(Tags.Items.STORAGE_BLOCKS_IRON).addTag(Tags.Items.STORAGE_BLOCKS_LAPIS)
                 .addTag(Tags.Items.STORAGE_BLOCKS_NETHERITE).addTag(Tags.Items.STORAGE_BLOCKS_REDSTONE);
 
+        // Teleport items
         this.tag(TELEPORT_ITEMS).add(ALEXANDRITE_SWORD.get(), ALEXANDRITE_PAXEL.get());
+
+        // Ultra Compactor Input
+        this.tag(ULTRA_COMPACTOR_ITEMS).addTag(Tags.Items.INGOTS_COPPER).addTag(Tags.Items.INGOTS_GOLD).addTag(ItemTags.COALS)
+                .addTag(Tags.Items.INGOTS_IRON).addTag(Tags.Items.INGOTS_NETHERITE).addTag(Tags.Items.GEMS_DIAMOND)
+                .addTag(Tags.Items.GEMS_EMERALD).addTag(Tags.Items.GEMS_LAPIS).addTag(Tags.Items.DUSTS_REDSTONE)
+                .addTag(MCCOURSE_ITEMS).addTag(Tags.Items.RAW_MATERIALS);
+
+        // Ultra Compactor Output
+        this.tag(ULTRA_COMPACTOR_RESULT).addTag(Tags.Items.STORAGE_BLOCKS_RAW_COPPER).addTag(Tags.Items.STORAGE_BLOCKS_RAW_GOLD)
+                .addTag(Tags.Items.STORAGE_BLOCKS_RAW_IRON).addTag(ORE_BLOCK_ITEMS)
+                .add(ALEXANDRITE_BLOCK.get().asItem(), RAW_ALEXANDRITE_BLOCK.get().asItem(),
+                     PINK_BLOCK.get().asItem(), ENDER_PEARL_BLOCK.get().asItem(), NETHER_STAR_BLOCK.get().asItem(),
+                     GUNPOWDER_BLOCK.get().asItem(), ROTTEN_FLESH_BLOCK.get().asItem(),
+                     BLAZE_ROD_BLOCK.get().asItem(), PHANTOM_MEMBRANE_BLOCK.get().asItem());
     }
 
     @Override

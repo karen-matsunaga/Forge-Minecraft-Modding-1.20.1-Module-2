@@ -1,0 +1,15 @@
+{
+  "values": [
+    "#forge:ingots/copper",
+    "#forge:ingots/gold",
+    "#minecraft:coals",
+    "#forge:ingots/iron",
+    "#forge:ingots/netherite",
+    "#forge:gems/diamond",
+    "#forge:gems/emerald",
+    "#forge:gems/lapis",
+    "#forge:dusts/redstone",
+    "#mccourse:mccourse_items",
+    "#forge:raw_materials"
+  ]
+}

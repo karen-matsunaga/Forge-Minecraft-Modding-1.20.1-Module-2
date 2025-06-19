@@ -413,6 +413,10 @@ public class ModItems {
     public static final RegistryObject<Item> INFINITE = ITEMS.register("infinite",
             () -> new InfiniteItem(new Item.Properties().fireResistant().stacksTo(64).fireResistant()));
 
+    // Ultra Compactor
+    public static final RegistryObject<Item> ULTRA_COMPACTOR = ITEMS.register("ultra_compactor",
+            () -> new UltraCompactorItem(new Item.Properties().fireResistant().stacksTo(1).fireResistant()));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }

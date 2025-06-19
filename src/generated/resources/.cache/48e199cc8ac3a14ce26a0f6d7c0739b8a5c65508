@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-17T18:12:18.8603872	Item Tags
+// 1.20.1	2025-06-18T22:04:18.7515532	Item Tags
 c7cf40b65e9f80b0da876b8c7ba47601cc2eef92 data/mccourse/tags/items/alexandrite_armor.json
 86562fd08aff39d08443a35e89d8fabc2114cb9b data/mccourse/tags/items/alexandrite_ores_items.json
 488d88bfa3bf220ac3efffde7d49c83fe86f4b37 data/mccourse/tags/items/boots_fly.json
@@ -6,7 +6,7 @@ cb72b9f19012bb274543528930deea6b590c73f5 data/mccourse/tags/items/chestplate_fly
 80c56329dbc8fc4fcf5a04af29335f059961b8ba data/mccourse/tags/items/copper_armor.json
 e70861732ee55a7128661f30008e9c2dc2dd8409 data/mccourse/tags/items/helmet_fly.json
 8ba7b35398496adf646c932b2ac34f34aa5d172f data/mccourse/tags/items/leggings_fly.json
-6a548e7595c02ec5f1b4c5b4c6c0b58ff810a1d2 data/mccourse/tags/items/mccourse_items.json
+bfbfe93c1207420484e0725620adc02b8b2000f6 data/mccourse/tags/items/mccourse_items.json
 8dab101b6ef5c99bb3c5f3b52e2226fcc7e2d0eb data/mccourse/tags/items/mccourse_ores_items.json
 cf427f888bb00e762a7b143d8b52c96ef4a52975 data/mccourse/tags/items/multiplier_ores.json
 45bff75cc337c5062ff78b68ea0f8bcbb8da13d1 data/mccourse/tags/items/ore_block_items.json
@@ -14,6 +14,8 @@ cf427f888bb00e762a7b143d8b52c96ef4a52975 data/mccourse/tags/items/multiplier_ore
 5cb7d7564685ed6eebab24dad92d511b9fe8e2ae data/mccourse/tags/items/pink_ores_items.json
 081771f939cdd9d58d230ee63a3439837ee4eff7 data/mccourse/tags/items/restore_blacklist_items.json
 06df4a2bc6f027ac08c8c123990bf56d50dcfa9b data/mccourse/tags/items/teleport_items.json
+d6ae895664050fe52385503b70f7a2e05f652e32 data/mccourse/tags/items/ultra_compactor_items.json
+1b11867569d231dfcab9f60b952242243aa4ae50 data/mccourse/tags/items/ultra_compactor_result.json
 46587698990f13785898e9fb4b62d6ba4212f45a data/minecraft/tags/items/logs_that_burn.json
 d223775d67e253e09434bac425eafac923c4668d data/minecraft/tags/items/music_discs.json
 e0ccd7e2e05f902bcc455bba38a3fcd126e23cce data/minecraft/tags/items/planks.json

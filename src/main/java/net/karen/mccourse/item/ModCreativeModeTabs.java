@@ -298,6 +298,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.LEVEL_CHARGER_MINUS.get());
                         output.accept(ModItems.LEVEL_CHARGER_PLUS_FORTUNE.get());
                         output.accept(ModItems.LEVEL_CHARGER_MINUS_FORTUNE.get());
+                        output.accept(ModItems.ULTRA_COMPACTOR.get());
                     }).build());
 
     // Registry Creative Mode Tab

@@ -1,0 +1,17 @@
+{
+  "values": [
+    "#forge:storage_blocks/raw_copper",
+    "#forge:storage_blocks/raw_gold",
+    "#forge:storage_blocks/raw_iron",
+    "#mccourse:ore_block_items",
+    "mccourse:alexandrite_block",
+    "mccourse:raw_alexandrite_block",
+    "mccourse:pink_block",
+    "mccourse:ender_pearl_block",
+    "mccourse:nether_star_block",
+    "mccourse:gunpowder_block",
+    "mccourse:rotten_flesh_block",
+    "mccourse:blaze_rod_block",
+    "mccourse:phantom_membrane_block"
+  ]
+}

@@ -58,10 +58,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(pWriter);
 
         // Raw Alexandrite
-        nineBlockStorageRecipes(pWriter, RecipeCategory.MISC, ModItems.RAW_ALEXANDRITE.get(),
-                RecipeCategory.MISC, ModBlocks.ALEXANDRITE_BLOCK.get(),
-                "mccourse:raw_alexandrite", "alexandrite",
-                "mccourse:raw_alexandrite_block", null);
+        itemTransformBlock(List.of(ModBlocks.RAW_ALEXANDRITE_BLOCK.get(), ModItems.RAW_ALEXANDRITE.get()), pWriter);
+        blockTransformItem(List.of(ModItems.RAW_ALEXANDRITE.get(), ModBlocks.RAW_ALEXANDRITE_BLOCK.get()), pWriter);
 
         // Items Smelting
         oreSmelting(pWriter, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(),
@@ -368,18 +366,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     // Item transform on custom block
     protected static void itemTransformBlock(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0))
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0)) // Block result
                 .pattern("AAA").pattern("AAA").pattern("AAA")
-                .define('A', item.get(1))
-                .unlockedBy("has_item", has(item.get(1)))
+                .define('A', item.get(1)) // Item input
+                .unlockedBy("has_item", has(item.get(1))) // Has item
                 .save(pWriter);
     }
 
     // Custom block transform on item
     protected static void blockTransformItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, item.get(0), 9)
-                .requires(item.get(1))
-                .unlockedBy("has_item", has(item.get(1)))
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, item.get(0), 9) // Item result
+                .requires(item.get(1)) // Block input
+                .unlockedBy("has_item", has(item.get(1))) // Has block
                 .save(pWriter);
     }
 
