@@ -1485,11 +1485,28 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedUnlockItemToss(ItemTossEvent event) {
         ItemStack stack = event.getEntity().getItem();
+        ItemStack safeCopy = stack.copy(); // Make a safe copy first
         Player player = event.getPlayer();
         if (stack.getTag() != null && stack.hasTag() && stack.getTag().getBoolean("Locked")) {
             event.setCanceled(true);
             player.displayClientMessage(Component.literal("§c\uD83D\uDD12 This item is locked!"), true);
-            player.getInventory().add(stack);
+            boolean added = player.getInventory().add(safeCopy);
+            if (!added) {
+                // Try to put in armor slots
+                for (int i = 0; i < player.getInventory().armor.size(); i++) {
+                    if (player.getInventory().armor.get(i).isEmpty() && !safeCopy.isEmpty()) {
+                        player.getInventory().armor.set(i, safeCopy.copy());
+                        safeCopy.setCount(0); // Empties after moving
+                    }
+                }
+                // Try to put it in offhand
+                if (player.getInventory().offhand.get(0).isEmpty() && !safeCopy.isEmpty()) {
+                    player.getInventory().offhand.set(0, safeCopy.copy());
+                    safeCopy.setCount(0); // Empties after moving
+                }
+                // If there is any left, throw it on the floor
+                if (!safeCopy.isEmpty()) { player.spawnAtLocation(safeCopy); }
+            }
         }
     }
 
