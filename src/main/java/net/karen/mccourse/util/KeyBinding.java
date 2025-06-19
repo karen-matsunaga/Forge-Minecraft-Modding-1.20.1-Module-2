@@ -45,6 +45,6 @@ public class KeyBinding {
             new KeyMapping(KEY_MCCOURSE_BOTTLE_RESTORED_HUNDRED_LEVELS,
             KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_B, KEY_CATEGORY_MCCOURSE);
 
-    public static final KeyMapping UNLOCK_KEY = new KeyMapping(KEY_UNLOCK, KeyConflictContext.IN_GAME,
+    public static final KeyMapping UNLOCK_KEY = new KeyMapping(KEY_UNLOCK, KeyConflictContext.UNIVERSAL,
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_V, KEY_CATEGORY_MCCOURSE);
 }

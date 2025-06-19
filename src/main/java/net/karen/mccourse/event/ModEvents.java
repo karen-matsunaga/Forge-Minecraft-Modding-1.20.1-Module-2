@@ -1468,17 +1468,88 @@ public class ModEvents {
 
     // CUSTOM EVENT - UNLOCK custom enchantment
     @SubscribeEvent
-    public static void activatedUnlockKeyPress(InputEvent.Key event) {
+    public static void activatedUnlockOnKeyPress(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-        if (player != null && mc.screen == null) {
-            if (KeyBinding.UNLOCK_KEY.isDown() && KeyBinding.UNLOCK_KEY.consumeClick()) {
-                ItemStack stack = player.getMainHandItem();
-                if (!stack.isEmpty() && stack.getTag() != null) {
-                    boolean currentlyLocked = stack.hasTag() && stack.getTag().getBoolean("Locked");
-                    ModNetworks.PACKET_HANDLER.sendToServer(new UnlockNetworkMessage(!currentlyLocked));
+        if (player == null || !KeyBinding.UNLOCK_KEY.isDown() || !KeyBinding.UNLOCK_KEY.consumeClick()) { return; }
+        if (mc.screen == null) {
+            ItemStack main = player.getMainHandItem();
+            if (!main.isEmpty() && main.hasTag() && main.getTag() != null) { // MAIN HAND
+                boolean locked = main.getTag().getBoolean("Locked");
+                ModNetworks.PACKET_HANDLER
+                        .sendToServer(
+                                new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.MAIN, player.getInventory().selected));
+                return;
+            }
+            ItemStack off = player.getOffhandItem();
+            if (!off.isEmpty() && off.hasTag() && off.getTag() != null) { // OFFHAND
+                boolean locked = off.getTag().getBoolean("Locked");
+                ModNetworks.PACKET_HANDLER
+                        .sendToServer(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.OFFHAND, 0));
+                return;
+            }
+            for (int i = 0; i < player.getInventory().armor.size(); i++) { // ARMOR
+                ItemStack armorItem = player.getInventory().armor.get(i);
+                if (!armorItem.isEmpty() && armorItem.hasTag() && armorItem.getTag() != null) {
+                    boolean locked = armorItem.getTag().getBoolean("Locked");
+                    ModNetworks.PACKET_HANDLER
+                            .sendToServer(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.ARMOR, i));
+                    return;
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void activatedUnlockOnGuiKeyPress(ScreenEvent.KeyPressed.Pre event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (!(event.getScreen() instanceof AbstractContainerScreen<?> screen)) { return; }
+        if (mc.player == null) { return; }
+        if (event.getKeyCode() != KeyBinding.UNLOCK_KEY.getKey().getValue()) { return; }
+        Player player = mc.player;
+        Slot hovered = screen.getSlotUnderMouse();
+        if (hovered == null || !hovered.hasItem()) {
+            player.displayClientMessage(Component.literal("§cNo item under mouse!"), true);
+            return;
+        }
+        ItemStack hoveredStack = hovered.getItem();
+        UnlockEnchantmentAction type = null;
+        int index = -1;
+        Inventory inv = player.getInventory();
+        for (int i = 0; i < inv.items.size(); i++) { // MAIN INVENTORY
+            if (ItemStack.isSameItemSameTags(inv.items.get(i), hoveredStack)) {
+                type = UnlockEnchantmentAction.MAIN;
+                index = i;
+                break;
+            }
+        }
+        if (type == null) { // ARMOR
+            for (int i = 0; i < inv.armor.size(); i++) {
+                if (ItemStack.isSameItemSameTags(inv.armor.get(i), hoveredStack)) {
+                    type = UnlockEnchantmentAction.ARMOR;
+                    index = i;
+                    break;
+                }
+            }
+        }
+        if (type == null) { // OFFHAND
+            for (int i = 0; i < inv.offhand.size(); i++) {
+                if (ItemStack.isSameItemSameTags(inv.offhand.get(i), hoveredStack)) {
+                    type = UnlockEnchantmentAction.OFFHAND;
+                    index = i;
+                    break;
+                }
+            }
+        }
+        if (type != null) {
+            boolean locked = false;
+            if (hoveredStack.getTag() != null) { locked = hoveredStack.getTag().getBoolean("Locked"); }
+            ModNetworks.PACKET_HANDLER.sendToServer(new UnlockNetworkMessage(!locked, type, index));
+            event.setCanceled(true); // Prevents other mods or the game from consuming the key
+        }
+        else {
+            player.displayClientMessage(
+                    Component.literal("§cSlot does not belong to player's inventory!"), true);
         }
     }
 
