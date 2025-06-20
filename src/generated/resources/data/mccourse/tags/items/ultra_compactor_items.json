@@ -10,6 +10,12 @@
     "#forge:gems/lapis",
     "#forge:dusts/redstone",
     "#mccourse:mccourse_items",
-    "#forge:raw_materials"
+    "#forge:raw_materials",
+    "minecraft:ender_pearl",
+    "minecraft:blaze_rod",
+    "minecraft:rotten_flesh",
+    "minecraft:gunpowder",
+    "minecraft:nether_star",
+    "minecraft:phantom_membrane"
   ]
 }

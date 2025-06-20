@@ -90,7 +90,8 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ULTRA_COMPACTOR_ITEMS).addTag(Tags.Items.INGOTS_COPPER).addTag(Tags.Items.INGOTS_GOLD).addTag(ItemTags.COALS)
                 .addTag(Tags.Items.INGOTS_IRON).addTag(Tags.Items.INGOTS_NETHERITE).addTag(Tags.Items.GEMS_DIAMOND)
                 .addTag(Tags.Items.GEMS_EMERALD).addTag(Tags.Items.GEMS_LAPIS).addTag(Tags.Items.DUSTS_REDSTONE)
-                .addTag(MCCOURSE_ITEMS).addTag(Tags.Items.RAW_MATERIALS);
+                .addTag(MCCOURSE_ITEMS).addTag(Tags.Items.RAW_MATERIALS).add(Items.ENDER_PEARL, Items.BLAZE_ROD, Items.ROTTEN_FLESH,
+                        Items.GUNPOWDER, Items.NETHER_STAR, Items.PHANTOM_MEMBRANE);
 
         // Ultra Compactor Output
         this.tag(ULTRA_COMPACTOR_RESULT).addTag(Tags.Items.STORAGE_BLOCKS_RAW_COPPER).addTag(Tags.Items.STORAGE_BLOCKS_RAW_GOLD)
