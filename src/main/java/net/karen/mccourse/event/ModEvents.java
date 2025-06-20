@@ -271,7 +271,8 @@ public class ModEvents {
         else { world.setBlock(pos, block.defaultBlockState(), 3); }
     }
 
-    private static void dropXp(BlockState state, ServerLevel serverLevel, BlockPos pos, int fortune) {
+    private static void dropXp(BlockState state, ServerLevel serverLevel,
+                               BlockPos pos, int fortune) {
         int exp = state.getExpDrop(serverLevel, serverLevel.random, pos, fortune, 0);
         if (exp > 0) { state.getBlock().popExperience(serverLevel, pos, exp); }
     }
@@ -479,29 +480,19 @@ public class ModEvents {
                                 switch (enchantment.category) { // Replace this line with custom styled version
                                     case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.GOLD;
                                     case DIGGER -> ChatFormatting.DARK_PURPLE; case TRIDENT -> ChatFormatting.AQUA;
-                                    case BOW, CROSSBOW, WEAPON -> ChatFormatting.DARK_RED;
-                                    case WEARABLE -> ChatFormatting.GREEN; case FISHING_ROD -> ChatFormatting.YELLOW;
-                                    case BREAKABLE -> ChatFormatting.DARK_GREEN; case VANISHABLE -> ChatFormatting.RED; };
+                                    case WEAPON -> ChatFormatting.DARK_RED; case BOW, CROSSBOW -> ChatFormatting.GREEN;
+                                    case FISHING_ROD -> ChatFormatting.YELLOW; case BREAKABLE -> ChatFormatting.DARK_GREEN;
+                                    default -> ChatFormatting.GRAY; };
                             String enchant = enchantment.getDescriptionId();
                             String descriptionValue = enchant + ".desc"; // JSON file -> I18n = en_us.json
                             if (level > 0 || I18n.exists(descriptionValue)) {
-                                String icon = isCurse ? "🔥" :
-                                        switch (enchantment.category) { // Replace this line with custom styled version
-                                            case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> "⭐";
-                                            case DIGGER -> "⛏";
-                                            case BOW, CROSSBOW -> "\uD83C\uDFF9";
-                                            case WEAPON -> "\uD83D\uDDE1";
-                                            case TRIDENT -> "\uD83D\uDD31";
-                                            case WEARABLE -> "�";
-                                            case FISHING_ROD -> "\uD83C\uDFA3";
-                                            case BREAKABLE -> "⚔️\uD83E\uDE93";
-                                            case VANISHABLE -> "☠"; };
-                                MutableComponent draw = description(icon, color, List.of(false, false));
+                                // Enchantment Level with Arabic numeral
                                 MutableComponent name = description(enchant, color, List.of(!isCurse, isCurse))
-                                        .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level)))
-                                        .append(CommonComponents.NEW_LINE); // Enchantment Level with Arabic numeral
+                                .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level))),
+                                icon = icon(isCurse, enchantment), // Enchantment compatibility
+                                details = description(descriptionValue, color, List.of(false, false)); // Enchantment description
                                 // Number line of enchantments and enchantment descriptions
-                                tooltip.set(i, draw.append(name).append(description(descriptionValue, color, List.of(false, false))));
+                                tooltip.set(i, name.append(icon).append(details));
                             }
                             break;
                         }
@@ -509,6 +500,20 @@ public class ModEvents {
                 }
             }
         }
+    }
+
+    private static MutableComponent icon(boolean isCurse, Enchantment enchantment) {
+        String armor = "§6⭐", pick = "§5⛏", bow = "§a\uD83C\uDFF9", sword = "§4\uD83D\uDDE1",
+               trident = "§b\uD83D\uDD31", fish = "§e\uD83C\uDFA3", axe = "§5\uD83E\uDE93",
+               hammer = "§3🔨", shield = "§1🛡️";
+        String icon = isCurse ? "§c🔥" :
+            switch (enchantment.category) { // Replace this line with custom styled version
+                case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> armor; case DIGGER -> pick + " " + axe;
+                case BOW, CROSSBOW -> bow; case WEAPON -> sword; case TRIDENT -> trident; case FISHING_ROD -> fish;
+                case BREAKABLE -> axe + " " + fish + " " + pick + " " + armor + " " + sword + " " + bow + " " + trident +
+                " " + hammer + " " + shield;
+                default -> ""; };
+        return Component.literal(" " + icon + " ").append(CommonComponents.NEW_LINE);
     }
 
     // Credits by Parlack - Pickaxe modes - https://www.youtube.com/watch?v=pBo1c3hM3b0
