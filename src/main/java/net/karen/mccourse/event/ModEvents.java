@@ -485,11 +485,23 @@ public class ModEvents {
                             String enchant = enchantment.getDescriptionId();
                             String descriptionValue = enchant + ".desc"; // JSON file -> I18n = en_us.json
                             if (level > 0 || I18n.exists(descriptionValue)) {
+                                String icon = isCurse ? "🔥" :
+                                        switch (enchantment.category) { // Replace this line with custom styled version
+                                            case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> "⭐";
+                                            case DIGGER -> "⛏";
+                                            case BOW, CROSSBOW -> "\uD83C\uDFF9";
+                                            case WEAPON -> "\uD83D\uDDE1";
+                                            case TRIDENT -> "\uD83D\uDD31";
+                                            case WEARABLE -> "�";
+                                            case FISHING_ROD -> "\uD83C\uDFA3";
+                                            case BREAKABLE -> "⚔️\uD83E\uDE93";
+                                            case VANISHABLE -> "☠"; };
+                                MutableComponent draw = description(icon, color, List.of(false, false));
                                 MutableComponent name = description(enchant, color, List.of(!isCurse, isCurse))
                                         .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level)))
                                         .append(CommonComponents.NEW_LINE); // Enchantment Level with Arabic numeral
                                 // Number line of enchantments and enchantment descriptions
-                                tooltip.set(i, name.append(description(descriptionValue, color, List.of(false, false))));
+                                tooltip.set(i, draw.append(name).append(description(descriptionValue, color, List.of(false, false))));
                             }
                             break;
                         }
