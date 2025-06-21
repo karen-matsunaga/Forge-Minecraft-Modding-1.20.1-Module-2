@@ -13,7 +13,9 @@ import java.util.function.Supplier;
 public class HammerBlockRenderServerMessage {
     private final BlockPos pos;
 
-    public HammerBlockRenderServerMessage(BlockPos pos) { this.pos = pos; }
+    public HammerBlockRenderServerMessage(BlockPos pos) {
+        this.pos = pos;
+    }
 
     public HammerBlockRenderServerMessage(FriendlyByteBuf buf) {
         this.pos = buf.readBlockPos();
@@ -28,10 +30,11 @@ public class HammerBlockRenderServerMessage {
             ServerPlayer player = context.get().getSender();
             if (player != null) {
                 ItemStack held = player.getMainHandItem();
-                if (!(held.getItem() instanceof HammerItem hammer)) { return; }
-                List<BlockPos> toHighlight = HammerItem.getBlocksToBeDestroyed(0, hammer.getRadius(), pos, player);
-                ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player),
-                        new HammerBlockRenderClientMessage(toHighlight));
+                if (held.getItem() instanceof HammerItem hammer) {
+                    List<BlockPos> toHighlight = HammerItem.getBlocksToBeDestroyed(0, hammer.getRadius(), pos, player);
+                    ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player),
+                            new HammerBlockRenderClientMessage(toHighlight)); // SERVER -> CLIENT
+                }
             }
         });
         context.get().setPacketHandled(true);
