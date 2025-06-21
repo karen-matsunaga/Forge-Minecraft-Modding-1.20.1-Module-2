@@ -119,7 +119,7 @@ public class ModEvents {
             if (!pos.equals(lastSentPos) && tickDelay-- <= 0) { // Hammer render position
                 lastSentPos = pos;
                 tickDelay = 5;
-                ModNetworks.PACKET_HANDLER.sendToServer(new ServerHammerBlockRenderMessage(pos));
+                ModNetworks.PACKET_HANDLER.sendToServer(new HammerBlockRenderServerMessage(pos));
             }
         }
     }

@@ -7,17 +7,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
-
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
-public class ServerHammerBlockRenderMessage {
+public class HammerBlockRenderServerMessage {
     private final BlockPos pos;
 
-    public ServerHammerBlockRenderMessage(BlockPos pos) { this.pos = pos; }
+    public HammerBlockRenderServerMessage(BlockPos pos) { this.pos = pos; }
 
-    public ServerHammerBlockRenderMessage(FriendlyByteBuf buf) {
+    public HammerBlockRenderServerMessage(FriendlyByteBuf buf) {
         this.pos = buf.readBlockPos();
     }
 
@@ -28,14 +26,13 @@ public class ServerHammerBlockRenderMessage {
     public void handler(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
             ServerPlayer player = context.get().getSender();
-            ItemStack held = Objects.requireNonNull(player).getMainHandItem();
-
-            if (!(held.getItem() instanceof HammerItem hammer)) { return; }
-
-            List<BlockPos> toHighlight = HammerItem.getBlocksToBeDestroyed(hammer.getDistance(), hammer.getRadius(), pos, player);
-
-            ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player),
-                    new ClientHammerBlockRenderMessage(toHighlight));
+            if (player != null) {
+                ItemStack held = player.getMainHandItem();
+                if (!(held.getItem() instanceof HammerItem hammer)) { return; }
+                List<BlockPos> toHighlight = HammerItem.getBlocksToBeDestroyed(0, hammer.getRadius(), pos, player);
+                ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player),
+                        new HammerBlockRenderClientMessage(toHighlight));
+            }
         });
         context.get().setPacketHandled(true);
     }

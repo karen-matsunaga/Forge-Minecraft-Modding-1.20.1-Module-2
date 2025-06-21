@@ -110,10 +110,10 @@ public class MCCourseMod {
             ModNetworks.addNetworkMessage(MccourseElevatorKeyInputMessage.class, MccourseElevatorKeyInputMessage::buffer,
                     MccourseElevatorKeyInputMessage::new, MccourseElevatorKeyInputMessage::handler);
             // Hammer Preview Block
-            ModNetworks.addNetworkMessage(ClientHammerBlockRenderMessage.class, ClientHammerBlockRenderMessage::buffer,
-                    ClientHammerBlockRenderMessage::new, ClientHammerBlockRenderMessage::handler); // CLIENT
-            ModNetworks.addNetworkMessage(ServerHammerBlockRenderMessage.class, ServerHammerBlockRenderMessage::buffer,
-                    ServerHammerBlockRenderMessage::new, ServerHammerBlockRenderMessage::handler); // SERVER
+            ModNetworks.addNetworkMessage(HammerBlockRenderClientMessage.class, HammerBlockRenderClientMessage::buffer,
+                    HammerBlockRenderClientMessage::new, HammerBlockRenderClientMessage::handler); // CLIENT
+            ModNetworks.addNetworkMessage(HammerBlockRenderServerMessage.class, HammerBlockRenderServerMessage::buffer,
+                    HammerBlockRenderServerMessage::new, HammerBlockRenderServerMessage::handler); // SERVER
             // Mccourse Bottle Item
             ModNetworks.addNetworkMessage(MccourseBottleKeyInputMessage.class, MccourseBottleKeyInputMessage::buffer,
                     MccourseBottleKeyInputMessage::new, MccourseBottleKeyInputMessage::handler); // SERVER

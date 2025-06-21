@@ -8,12 +8,12 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class ClientHammerBlockRenderMessage {
+public class HammerBlockRenderClientMessage {
     private final List<BlockPos> positions;
 
-    public ClientHammerBlockRenderMessage(List<BlockPos> positions) { this.positions = positions; }
+    public HammerBlockRenderClientMessage(List<BlockPos> positions) { this.positions = positions; }
 
-    public ClientHammerBlockRenderMessage(FriendlyByteBuf buf) { this.positions = buf.readList(FriendlyByteBuf::readBlockPos); }
+    public HammerBlockRenderClientMessage(FriendlyByteBuf buf) { this.positions = buf.readList(FriendlyByteBuf::readBlockPos); }
 
     public void buffer(FriendlyByteBuf buf) { buf.writeCollection(positions, FriendlyByteBuf::writeBlockPos); }
 
