@@ -40,6 +40,7 @@
     "ServerPlayerMixin",
     "EnchantmentMenuMixin",
     "AbstractContainerMenuMixin",
-    "ItemStackMixin"
+    "ItemStackMixin",
+    "FishingHookMixin"
   ]
 }
