@@ -100,6 +100,9 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                      PINK_BLOCK.get().asItem(), ENDER_PEARL_BLOCK.get().asItem(), NETHER_STAR_BLOCK.get().asItem(),
                      GUNPOWDER_BLOCK.get().asItem(), ROTTEN_FLESH_BLOCK.get().asItem(),
                      BLAZE_ROD_BLOCK.get().asItem(), PHANTOM_MEMBRANE_BLOCK.get().asItem());
+
+        // Mccourse Fishing Rod
+        this.tag(Tags.Items.TOOLS_FISHING_RODS).add(MCCOURSE_FISHING_ROD.get());
     }
 
     @Override

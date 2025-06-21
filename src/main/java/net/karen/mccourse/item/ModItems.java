@@ -417,6 +417,10 @@ public class ModItems {
     public static final RegistryObject<Item> ULTRA_COMPACTOR = ITEMS.register("ultra_compactor",
             () -> new UltraCompactorItem(new Item.Properties().fireResistant().stacksTo(1).fireResistant()));
 
+    // Mccourse Fishing Rod
+    public static final RegistryObject<Item> MCCOURSE_FISHING_ROD = ITEMS.register("mccourse_fishing_rod",
+            () -> new MccourseFishingRodItem(new Item.Properties().durability(100).fireResistant()));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }
