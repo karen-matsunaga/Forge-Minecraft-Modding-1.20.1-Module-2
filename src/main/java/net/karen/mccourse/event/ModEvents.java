@@ -503,16 +503,14 @@ public class ModEvents {
     }
 
     private static MutableComponent icon(boolean isCurse, Enchantment enchantment) {
-        String armor = "§6⭐", pick = "§5⛏", bow = "§a\uD83C\uDFF9", sword = "§4\uD83D\uDDE1",
-               trident = "§b\uD83D\uDD31", fish = "§e\uD83C\uDFA3", axe = "§5\uD83E\uDE93",
-               hammer = "§3🔨", shield = "§1🛡️";
-        String icon = isCurse ? "§c🔥" :
+        String armor = "§6⭐", pick = "§5⛏", bow = "§a\uD83C\uDFF9", sword = "§4\uD83D\uDDE1", trident = "§b\uD83D\uDD31",
+        fish = "§e\uD83C\uDFA3", axe = "§5\uD83E\uDE93", hammer = "§3🔨",
+        icon = isCurse ? "§c🔥" :
             switch (enchantment.category) { // Replace this line with custom styled version
                 case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> armor; case DIGGER -> pick + " " + axe;
                 case BOW, CROSSBOW -> bow; case WEAPON -> sword; case TRIDENT -> trident; case FISHING_ROD -> fish;
                 case BREAKABLE -> axe + " " + fish + " " + pick + " " + armor + " " + sword + " " + bow + " " + trident +
-                " " + hammer + " " + shield;
-                default -> ""; };
+                " " + hammer; default -> ""; };
         return Component.literal(" " + icon + " ").append(CommonComponents.NEW_LINE);
     }
 
@@ -1626,11 +1624,13 @@ public class ModEvents {
                     tooltip.add(CommonComponents.EMPTY);
                     tooltip.add(Component.literal("§c\uD83D\uDD12 * Item locked! * ")
                             .append("§7- Press §eV§7 §cto unlock"));
+                    tooltip.add(Component.literal("\uE000"));
                 }
                 if (!locked) { // Item is UNLOCKED
                     tooltip.add(CommonComponents.EMPTY);
                     tooltip.add(Component.literal("§a\uD83D\uDD13 * Item unlocked! * ")
                             .append("§7- Press §eV§7 §ato lock"));
+                    tooltip.add(Component.literal("\uE001"));
                 }
             }
         }
