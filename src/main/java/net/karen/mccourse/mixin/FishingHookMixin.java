@@ -9,21 +9,19 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
 import javax.annotation.Nullable;
 
 @Mixin(FishingHook.class)
 public abstract class FishingHookMixin {
     @Shadow private int timeUntilHooked, timeUntilLured, nibble;
-
     @Shadow @Nullable public abstract Player getPlayerOwner();
 
-    // Player fish more easy
+    // Player fishes faster
     @Inject(method = "tick", at = @At("HEAD"))
     private void reduceFishingWaitTime(CallbackInfo ci) {
-        Player player = getPlayerOwner();
+        Player player = getPlayerOwner(); // Player Fishing Rod OWNER
         if (player != null) {
-            ItemStack fishingRod = player.getMainHandItem();
+            ItemStack fishingRod = player.getMainHandItem(); // Player has Mccourse Fishing Rod on MAIN HAND
             if (fishingRod.is(ModItems.MCCOURSE_FISHING_ROD.get())) {
                 this.timeUntilLured = Math.min(this.timeUntilLured, 10); // Waiting time until a fish starts to approach
                 this.nibble = Math.min(this.nibble, 10); // Hook swing time (fish agitation phase)

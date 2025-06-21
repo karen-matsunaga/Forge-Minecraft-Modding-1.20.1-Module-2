@@ -6,7 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 
 public class ModItemProperties {
     // Registry all Item Properties
@@ -42,7 +41,7 @@ public class ModItemProperties {
 
     // Mccourse Fishing Rod
     private static void makeFishingRod(Item item) {
-        ItemProperties.register(Items.FISHING_ROD, new ResourceLocation("cast"),
+        ItemProperties.register(item, new ResourceLocation("cast"),
                 (p_174585_, p_174586_, p_174587_, p_174588_) -> {
             if (p_174587_ == null) {
                 return 0.0F;
