@@ -1624,13 +1624,11 @@ public class ModEvents {
                     tooltip.add(CommonComponents.EMPTY);
                     tooltip.add(Component.literal("§c\uD83D\uDD12 * Item locked! * ")
                             .append("§7- Press §eV§7 §cto unlock"));
-                    tooltip.add(Component.literal("\uE000"));
                 }
                 if (!locked) { // Item is UNLOCKED
                     tooltip.add(CommonComponents.EMPTY);
                     tooltip.add(Component.literal("§a\uD83D\uDD13 * Item unlocked! * ")
                             .append("§7- Press §eV§7 §ato lock"));
-                    tooltip.add(Component.literal("\uE001"));
                 }
             }
         }
