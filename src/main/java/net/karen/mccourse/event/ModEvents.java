@@ -421,18 +421,16 @@ public class ModEvents {
                 if (isEnchanted) { // Player has a HELMET inputted on slot and GLOWING MOBS enchantment level
                     boolean newState = !current; // Default stage is FALSE
                     glowingState.put(playerUUID, newState); // Adapted "newState" of "current" stage
-                    // Toggle ON/OFF
-                    glow(player, newState ? "Mobs: ON!" : "Mobs: OFF!", newState ? ChatFormatting.GREEN : ChatFormatting.RED);
+                    glow(player, newState ? "Mobs: ON!" : "Mobs: OFF!", newState ? Utils.green : Utils.red); // Toggle ON/OFF
                 }
-                else { glow(player, "Mobs: Enchanted helmet!", ChatFormatting.DARK_RED); } // Hasn't item
+                else { glow(player, "Mobs: Enchanted helmet!", Utils.darkRed); } // Hasn't item
             }
             if (current && isEnchanted) {
                 // Key (Color) -> Each group represent with some color. Value (Group tag name) -> Represent as Tag.
                 Map<ChatFormatting, TagKey<EntityType<?>>> entitiesTag = Map.ofEntries(
-                Map.entry(ChatFormatting.RED, ModTags.Entities.MONSTERS), // Monsters
-                Map.entry(ChatFormatting.BLUE, ModTags.Entities.ANIMALS), // Animal and Flying entities
-                Map.entry(ChatFormatting.YELLOW, ModTags.Entities.WATER_ANIMALS), // Water animals
-                Map.entry(ChatFormatting.DARK_PURPLE, ModTags.Entities.VILLAGER)); // Villagers
+                // Monsters, Animal | Flying entities, Water animals and Villagers
+                Map.entry(Utils.red, ModTags.Entities.MONSTERS), Map.entry(Utils.blue, ModTags.Entities.ANIMALS),
+                Map.entry(Utils.yellow, ModTags.Entities.WATER_ANIMALS), Map.entry(Utils.darkPurple, ModTags.Entities.VILLAGER));
                 entitiesTag.forEach((color, tag) -> { // Added GLOWING effect for each GROUP
                     String teamName = tag.location().getPath();
                     List<LivingEntity> entities = player.level().getEntitiesOfClass(LivingEntity.class,
@@ -478,17 +476,16 @@ public class ModEvents {
                             boolean isCurse = enchantment.isCurse();
                             ChatFormatting color = isCurse ? ChatFormatting.RED :
                                 switch (enchantment.category) { // Replace this line with custom styled version
-                                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> ChatFormatting.GOLD;
-                                    case DIGGER -> ChatFormatting.DARK_PURPLE; case TRIDENT -> ChatFormatting.AQUA;
-                                    case WEAPON -> ChatFormatting.DARK_RED; case BOW, CROSSBOW -> ChatFormatting.GREEN;
-                                    case FISHING_ROD -> ChatFormatting.YELLOW; case BREAKABLE -> ChatFormatting.DARK_GREEN;
-                                    default -> ChatFormatting.GRAY; };
-                            String enchant = enchantment.getDescriptionId();
-                            String descriptionValue = enchant + ".desc"; // JSON file -> I18n = en_us.json
+                                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> Utils.gold;
+                                    case DIGGER -> Utils.darkPurple; case FISHING_ROD -> Utils.yellow;
+                                    case TRIDENT -> Utils.aqua; case WEAPON -> Utils.darkRed; case BOW, CROSSBOW -> Utils.green;
+                                    case BREAKABLE -> Utils.darkGreen; default -> Utils.gray; };
+                            // JSON file -> I18n = en_us.json
+                            String enchant = enchantment.getDescriptionId(), descriptionValue = enchant + ".desc";
                             if (level > 0 || I18n.exists(descriptionValue)) {
                                 // Enchantment Level with Arabic numeral
                                 MutableComponent name = description(enchant, color, List.of(!isCurse, isCurse))
-                                .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level))),
+                                    .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level))),
                                 icon = icon(isCurse, enchantment), // Enchantment compatibility
                                 details = description(descriptionValue, color, List.of(false, false)); // Enchantment description
                                 // Number line of enchantments and enchantment descriptions
@@ -559,11 +556,11 @@ public class ModEvents {
                 GuiGraphics guiGraphics = event.getGuiGraphics();
                 // Text to be displayed on screen
                 Component coordinate = Component.literal("X: ")
-                .append(Component.literal(String.format("%.3f", x)).withStyle(ChatFormatting.AQUA))
+                .append(Component.literal(String.format("%.3f", x)).withStyle(Utils.aqua))
                 .append(Component.literal("  Y: "))
-                .append(Component.literal(String.format("%.5f", y)).withStyle(ChatFormatting.LIGHT_PURPLE))
+                .append(Component.literal(String.format("%.5f", y)).withStyle(Utils.purple))
                 .append(Component.literal("  Z: "))
-                .append(Component.literal(String.format("%.3f", z)).withStyle(ChatFormatting.GOLD));
+                .append(Component.literal(String.format("%.3f", z)).withStyle(Utils.gold));
                 // LIGHT, SKY, BLOCK
                 Component light = Component.literal("Light: ").append(Component.literal(String.valueOf(totalLight))
                 .setStyle(Style.EMPTY.withColor(totalLight > 6 ? 0x32FC76 : 0xFF1818)))
@@ -796,10 +793,10 @@ public class ModEvents {
                 if (hasItem) { // Has enchanted HELMET or Metal Detector
                     boolean newState = !worldVar.xray; // Adapted "newState" of "worldVar.xray" stage
                     change(worldVar, newState, world);
-                    glow(player, newState ? "Blocks: Activated" : "Blocks: Disabled",
-                         newState ? ChatFormatting.GREEN : ChatFormatting.RED); // Toggle ON/OFF
+                    // Toggle ON/OFF
+                    glow(player, newState ? "Blocks: Activated" : "Blocks: Disabled", newState ? Utils.green : Utils.red);
                 }
-                else { glow(player, "Blocks: Enchanted helmet or Metal detector!", ChatFormatting.DARK_RED); } // Hasn't item
+                else { glow(player, "Blocks: Enchanted helmet or Metal detector!", Utils.darkRed); } // Hasn't item
             }
             if (!hasItem && worldVar.xray) { change(worldVar, false, world); } // Glowing Blocks disabled
         }
@@ -961,7 +958,7 @@ public class ModEvents {
             player.experienceProgress = 0;
             player.totalExperience = 0;
             // Display PLAYER NAME, Player death (X, Y and Z) positions and TIME showing (Hours::Minutes::Seconds)
-            Component displayName = itemChatMessage(player, player.blockPosition(), ChatFormatting.GREEN);
+            Component displayName = itemChatMessage(player, player.blockPosition(), Utils.green);
             if (!vaultItems.isEmpty()) { // Saves items from the Vault
                 ItemStack vaultItem = new ItemStack(ModItems.VAULT.get());
                 CompoundTag vaultTag = new CompoundTag();
@@ -988,7 +985,7 @@ public class ModEvents {
             Player original = event.getOriginal(); // Old player -> Before death
             BlockPos blockPos = original.blockPosition(); // Player position after death
             // Player death message on chat
-            newPlayer.sendSystemMessage(itemChatMessage(newPlayer, blockPos, ChatFormatting.GOLD));
+            newPlayer.sendSystemMessage(itemChatMessage(newPlayer, blockPos, Utils.gold));
             // Restore all Inventory, Armor and Offhand saved slots
             setRestoredVault(newPlayer.getInventory().items, preservedItems.remove(playerUUID));
             setRestoredVault(newPlayer.getInventory().armor, preservedArmor.remove(playerUUID));
