@@ -1,10 +1,14 @@
 package net.karen.mccourse.item.custom;
 
 import com.google.common.collect.ImmutableMap;
+import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.item.ModArmorMaterials;
+import net.karen.mccourse.item.ModItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -18,7 +22,7 @@ public class ModHelmetItem extends ArmorItem {
     private static final Map<ArmorMaterial, List<MobEffectInstance>> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, List<MobEffectInstance>>())
                     // MINER CUSTOM ARMOR - Added all custom effects or vanilla effects on player used only helmet
-                    .put(ModArmorMaterials.MINER, List.of(effect(MobEffects.NIGHT_VISION, 200, 1))).build();
+                    .put(ModArmorMaterials.MINER, List.of(effect(MobEffects.DIG_SPEED, 200, 1))).build();
 
     public ModHelmetItem(ArmorMaterial material, Type type, Properties properties) {
         super(material, type, properties);
@@ -27,7 +31,15 @@ public class ModHelmetItem extends ArmorItem {
     @Override
     public void onArmorTick(ItemStack stack, Level level, Player player) { // Apply effect if player using all parts of armor
         boolean hasHelmet =  !player.getInventory().getArmor(3).isEmpty(); // Player is using Helmet
-        if (!level.isClientSide() && hasHelmet) { evaluateArmorEffects(player); }
+        if (!level.isClientSide() && hasHelmet) {
+            evaluateArmorEffects(player);
+            if (!level.isClientSide() && player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MINER_HELMET.get())) {
+                BlockPos pos = player.blockPosition();
+                if (level.getBlockState(pos).isAir()) {
+                    level.setBlock(pos, ModBlocks.LIGHT_BLOCK.get().defaultBlockState(), 3);
+                }
+            }
+        }
     }
 
     private void evaluateArmorEffects(Player player) {

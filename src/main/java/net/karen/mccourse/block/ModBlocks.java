@@ -2,6 +2,7 @@ package net.karen.mccourse.block;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.custom.*;
+import net.karen.mccourse.block.custom.LightBlock;
 import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.sound.ModSounds;
@@ -430,6 +431,11 @@ public class ModBlocks {
     public static final RegistryObject<Block> MAGIC_DISENCHANTED_BLOCK = registerBlock("magic_disenchanted_block",
             () -> new MagicDisenchantedBlock(BlockBehaviour.Properties.of()
                     .lightLevel(state -> 15).sound(SoundType.ANVIL).strength(5F, 3600000.0F)));
+
+    // Light block
+    public static final RegistryObject<Block> LIGHT_BLOCK = registerBlock("light_block",
+            () -> new LightBlock(BlockBehaviour.Properties.copy(Blocks.LIGHT).instabreak().lightLevel(s -> 15)
+                                               .noCollission().noOcclusion().noLootTable()));
 
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {

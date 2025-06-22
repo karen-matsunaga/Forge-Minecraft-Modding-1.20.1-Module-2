@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "mccourse:block/light_block",
+    "up": "mccourse:block/light_block",
+    "north": "mccourse:block/light_block",
+    "east": "mccourse:block/light_block",
+    "south": "mccourse:block/light_block",
+    "west": "mccourse:block/light_block",
+    "particle": "mccourse:block/light_block"
+  },
+  "render_type": "translucent"
+}
