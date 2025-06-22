@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-18T19:01:56.4329132	Item Models: mccourse
+// 1.20.1	2025-06-22T12:05:26.8184205	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -122,6 +122,7 @@ dfdfaf73bb76407598831fd08286f34dee722aa8 assets/mccourse/models/item/farmer.json
 adde97377356ebe6f2897fc806b87e8f185023a3 assets/mccourse/models/item/gold_hammer.json
 6489ee36ab9f348d0fc05d6bea95383f7b18cf27 assets/mccourse/models/item/gold_paxel.json
 82eea53e86a0ed26e9558cdc28774f2be66cde9f assets/mccourse/models/item/green_modes.json
+bf1684f06d9d9b7a6d6a7a86fb0b95d0752ef05f assets/mccourse/models/item/growth.json
 a51c62fd7a41a82e56a95266e79c00e54643b992 assets/mccourse/models/item/infinite.json
 dca02707f240b4f62e52dcb7581ab555d004fef7 assets/mccourse/models/item/iron_hammer.json
 b27190e2df26eff5a924d16e4f2d9cf0308838f1 assets/mccourse/models/item/iron_paxel.json

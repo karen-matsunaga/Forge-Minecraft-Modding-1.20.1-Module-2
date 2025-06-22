@@ -202,6 +202,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.MCCOURSE_BOTTLE);
         simpleItem(ModItems.INFINITE);
         simpleItem(ModItems.ULTRA_COMPACTOR);
+        simpleItem(ModItems.GROWTH);
     }
 
     // Registry all sapling item's models

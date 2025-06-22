@@ -57,6 +57,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                         of(ModBlocks.ALEXANDRITE_BLOCK.get()).build()))
                 .save(pWriter);
 
+        // Growth
+        blockTransformItem(List.of(Items.WHEAT, ModItems.GROWTH.get()), pWriter);
+
         // Raw Alexandrite
         itemTransformBlock(List.of(ModBlocks.RAW_ALEXANDRITE_BLOCK.get(), ModItems.RAW_ALEXANDRITE.get()), pWriter);
         blockTransformItem(List.of(ModItems.RAW_ALEXANDRITE.get(), ModBlocks.RAW_ALEXANDRITE_BLOCK.get()), pWriter);

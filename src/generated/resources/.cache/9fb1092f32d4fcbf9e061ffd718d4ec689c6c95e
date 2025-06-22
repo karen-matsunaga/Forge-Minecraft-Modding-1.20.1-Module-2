@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-18T21:47:54.9648835	Recipes
+// 1.20.1	2025-06-22T12:05:26.8666434	Recipes
 dd52e5950ac294c207bf9b9441d3b97e76c9739e data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -247,6 +247,7 @@ d426b3326fee3942a720e55c8c4db42261ece667 data/minecraft/advancements/recipes/dia
 7bc3543902e61b49b7fa06c92b652c2cfbd3a0ff data/minecraft/advancements/recipes/misc/nether_star.json
 b9c1e71edfd9d505079503a2a46c97741f62ad95 data/minecraft/advancements/recipes/misc/phantom_membrane.json
 0d0ab854ab826ffe7536822b9436ebed0cd54fd9 data/minecraft/advancements/recipes/misc/rotten_flesh.json
+a6e15711afeb4f2e3ac7e24b58790cca17cd6be6 data/minecraft/advancements/recipes/misc/wheat.json
 4692b8c7223933a466b49bd511b48177cf99c0c8 data/minecraft/advancements/recipes/obsidian.json
 4ff61f41dfd7bb1cac4e88fc196baf180d40b110 data/minecraft/advancements/recipes/phantom_membrane.json
 6c9d716a0b256e6efc62311885ffd7c0cf6b5db9 data/minecraft/advancements/recipes/raw_iron.json
@@ -256,3 +257,4 @@ c1bf4fb1604a329426f9b8dc5106075dc1c493cc data/minecraft/recipes/gunpowder.json
 dce6886f477a5f1a267f2486e0c8808a5f559798 data/minecraft/recipes/nether_star.json
 4712e09a71dfa34eecef7f16897f21803fd65bc2 data/minecraft/recipes/phantom_membrane.json
 501dce422cc09564adb02d2c05c76244b3fd6ea8 data/minecraft/recipes/rotten_flesh.json
+68131bb0fe0c9a9075820141a2ce821fb9a27ce3 data/minecraft/recipes/wheat.json
