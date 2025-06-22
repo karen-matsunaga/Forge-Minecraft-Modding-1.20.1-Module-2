@@ -1,5 +1,8 @@
 package net.karen.mccourse.item.custom;
 
+import net.karen.mccourse.util.Utils;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -10,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
@@ -20,6 +24,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import java.util.List;
 import java.util.Set;
 
 public class MccourseFishingRodItem extends Item implements Vanishable {
@@ -65,6 +71,18 @@ public class MccourseFishingRodItem extends Item implements Vanishable {
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return ALLOWED_ENCHANTMENTS.contains(enchantment) || enchantment.category == EnchantmentCategory.BREAKABLE ||
                super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
+    @Override
+    public @NotNull Component getName(@NotNull ItemStack stack) {
+        return Component.translatable(this.getDescriptionId(stack)).withStyle(Utils.purple);
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level pLevel,
+                                List<Component> list, @NotNull TooltipFlag flag) {
+        list.add(Component.literal("More faster than vanilla Fishing Rod").withStyle(Utils.white));
+        list.add(Component.literal("Exclusive drops as Salmon, etc.").withStyle(Utils.darkGray).append(CommonComponents.EMPTY));
     }
 
     // CUSTOM METHOD - Fish sound

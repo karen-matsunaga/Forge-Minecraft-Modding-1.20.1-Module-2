@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +49,8 @@ public abstract class FishingHookMixin {
                 Level level = player.level();
                 RandomSource random = level.random;
                 int fishAmount = 2 + random.nextInt(4);
-                drops.add(new ItemStack(Items.SALMON, fishAmount));
-                if (random.nextFloat() < 0.25f) { drops.add(new ItemStack(Items.NAUTILUS_SHELL)); }
+                drops.add(new ItemStack(Items.SALMON, fishAmount)); // Guaranteed drop
+                if (random.nextFloat() < 0.25f) { drops.add(new ItemStack(Items.NAUTILUS_SHELL)); } // Random drop chance
                 for (ItemStack drop : drops) {
                     ItemEntity item = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), drop);
                     level.addFreshEntity(item);
