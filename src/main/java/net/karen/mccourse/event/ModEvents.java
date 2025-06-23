@@ -31,7 +31,6 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.chat.*;
 import net.minecraft.server.level.*;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.*;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
@@ -1233,11 +1232,10 @@ public class ModEvents {
             if (mobsCritical > 0 && (!(player.fallDistance > 0) || !player.onGround())) {
                 float baseDamage = event.getAmount();
                 event.setAmount(baseDamage + (baseDamage * (0.5F * mobsCritical))); // Critical damage (50% extra) per level
-                player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_ATTACK_CRIT,
-                        SoundSource.PLAYERS, 1.0F, 1.0F); // Particle effect and sound
-                ((ServerLevel) player.level()).sendParticles(ParticleTypes.CRIT, event.getEntity().getX(),
-                        event.getEntity().getY(0.5), event.getEntity().getZ(), 5,
-                        0.2, 0.2, 0.2, 0.1);
+                Utils.sound(player, SoundEvents.PLAYER_ATTACK_CRIT, 1.0F, 1.0F); // Particle effect and sound
+                LivingEntity entity = event.getEntity();
+                ((ServerLevel) player.level()).sendParticles(ParticleTypes.CRIT, entity.getX(), entity.getY(0.5),
+                entity.getZ(), 5, 0.2, 0.2, 0.2, 0.1);
             }
         }
     }
@@ -1245,23 +1243,22 @@ public class ModEvents {
     // CUSTOM EVENT - ANVIL enchantment compatibilities
     @SubscribeEvent
     public static void onAnvilUpdate(AnvilUpdateEvent event) {
-        ItemStack left = event.getLeft();   // Base item
-        ItemStack right = event.getRight(); // Book or Second item
+        ItemStack left = event.getLeft(), right = event.getRight(); // LEFT -> Base item | RIGHT -> Book or Second item
         if (!left.isEmpty() && !right.isEmpty()) {
             ItemStack output = left.copy(); // Result of Base item + Book or Second item
             boolean modified = false;
-            Map<Enchantment, Integer> leftEnchantments = EnchantmentHelper.getEnchantments(left);
-            Map<Enchantment, Integer> rightEnchantments = EnchantmentHelper.getEnchantments(right);
-            for (Map.Entry<Enchantment, Integer> entry : rightEnchantments.entrySet()) {
+            Map<Enchantment, Integer> leftEnchant = EnchantmentHelper.getEnchantments(left),
+                                      rightEnchant = EnchantmentHelper.getEnchantments(right);
+            for (Map.Entry<Enchantment, Integer> entry : rightEnchant.entrySet()) {
                 Enchantment ench = entry.getKey(); // Enchantment
-                int rightLevel = entry.getValue(); // Enchantment level
-                int leftLevel = leftEnchantments.getOrDefault(ench, 0); // Book or Second item enchantment level
-                int newLevel = leftLevel == rightLevel ? rightLevel + 1 : Math.max(leftLevel, rightLevel); // Output with new level
-                leftEnchantments.put(ench, Math.min(ench.getMaxLevel(), newLevel)); // Here we ignore the compatibility check.
+                // LEFT -> Enchantment level || RIGHT -> Book or Second item enchantment level
+                int rightLevel = entry.getValue(), leftLevel = leftEnchant.getOrDefault(ench, 0),
+                    newLevel = leftLevel == rightLevel ? rightLevel + 1 : Math.max(leftLevel, rightLevel); // Output with new level
+                leftEnchant.put(ench, Math.min(ench.getMaxLevel(), newLevel)); // Here we ignore the compatibility check.
                 modified = true;
             }
             if (modified) { // Output item
-                EnchantmentHelper.setEnchantments(leftEnchantments, output);
+                EnchantmentHelper.setEnchantments(leftEnchant, output);
                 event.setOutput(output);
                 event.setCost(1); // Cost at levels
                 event.setMaterialCost(1); // Cost of materials (e.g. books, diamonds etc.)
