@@ -1451,30 +1451,25 @@ public class ModEvents {
         if (level <= 0 || player.tickCount % 20 != 0) { return; } // 1 second (20 ticks)
         double range = 5.0 + level * 2; // Range increases with level
         // Search for items near the player
-        List<ItemEntity> items = player.level().getEntitiesOfClass(ItemEntity.class,
-                player.getBoundingBox().inflate(range));
+        List<ItemEntity> items = player.level().getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(range));
         for (ItemEntity itemEntity : items) {
             if (itemEntity.isRemoved() || !itemEntity.isAlive()) { continue; }
             ItemStack stack = itemEntity.getItem().copy();
             if (player.getInventory().add(stack)) {
                 itemEntity.remove(Entity.RemovalReason.DISCARDED);
-                // Play sound or emit optional particle
-                player.level().playSound(null, player.blockPosition(), SoundEvents.ITEM_PICKUP,
-                SoundSource.PLAYERS, 0.2F, ((player.getRandom().nextFloat() -
-                player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                Utils.sound(player, SoundEvents.ITEM_PICKUP, 0.2F, ((player.getRandom().nextFloat() -
+                player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F); // Play sound
             }
         }
         // Search for experience orbs near the player
-        List<ExperienceOrb> orbs = player.level().getEntitiesOfClass(ExperienceOrb.class,
-                player.getBoundingBox().inflate(range));
+        List<ExperienceOrb> orbs = player.level().getEntitiesOfClass(ExperienceOrb.class, player.getBoundingBox().inflate(range));
         for (ExperienceOrb orb : orbs) {
             if (!orb.isAlive() || orb.isRemoved()) { continue; }
             int xpValue = orb.getValue();
             player.giveExperiencePoints(xpValue); // Adds XP directly to the player
             orb.discard(); // Remove the orb from the world
-            // Play sound or emit optional particle
-            player.level().playSound(null, player.blockPosition(), SoundEvents.EXPERIENCE_ORB_PICKUP,
-                    SoundSource.PLAYERS, 0.1F, 0.5F + player.getRandom().nextFloat());
+            // Play sound
+            Utils.sound(player, SoundEvents.EXPERIENCE_ORB_PICKUP, 0.1F, 0.5F + player.getRandom().nextFloat());
         }
     }
 

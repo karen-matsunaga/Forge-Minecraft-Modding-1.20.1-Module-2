@@ -1,6 +1,9 @@
 package net.karen.mccourse.util;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 
 public class Utils {
     public static boolean IGNORE_LAPIS = false; // Avoid consumption of LAPIS LAZULI
@@ -14,4 +17,9 @@ public class Utils {
                    yellow = ChatFormatting.YELLOW, gold = ChatFormatting.GOLD,
                    red = ChatFormatting.RED, darkRed = ChatFormatting.DARK_RED,
                    black = ChatFormatting.BLACK, white = ChatFormatting.WHITE;
+
+    // CUSTOM METHOD - Block and item sounds
+    public static void sound(Player player, SoundEvent sound, float volume, float pitch) {
+        player.level().playSound(null, player.blockPosition(), sound, SoundSource.PLAYERS, volume, pitch);
+    }
 }
