@@ -57,9 +57,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                         of(ModBlocks.ALEXANDRITE_BLOCK.get()).build()))
                 .save(pWriter);
 
-        // Growth
-        blockTransformItem(List.of(Items.WHEAT, ModItems.GROWTH.get()), pWriter);
-
         // Raw Alexandrite
         itemTransformBlock(List.of(ModBlocks.RAW_ALEXANDRITE_BLOCK.get(), ModItems.RAW_ALEXANDRITE.get()), pWriter);
         blockTransformItem(List.of(ModItems.RAW_ALEXANDRITE.get(), ModBlocks.RAW_ALEXANDRITE_BLOCK.get()), pWriter);
@@ -178,12 +175,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         itemTransformBlock(List.of(ModBlocks.PHANTOM_MEMBRANE_BLOCK.get(), Items.PHANTOM_MEMBRANE), pWriter);
         blockTransformItem(List.of(Items.PHANTOM_MEMBRANE, ModBlocks.PHANTOM_MEMBRANE_BLOCK.get()), pWriter);
 
+
+
+
         // Ore
         itemTransformBlock(List.of(ModBlocks.PINK_BLOCK.get(), ModItems.PINK.get()), pWriter);
         blockTransformItem(List.of(ModItems.PINK.get(), ModBlocks.PINK_BLOCK.get()), pWriter);
 
         // Block -> Craft Crafting Table
         itemTransformBlock(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), pWriter);
+
+        // Growth
+        blockTransformItem(List.of(ModItems.GROWTH.get(), Items.HAY_BLOCK), pWriter);
 
         // My custom ore
         // Items Smelting
