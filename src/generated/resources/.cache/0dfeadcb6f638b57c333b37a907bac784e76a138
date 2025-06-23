@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-22T12:05:26.8184205	Item Models: mccourse
+// 1.20.1	2025-06-23T10:58:18.9359859	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -113,6 +113,8 @@ d17845eb9b4ef3b7f8d9210c28471a487efa7ab5 assets/mccourse/models/item/copper_paxe
 488e602f3ec4e85d8ee3c2ea82b883f84449e5a0 assets/mccourse/models/item/copper_pickaxe.json
 bb968366d50e7d7a8fa66030278ec0e58da9a465 assets/mccourse/models/item/copper_shovel.json
 8739aadeedb2c07aa07fbd19ccfde869c11678a0 assets/mccourse/models/item/copper_sword.json
+2d2cde7140d95796e114d8cd1a2babae7d66d332 assets/mccourse/models/item/data_tablet.json
+eac3449dd2f9df65a33456b5098c130c1e050c03 assets/mccourse/models/item/data_tablet_on.json
 a567576897ca2ce8cebbb3e1456a450af9c98f17 assets/mccourse/models/item/destroyer.json
 d05b6b7d8b4f3d85ee0762de2644d6dbf0397fd1 assets/mccourse/models/item/diamond_hammer.json
 60df385743dd097d8534a513f066ada5ded41c14 assets/mccourse/models/item/diamond_paxel.json
@@ -136,6 +138,8 @@ dd06874e678545a31d36c7baadcf2852a6afcf4d assets/mccourse/models/item/level_charg
 9d058e094f13da8740c0c0f6447da092d20d6345 assets/mccourse/models/item/luck.json
 9e8e9f4872a343311972a9d8e6de13235b0a6791 assets/mccourse/models/item/magnet.json
 9b345ce3fc1dda66adb63dbb1758236c273a597f assets/mccourse/models/item/mccourse_bottle.json
+c628f10ef6c246920d111a65ba0780fdc830843f assets/mccourse/models/item/mccourse_fishing_rod.json
+ecfd01c1b353faa96ef05dc9d66beae6d950403c assets/mccourse/models/item/mccourse_fishing_rod_cast.json
 faf15074e0b43be5fa09cf3411c543621e6ee3f2 assets/mccourse/models/item/mccourse_hammer.json
 23f99234f647aa805541635819a0a2a8b1552d81 assets/mccourse/models/item/metal_detector.json
 5b7331bfbfe07c27ea477daa07bb3edd4fac98bb assets/mccourse/models/item/miner_helmet.json

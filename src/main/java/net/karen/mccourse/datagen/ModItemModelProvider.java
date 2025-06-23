@@ -203,13 +203,18 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.INFINITE);
         simpleItem(ModItems.ULTRA_COMPACTOR);
         simpleItem(ModItems.GROWTH);
+
+        // Fishing Rod
+        fishingRodWithCastOverride(ModItems.MCCOURSE_FISHING_ROD);
+
+        // Item alternate
+        alternateItem(ModItems.DATA_TABLET);
     }
 
     // Registry all sapling item's models
     private ItemModelBuilder saplingItem(RegistryObject<Block> item) {
-        return withExistingParent(item.getId().getPath(),
-                new ResourceLocation("item/generated")).texture("layer0",
-                new ResourceLocation(MCCourseMod.MOD_ID,"block/" + item.getId().getPath()));
+        return withExistingParent(item.getId().getPath(), new ResourceLocation("item/generated"))
+                .texture("layer0", new ResourceLocation(MCCourseMod.MOD_ID,"block/" + item.getId().getPath()));
     }
 
     // Registry all complex block's models
@@ -280,5 +285,36 @@ public class ModItemModelProvider extends ItemModelProvider {
                 .texture("layer0", new ResourceLocation(MOD_ID, "item/" + itemRegistryObject.getId().getPath()));
             });
         }
+    }
+
+    // Fishing Rod
+    private void fishingRodWithCastOverride(RegistryObject<Item> item) {
+        String itemName = item.getId().getPath();
+        // Fishing Rod
+        getBuilder(itemName).parent(new ModelFile.UncheckedModelFile("minecraft:item/handheld_rod"))
+                  .texture("layer0", new ResourceLocation(MCCourseMod.MOD_ID, "item/" + itemName))
+                  .override().predicate(new ResourceLocation("cast"), 1.0f)
+                  .model(new ModelFile.UncheckedModelFile(new ResourceLocation(MCCourseMod.MOD_ID, "item/" + itemName + "_cast")))
+                  .end();
+
+        // Fishing Rod Cast
+        getBuilder(itemName + "_cast").parent(new ModelFile.UncheckedModelFile("minecraft:item/fishing_rod"))
+                                           .texture("layer0", new ResourceLocation(MCCourseMod.MOD_ID,
+                                                   "item/" + itemName + "_cast"));
+    }
+
+    // Data tablet
+    private void alternateItem(RegistryObject<Item> item) {
+        String itemName = item.getId().getPath();
+        // Example: Data Tablet
+        getBuilder(itemName).parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", new ResourceLocation(MCCourseMod.MOD_ID, "item/" + itemName + "_off"))
+                .override().predicate(new ResourceLocation(MCCourseMod.MOD_ID, "on"), 1.0f)
+                .model(new ModelFile.UncheckedModelFile(new ResourceLocation(MCCourseMod.MOD_ID, "item/" + itemName + "_on")))
+                .end();
+
+        // Example: Data Tablet On
+        getBuilder(itemName + "_on").parent(new ModelFile.UncheckedModelFile("item/generated"))
+                                         .texture("layer0", new ResourceLocation(MCCourseMod.MOD_ID, "item/" + itemName));
     }
 }
