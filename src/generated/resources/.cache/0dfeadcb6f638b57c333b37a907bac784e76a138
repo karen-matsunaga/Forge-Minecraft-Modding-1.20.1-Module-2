@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-23T10:58:18.9359859	Item Models: mccourse
+// 1.20.1	2025-06-23T11:25:57.48923	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -137,7 +137,8 @@ dd998d73f4cbd3ed7d675c7f86d891f4d35d89de assets/mccourse/models/item/level_charg
 dd06874e678545a31d36c7baadcf2852a6afcf4d assets/mccourse/models/item/level_charger_plus_fortune.json
 9d058e094f13da8740c0c0f6447da092d20d6345 assets/mccourse/models/item/luck.json
 9e8e9f4872a343311972a9d8e6de13235b0a6791 assets/mccourse/models/item/magnet.json
-9b345ce3fc1dda66adb63dbb1758236c273a597f assets/mccourse/models/item/mccourse_bottle.json
+216121f291dace2730e9ddc9fa7ae266a808850c assets/mccourse/models/item/mccourse_bottle.json
+9b345ce3fc1dda66adb63dbb1758236c273a597f assets/mccourse/models/item/mccourse_bottle_on.json
 c628f10ef6c246920d111a65ba0780fdc830843f assets/mccourse/models/item/mccourse_fishing_rod.json
 ecfd01c1b353faa96ef05dc9d66beae6d950403c assets/mccourse/models/item/mccourse_fishing_rod_cast.json
 faf15074e0b43be5fa09cf3411c543621e6ee3f2 assets/mccourse/models/item/mccourse_hammer.json

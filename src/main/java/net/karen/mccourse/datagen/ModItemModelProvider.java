@@ -198,8 +198,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.LEVEL_CHARGER_PLUS_FORTUNE);
         simpleItem(ModItems.LEVEL_CHARGER_MINUS_FORTUNE);
 
-        // Mccourse bottle
-        simpleItem(ModItems.MCCOURSE_BOTTLE);
+        // Farm items
         simpleItem(ModItems.INFINITE);
         simpleItem(ModItems.ULTRA_COMPACTOR);
         simpleItem(ModItems.GROWTH);
@@ -207,8 +206,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Fishing Rod
         fishingRodWithCastOverride(ModItems.MCCOURSE_FISHING_ROD);
 
-        // Item alternate
-        alternateItem(ModItems.DATA_TABLET);
+        // Alternate items
+        alternateItem(ModItems.DATA_TABLET); // Data Tablet
+        alternateItem(ModItems.MCCOURSE_BOTTLE); // Mccourse Bottle
     }
 
     // Registry all sapling item's models
@@ -290,14 +290,14 @@ public class ModItemModelProvider extends ItemModelProvider {
     // Fishing Rod
     private void fishingRodWithCastOverride(RegistryObject<Item> item) {
         String itemName = item.getId().getPath();
-        // Fishing Rod
+        // Example: Mccourse Fishing Rod
         getBuilder(itemName).parent(new ModelFile.UncheckedModelFile("minecraft:item/handheld_rod"))
                   .texture("layer0", new ResourceLocation(MCCourseMod.MOD_ID, "item/" + itemName))
                   .override().predicate(new ResourceLocation("cast"), 1.0f)
                   .model(new ModelFile.UncheckedModelFile(new ResourceLocation(MCCourseMod.MOD_ID, "item/" + itemName + "_cast")))
                   .end();
 
-        // Fishing Rod Cast
+        // Example: Mccourse Fishing Rod Cast
         getBuilder(itemName + "_cast").parent(new ModelFile.UncheckedModelFile("minecraft:item/fishing_rod"))
                                            .texture("layer0", new ResourceLocation(MCCourseMod.MOD_ID,
                                                    "item/" + itemName + "_cast"));

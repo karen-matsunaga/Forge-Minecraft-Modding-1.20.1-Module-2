@@ -1,6 +1,14 @@
 {
   "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "mccourse:item/mccourse_bottle_on",
+      "predicate": {
+        "mccourse:on": 1.0
+      }
+    }
+  ],
   "textures": {
-    "layer0": "mccourse:item/mccourse_bottle"
+    "layer0": "mccourse:item/mccourse_bottle_off"
   }
 }

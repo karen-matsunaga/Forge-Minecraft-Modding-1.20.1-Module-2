@@ -10,7 +10,10 @@ import net.minecraft.world.item.Item;
 public class ModItemProperties {
     // Registry all Item Properties
     public static void addCustomItemProperties() {
-        // Data tablet's item
+        // Mccourse Bottle item
+        makeAlternateItem(ModItems.MCCOURSE_BOTTLE.get());
+
+        // Data tablet item
         ItemProperties.register(ModItems.DATA_TABLET.get(), new ResourceLocation(MCCourseMod.MOD_ID, "on"),
                 (pStack, pLevel, pEntity, pSeed) -> pStack.hasTag() ? 1f : 0f);
 
@@ -22,6 +25,8 @@ public class ModItemProperties {
 
         // Alexandrite's bow
         makeBow(ModItems.ALEXANDRITE_BOW.get());
+
+        // Mccourse Fishing Rod
         makeFishingRod(ModItems.MCCOURSE_FISHING_ROD.get());
     }
 
@@ -54,5 +59,16 @@ public class ModItemProperties {
                 return (flag || flag1) && p_174587_ instanceof Player && ((Player)p_174587_).fishing != null ? 1.0F : 0.0F;
             }
         });
+    }
+
+    // Alternate item
+    private static void makeAlternateItem(Item item) {
+        ItemProperties.register(item, new ResourceLocation(MCCourseMod.MOD_ID, "on"),
+                (pStack, pLevel, pEntity, pSeed) -> {
+                    if (pStack.getTag() != null && pStack.hasTag() && pStack.getTag().getInt("StoredLevels") > 0) {
+                        return 1.0F; // Has XP
+                    }
+                    return 0.0F; // Hasn't XP
+                });
     }
 }
