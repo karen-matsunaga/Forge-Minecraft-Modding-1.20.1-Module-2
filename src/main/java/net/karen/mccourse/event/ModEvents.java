@@ -1325,7 +1325,7 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - TELEPORT custom item
+    // CUSTOM EVENT - TELEPORT item
     @SubscribeEvent
     public static void teleportOnItemRightClick(PlayerInteractEvent.RightClickItem event) {
         Player player = event.getEntity();
@@ -1347,18 +1347,21 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - Mccourse Bottle item
+    // CUSTOM EVENT - MCCOURSE BOTTLE item
+    private static void mccourseBottle(MccourseBottleActionItem action, int amount) {
+        ModNetworks.PACKET_HANDLER.sendToServer(new MccourseBottleKeyInputMessage(action, amount));
+    }
+
     @SubscribeEvent
     public static void mccourseBottleLeftShiftInputEvent(TickEvent.ClientTickEvent event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player != null && mc.level != null && (event.phase == TickEvent.Phase.END)) {
+        Player player = mc.player;
+        if (player != null && mc.level != null && (event.phase == TickEvent.Phase.END)) {
             if (mc.options.keyAttack.isDown()) {
-                ItemStack stack = mc.player.getMainHandItem();
-                if (stack.getItem() instanceof MccourseBottleItem) {
+                if (player.getMainHandItem().getItem() instanceof MccourseBottleItem) {
                     boolean shift = InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT);
                     int amount = shift ? MccourseBottleItem.storeXp : 1;
-                    ModNetworks.PACKET_HANDLER
-                            .sendToServer(new MccourseBottleKeyInputMessage(MccourseBottleActionItem.STORE, amount));
+                    mccourseBottle(MccourseBottleActionItem.STORE, amount); // Pressed LEFT click + SHIFT
                 }
             }
         }
@@ -1369,20 +1372,18 @@ public class ModEvents {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) { return; }
         boolean shift = Screen.hasShiftDown();
-        int storeAmount = shift ? 100 : 10, restoreAmount = shift ? 100 : 10;
-        if (KeyBinding.MCCOURSE_BOTTLE_STORED_TEN_LEVELS_KEY.consumeClick()) { // Send to server
-            ModNetworks.PACKET_HANDLER
-                    .sendToServer(new MccourseBottleKeyInputMessage(MccourseBottleActionItem.STORE, storeAmount));
+        int storeAmount = shift ? 100 : 10, restoreAmount = shift ? 100 : 10; // Pressed SHIFT + B | SHIFT + N
+        if (KeyBinding.MCCOURSE_BOTTLE_STORED_TEN_LEVELS_KEY.consumeClick()) {
+            mccourseBottle(MccourseBottleActionItem.STORE, storeAmount); // Send to server -> STORE
         }
-        if (KeyBinding.MCCOURSE_BOTTLE_RESTORED_TEN_LEVELS_KEY.consumeClick()) { // Send to server
-            ModNetworks.PACKET_HANDLER
-                    .sendToServer(new MccourseBottleKeyInputMessage(MccourseBottleActionItem.RESTORED, restoreAmount));
+        if (KeyBinding.MCCOURSE_BOTTLE_RESTORED_TEN_LEVELS_KEY.consumeClick()) {
+            mccourseBottle(MccourseBottleActionItem.RESTORED, restoreAmount); // Send to server -> RESTORE
         }
     }
 
-    // CUSTOM EVENT - Infinite and Level Charger item
+    // CUSTOM EVENT - INFINITE and LEVEL CHARGER items
     @SubscribeEvent
-    public static void infiniteOnMouseClick(ScreenEvent.MouseButtonPressed.Pre event) {
+    public static void itemOnMouseClick(ScreenEvent.MouseButtonPressed.Pre event) {
         if (!(event.getScreen() instanceof AbstractContainerScreen<?> screen)) { return; }
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
