@@ -1613,20 +1613,13 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedUnlockOnTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
-        List<Component> tooltip = event.getToolTip();
-        if (enchant(stack, ModEnchantments.UNLOCK.get()) > 0) { // Item with Unlock enchantment
+        List<Component> tooltip = event.getToolTip(); // Item TOOLTIP
+        if (enchant(stack, ModEnchantments.UNLOCK.get()) > 0) { // Item with UNLOCK enchantment
             if (stack.getTag() != null && stack.hasTag()) {
-                boolean locked =  stack.getTag().getBoolean("Locked"); // Locked NBT change stage
-                if (locked) { // Item is LOCKED
-                    tooltip.add(CommonComponents.EMPTY);
-                    tooltip.add(Component.literal("§c\uD83D\uDD12 * Item locked! * ")
-                            .append("§7- Press §eV§7 §cto unlock"));
-                }
-                if (!locked) { // Item is UNLOCKED
-                    tooltip.add(CommonComponents.EMPTY);
-                    tooltip.add(Component.literal("§a\uD83D\uDD13 * Item unlocked! * ")
-                            .append("§7- Press §eV§7 §ato lock"));
-                }
+                boolean locked = stack.getTag().getBoolean("Locked"); // Locked NBT change stage
+                // Item is LOCKED or Item is UNLOCKED
+                ChatUtil.booleanTooltip(tooltip, "§c\uD83D\uDD12 * Item locked! * §7- Press §eV§7 §cto unlock", locked);
+                ChatUtil.booleanTooltip(tooltip, "§a\uD83D\uDD13 * Item unlocked! * §7- Press §eV§7 §ato lock", !locked);
             }
         }
     }
