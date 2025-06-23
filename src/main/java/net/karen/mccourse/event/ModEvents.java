@@ -1479,33 +1479,32 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - UNLOCK custom enchantment
+    private static void network(boolean bool, UnlockEnchantmentAction action, int index) {
+        ModNetworks.PACKET_HANDLER.sendToServer(new UnlockNetworkMessage(bool, action, index));
+    }
+
     @SubscribeEvent
     public static void activatedUnlockOnKeyPress(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         if (player == null || !KeyBinding.UNLOCK_KEY.isDown() || !KeyBinding.UNLOCK_KEY.consumeClick()) { return; }
         if (mc.screen == null) {
-            ItemStack main = player.getMainHandItem();
+            ItemStack main = player.getMainHandItem(), off = player.getOffhandItem();
             if (!main.isEmpty() && main.hasTag() && main.getTag() != null) { // MAIN HAND
                 boolean locked = main.getTag().getBoolean("Locked");
-                ModNetworks.PACKET_HANDLER
-                        .sendToServer(
-                                new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.MAIN, player.getInventory().selected));
+                network(!locked, UnlockEnchantmentAction.MAIN, player.getInventory().selected);
                 return;
             }
-            ItemStack off = player.getOffhandItem();
             if (!off.isEmpty() && off.hasTag() && off.getTag() != null) { // OFFHAND
                 boolean locked = off.getTag().getBoolean("Locked");
-                ModNetworks.PACKET_HANDLER
-                        .sendToServer(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.OFFHAND, 0));
+                network(!locked, UnlockEnchantmentAction.OFFHAND, 0);
                 return;
             }
             for (int i = 0; i < player.getInventory().armor.size(); i++) { // ARMOR
                 ItemStack armorItem = player.getInventory().armor.get(i);
                 if (!armorItem.isEmpty() && armorItem.hasTag() && armorItem.getTag() != null) {
                     boolean locked = armorItem.getTag().getBoolean("Locked");
-                    ModNetworks.PACKET_HANDLER
-                            .sendToServer(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.ARMOR, i));
+                    network(!locked, UnlockEnchantmentAction.ARMOR, i);
                     return;
                 }
             }
