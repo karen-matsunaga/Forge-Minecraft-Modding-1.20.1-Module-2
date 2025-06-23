@@ -1515,13 +1515,13 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedUnlockOnGuiKeyPress(ScreenEvent.KeyPressed.Pre event) {
         Minecraft mc = Minecraft.getInstance();
-        if (!(event.getScreen() instanceof AbstractContainerScreen<?> screen)) { return; }
-        if (mc.player == null) { return; }
-        if (event.getKeyCode() != KeyBinding.UNLOCK_KEY.getKey().getValue()) { return; }
         Player player = mc.player;
+        if (!(event.getScreen() instanceof AbstractContainerScreen<?> screen)) { return; }
+        if (player == null) { return; }
+        if (event.getKeyCode() != KeyBinding.UNLOCK_KEY.getKey().getValue()) { return; }
         Slot hovered = screen.getSlotUnderMouse();
         if (hovered == null || !hovered.hasItem()) {
-            player.displayClientMessage(Component.literal("§cNo item under mouse!"), true);
+            ChatUtil.tradeMessage(player, "No item under mouse!");
             return;
         }
         ItemStack hoveredStack = hovered.getItem();
@@ -1559,10 +1559,7 @@ public class ModEvents {
             ModNetworks.PACKET_HANDLER.sendToServer(new UnlockNetworkMessage(!locked, type, index));
             event.setCanceled(true); // Prevents other mods or the game from consuming the key
         }
-        else {
-            player.displayClientMessage(
-                    Component.literal("§cSlot does not belong to player's inventory!"), true);
-        }
+        else { ChatUtil.tradeMessage(player, "Slot does not belong to player's inventory!"); }
     }
 
     @SubscribeEvent
@@ -1578,7 +1575,7 @@ public class ModEvents {
         if (stack.isEmpty()) { return; }
         if (stack.getTag() != null && stack.hasTag() && stack.getTag().getBoolean("Locked")) { // Check if the item is LOCKED
             event.setCanceled(true); // Prevents item movement
-            player.displayClientMessage(Component.literal("§c\uD83D\uDD12 This item is locked!"), true);
+            ChatUtil.tradeMessage(player, "\uD83D\uDD12 This item is locked!");
         }
     }
 
