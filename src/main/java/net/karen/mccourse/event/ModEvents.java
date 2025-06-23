@@ -75,6 +75,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Supplier;
 import static net.karen.mccourse.item.custom.MccourseBottleItem.createMccourseBottleWithXP;
+import static net.karen.mccourse.util.ChatUtil.*;
+import static net.karen.mccourse.util.Utils.*;
 
 @Mod.EventBusSubscriber(modid = MCCourseMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
@@ -420,16 +422,16 @@ public class ModEvents {
                 if (isEnchanted) { // Player has a HELMET inputted on slot and GLOWING MOBS enchantment level
                     boolean newState = !current; // Default stage is FALSE
                     glowingState.put(playerUUID, newState); // Adapted "newState" of "current" stage
-                    glow(player, newState ? "Mobs: ON!" : "Mobs: OFF!", newState ? Utils.green : Utils.red); // Toggle ON/OFF
+                    glow(player, newState ? "Mobs: ON!" : "Mobs: OFF!", newState ? green : red); // Toggle ON/OFF
                 }
-                else { glow(player, "Mobs: Enchanted helmet!", Utils.darkRed); } // Hasn't item
+                else { glow(player, "Mobs: Enchanted helmet!", darkRed); } // Hasn't item
             }
             if (current && isEnchanted) {
                 // Key (Color) -> Each group represent with some color. Value (Group tag name) -> Represent as Tag.
                 Map<ChatFormatting, TagKey<EntityType<?>>> entitiesTag = Map.ofEntries(
                 // Monsters, Animal | Flying entities, Water animals and Villagers
-                Map.entry(Utils.red, ModTags.Entities.MONSTERS), Map.entry(Utils.blue, ModTags.Entities.ANIMALS),
-                Map.entry(Utils.yellow, ModTags.Entities.WATER_ANIMALS), Map.entry(Utils.darkPurple, ModTags.Entities.VILLAGER));
+                Map.entry(red, ModTags.Entities.MONSTERS), Map.entry(blue, ModTags.Entities.ANIMALS),
+                Map.entry(yellow, ModTags.Entities.WATER_ANIMALS), Map.entry(darkPurple, ModTags.Entities.VILLAGER));
                 entitiesTag.forEach((color, tag) -> { // Added GLOWING effect for each GROUP
                     String teamName = tag.location().getPath();
                     List<LivingEntity> entities = player.level().getEntitiesOfClass(LivingEntity.class,
@@ -475,10 +477,10 @@ public class ModEvents {
                             boolean isCurse = enchantment.isCurse();
                             ChatFormatting color = isCurse ? ChatFormatting.RED :
                                 switch (enchantment.category) { // Replace this line with custom styled version
-                                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> Utils.gold;
-                                    case DIGGER -> Utils.darkPurple; case FISHING_ROD -> Utils.yellow;
-                                    case TRIDENT -> Utils.aqua; case WEAPON -> Utils.darkRed; case BOW, CROSSBOW -> Utils.green;
-                                    case BREAKABLE -> Utils.darkGreen; default -> Utils.gray; };
+                                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> gold;
+                                    case DIGGER -> darkPurple; case FISHING_ROD -> yellow; case TRIDENT -> aqua;
+                                    case WEAPON -> darkRed; case BOW, CROSSBOW -> green; case BREAKABLE -> darkGreen;
+                                    default -> gray; };
                             // JSON file -> I18n = en_us.json
                             String enchant = enchantment.getDescriptionId(), descriptionValue = enchant + ".desc";
                             if (level > 0 || I18n.exists(descriptionValue)) {
@@ -553,20 +555,8 @@ public class ModEvents {
                     totalLight = Math.max(blockLight, skyLight);
                 Font font = mc.font;
                 GuiGraphics guiGraphics = event.getGuiGraphics();
-                // Text to be displayed on screen
-                Component coordinate = Component.literal("X: ")
-                .append(Component.literal(String.format("%.3f", x)).withStyle(Utils.aqua))
-                .append(Component.literal("  Y: "))
-                .append(Component.literal(String.format("%.5f", y)).withStyle(Utils.purple))
-                .append(Component.literal("  Z: "))
-                .append(Component.literal(String.format("%.3f", z)).withStyle(Utils.gold));
-                // LIGHT, SKY, BLOCK
-                Component light = Component.literal("Light: ").append(Component.literal(String.valueOf(totalLight))
-                .setStyle(Style.EMPTY.withColor(totalLight > 6 ? 0x32FC76 : 0xFF1818)))
-                .append(Component.literal("  Sky: ")).append(Component.literal(String.valueOf(skyLight))
-                .setStyle(Style.EMPTY.withColor(skyLight > 6 ? 0x32FC76 : 0xFF1818)))
-                .append(Component.literal("  Block: ")).append(Component.literal(String.valueOf(blockLight))
-                .setStyle(Style.EMPTY.withColor(blockLight > 6 ? 0x32FC76 : 0xFF1818)));
+                Component coordinate = ChatUtil.literal(x, y, z); // Text to be displayed on screen
+                Component light = ChatUtil.numbers(totalLight, skyLight, blockLight); // LIGHT, SKY, BLOCK
                 guiGraphics.drawString(font, coordinate, 10, 10, 0x5597DF); // X, Y, Z
                 guiGraphics.drawString(font, light, 10, 20, 0xDBE947); // LIGHT
             }
@@ -774,11 +764,6 @@ public class ModEvents {
         if (worldVar.xray != item) { worldVar.xray = item; worldVar.syncData(world); }
     }
 
-    private static void glow(Player player, String name, ChatFormatting color) {
-        player.displayClientMessage(Component.translatable("Glowing " + name)
-                .setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD)), true);
-    }
-
     @SubscribeEvent
     public static void activatedGlowingBlocksEnchantment(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
@@ -793,9 +778,9 @@ public class ModEvents {
                     boolean newState = !worldVar.xray; // Adapted "newState" of "worldVar.xray" stage
                     change(worldVar, newState, world);
                     // Toggle ON/OFF
-                    glow(player, newState ? "Blocks: Activated" : "Blocks: Disabled", newState ? Utils.green : Utils.red);
+                    glow(player, newState ? "Blocks: Activated" : "Blocks: Disabled", newState ? green : red);
                 }
-                else { glow(player, "Blocks: Enchanted helmet or Metal detector!", Utils.darkRed); } // Hasn't item
+                else { glow(player, "Blocks: Enchanted helmet or Metal detector!", darkRed); } // Hasn't item
             }
             if (!hasItem && worldVar.xray) { change(worldVar, false, world); } // Glowing Blocks disabled
         }
@@ -957,7 +942,7 @@ public class ModEvents {
             player.experienceProgress = 0;
             player.totalExperience = 0;
             // Display PLAYER NAME, Player death (X, Y and Z) positions and TIME showing (Hours::Minutes::Seconds)
-            Component displayName = itemChatMessage(player, player.blockPosition(), Utils.green);
+            Component displayName = itemChatMessage(player, player.blockPosition(), green);
             if (!vaultItems.isEmpty()) { // Saves items from the Vault
                 ItemStack vaultItem = new ItemStack(ModItems.VAULT.get());
                 CompoundTag vaultTag = new CompoundTag();
@@ -984,7 +969,7 @@ public class ModEvents {
             Player original = event.getOriginal(); // Old player -> Before death
             BlockPos blockPos = original.blockPosition(); // Player position after death
             // Player death message on chat
-            newPlayer.sendSystemMessage(itemChatMessage(newPlayer, blockPos, Utils.gold));
+            newPlayer.sendSystemMessage(itemChatMessage(newPlayer, blockPos, gold));
             // Restore all Inventory, Armor and Offhand saved slots
             setRestoredVault(newPlayer.getInventory().items, preservedItems.remove(playerUUID));
             setRestoredVault(newPlayer.getInventory().armor, preservedArmor.remove(playerUUID));
@@ -1232,7 +1217,7 @@ public class ModEvents {
             if (mobsCritical > 0 && (!(player.fallDistance > 0) || !player.onGround())) {
                 float baseDamage = event.getAmount();
                 event.setAmount(baseDamage + (baseDamage * (0.5F * mobsCritical))); // Critical damage (50% extra) per level
-                Utils.sound(player, SoundEvents.PLAYER_ATTACK_CRIT, 1.0F, 1.0F); // Particle effect and sound
+                sound(player, SoundEvents.PLAYER_ATTACK_CRIT, 1.0F, 1.0F); // Particle effect and sound
                 LivingEntity entity = event.getEntity();
                 ((ServerLevel) player.level()).sendParticles(ParticleTypes.CRIT, entity.getX(), entity.getY(0.5),
                 entity.getZ(), 5, 0.2, 0.2, 0.2, 0.1);
@@ -1426,7 +1411,7 @@ public class ModEvents {
             ItemStack stack = itemEntity.getItem().copy();
             if (player.getInventory().add(stack)) {
                 itemEntity.remove(Entity.RemovalReason.DISCARDED);
-                Utils.sound(player, SoundEvents.ITEM_PICKUP, 0.2F, ((player.getRandom().nextFloat() -
+                sound(player, SoundEvents.ITEM_PICKUP, 0.2F, ((player.getRandom().nextFloat() -
                 player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F); // Play sound
             }
         }
@@ -1438,7 +1423,7 @@ public class ModEvents {
             player.giveExperiencePoints(xpValue); // Adds XP directly to the player
             orb.discard(); // Remove the orb from the world
             // Play sound
-            Utils.sound(player, SoundEvents.EXPERIENCE_ORB_PICKUP, 0.1F, 0.5F + player.getRandom().nextFloat());
+            sound(player, SoundEvents.EXPERIENCE_ORB_PICKUP, 0.1F, 0.5F + player.getRandom().nextFloat());
         }
     }
 
@@ -1484,7 +1469,7 @@ public class ModEvents {
         if (event.getKeyCode() != KeyBinding.UNLOCK_KEY.getKey().getValue()) { return; }
         Slot hovered = screen.getSlotUnderMouse();
         if (hovered == null || !hovered.hasItem()) {
-            ChatUtil.tradeMessage(player, "No item under mouse!");
+            tradeMessage(player, "No item under mouse!");
             return;
         }
         ItemStack hoveredStack = hovered.getItem();
@@ -1522,7 +1507,7 @@ public class ModEvents {
             ModNetworks.PACKET_HANDLER.sendToServer(new UnlockNetworkMessage(!locked, type, index));
             event.setCanceled(true); // Prevents other mods or the game from consuming the key
         }
-        else { ChatUtil.tradeMessage(player, "Slot does not belong to player's inventory!"); }
+        else { tradeMessage(player, "Slot does not belong to player's inventory!"); }
     }
 
     @SubscribeEvent
@@ -1538,7 +1523,7 @@ public class ModEvents {
         if (stack.isEmpty()) { return; }
         if (stack.getTag() != null && stack.hasTag() && stack.getTag().getBoolean("Locked")) { // Check if the item is LOCKED
             event.setCanceled(true); // Prevents item movement
-            ChatUtil.tradeMessage(player, "\uD83D\uDD12 This item is locked!");
+            tradeMessage(player, "\uD83D\uDD12 This item is locked!");
         }
     }
 
@@ -1549,7 +1534,7 @@ public class ModEvents {
         if (stack.getTag() != null && stack.hasTag() && stack.getTag().getBoolean("Locked")) {
             event.setCanceled(true);
             // If the item is LOCKED, and you try to play the item a warning is shown on the screen
-            ChatUtil.tradeMessage(player, "\uD83D\uDD12 This item is locked!");
+            tradeMessage(player, "\uD83D\uDD12 This item is locked!");
             boolean added = player.getInventory().add(safeCopy);
             if (!added) {
                 for (int i = 0; i < player.getInventory().armor.size(); i++) { // Try to put in ARMOR slots
@@ -1575,8 +1560,8 @@ public class ModEvents {
             if (stack.getTag() != null && stack.hasTag()) {
                 boolean locked = stack.getTag().getBoolean("Locked"); // Locked NBT change stage
                 // Item is LOCKED or Item is UNLOCKED
-                ChatUtil.booleanTooltip(tooltip, "§c\uD83D\uDD12 * Item locked! * §7- Press §eV§7 §cto unlock", locked);
-                ChatUtil.booleanTooltip(tooltip, "§a\uD83D\uDD13 * Item unlocked! * §7- Press §eV§7 §ato lock", !locked);
+                booleanTooltip(tooltip, "§c\uD83D\uDD12 * Item locked! * §7- Press §eV§7 §cto unlock", locked);
+                booleanTooltip(tooltip, "§a\uD83D\uDD13 * Item unlocked! * §7- Press §eV§7 §ato lock", !locked);
             }
         }
     }
