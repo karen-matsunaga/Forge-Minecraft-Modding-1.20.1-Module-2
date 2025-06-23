@@ -1584,28 +1584,25 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void activatedUnlockItemToss(ItemTossEvent event) {
-        ItemStack stack = event.getEntity().getItem();
-        ItemStack safeCopy = stack.copy(); // Make a safe copy first
+        ItemStack stack = event.getEntity().getItem(), safeCopy = stack.copy(); // Original item and make a safe copy first
         Player player = event.getPlayer();
         if (stack.getTag() != null && stack.hasTag() && stack.getTag().getBoolean("Locked")) {
             event.setCanceled(true);
-            player.displayClientMessage(Component.literal("§c\uD83D\uDD12 This item is locked!"), true);
+            // If the item is LOCKED, and you try to play the item a warning is shown on the screen
+            ChatUtil.tradeMessage(player, "\uD83D\uDD12 This item is locked!");
             boolean added = player.getInventory().add(safeCopy);
             if (!added) {
-                // Try to put in armor slots
-                for (int i = 0; i < player.getInventory().armor.size(); i++) {
+                for (int i = 0; i < player.getInventory().armor.size(); i++) { // Try to put in ARMOR slots
                     if (player.getInventory().armor.get(i).isEmpty() && !safeCopy.isEmpty()) {
                         player.getInventory().armor.set(i, safeCopy.copy());
                         safeCopy.setCount(0); // Empties after moving
                     }
                 }
-                // Try to put it in offhand
-                if (player.getInventory().offhand.get(0).isEmpty() && !safeCopy.isEmpty()) {
+                if (player.getInventory().offhand.get(0).isEmpty() && !safeCopy.isEmpty()) { // Try to put it in OFFHAND
                     player.getInventory().offhand.set(0, safeCopy.copy());
                     safeCopy.setCount(0); // Empties after moving
                 }
-                // If there is any left, throw it on the floor
-                if (!safeCopy.isEmpty()) { player.spawnAtLocation(safeCopy); }
+                if (!safeCopy.isEmpty()) { player.spawnAtLocation(safeCopy); } // If there is any left, throw it on the floor
             }
         }
     }
