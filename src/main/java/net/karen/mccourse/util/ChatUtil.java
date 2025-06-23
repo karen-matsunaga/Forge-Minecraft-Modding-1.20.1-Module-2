@@ -3,14 +3,21 @@ package net.karen.mccourse.util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.player.Player;
-
 import java.util.List;
+
+import static net.karen.mccourse.util.Utils.*;
 
 public class ChatUtil {
     // GENERAL METHODS
     public static void player(Player player, String message, ChatFormatting color) {
         player.displayClientMessage(Component.literal(message).withStyle(color), true);
+    }
+
+    public static void style(Player player, String message, ChatFormatting color) {
+        player.displayClientMessage(Component.literal("Glowing " + message)
+              .setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD)), true);
     }
 
     public static void line(List<Component> tooltip, String message) {
@@ -43,5 +50,28 @@ public class ChatUtil {
             tooltip.add(CommonComponents.EMPTY);
             line(tooltip, message);
         }
+    }
+
+    // DISPLAY
+    public static void glow(Player player, String name, ChatFormatting color) {
+        style(player, name, color);
+    }
+
+    // CUSTOM METHOD - [X, Y, Z] Coordinates
+    public static Component literal(double x, double y, double z) {
+        return Component.literal("X: ").append(Component.literal(String.format("%.3f", x)).withStyle(aqua))
+        .append(Component.literal("  Y: ")).append(Component.literal(String.format("%.5f", y)).withStyle(purple))
+        .append(Component.literal("  Z: ")).append(Component.literal(String.format("%.3f", z)).withStyle(gold));
+    }
+
+    // CUSTOM METHOD - Light numbers
+    public static Component numbers(int totalLight, int skyLight, int blockLight) {
+        return Component.literal("Light: ").append(Component.literal(String.valueOf(totalLight))
+                        .setStyle(Style.EMPTY.withColor(totalLight > 6 ? 0x32FC76 : 0xFF1818)))
+                .append(Component.literal("  Sky: ")).append(Component.literal(String.valueOf(skyLight))
+                        .setStyle(Style.EMPTY.withColor(skyLight > 6 ? 0x32FC76 : 0xFF1818)))
+                .append(Component.literal("  Block: ")).append(Component.literal(String.valueOf(blockLight))
+                        .setStyle(Style.EMPTY.withColor(blockLight > 6 ? 0x32FC76 : 0xFF1818)));
+
     }
 }
