@@ -90,8 +90,9 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ULTRA_COMPACTOR_ITEMS).addTag(Tags.Items.INGOTS_COPPER).addTag(Tags.Items.INGOTS_GOLD).addTag(ItemTags.COALS)
                 .addTag(Tags.Items.INGOTS_IRON).addTag(Tags.Items.INGOTS_NETHERITE).addTag(Tags.Items.GEMS_DIAMOND)
                 .addTag(Tags.Items.GEMS_EMERALD).addTag(Tags.Items.GEMS_LAPIS).addTag(Tags.Items.DUSTS_REDSTONE)
-                .addTag(MCCOURSE_ITEMS).addTag(Tags.Items.RAW_MATERIALS).add(Items.ENDER_PEARL, Items.BLAZE_ROD, Items.ROTTEN_FLESH,
-                        Items.GUNPOWDER, Items.NETHER_STAR, Items.PHANTOM_MEMBRANE);
+                .addTag(MCCOURSE_ITEMS).addTag(Tags.Items.RAW_MATERIALS)
+                .add(Items.ENDER_PEARL, Items.BLAZE_ROD, Items.ROTTEN_FLESH, Items.GUNPOWDER, Items.NETHER_STAR,
+                     Items.PHANTOM_MEMBRANE, Items.STRING, Items.SPIDER_EYE, Items.FERMENTED_SPIDER_EYE);
 
         // Ultra Compactor Output
         this.tag(ULTRA_COMPACTOR_RESULT).addTag(Tags.Items.STORAGE_BLOCKS_RAW_COPPER).addTag(Tags.Items.STORAGE_BLOCKS_RAW_GOLD)
@@ -99,7 +100,8 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ALEXANDRITE_BLOCK.get().asItem(), RAW_ALEXANDRITE_BLOCK.get().asItem(),
                      PINK_BLOCK.get().asItem(), ENDER_PEARL_BLOCK.get().asItem(), NETHER_STAR_BLOCK.get().asItem(),
                      GUNPOWDER_BLOCK.get().asItem(), ROTTEN_FLESH_BLOCK.get().asItem(),
-                     BLAZE_ROD_BLOCK.get().asItem(), PHANTOM_MEMBRANE_BLOCK.get().asItem());
+                     BLAZE_ROD_BLOCK.get().asItem(), PHANTOM_MEMBRANE_BLOCK.get().asItem(),
+                     STRING_BLOCK.get().asItem(), SPIDER_EYE_BLOCK.get().asItem(), FERMENTED_SPIDER_EYE_BLOCK.get().asItem());
 
         // Mccourse Fishing Rod
         this.tag(Tags.Items.TOOLS_FISHING_RODS).add(MCCOURSE_FISHING_ROD.get());

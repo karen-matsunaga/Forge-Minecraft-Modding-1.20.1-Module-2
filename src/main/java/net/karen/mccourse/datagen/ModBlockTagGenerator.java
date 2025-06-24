@@ -38,7 +38,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                      RED_ENDER_PEARL_BLOCK.get(), LIME_GREEN_ENDER_PEARL_BLOCK.get(), YELLOW_ENDER_PEARL_BLOCK.get(),
                      BLUE_ENDER_PEARL_BLOCK.get(), WHITE_ENDER_PEARL_BLOCK.get(),
                      DISENCHANTED_BLOCK.get(), CRAFT_CRAFTING_TABLE.get(), MCCOURSE_GENERATOR.get(), MCCOURSE_ELEVATOR.get(),
-                     MAGIC_ENCHANTED_BLOCK.get(), MAGIC_DISENCHANTED_BLOCK.get(),
+                     MAGIC_ENCHANTED_BLOCK.get(), MAGIC_DISENCHANTED_BLOCK.get(), MAGIC_DISENCHANTED_BOOK_BLOCK.get(),
                      RUBY_BLOCK.get(), RUBY_BLOCK_1.get(), RUBY_BLOCK_2.get(), RUBY_BLOCK_3.get(),
                      WAXED_RUBY_BLOCK.get(), WAXED_RUBY_BLOCK_1.get(), WAXED_RUBY_BLOCK_2.get(), WAXED_RUBY_BLOCK_3.get())
                 .addTag(MOBS_BLOCKS_DROPS).addTag(MCCOURSE_ORES).addTag(MCCOURSE_ORES_BLOCK);
@@ -92,7 +92,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         // Mobs Blocks
         this.tag(MOBS_BLOCKS_DROPS).add(ENDER_PEARL_BLOCK.get(), NETHER_STAR_BLOCK.get(),
-                 GUNPOWDER_BLOCK.get(), ROTTEN_FLESH_BLOCK.get(), BLAZE_ROD_BLOCK.get(), PHANTOM_MEMBRANE_BLOCK.get());
+                 GUNPOWDER_BLOCK.get(), ROTTEN_FLESH_BLOCK.get(), BLAZE_ROD_BLOCK.get(), PHANTOM_MEMBRANE_BLOCK.get(),
+                 STRING_BLOCK.get(), SPIDER_EYE_BLOCK.get(), FERMENTED_SPIDER_EYE_BLOCK.get());
 
         // Mccourse ores tags
         this.tag(PINK_ORES).add(PINK_ORE.get(), DEEPSLATE_PINK_ORE.get(), END_STONE_PINK_ORE.get(), NETHER_PINK_ORE.get());

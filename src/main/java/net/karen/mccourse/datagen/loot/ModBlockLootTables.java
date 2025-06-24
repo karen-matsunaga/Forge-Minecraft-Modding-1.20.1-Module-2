@@ -157,6 +157,9 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.ROTTEN_FLESH_BLOCK.get());
         this.dropSelf(ModBlocks.BLAZE_ROD_BLOCK.get());
         this.dropSelf(ModBlocks.PHANTOM_MEMBRANE_BLOCK.get());
+        this.dropSelf(ModBlocks.STRING_BLOCK.get());
+        this.dropSelf(ModBlocks.SPIDER_EYE_BLOCK.get());
+        this.dropSelf(ModBlocks.FERMENTED_SPIDER_EYE_BLOCK.get());
 
         // My custom ores
         this.dropSelf(ModBlocks.PINK_BLOCK.get());
@@ -174,6 +177,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.MCCOURSE_ELEVATOR.get());
         this.dropSelf(ModBlocks.MAGIC_ENCHANTED_BLOCK.get());
         this.dropSelf(ModBlocks.MAGIC_DISENCHANTED_BLOCK.get());
+        this.dropSelf(ModBlocks.MAGIC_DISENCHANTED_BOOK_BLOCK.get());
     }
 
     // Custom ore's drops

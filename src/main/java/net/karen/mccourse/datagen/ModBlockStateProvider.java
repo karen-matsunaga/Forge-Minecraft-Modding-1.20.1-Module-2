@@ -164,6 +164,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.ROTTEN_FLESH_BLOCK);
         blockWithItem(ModBlocks.BLAZE_ROD_BLOCK);
         blockWithItem(ModBlocks.PHANTOM_MEMBRANE_BLOCK);
+        blockWithItem(ModBlocks.STRING_BLOCK);
+        blockWithItem(ModBlocks.SPIDER_EYE_BLOCK);
+        blockWithItem(ModBlocks.FERMENTED_SPIDER_EYE_BLOCK);
 
         // My custom ore
         blockWithItem(ModBlocks.PINK_BLOCK);
@@ -183,6 +186,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.MCCOURSE_ELEVATOR);
         blockWithItem(ModBlocks.MAGIC_ENCHANTED_BLOCK);
         blockWithItem(ModBlocks.MAGIC_DISENCHANTED_BLOCK);
+        blockWithItem(ModBlocks.MAGIC_DISENCHANTED_BOOK_BLOCK);
 
         // Furnace
         registerFurnace(ModBlocks.KAUPEN_FURNACE_BLOCK);
@@ -250,12 +254,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
     // Method to generate custom lamp automatically in .JSON file
     private void customLamp() {
         getVariantBuilder(ModBlocks.ALEXANDRITE_LAMP.get()).forAllStates(state -> {
-            if(state.getValue(AlexandriteLampBlock.CLICKED)) {
+            if (state.getValue(AlexandriteLampBlock.CLICKED)) {
                 return new ConfiguredModel[]{new ConfiguredModel(models().cubeAll("alexandrite_lamp_on",
-                        new ResourceLocation(MCCourseMod.MOD_ID, "block/" + "alexandrite_lamp_on")))};
-            } else {
+                       new ResourceLocation(MCCourseMod.MOD_ID, "block/" + "alexandrite_lamp_on")))};
+            }
+            else {
                 return new ConfiguredModel[]{new ConfiguredModel(models().cubeAll("alexandrite_lamp_off",
-                        new ResourceLocation(MCCourseMod.MOD_ID, "block/" + "alexandrite_lamp_off")))};
+                       new ResourceLocation(MCCourseMod.MOD_ID, "block/" + "alexandrite_lamp_off")))};
             }
         });
         simpleBlockItem(ModBlocks.ALEXANDRITE_LAMP.get(), models().cubeAll("alexandrite_lamp_on",

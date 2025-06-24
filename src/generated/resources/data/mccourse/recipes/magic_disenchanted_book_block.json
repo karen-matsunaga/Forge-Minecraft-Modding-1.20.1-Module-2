@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "A": {
-      "item": "mccourse:magic_disenchanted_book_block"
+      "item": "minecraft:anvil"
     }
   },
   "pattern": [
@@ -16,7 +16,7 @@
     "AAAAAAA"
   ],
   "result": {
-    "item": "mccourse:magic_disenchanted_block"
+    "item": "mccourse:magic_disenchanted_book_block"
   },
   "show_notification": true
 }

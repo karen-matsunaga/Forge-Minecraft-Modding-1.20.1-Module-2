@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "mccourse:block/magic_disenchanted_book_block"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-22T18:41:07.9759284	Loot Tables
+// 1.20.1	2025-06-23T21:21:15.0570017	Loot Tables
 3c04bafc8e377b8b3a0acec4fb355ebe506bd32a data/mccourse/loot_tables/blocks/alexandrite_block.json
 5ee80a3f0dae7a738f12360934f26b319920a8a3 data/mccourse/loot_tables/blocks/alexandrite_button.json
 3cf926928d6232271016b028304beb66caa9effe data/mccourse/loot_tables/blocks/alexandrite_door.json
@@ -25,6 +25,7 @@ b7fb61b3f9afe40afbdb292b74b4c9dac62914ea data/mccourse/loot_tables/blocks/cyan_e
 52a5ed7709109ee474b384e0d5edea81ac78a45f data/mccourse/loot_tables/blocks/ender_pearl_block.json
 dd06905d885f623d5867007d612e560c34063dda data/mccourse/loot_tables/blocks/end_stone_alexandrite_ore.json
 a55d6c7ff9158d0821522ac48f418f226e8e5c2a data/mccourse/loot_tables/blocks/end_stone_pink_ore.json
+009d413344d92bfc16663e334d7a77744694c748 data/mccourse/loot_tables/blocks/fermented_spider_eye_block.json
 e926ccb30e8312d3c5eaa1371adb263501f9548b data/mccourse/loot_tables/blocks/gem_empowering_station.json
 9b7173ec50bfa26a582ad73fb65b0b14af9f69f2 data/mccourse/loot_tables/blocks/gray_ender_pearl_block.json
 cb63cc6bd8d6a5e0a3ad72205bb93e51d0426adc data/mccourse/loot_tables/blocks/green_ender_pearl_block.json
@@ -34,6 +35,7 @@ f1e02b0627adf1ecddd380ae8e3ff41d994246d4 data/mccourse/loot_tables/blocks/kohlra
 54c6d25444a230eaa6d2e5334398b1595efb57ca data/mccourse/loot_tables/blocks/lime_green_ender_pearl_block.json
 5c64b5a77b62be72c1777532d88f14c56d45713e data/mccourse/loot_tables/blocks/magenta_ender_pearl_block.json
 a2140c9cd5fea94d61fe317ed7228d930e058529 data/mccourse/loot_tables/blocks/magic_disenchanted_block.json
+f2e167b057f7f2b5678d6eefad476f33851d4c5b data/mccourse/loot_tables/blocks/magic_disenchanted_book_block.json
 3782889650c282d22fba18d7acdbbc17927e386a data/mccourse/loot_tables/blocks/magic_enchanted_block.json
 58104e91969996740beb3708844da5b5a23e42e2 data/mccourse/loot_tables/blocks/mccourse_elevator.json
 e5c7a271f89c7b044654cc5c7a854f86e2ed4e62 data/mccourse/loot_tables/blocks/mccourse_generator.json
@@ -56,6 +58,8 @@ a1f9c183d88e7936935541bedf3326b92709809e data/mccourse/loot_tables/blocks/ruby_b
 dc56f66a8115ff39758f954d495594af9cf2ae68 data/mccourse/loot_tables/blocks/ruby_block_3.json
 362603660cff043f880c5a913620299474b76bfd data/mccourse/loot_tables/blocks/snapdragon.json
 7d8fa6812bfae52dfc6b76bdf45977c92f8766af data/mccourse/loot_tables/blocks/sound_block.json
+459d7a6ba2cb286d9fe1f26c697e56caf7326bec data/mccourse/loot_tables/blocks/spider_eye_block.json
+8a18dfaf7fb9710a5e7b7a18de136d09e2b06dc5 data/mccourse/loot_tables/blocks/string_block.json
 9efd266dcf7ebe2be44cf052500cd060269cef2a data/mccourse/loot_tables/blocks/stripped_walnut_log.json
 8f0635128b58389e52439fe8edc7dc21b14930d9 data/mccourse/loot_tables/blocks/stripped_walnut_wood.json
 2a61517b4a11db64de0462b96b7b035419b5f8a5 data/mccourse/loot_tables/blocks/walnut_hanging_sign.json

@@ -16,6 +16,9 @@
     "minecraft:rotten_flesh",
     "minecraft:gunpowder",
     "minecraft:nether_star",
-    "minecraft:phantom_membrane"
+    "minecraft:phantom_membrane",
+    "minecraft:string",
+    "minecraft:spider_eye",
+    "minecraft:fermented_spider_eye"
   ]
 }

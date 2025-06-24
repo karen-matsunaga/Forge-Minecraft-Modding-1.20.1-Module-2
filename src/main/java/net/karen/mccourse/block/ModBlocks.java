@@ -437,6 +437,27 @@ public class ModBlocks {
             () -> new LightBlock(BlockBehaviour.Properties.copy(Blocks.LIGHT).instabreak().lightLevel(s -> 15)
                                                .noCollission().noOcclusion().noLootTable()));
 
+    // Magic Disenchanted Book Block
+    public static final RegistryObject<Block> MAGIC_DISENCHANTED_BOOK_BLOCK =
+            registerBlock("magic_disenchanted_book_block",
+            () -> new MagicDisenchantedBookBlock(BlockBehaviour.Properties.of().lightLevel(state -> 15)
+                      .sound(SoundType.LARGE_AMETHYST_BUD).strength(5F, 3600000.0F)));
+
+    // String block
+    public static final RegistryObject<Block> STRING_BLOCK = registerBlock("string_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.WOOL).instrument(NoteBlockInstrument.DIDGERIDOO)
+                    .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.WOOL)));
+
+    // Spider Eye block
+    public static final RegistryObject<Block> SPIDER_EYE_BLOCK = registerBlock("spider_eye_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).instrument(NoteBlockInstrument.GUITAR)
+                    .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.SLIME_BLOCK)));
+
+    // Fermented Spider Eye block
+    public static final RegistryObject<Block> FERMENTED_SPIDER_EYE_BLOCK = registerBlock("fermented_spider_eye_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).instrument(NoteBlockInstrument.GUITAR)
+                    .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.SLIME_BLOCK)));
+
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

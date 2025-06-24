@@ -231,6 +231,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.ROTTEN_FLESH_BLOCK.get());
                         output.accept(ModBlocks.BLAZE_ROD_BLOCK.get());
                         output.accept(ModBlocks.PHANTOM_MEMBRANE_BLOCK.get());
+                        output.accept(ModBlocks.STRING_BLOCK.get());
+                        output.accept(ModBlocks.SPIDER_EYE_BLOCK.get());
+                        output.accept(ModBlocks.FERMENTED_SPIDER_EYE_BLOCK.get());
 
                         // Custom Hammer
                         output.accept(ModItems.COPPER_HAMMER.get());
@@ -279,6 +282,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.DESTROYER.get());
                         output.accept(ModBlocks.MAGIC_ENCHANTED_BLOCK.get());
                         output.accept(ModBlocks.MAGIC_DISENCHANTED_BLOCK.get());
+                        output.accept(ModBlocks.MAGIC_DISENCHANTED_BOOK_BLOCK.get());
                         output.accept(ModItems.MAGNET.get());
                         output.accept(ModItems.FARMER.get());
                         output.accept(ModItems.RESTORE.get());

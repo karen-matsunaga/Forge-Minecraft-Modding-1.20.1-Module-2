@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "mccourse:magic_disenchanted_book_block"
+              "mccourse:fermented_spider_eye_block"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mccourse:magic_disenchanted_block"
+        "recipe": "minecraft:fermented_spider_eye"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "mccourse:magic_disenchanted_block"
+      "minecraft:fermented_spider_eye"
     ]
   },
   "sends_telemetry_event": false

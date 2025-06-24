@@ -175,8 +175,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         itemTransformBlock(List.of(ModBlocks.PHANTOM_MEMBRANE_BLOCK.get(), Items.PHANTOM_MEMBRANE), pWriter);
         blockTransformItem(List.of(Items.PHANTOM_MEMBRANE, ModBlocks.PHANTOM_MEMBRANE_BLOCK.get()), pWriter);
 
+        itemTransformBlock(List.of(ModBlocks.STRING_BLOCK.get(), Items.STRING), pWriter);
+        blockTransformItem(List.of(Items.STRING, ModBlocks.STRING_BLOCK.get()), pWriter);
 
+        itemTransformBlock(List.of(ModBlocks.SPIDER_EYE_BLOCK.get(), Items.SPIDER_EYE), pWriter);
+        blockTransformItem(List.of(Items.SPIDER_EYE, ModBlocks.SPIDER_EYE_BLOCK.get()), pWriter);
 
+        itemTransformBlock(List.of(ModBlocks.FERMENTED_SPIDER_EYE_BLOCK.get(), Items.FERMENTED_SPIDER_EYE), pWriter);
+        blockTransformItem(List.of(Items.FERMENTED_SPIDER_EYE, ModBlocks.FERMENTED_SPIDER_EYE_BLOCK.get()), pWriter);
 
         // Ore
         itemTransformBlock(List.of(ModBlocks.PINK_BLOCK.get(), ModItems.PINK.get()), pWriter);
@@ -287,7 +293,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         craftSeven(List.of(ModItems.FARMER.get(), Items.BONE_MEAL), pWriter);
         craftSeven(List.of(ModItems.RESTORE.get(), Items.BOOK), pWriter); // Restore item
         craftSeven(List.of(ModBlocks.MAGIC_ENCHANTED_BLOCK.get(), Items.ENCHANTING_TABLE), pWriter);
-        craftSeven(List.of(ModBlocks.MAGIC_DISENCHANTED_BLOCK.get(), Items.ANVIL), pWriter);
+        craftSeven(List.of(ModBlocks.MAGIC_DISENCHANTED_BLOCK.get(), ModBlocks.MAGIC_DISENCHANTED_BOOK_BLOCK.get()), pWriter);
+        craftSeven(List.of(ModBlocks.MAGIC_DISENCHANTED_BOOK_BLOCK.get(), Items.ANVIL), pWriter);
 
         // Two items
         craftSevenItems(List.of(ModBlocks.MCCOURSE_GENERATOR.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(),
