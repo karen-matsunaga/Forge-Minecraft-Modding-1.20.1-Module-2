@@ -184,6 +184,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         itemTransformBlock(List.of(ModBlocks.FERMENTED_SPIDER_EYE_BLOCK.get(), Items.FERMENTED_SPIDER_EYE), pWriter);
         blockTransformItem(List.of(Items.FERMENTED_SPIDER_EYE, ModBlocks.FERMENTED_SPIDER_EYE_BLOCK.get()), pWriter);
 
+        itemTransformBlock(List.of(ModBlocks.SUGAR_BLOCK.get(), Items.SUGAR), pWriter);
+        blockTransformItem(List.of(Items.SUGAR, ModBlocks.SUGAR_BLOCK.get()), pWriter);
+
+        itemTransformBlock(List.of(ModBlocks.SUGAR_CANE_BLOCK.get(), Items.SUGAR_CANE), pWriter);
+        blockTransformItem(List.of(Items.SUGAR_CANE, ModBlocks.SUGAR_CANE_BLOCK.get()), pWriter);
+
         // Ore
         itemTransformBlock(List.of(ModBlocks.PINK_BLOCK.get(), ModItems.PINK.get()), pWriter);
         blockTransformItem(List.of(ModItems.PINK.get(), ModBlocks.PINK_BLOCK.get()), pWriter);

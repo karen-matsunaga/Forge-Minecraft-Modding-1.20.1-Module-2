@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-23T21:29:06.3505666	Block States: mccourse
+// 1.20.1	2025-06-24T12:10:56.2620813	Block States: mccourse
 9b0f59e6a967af477e6f41100bfecb754add6ea2 assets/mccourse/blockstates/alexandrite_block.json
 1fd0895b9aa0e87b67d2c4da0f567f8aa895de30 assets/mccourse/blockstates/alexandrite_button.json
 974428f15970c224b76ef992df827ba4718bb490 assets/mccourse/blockstates/alexandrite_door.json
@@ -62,6 +62,8 @@ fc22d00fadd53a8cd9d9fef1344249eb849a7a6a assets/mccourse/blockstates/sound_block
 24538c78dcdd52bb2eeed3dd78378d3143ed96d4 assets/mccourse/blockstates/string_block.json
 b95ca90dc7d70552ce5af8be5d83a2c97ed81acf assets/mccourse/blockstates/stripped_walnut_log.json
 e50134443d961e4c4142d84d94ad60c0a57705df assets/mccourse/blockstates/stripped_walnut_wood.json
+b568da86a469c54a3821002a7c676291de585e8f assets/mccourse/blockstates/sugar_block.json
+50a6256e1d5050b8414eb9f37248c2c55c1e57df assets/mccourse/blockstates/sugar_cane_block.json
 1aed2e23307eebf34494f843ae56a7d51278eb33 assets/mccourse/blockstates/walnut_hanging_sign.json
 5646177c1a88d3f999678a4d35625a3c201db1f1 assets/mccourse/blockstates/walnut_leaves.json
 f975ce545bc980b6411a757e26eccd48a68f21d9 assets/mccourse/blockstates/walnut_log.json
@@ -177,6 +179,8 @@ cbd71d87abe71f6b164a9c6649abe3073efedb11 assets/mccourse/models/block/stripped_w
 91992770911124e67fdf30fcc365114c054d3a94 assets/mccourse/models/block/stripped_walnut_log_horizontal.json
 4f0423d88487ad09b64ad8a46fcafa9e82fd04c3 assets/mccourse/models/block/stripped_walnut_wood.json
 14ad9b8d6b4b1c8f9d988147141919133160c005 assets/mccourse/models/block/stripped_walnut_wood_horizontal.json
+606d3ff53704082ee9d89dbaa5121e60df0e7156 assets/mccourse/models/block/sugar_block.json
+e10829cfe3dea6bc2109c25572ae291748994c4d assets/mccourse/models/block/sugar_cane_block.json
 5631f3dc0af2acba06a8e792872283c07644f1ce assets/mccourse/models/block/walnut_hanging_sign.json
 dbf04f39318571455f3fcc00e0e41fb51981abd0 assets/mccourse/models/block/walnut_leaves.json
 11e72cef23a38f2d8584041bfc9e4e010f31d483 assets/mccourse/models/block/walnut_log.json
@@ -248,6 +252,8 @@ fb0d76e410d0ce387550c6bbf76352fd140f8b3c assets/mccourse/models/item/spider_eye_
 c8ffffd124d0059d2095f9b17f63c7d34ba64d9f assets/mccourse/models/item/string_block.json
 6ac31add44d78a60966802f550514b21d79b2c3f assets/mccourse/models/item/stripped_walnut_log.json
 5a5c1e0bef3e38423a8b2751dbc740a9ae66e85f assets/mccourse/models/item/stripped_walnut_wood.json
+c2dad18361138f786b81cf7b1bda7ab4b77190ca assets/mccourse/models/item/sugar_block.json
+f29ae83b989b2c9363245b7932abdda697274c59 assets/mccourse/models/item/sugar_cane_block.json
 8c074696e6b3d1c9d30fea858808cd8e3923c39b assets/mccourse/models/item/walnut_leaves.json
 a2ab8757151d1f921eb595f2a1c3ca2ab03efa84 assets/mccourse/models/item/walnut_log.json
 af809b916943ca7d5962b233d0137bdf033aa4ee assets/mccourse/models/item/walnut_planks.json

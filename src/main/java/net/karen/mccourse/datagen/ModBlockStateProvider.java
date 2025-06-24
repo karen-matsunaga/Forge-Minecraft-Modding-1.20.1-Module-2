@@ -141,7 +141,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.WAXED_RUBY_BLOCK_2);
         blockWithItem(ModBlocks.WAXED_RUBY_BLOCK_3);
 
-        // My custom block
+        // Mobs blocks
         blockWithItem(ModBlocks.ENDER_PEARL_BLOCK);
 
         blockWithItem(ModBlocks.GREEN_ENDER_PEARL_BLOCK);
@@ -167,18 +167,20 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.STRING_BLOCK);
         blockWithItem(ModBlocks.SPIDER_EYE_BLOCK);
         blockWithItem(ModBlocks.FERMENTED_SPIDER_EYE_BLOCK);
+        blockWithItem(ModBlocks.SUGAR_BLOCK);
+        blockWithItem(ModBlocks.SUGAR_CANE_BLOCK);
 
-        // My custom ore
+        // Custom ores
         blockWithItem(ModBlocks.PINK_BLOCK);
         blockWithItem(ModBlocks.PINK_ORE);
         blockWithItem(ModBlocks.DEEPSLATE_PINK_ORE);
         blockWithItem(ModBlocks.END_STONE_PINK_ORE);
         blockWithItem(ModBlocks.NETHER_PINK_ORE);
 
-        // My Disenchanted custom block
+        // Disenchanted custom block
         blockWithItem(ModBlocks.DISENCHANTED_BLOCK);
 
-        // My Craft custom crafting table
+        // Crafting table custom block
         registerCustomSidedCube(ModBlocks.CRAFT_CRAFTING_TABLE);
 
         // Block generator

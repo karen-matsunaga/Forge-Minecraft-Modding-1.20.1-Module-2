@@ -307,6 +307,8 @@ public class ModCreativeModeTabs {
                         // Mccourse Fishing Rod
                         output.accept(ModItems.MCCOURSE_FISHING_ROD.get());
                         output.accept(ModItems.GROWTH.get());
+                        output.accept(ModBlocks.SUGAR_BLOCK.get());
+                        output.accept(ModBlocks.SUGAR_CANE_BLOCK.get());
                     }).build());
 
     // Registry Creative Mode Tab

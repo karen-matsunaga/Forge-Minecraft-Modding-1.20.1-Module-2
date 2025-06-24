@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-23T21:21:15.0570017	Loot Tables
+// 1.20.1	2025-06-24T12:10:56.2620813	Loot Tables
 3c04bafc8e377b8b3a0acec4fb355ebe506bd32a data/mccourse/loot_tables/blocks/alexandrite_block.json
 5ee80a3f0dae7a738f12360934f26b319920a8a3 data/mccourse/loot_tables/blocks/alexandrite_button.json
 3cf926928d6232271016b028304beb66caa9effe data/mccourse/loot_tables/blocks/alexandrite_door.json
@@ -62,6 +62,8 @@ dc56f66a8115ff39758f954d495594af9cf2ae68 data/mccourse/loot_tables/blocks/ruby_b
 8a18dfaf7fb9710a5e7b7a18de136d09e2b06dc5 data/mccourse/loot_tables/blocks/string_block.json
 9efd266dcf7ebe2be44cf052500cd060269cef2a data/mccourse/loot_tables/blocks/stripped_walnut_log.json
 8f0635128b58389e52439fe8edc7dc21b14930d9 data/mccourse/loot_tables/blocks/stripped_walnut_wood.json
+99a09a88c22705420a710dda41b7b9645032ea67 data/mccourse/loot_tables/blocks/sugar_block.json
+c50ca7ad122af200b7093592b609876cd9eb176f data/mccourse/loot_tables/blocks/sugar_cane_block.json
 2a61517b4a11db64de0462b96b7b035419b5f8a5 data/mccourse/loot_tables/blocks/walnut_hanging_sign.json
 4482990eb25903335217824cf8b0490b8be579df data/mccourse/loot_tables/blocks/walnut_leaves.json
 a260d3a8a47c849f48375dc042cc412fd426eca3 data/mccourse/loot_tables/blocks/walnut_log.json

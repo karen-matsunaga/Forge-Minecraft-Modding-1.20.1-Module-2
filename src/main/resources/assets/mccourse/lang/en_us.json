@@ -161,6 +161,8 @@
   "block.mccourse.string_block": "String Block",
   "block.mccourse.spider_eye_block": "Spider Eye Block",
   "block.mccourse.fermented_spider_eye_block": "Fermented Spider Eye Block",
+  "block.mccourse.sugar_block": "Sugar Block",
+  "block.mccourse.sugar_cane_block": "Sugar Cane Block",
 
   "item.mccourse.mccourse_hammer": "Mccourse Hammer",
   "item.mccourse.vault": "Vault",

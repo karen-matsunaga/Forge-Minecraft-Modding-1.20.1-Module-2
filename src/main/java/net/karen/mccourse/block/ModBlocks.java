@@ -446,17 +446,27 @@ public class ModBlocks {
     // String block
     public static final RegistryObject<Block> STRING_BLOCK = registerBlock("string_block",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.WOOL).instrument(NoteBlockInstrument.DIDGERIDOO)
-                    .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.WOOL)));
+                      .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.WOOL)));
 
     // Spider Eye block
     public static final RegistryObject<Block> SPIDER_EYE_BLOCK = registerBlock("spider_eye_block",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).instrument(NoteBlockInstrument.GUITAR)
-                    .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.SLIME_BLOCK)));
+                      .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.SLIME_BLOCK)));
 
     // Fermented Spider Eye block
     public static final RegistryObject<Block> FERMENTED_SPIDER_EYE_BLOCK = registerBlock("fermented_spider_eye_block",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).instrument(NoteBlockInstrument.GUITAR)
-                    .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.SLIME_BLOCK)));
+                      .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.SLIME_BLOCK)));
+
+    // Sugar Block
+    public static final RegistryObject<Block> SUGAR_BLOCK = registerBlock("sugar_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN)
+                      .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.SAND)));
+
+    // Sugar Cane Block
+    public static final RegistryObject<Block> SUGAR_CANE_BLOCK = registerBlock("sugar_cane_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN)
+                      .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.SAND)));
 
     // Register all custom blocks in the game
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {

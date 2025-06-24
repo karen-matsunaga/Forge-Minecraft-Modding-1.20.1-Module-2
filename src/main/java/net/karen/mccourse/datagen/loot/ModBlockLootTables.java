@@ -134,9 +134,9 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         // Kaupen custom furnace
         this.dropSelf(ModBlocks.KAUPEN_FURNACE_BLOCK.get());
 
-        // My custom block
+        // Mobs blocks
+        // Ender Pearl blocks
         this.dropSelf(ModBlocks.ENDER_PEARL_BLOCK.get());
-
         this.dropSelf(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get());
         this.dropSelf(ModBlocks.BLACK_ENDER_PEARL_BLOCK.get());
         this.dropSelf(ModBlocks.MAGENTA_ENDER_PEARL_BLOCK.get());
@@ -151,7 +151,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.YELLOW_ENDER_PEARL_BLOCK.get());
         this.dropSelf(ModBlocks.BLUE_ENDER_PEARL_BLOCK.get());
         this.dropSelf(ModBlocks.WHITE_ENDER_PEARL_BLOCK.get());
-
+        // Other mobs blocks
         this.dropSelf(ModBlocks.NETHER_STAR_BLOCK.get());
         this.dropSelf(ModBlocks.GUNPOWDER_BLOCK.get());
         this.dropSelf(ModBlocks.ROTTEN_FLESH_BLOCK.get());
@@ -160,18 +160,20 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.STRING_BLOCK.get());
         this.dropSelf(ModBlocks.SPIDER_EYE_BLOCK.get());
         this.dropSelf(ModBlocks.FERMENTED_SPIDER_EYE_BLOCK.get());
+        this.dropSelf(ModBlocks.SUGAR_BLOCK.get());
+        this.dropSelf(ModBlocks.SUGAR_CANE_BLOCK.get());
 
-        // My custom ores
+        // Custom ores
         this.dropSelf(ModBlocks.PINK_BLOCK.get());
         this.add(ModBlocks.PINK_ORE.get(), block -> createOreDrop(ModBlocks.PINK_ORE.get(), ModItems.PINK.get()));
         this.add(ModBlocks.DEEPSLATE_PINK_ORE.get(), block -> createOreDrop(ModBlocks.DEEPSLATE_PINK_ORE.get(), ModItems.PINK.get()));
         this.add(ModBlocks.END_STONE_PINK_ORE.get(), block -> createOreDrop(ModBlocks.END_STONE_PINK_ORE.get(), ModItems.PINK.get()));
         this.add(ModBlocks.NETHER_PINK_ORE.get(), block -> createOreDrop(ModBlocks.NETHER_PINK_ORE.get(), ModItems.PINK.get()));
 
-        // My disenchanted block
+        // Disenchanted block
         this.dropSelf(ModBlocks.DISENCHANTED_BLOCK.get());
 
-        // My CRAFTING TABLE block
+        // CRAFTING TABLE block
         this.dropSelf(ModBlocks.CRAFT_CRAFTING_TABLE.get());
         this.dropSelf(ModBlocks.MCCOURSE_GENERATOR.get());
         this.dropSelf(ModBlocks.MCCOURSE_ELEVATOR.get());
