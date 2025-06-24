@@ -13,6 +13,7 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
@@ -43,19 +44,22 @@ public class MagicDisenchantedBookBlock extends Block {
 
     // CUSTOM METHOD - Drop ENCHANTED BOOK and BASE ITEM on ground
     private static void dropItem(Level world, BlockPos pos, ItemStack item) {
-        world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, item));
+        ItemEntity drop = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, item);
+        drop.setDeltaMovement(Vec3.ZERO);
+        world.addFreshEntity(drop);
     }
 
     private static void groupedBooks(Map<Enchantment, Integer> item, boolean grouped,
                                      Level level, BlockPos pos) {
-        if (grouped) {
+        if (grouped) { // GROUPED book -> Two or more enchantments
             ItemStack group = new ItemStack(Items.ENCHANTED_BOOK);
-            item.forEach((key, value) -> EnchantedBookItem.addEnchantment(group, new EnchantmentInstance(key, value)));
+            item.forEach((enc, lvl) -> { if (lvl > 0) { EnchantedBookItem.addEnchantment(group, new EnchantmentInstance(enc, lvl)); }});
             dropItem(level, pos, group);
         }
-        else {
-            item.forEach((key, value) -> { ItemStack single = new ItemStack(Items.ENCHANTED_BOOK);
-                EnchantedBookItem.addEnchantment(single, new EnchantmentInstance(key, value));
+        else { // INDIVIDUAL book -> One enchantment
+            item.forEach((enc, lvl) -> {
+                ItemStack single = new ItemStack(Items.ENCHANTED_BOOK);
+                if (lvl > 0) { EnchantedBookItem.addEnchantment(single, new EnchantmentInstance(enc, lvl)); }
                 dropItem(level, pos, single);
             });
         }
@@ -63,5 +67,7 @@ public class MagicDisenchantedBookBlock extends Block {
 
     private boolean isBook(ItemStack item) { return item.is(Items.ENCHANTED_BOOK); }
 
-    private static void removeTag(List<String> tags, ItemStack item) { tags.forEach(item::removeTagKey); }
+    private static void removeTag(List<String> tags, ItemStack item) {
+        tags.forEach(item::removeTagKey);
+    }
 }
