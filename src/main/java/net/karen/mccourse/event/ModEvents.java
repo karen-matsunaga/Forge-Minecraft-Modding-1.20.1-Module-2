@@ -3,6 +3,7 @@ package net.karen.mccourse.event;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.karen.mccourse.MCCourseMod;
@@ -29,6 +30,7 @@ import net.minecraft.core.*;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
@@ -1562,6 +1564,28 @@ public class ModEvents {
                 // Item is LOCKED or Item is UNLOCKED
                 booleanTooltip(tooltip, "§c\uD83D\uDD12 * Item locked! * §7- Press §eV§7 §cto unlock", locked);
                 booleanTooltip(tooltip, "§a\uD83D\uDD13 * Item unlocked! * §7- Press §eV§7 §ato lock", !locked);
+            }
+        }
+    }
+
+    // CUSTOM EVENT - TOOLTIP IMAGE
+    @SubscribeEvent
+    public static void renderTooltip(RenderTooltipEvent.GatherComponents event) {
+        final ItemStack item = event.getItemStack();
+        if (enchant(item, ModEnchantments.UNLOCK.get()) > 0) { // Item contains UNLOCK enchantment
+            final var elements = event.getTooltipElements();
+            if (item.getTag() != null && item.hasTag()) {
+                boolean locked = item.getTag().getBoolean("Locked"); // Locked NBT change stage
+                if (locked) { // UNLOCKED
+                    ResourceLocation icon = new ResourceLocation(MCCourseMod.MOD_ID, "textures/misc/unlock_on.png");
+                    Component itemUnlocked = Component.literal("§c * Item locked! * §7- Press §eV§7 §cto unlock");
+                    elements.add(Either.right(new ImageTooltipComponent(icon, 16, 16, itemUnlocked)));
+                }
+                if (!locked) { // LOCKED
+                    ResourceLocation icon = new ResourceLocation(MCCourseMod.MOD_ID, "textures/misc/unlock_off.png");
+                    Component itemLocked = Component.literal("§a * Item unlocked! * §7- Press §eV§7 §ato lock");
+                    elements.add(Either.right(new ImageTooltipComponent(icon, 16, 16, itemLocked)));
+                }
             }
         }
     }
