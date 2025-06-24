@@ -1,11 +1,13 @@
 package net.karen.mccourse.item.custom;
 
+import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.util.ModTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -112,5 +114,16 @@ public class UltraCompactorItem extends Item {
         components.add(Component.literal("Transform all vanilla gems, raw's, ingots and mobs drops on blocks!")
                 .withStyle(ChatFormatting.GOLD));
         components.add(Component.literal("Compact type: 3x3 crafting recipes.").withStyle(ChatFormatting.DARK_AQUA));
+    }
+
+    @Override
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level,
+                              @NotNull Entity entity, int slotId, boolean isSelected) {
+        Player player = (Player) entity;
+        if (stack.is(ModItems.ULTRA_COMPACTOR.get())) {
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                use(level, player, InteractionHand.MAIN_HAND); // Automated craft
+            }
+        }
     }
 }
