@@ -36,7 +36,8 @@ public class MagicDisenchantedBookBlock extends Block {
                 if (tag != null && baseItem.hasTag() && tag.isEmpty()) { baseItem.setTag(null); } // Clean up tag if empty
                 dropItem(level, pos, baseItem);
             }
-            else { groupedBooks(enchanted, false, level, pos); } // 2. Split each enchantment into INDIVIDUAL books
+            // 2. Split each enchantment into INDIVIDUAL books -> ENCHANTED BOOK
+            else { groupedBooks(enchanted, false, level, pos); }
             itemEntity.discard(); // Remove the original item (to avoid reprocessing)
         }
         super.stepOn(level, pos, state, entity);
@@ -49,6 +50,7 @@ public class MagicDisenchantedBookBlock extends Block {
         world.addFreshEntity(drop);
     }
 
+    // CUSTOM METHOD - GROUPED -> [Item -> Group Book] | NOT GROUPED -> [Group Book -> Single Book]
     private static void groupedBooks(Map<Enchantment, Integer> item, boolean grouped,
                                      Level level, BlockPos pos) {
         if (grouped) { // GROUPED book -> Two or more enchantments
@@ -65,8 +67,10 @@ public class MagicDisenchantedBookBlock extends Block {
         }
     }
 
+    // CUSTOM METHOD - Item dropped is an ENCHANTED (tool, armor, etc.) or an ENCHANTED BOOK
     private boolean isBook(ItemStack item) { return item.is(Items.ENCHANTED_BOOK); }
 
+    // CUSTOM METHOD - Removed all enchantments of ENCHANTED tool, armor, etc. from Enchantments NBT
     private static void removeTag(List<String> tags, ItemStack item) {
         tags.forEach(item::removeTagKey);
     }
