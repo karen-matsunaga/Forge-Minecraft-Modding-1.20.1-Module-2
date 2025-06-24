@@ -8,6 +8,7 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.*;
@@ -102,6 +103,13 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                      GUNPOWDER_BLOCK.get().asItem(), ROTTEN_FLESH_BLOCK.get().asItem(),
                      BLAZE_ROD_BLOCK.get().asItem(), PHANTOM_MEMBRANE_BLOCK.get().asItem(),
                      STRING_BLOCK.get().asItem(), SPIDER_EYE_BLOCK.get().asItem(), FERMENTED_SPIDER_EYE_BLOCK.get().asItem());
+
+        // Pink Ultra Compactor Input
+        this.tag(PINK_ULTRA_COMPACTOR_ITEMS).add(Items.SUGAR, Items.SUGAR_CANE, Items.WHEAT);
+
+        // Pink Ultra Compactor Output
+        this.tag(PINK_ULTRA_COMPACTOR_RESULT).add(SUGAR_BLOCK.get().asItem(), SUGAR_CANE_BLOCK.get().asItem(),
+                 Blocks.HAY_BLOCK.asItem());
 
         // Mccourse Fishing Rod
         this.tag(Tags.Items.TOOLS_FISHING_RODS).add(MCCOURSE_FISHING_ROD.get());

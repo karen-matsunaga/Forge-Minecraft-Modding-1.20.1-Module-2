@@ -47,6 +47,10 @@ public class ModTags {
         public static final TagKey<Item> ULTRA_COMPACTOR_ITEMS = tag("ultra_compactor_items");
         public static final TagKey<Item> ULTRA_COMPACTOR_RESULT = tag("ultra_compactor_result");
 
+        // Pink Ultra Compactor item
+        public static final TagKey<Item> PINK_ULTRA_COMPACTOR_ITEMS = tag("pink_ultra_compactor_items");
+        public static final TagKey<Item> PINK_ULTRA_COMPACTOR_RESULT = tag("pink_ultra_compactor_result");
+
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass item id
         }

@@ -415,7 +415,13 @@ public class ModItems {
 
     // Ultra Compactor
     public static final RegistryObject<Item> ULTRA_COMPACTOR = ITEMS.register("ultra_compactor",
-            () -> new UltraCompactorItem(new Item.Properties().fireResistant().stacksTo(1).fireResistant()));
+            () -> new UltraCompactorItem(new Item.Properties().fireResistant().stacksTo(1).fireResistant(),
+                  true, ModTags.Items.ULTRA_COMPACTOR_ITEMS, ModTags.Items.ULTRA_COMPACTOR_RESULT));
+
+    // Pink Ultra Compactor
+    public static final RegistryObject<Item> PINK_ULTRA_COMPACTOR = ITEMS.register("pink_ultra_compactor",
+            () -> new UltraCompactorItem(new Item.Properties().fireResistant().stacksTo(1).fireResistant(),
+                  false, ModTags.Items.PINK_ULTRA_COMPACTOR_ITEMS, ModTags.Items.PINK_ULTRA_COMPACTOR_RESULT));
 
     // Mccourse Fishing Rod
     public static final RegistryObject<Item> MCCOURSE_FISHING_ROD = ITEMS.register("mccourse_fishing_rod",

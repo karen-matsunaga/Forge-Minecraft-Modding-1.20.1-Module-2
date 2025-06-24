@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-23T21:39:47.4606874	Item Tags
+// 1.20.1	2025-06-24T15:31:04.3978735	Item Tags
 a9a5672ff047d00463e43bd4f3311688fbc78584 data/forge/tags/items/tools/fishing_rods.json
 c7cf40b65e9f80b0da876b8c7ba47601cc2eef92 data/mccourse/tags/items/alexandrite_armor.json
 86562fd08aff39d08443a35e89d8fabc2114cb9b data/mccourse/tags/items/alexandrite_ores_items.json
@@ -13,6 +13,8 @@ cf427f888bb00e762a7b143d8b52c96ef4a52975 data/mccourse/tags/items/multiplier_ore
 45bff75cc337c5062ff78b68ea0f8bcbb8da13d1 data/mccourse/tags/items/ore_block_items.json
 86d53ae613eb7a7665d00443b5de775ee9be6412 data/mccourse/tags/items/pink_armor.json
 5cb7d7564685ed6eebab24dad92d511b9fe8e2ae data/mccourse/tags/items/pink_ores_items.json
+4cb6fa7444000c790bd1bda6b1b1eebc38a9c1e1 data/mccourse/tags/items/pink_ultra_compactor_items.json
+0f9a25b46e37287540d9ed3409582f3a805cca36 data/mccourse/tags/items/pink_ultra_compactor_result.json
 081771f939cdd9d58d230ee63a3439837ee4eff7 data/mccourse/tags/items/restore_blacklist_items.json
 06df4a2bc6f027ac08c8c123990bf56d50dcfa9b data/mccourse/tags/items/teleport_items.json
 c91fb5db28fec2eb7b19369c69abeb4aba931ccc data/mccourse/tags/items/ultra_compactor_items.json

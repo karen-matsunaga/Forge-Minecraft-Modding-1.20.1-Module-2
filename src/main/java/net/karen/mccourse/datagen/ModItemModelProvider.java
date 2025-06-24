@@ -201,6 +201,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Farm items
         simpleItem(ModItems.INFINITE);
         simpleItem(ModItems.ULTRA_COMPACTOR);
+        simpleItem(ModItems.PINK_ULTRA_COMPACTOR);
         simpleItem(ModItems.GROWTH);
 
         // Fishing Rod

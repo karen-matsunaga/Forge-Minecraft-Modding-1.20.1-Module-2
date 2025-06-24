@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-23T11:25:57.48923	Item Models: mccourse
+// 1.20.1	2025-06-24T15:31:04.3978735	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -212,6 +212,7 @@ f2a5766163270e6290e670d31fcad93939d4c145 assets/mccourse/models/item/pink_modes.
 1f1e0e615478e4c69a023b05752a5f62e83c1bef assets/mccourse/models/item/pink_pickaxe.json
 73f30e89d09714ded811fe3909e3b38acfb69be4 assets/mccourse/models/item/pink_shovel.json
 66ec212a2b299974a23874dfb8ce854cce52f1fe assets/mccourse/models/item/pink_sword.json
+52884c60c0f5df576bc13bb6c535f737d032d23e assets/mccourse/models/item/pink_ultra_compactor.json
 d7f19e088d03d5c8604184c9f07dbf28097bd71e assets/mccourse/models/item/purple_modes.json
 d890745bc92e5639d4db062935218a0ef60c01fa assets/mccourse/models/item/raw_alexandrite.json
 2fdb8bf8768964a44adba1747af7af0970c2bb81 assets/mccourse/models/item/restore.json

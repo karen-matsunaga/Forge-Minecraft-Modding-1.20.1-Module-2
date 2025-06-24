@@ -303,6 +303,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.LEVEL_CHARGER_PLUS_FORTUNE.get());
                         output.accept(ModItems.LEVEL_CHARGER_MINUS_FORTUNE.get());
                         output.accept(ModItems.ULTRA_COMPACTOR.get());
+                        output.accept(ModItems.PINK_ULTRA_COMPACTOR.get());
 
                         // Mccourse Fishing Rod
                         output.accept(ModItems.MCCOURSE_FISHING_ROD.get());

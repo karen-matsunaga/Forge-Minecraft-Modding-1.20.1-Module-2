@@ -24,6 +24,10 @@ public class ChatUtil {
         tooltip.add(Component.literal(message));
     }
 
+    public static void tooltipLine(List<Component> tooltip, String message, ChatFormatting color) {
+        tooltip.add(Component.literal(message).withStyle(color));
+    }
+
     // UNIQUE message
     public static void normalMessage(Player player, String message, ChatFormatting color) {
         player(player, message, color);
