@@ -1,12 +1,17 @@
 package net.karen.mccourse.util;
 
+import com.mojang.datafixers.util.Either;
+import net.karen.mccourse.MCCourseMod;
+import net.karen.mccourse.item.ImageTooltipComponent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import java.util.List;
-
 import static net.karen.mccourse.util.Utils.*;
 
 public class ChatUtil {
@@ -33,10 +38,13 @@ public class ChatUtil {
         player(player, message, color);
     }
 
-    // TRUE/FALSE messages
-    public static void booleanMessage(Player player, String yes, String no, Boolean bool) {
-        if (bool) { player(player, yes, Utils.green); }
-        if (!bool) { player(player, no, Utils.red); }
+    // TOOLTIP MESSAGE
+    public static void image(List<Either<FormattedText, TooltipComponent>> element,
+                                    String path, int width, int height, String text, Boolean bool) {
+        if (bool) {
+            element.add(Either.right(new ImageTooltipComponent(new ResourceLocation(MCCourseMod.MOD_ID, path),
+                                     width, height, Component.literal(text))));
+        }
     }
 
     // INVALID message
