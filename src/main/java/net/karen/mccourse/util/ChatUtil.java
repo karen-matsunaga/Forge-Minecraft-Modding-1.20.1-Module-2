@@ -2,7 +2,6 @@ package net.karen.mccourse.util;
 
 import com.mojang.datafixers.util.Either;
 import net.karen.mccourse.MCCourseMod;
-import net.karen.mccourse.item.ImageTooltipComponent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;

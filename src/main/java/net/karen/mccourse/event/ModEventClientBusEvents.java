@@ -4,7 +4,7 @@ import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
 import net.karen.mccourse.block.entity.ModBlockEntities;
 import net.karen.mccourse.block.entity.renderer.GemEmpoweringBlockEntityRenderer;
-import net.karen.mccourse.item.ImageTooltipComponent;
+import net.karen.mccourse.util.ImageTooltipComponent;
 import net.karen.mccourse.particle.AlexandriteParticles;
 import net.karen.mccourse.particle.BouncyBallsParticles;
 import net.karen.mccourse.particle.ModParticles;
