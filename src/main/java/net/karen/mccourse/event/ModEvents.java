@@ -79,6 +79,7 @@ import java.util.function.Supplier;
 import static net.karen.mccourse.item.custom.MccourseBottleItem.createMccourseBottleWithXP;
 import static net.karen.mccourse.util.ChatUtil.*;
 import static net.karen.mccourse.util.Utils.*;
+import static net.minecraft.network.chat.CommonComponents.*;
 
 @Mod.EventBusSubscriber(modid = MCCourseMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
@@ -486,13 +487,13 @@ public class ModEvents {
                             // JSON file -> I18n = en_us.json
                             String enchant = enchantment.getDescriptionId(), descriptionValue = enchant + ".desc";
                             if (level > 0 || I18n.exists(descriptionValue)) {
-                                // Enchantment Level with Arabic numeral
+                                // Enchantment Level with Arabic numeral + Enchantment compatibility
                                 MutableComponent name = description(enchant, color, List.of(!isCurse, isCurse))
-                                    .append(CommonComponents.SPACE).append(Component.literal(String.valueOf(level))),
-                                icon = icon(isCurse, enchantment), // Enchantment compatibility
+                                       .append(SPACE).append(Component.literal(String.valueOf(level)))
+                                       .append(SPACE).append(icon(isCurse, enchantment)),
                                 details = description(descriptionValue, color, List.of(false, false)); // Enchantment description
                                 // Number line of enchantments and enchantment descriptions
-                                tooltip.set(i, name.append(icon).append(details));
+                                tooltip.set(i, name.append(NEW_LINE).append(details).append(EMPTY));
                             }
                             break;
                         }
@@ -511,7 +512,7 @@ public class ModEvents {
                 case BOW, CROSSBOW -> bow; case WEAPON -> sword; case TRIDENT -> trident; case FISHING_ROD -> fish;
                 case BREAKABLE -> axe + " " + fish + " " + pick + " " + armor + " " + sword + " " + bow + " " + trident +
                 " " + hammer + " " + shield; default -> ""; };
-        return Component.literal(" " + icon + " ").append(CommonComponents.NEW_LINE);
+        return Component.literal(icon + " ");
     }
 
     // Credits by Parlack - Pickaxe modes - https://www.youtube.com/watch?v=pBo1c3hM3b0
@@ -1581,37 +1582,6 @@ public class ModEvents {
                 image(elements, "textures/misc/unlock_off.png", 16, 16,
                         "§a * Item unlocked! * §7- Press §eV§7 §ato lock", !locked); // UNLOCKED
             }
-        }
-    }
-
-    // CUSTOM EVENT - SCROLL TOOLTIP
-    private static TooltipUtil currentTooltip = null;
-
-    @SubscribeEvent
-    public static void onTooltip(RenderTooltipEvent.GatherComponents event) {
-        ItemStack item = event.getItemStack();
-        List<Either<FormattedText, TooltipComponent>> lines = event.getTooltipElements();
-        if (item.isEnchantable() || lines.size() > 5) {
-            List<Component> allLines = new ArrayList<>();
-            for (Either<FormattedText, TooltipComponent> entry : lines) {
-                if (entry.left().isPresent()) {
-                    FormattedText formatted = entry.left().get();
-                    allLines.add(Component.empty().append(formatted.getString()));
-                    allLines.add(CommonComponents.EMPTY);
-                }
-            }
-            currentTooltip = new TooltipUtil(allLines);
-            event.getTooltipElements().clear();
-            event.getTooltipElements().add(Either.right(currentTooltip));
-        }
-    }
-
-    @SubscribeEvent
-    public static void onScroll(ScreenEvent.MouseScrolled.Pre event) {
-        if (currentTooltip != null && event.getScrollDelta() != 0) {
-            if (event.getScrollDelta() > 0) { currentTooltip.scrollUp(); }
-            else { currentTooltip.scrollDown(); }
-            event.setCanceled(true);
         }
     }
 }

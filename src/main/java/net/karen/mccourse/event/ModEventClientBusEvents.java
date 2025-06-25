@@ -9,7 +9,6 @@ import net.karen.mccourse.particle.AlexandriteParticles;
 import net.karen.mccourse.particle.BouncyBallsParticles;
 import net.karen.mccourse.particle.ModParticles;
 import net.karen.mccourse.util.KeyBinding;
-import net.karen.mccourse.util.TooltipUtil;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -20,7 +19,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
 import java.util.function.Function;
 
 @Mod.EventBusSubscriber(modid = MCCourseMod.MOD_ID,
@@ -75,6 +73,5 @@ public class ModEventClientBusEvents {
     public static void registerTooltip(RegisterClientTooltipComponentFactoriesEvent event) {
         // Register custom image tooltip
         event.register(ImageTooltipComponent.class, Function.identity());
-        event.register(TooltipUtil.class, Function.identity());
     }
 }
