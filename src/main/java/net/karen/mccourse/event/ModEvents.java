@@ -3,6 +3,7 @@ package net.karen.mccourse.event;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.karen.mccourse.MCCourseMod;
@@ -42,6 +43,7 @@ import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.npc.*;
 import net.minecraft.world.entity.player.*;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.*;
@@ -1569,9 +1571,9 @@ public class ModEvents {
     // CUSTOM EVENT - TOOLTIP IMAGE
     @SubscribeEvent
     public static void renderTooltip(RenderTooltipEvent.GatherComponents event) {
-        final ItemStack item = event.getItemStack();
+        ItemStack item = event.getItemStack();
         if (enchant(item, ModEnchantments.UNLOCK.get()) > 0) { // Item contains UNLOCK enchantment
-            final var elements = event.getTooltipElements();
+            List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements();
             if (item.getTag() != null && item.hasTag()) {
                 boolean locked = item.getTag().getBoolean("Locked"); // Locked NBT change stage
                 image(elements, "textures/misc/unlock_on.png", 16, 16,
@@ -1579,6 +1581,37 @@ public class ModEvents {
                 image(elements, "textures/misc/unlock_off.png", 16, 16,
                         "§a * Item unlocked! * §7- Press §eV§7 §ato lock", !locked); // UNLOCKED
             }
+        }
+    }
+
+    // CUSTOM EVENT - SCROLL TOOLTIP
+    private static TooltipUtil currentTooltip = null;
+
+    @SubscribeEvent
+    public static void onTooltip(RenderTooltipEvent.GatherComponents event) {
+        ItemStack item = event.getItemStack();
+        List<Either<FormattedText, TooltipComponent>> lines = event.getTooltipElements();
+        if (item.isEnchantable() || lines.size() > 5) {
+            List<Component> allLines = new ArrayList<>();
+            for (Either<FormattedText, TooltipComponent> entry : lines) {
+                if (entry.left().isPresent()) {
+                    FormattedText formatted = entry.left().get();
+                    allLines.add(Component.empty().append(formatted.getString()));
+                    allLines.add(CommonComponents.EMPTY);
+                }
+            }
+            currentTooltip = new TooltipUtil(allLines);
+            event.getTooltipElements().clear();
+            event.getTooltipElements().add(Either.right(currentTooltip));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onScroll(ScreenEvent.MouseScrolled.Pre event) {
+        if (currentTooltip != null && event.getScrollDelta() != 0) {
+            if (event.getScrollDelta() > 0) { currentTooltip.scrollUp(); }
+            else { currentTooltip.scrollDown(); }
+            event.setCanceled(true);
         }
     }
 }

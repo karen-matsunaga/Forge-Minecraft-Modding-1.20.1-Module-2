@@ -9,6 +9,7 @@ import net.karen.mccourse.particle.AlexandriteParticles;
 import net.karen.mccourse.particle.BouncyBallsParticles;
 import net.karen.mccourse.particle.ModParticles;
 import net.karen.mccourse.util.KeyBinding;
+import net.karen.mccourse.util.TooltipUtil;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -74,5 +75,6 @@ public class ModEventClientBusEvents {
     public static void registerTooltip(RegisterClientTooltipComponentFactoriesEvent event) {
         // Register custom image tooltip
         event.register(ImageTooltipComponent.class, Function.identity());
+        event.register(TooltipUtil.class, Function.identity());
     }
 }
