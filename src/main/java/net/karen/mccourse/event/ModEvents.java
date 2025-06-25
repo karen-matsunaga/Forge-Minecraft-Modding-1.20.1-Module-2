@@ -33,6 +33,7 @@ import net.minecraft.network.chat.*;
 import net.minecraft.server.level.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.effect.*;
@@ -1569,9 +1570,8 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - TOOLTIP IMAGE
     @SubscribeEvent
-    public static void renderTooltip(RenderTooltipEvent.GatherComponents event) {
+    public static void activatedUnlockOnRenderTooltip(RenderTooltipEvent.GatherComponents event) {
         ItemStack item = event.getItemStack();
         if (enchant(item, ModEnchantments.UNLOCK.get()) > 0) { // Item contains UNLOCK enchantment
             List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements();
@@ -1582,6 +1582,72 @@ public class ModEvents {
                 image(elements, "textures/misc/unlock_off.png", 16, 16,
                         "§a * Item unlocked! * §7- Press §eV§7 §ato lock", !locked); // UNLOCKED
             }
+        }
+    }
+
+    // CUSTOM EVENT - Scroll TOOLTIP
+    public static int scrollOffset = 0;
+    private static final int VISIBLE_LINES = 5;
+    private static int lastTooltipLines = 0;
+    private static ItemStack lastHoveredItem = ItemStack.EMPTY;
+
+    public static void resetScroll() { scrollOffset = 0; }
+
+    public static void scroll(int deltaSteps, int totalLines, int visibleLines) {
+        int maxOffset = Math.max(0, totalLines - visibleLines);
+        scrollOffset += deltaSteps; // +1 up, -1 down
+        scrollOffset = Mth.clamp(scrollOffset, 0, maxOffset);
+    }
+
+    public static void validateOffset(int totalLines, int visibleLines) {
+        int maxOffset = Math.max(0, totalLines - visibleLines);
+        scrollOffset = Mth.clamp(scrollOffset, 0, maxOffset);
+    }
+
+    @SubscribeEvent
+    public static void onMouseScroll(ScreenEvent.MouseScrolled.Pre event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (!(mc.screen instanceof AbstractContainerScreen<?>)) { return; }
+        double scroll = event.getScrollDelta(); // Mouse scroll tooltip
+        if (scroll == 0) { return; }
+        int scrollSteps = (int) Math.signum(scroll); // +1 ou -1
+        scroll(-scrollSteps, lastTooltipLines, VISIBLE_LINES); // Invert the sign
+        event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void onTooltipGather(RenderTooltipEvent.GatherComponents event) {
+        List<Either<FormattedText, TooltipComponent>> original = event.getTooltipElements(); // Original text
+        int total = original.size(); // Original text size
+        lastTooltipLines = total; // Used in the scroll event
+        if (total <= VISIBLE_LINES) {
+            resetScroll();
+            return;
+        }
+        validateOffset(total, VISIBLE_LINES);
+        int start = scrollOffset, end = Math.min(start + VISIBLE_LINES, total);
+        if (start >= end) start = Math.max(0, total - VISIBLE_LINES);
+        List<Either<FormattedText, TooltipComponent>> view = new ArrayList<>();
+        for (int i = start; i < end; i++) { view.add(original.get(i)); } // Added ORIGINAL lines on VIEW list
+        if (!view.isEmpty()) {
+            original.clear(); // Clear old tooltip
+            original.addAll(view); // Added new tooltip
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRenderScreen(ScreenEvent.Render.Post event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (!(mc.screen instanceof AbstractContainerScreen<?> screen)) { return; }
+        Slot hoveredSlot = screen.getSlotUnderMouse(); // Slot where the mouse is positioned
+        if (hoveredSlot == null || !hoveredSlot.hasItem()) {
+            lastHoveredItem = ItemStack.EMPTY;
+            return;
+        }
+        ItemStack current = hoveredSlot.getItem(); // Item that will have mouse scroll in the tooltip
+        if (!ItemStack.matches(current, lastHoveredItem)) {
+            resetScroll();
+            lastHoveredItem = current.copy();
         }
     }
 }
