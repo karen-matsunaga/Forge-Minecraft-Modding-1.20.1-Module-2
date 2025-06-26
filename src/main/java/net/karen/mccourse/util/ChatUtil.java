@@ -48,9 +48,14 @@ public class ChatUtil {
         player.displayClientMessage(componentLiteral(message, color), true);
     }
 
+    public static void playerStyle(Player player, String message, ChatFormatting color) {
+        player.displayClientMessage(componentLiteralStyle(message, color), true);
+    }
+
     // CUSTOM METHOD - Using RGB colors and BOLD format
-    public static void style(Player player, String message, ChatFormatting color) {
-        player.displayClientMessage(componentLiteralStyle("Glowing " + message, color), true);
+    public static void glow(Player player, boolean test, String message, String message1) {
+        player.displayClientMessage(componentLiteralStyle("Glowing " + (test ? message : message1),
+              (test ? green : red)), true);
     }
 
     // CUSTOM METHOD - Using RGB colors and BOLD format
@@ -83,11 +88,11 @@ public class ChatUtil {
 
     // INVALID message
     public static void invalidMessage(Player player, String invalid) {
-        player(player, invalid, Utils.darkRed);
+        playerStyle(player, invalid, Utils.darkRed);
     }
 
     public static void tradeMessage(Player player, String trade) {
-        player(player, trade, Utils.red);
+        playerStyle(player, trade, Utils.red);
     }
 
     // TOOLTIP true/false messages
@@ -96,11 +101,6 @@ public class ChatUtil {
             tooltip.add(CommonComponents.EMPTY);
             line(tooltip, message);
         }
-    }
-
-    // DISPLAY
-    public static void glow(Player player, String name, ChatFormatting color) {
-        style(player, name, color);
     }
 
     // CUSTOM METHOD - [X, Y, Z] Coordinates
@@ -112,10 +112,9 @@ public class ChatUtil {
 
     // CUSTOM METHOD - Light numbers
     public static Component numbers(int totalLight, int skyLight, int blockLight) {
-        String light = String.valueOf(totalLight), sky = String.valueOf(skyLight), block = String.valueOf(blockLight);
-        return Component.literal("Light: ").append(customStyle(light, totalLight))
-               .append(standardLiteral("  Sky: ")).append(customStyle(sky, skyLight))
-               .append(standardLiteral("  Block: ")).append(customStyle(block, blockLight));
+        return Component.literal("Light:").append(customStyle(" " + totalLight, totalLight))
+               .append(standardLiteral("  Sky:")).append(customStyle(" " + skyLight, skyLight))
+               .append(standardLiteral("  Block:")).append(customStyle(" " + blockLight, blockLight));
     }
 
     // CUSTOM METHOD - Chat message on prompt

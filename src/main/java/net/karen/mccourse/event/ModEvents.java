@@ -311,9 +311,9 @@ public class ModEvents {
                 if (isEnchanted) { // Player has a HELMET inputted on slot and GLOWING MOBS enchantment level
                     boolean newState = !current; // Default stage is FALSE
                     glowingState.put(playerUUID, newState); // Adapted "newState" of "current" stage
-                    glow(player, newState ? "Mobs: ON!" : "Mobs: OFF!", newState ? green : red); // Toggle ON/OFF
+                    glow(player, newState, "Mobs: ON!", "Mobs: OFF!"); // Toggle ON/OFF
                 }
-                else { glow(player, "Mobs: Enchanted helmet!", darkRed); } // Hasn't item
+                else { invalidMessage(player, "Mobs: Enchanted helmet!"); } // Hasn't item
             }
             if (current && isEnchanted) {
                 // Key (Color) -> Each group represent with some color. Value (Group tag name) -> Represent as Tag.
@@ -346,34 +346,34 @@ public class ModEvents {
     @SubscribeEvent
     public static void enchantmentTooltipDescriptions(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
-        List<Component> tooltip = event.getToolTip();
+        List<Component> tooltip = event.getToolTip(); // Original line
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
         if (!stack.isEmpty() && stack.isEnchanted() || stack.getItem() == Items.ENCHANTED_BOOK) {
             if (!enchantments.isEmpty()) {
                 for (int i = 0; i < tooltip.size(); i++) {
                     String raw = ChatFormatting.stripFormatting(tooltip.get(i).getString()); // Detected old line
                     for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                        Enchantment enchantment = entry.getKey();
-                        int level = entry.getValue();
-                        String expected = Component.translatable(enchantment.getDescriptionId()).getString();
+                        Enchantment enchantment = entry.getKey(); // Enchantment name
+                        int level = entry.getValue(); // Enchantment level
+                        String expected = standardTranslatable(enchantment.getDescriptionId()).getString();
                         if (raw != null && raw.startsWith(expected)) { // Raw has "expected" line replace old to new tooltip
                             boolean isCurse = enchantment.isCurse();
-                            ChatFormatting color = isCurse ? ChatFormatting.RED :
+                            ChatFormatting color = isCurse ? red :
                                 switch (enchantment.category) { // Replace this line with custom styled version
-                                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> gold;
-                                    case DIGGER -> darkPurple; case FISHING_ROD -> yellow; case TRIDENT -> aqua;
-                                    case WEAPON -> darkRed; case BOW, CROSSBOW -> green; case BREAKABLE -> darkGreen;
-                                    default -> gray; };
+                                    case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> gold; case FISHING_ROD -> yellow;
+                                    case DIGGER -> darkPurple; case BREAKABLE -> darkGreen; case TRIDENT -> aqua;
+                                    case WEAPON -> darkRed; case BOW, CROSSBOW -> green; default -> gray; };
                             // JSON file -> I18n = en_us.json
                             String enchant = enchantment.getDescriptionId(), descriptionValue = enchant + ".desc";
                             if (level > 0 || I18n.exists(descriptionValue)) {
-                                // Enchantment Level with Arabic numeral + Enchantment compatibility
+                                // Enchantment Level with Arabic numeral + Enchantment compatibility + Enchantment description
                                 MutableComponent name = description(enchant, color, List.of(!isCurse, isCurse))
-                                       .append(SPACE).append(Component.literal(String.valueOf(level)))
-                                       .append(SPACE).append(icon(isCurse, enchantment)),
-                                details = description(descriptionValue, color, List.of(false, false)); // Enchantment description
+                                .append(standardLiteral(" " + level + " ")).append(icon(isCurse, enchantment)),
+                                desc = description(descriptionValue, color, List.of(false, false));
                                 // Number line of enchantments and enchantment descriptions
-                                tooltip.set(i, name.append(NEW_LINE).append(details).append(EMPTY));
+                                tooltip.set(i, name);
+                                tooltip.add(i + 1, desc);
+                                tooltip.add(i + 2, EMPTY);
                             }
                             break;
                         }
@@ -613,10 +613,9 @@ public class ModEvents {
                 if (hasItem) { // Has enchanted HELMET or Metal Detector
                     boolean newState = !worldVar.xray; // Adapted "newState" of "worldVar.xray" stage
                     change(worldVar, newState, world);
-                    // Toggle ON/OFF
-                    glow(player, newState ? "Blocks: Activated" : "Blocks: Disabled", newState ? green : red);
+                    glow(player, newState, "Blocks: ON!", "Blocks: OFF!"); // Toggle ON/OFF
                 }
-                else { glow(player, "Blocks: Enchanted helmet or Metal detector!", darkRed); } // Hasn't item
+                else { invalidMessage(player, "Blocks: Enchanted helmet or Metal detector!"); } // Hasn't item
             }
             if (!hasItem && worldVar.xray) { change(worldVar, false, world); } // Glowing Blocks disabled
         }
