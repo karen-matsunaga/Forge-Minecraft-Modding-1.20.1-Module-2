@@ -16,12 +16,24 @@ import static net.karen.mccourse.util.Utils.*;
 
 public class ChatUtil {
     // GENERAL METHODS
+    public static Component standardLiteral(String message) {
+        return Component.literal(message);
+    }
+
+    public static Component standardTranslatable(String message) {
+        return Component.translatable(message);
+    }
+
     public static Component componentLiteral(String message, ChatFormatting color) {
         return Component.literal(message).withStyle(color);
     }
 
     public static Component componentLiteralStyle(String message, ChatFormatting color) {
         return Component.literal(message).setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD));
+    }
+
+    public static Component customStyle(String number, int light) {
+        return Component.literal(String.valueOf(number)).setStyle(Style.EMPTY.withColor(light > 6 ? 0x32FC76 : 0xFF1818));
     }
 
     public static Component componentTranslatable(String message, ChatFormatting color) {
@@ -43,9 +55,8 @@ public class ChatUtil {
 
     // CUSTOM METHOD - Using RGB colors and BOLD format
     public static MutableComponent description(String tooltip, ChatFormatting color,
-                                                List<Boolean> curse) {
-        return Component.translatable(tooltip).withStyle(Style.EMPTY.withColor(color)
-               .withBold(curse.get(0)).withItalic(curse.get(1)));
+                                               List<Boolean> curse) {
+        return Component.translatable(tooltip).withStyle(Style.EMPTY.withColor(color).withBold(curse.get(0)).withItalic(curse.get(1)));
     }
 
     public static void line(List<Component> tooltip, String message) {
@@ -94,20 +105,17 @@ public class ChatUtil {
 
     // CUSTOM METHOD - [X, Y, Z] Coordinates
     public static Component literal(double x, double y, double z) {
-        return Component.literal("X: ").append(Component.literal(String.format("%.3f", x)).withStyle(aqua))
-        .append(Component.literal("  Y: ")).append(Component.literal(String.format("%.5f", y)).withStyle(purple))
-        .append(Component.literal("  Z: ")).append(Component.literal(String.format("%.3f", z)).withStyle(gold));
+        return Component.literal("X: ").append(componentLiteral(String.format("%.3f", x), aqua))
+        .append(standardLiteral("  Y: ")).append(componentLiteral(String.format("%.5f", y), purple))
+        .append(standardLiteral("  Z: ")).append(componentLiteral(String.format("%.3f", z), gold));
     }
 
     // CUSTOM METHOD - Light numbers
     public static Component numbers(int totalLight, int skyLight, int blockLight) {
-        return Component.literal("Light: ").append(Component.literal(String.valueOf(totalLight))
-                        .setStyle(Style.EMPTY.withColor(totalLight > 6 ? 0x32FC76 : 0xFF1818)))
-                .append(Component.literal("  Sky: ")).append(Component.literal(String.valueOf(skyLight))
-                        .setStyle(Style.EMPTY.withColor(skyLight > 6 ? 0x32FC76 : 0xFF1818)))
-                .append(Component.literal("  Block: ")).append(Component.literal(String.valueOf(blockLight))
-                        .setStyle(Style.EMPTY.withColor(blockLight > 6 ? 0x32FC76 : 0xFF1818)));
-
+        String light = String.valueOf(totalLight), sky = String.valueOf(skyLight), block = String.valueOf(blockLight);
+        return Component.literal("Light: ").append(customStyle(light, totalLight))
+               .append(standardLiteral("  Sky: ")).append(customStyle(sky, skyLight))
+               .append(standardLiteral("  Block: ")).append(customStyle(block, blockLight));
     }
 
     // CUSTOM METHOD - Chat message on prompt
@@ -118,20 +126,21 @@ public class ChatUtil {
     // CUSTOM METHOD - Enchantment Icon compatibility
     public static MutableComponent icon(boolean isCurse, Enchantment enchantment) {
         String armor = "§6⭐", pick = "§5⛏", bow = "§a\uD83C\uDFF9", sword = "§4\uD83D\uDDE1", trident = "§b\uD83D\uDD31",
-                fish = "§e\uD83C\uDFA3", axe = "§5\uD83E\uDE93", hammer = "§3🔨", shield = "§1🛡",
-                icon = isCurse ? "§c🔥" :
+               fish = "§e\uD83C\uDFA3", axe = "§5\uD83E\uDE93", hammer = "§3🔨", shield = "§1🛡",
+               icon = isCurse ? "§c🔥" :
                         switch (enchantment.category) { // Replace this line with custom styled version
                             case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> armor; case DIGGER -> pick + " " + axe;
                             case BOW, CROSSBOW -> bow; case WEAPON -> sword; case TRIDENT -> trident; case FISHING_ROD -> fish;
                             case BREAKABLE -> axe + " " + fish + " " + pick + " " + armor + " " + sword + " " + bow + " " + trident +
-                                    " " + hammer + " " + shield; default -> ""; };
+                                              " " + hammer + " " + shield; default -> ""; };
         return Component.literal(icon + " ");
     }
 
     // CUSTOM METHOD - Vault item display
     public static Component itemChatMessage(Player player, BlockPos pos, ChatFormatting color) {
-        return Component.literal(player.getGameProfile().getName() + " died at [X: " +
-                pos.getX() + ", Y: " + pos.getY() + ", Z: " + pos.getZ() + "] " + LocalTime.now().format(
-                DateTimeFormatter.ofPattern("HH:mm:ss"))).withStyle(Style.EMPTY.withColor(color).withItalic(false));
+        int x = pos.getX(), y = pos.getY(), z = pos.getZ();
+        return Component.literal(player.getGameProfile().getName() + " died at [X: " + x + ", Y: " + y + ", Z: " + z + "] " +
+               LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+               .withStyle(Style.EMPTY.withColor(color).withItalic(false));
     }
 }
