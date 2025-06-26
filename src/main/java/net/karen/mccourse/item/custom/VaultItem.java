@@ -1,5 +1,6 @@
 package net.karen.mccourse.item.custom;
 
+import net.karen.mccourse.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -13,8 +14,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
+import static net.karen.mccourse.util.ChatUtil.componentLiteral;
+import static net.karen.mccourse.util.ChatUtil.tooltipLine;
 
 public class VaultItem extends Item {
     public VaultItem(Properties properties) { super(properties); }
@@ -39,17 +41,14 @@ public class VaultItem extends Item {
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         if (stack.getTag() != null && stack.getTag().contains("DisplayName")) {
-            return message(stack.getTag().getString("DisplayName")); // Name item
+            return componentLiteral(stack.getTag().getString("DisplayName")); // Name item
         }
         return super.getName(stack);
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltip,
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip,
                                 @NotNull TooltipFlag tooltipFlag) {
-        tooltip.add(message("Restored all items from inventory!")); // Description item
-        super.appendHoverText(stack, level, tooltip, tooltipFlag);
+        tooltipLine(tooltip, "Restored all items from inventory!", Utils.darkBlue); // Description item
     }
-
-    private Component message(String message) { return Component.literal(message); }
 }

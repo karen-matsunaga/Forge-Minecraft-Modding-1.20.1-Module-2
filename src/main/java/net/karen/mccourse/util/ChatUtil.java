@@ -68,6 +68,14 @@ public class ChatUtil {
         style(player, name, color);
     }
 
+    public static Component componentLiteral(String message) {
+        return Component.literal(message);
+    }
+
+    public static Component componentTranslatable(String message) {
+        return Component.translatable(message);
+    }
+
     // CUSTOM METHOD - [X, Y, Z] Coordinates
     public static Component literal(double x, double y, double z) {
         return Component.literal("X: ").append(Component.literal(String.format("%.3f", x)).withStyle(aqua))
