@@ -502,6 +502,7 @@ public class ModEvents {
                 }
             }
         }
+        if (enchant(stack, ModEnchantments.UNLOCK.get()) > 0) { tooltip.add(EMPTY); } // Item with UNLOCK enchantment
     }
 
     private static MutableComponent icon(boolean isCurse, Enchantment enchantment) {
