@@ -1,11 +1,5 @@
 package net.karen.mccourse.item.custom;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Camera;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -17,13 +11,11 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,8 +48,10 @@ public class HammerItem extends DiggerItem implements Vanishable {
         Vec3 eye = player.getEyePosition(1f), look = player.getViewVector(1f),
              reach = eye.add(look.scale(6f));
 
-        BlockHitResult traceResult = player.level().clip(new ClipContext(eye, reach, ClipContext.Block.COLLIDER,
-                ClipContext.Fluid.NONE, player));
+        ClipContext.Block block = ClipContext.Block.COLLIDER;
+        ClipContext.Fluid fluid = ClipContext.Fluid.NONE;
+
+        BlockHitResult traceResult = player.level().clip(new ClipContext(eye, reach, block, fluid, player));
 
         if (traceResult.getType() == HitResult.Type.MISS) { return positions; }
 
@@ -95,39 +89,5 @@ public class HammerItem extends DiggerItem implements Vanishable {
             CompoundTag tag = stack.getOrCreateTag(); // Added Unbreakable tag
             tag.putBoolean("Unbreakable", true);
         }
-    }
-
-    // CUSTOM METHOD - Create Render HAMMER Highlight Block
-    private static List<BlockPos> highlightedBlocks = List.of(); // Preview Blocks
-    private static int ticksRemaining = 0;
-
-    // CUSTOM METHOD - Create Render HIGHLIGHT blocks
-    public static void setHighlightedBlocks(List<BlockPos> blocks) {
-        highlightedBlocks = blocks;
-        ticksRemaining = 20; // 1 second highlight disappears
-    }
-
-    // CUSTOM METHOD - Render HIGHLIGHT ticks
-    public static void clientTick() {
-        if (ticksRemaining > 0) {
-            ticksRemaining--;
-            if (ticksRemaining == 0) { highlightedBlocks = List.of(); } // Clean Highlighted Blocks list
-        }
-    }
-
-    // CUSTOM METHOD - Render HIGHLIGHT blocks
-    public static void renderHighlight(PoseStack pose, Camera camera, MultiBufferSource buffer) {
-        if (!highlightedBlocks.isEmpty()) {
-            Vec3 camPos = camera.getPosition(); // Player position
-            highlightedBlocks.forEach(pos -> { AABB box = new AABB(pos).move(-camPos.x, -camPos.y, -camPos.z);
-                drawBox(pose, buffer, box, 1f, 1f, 0f, 0.4f); }); // Highlighted blocks transparent Yellow
-        }
-    }
-
-    // CUSTOM METHOD - Draw BOX to highlight blocks
-    public static void drawBox(PoseStack pose, MultiBufferSource buffer, AABB box,
-                               float r, float g, float b, float alpha) {
-        VertexConsumer builder = buffer.getBuffer(RenderType.lines());
-        LevelRenderer.renderLineBox(pose, builder, box, r, g, b, alpha);
     }
 }

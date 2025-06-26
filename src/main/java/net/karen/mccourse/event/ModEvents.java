@@ -33,7 +33,6 @@ import net.minecraft.network.chat.*;
 import net.minecraft.server.level.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.effect.*;
@@ -87,8 +86,6 @@ public class ModEvents {
     /* CUSTOM EVENT - Hammer's tool - Don't be a jerk License - Done with the help of
        https://github.com/CoFH/CoFHCore/blob/1.19.x/src/main/java/cofh/core/event/AreaEffectEvents.java */
     private static final Set<BlockPos> HARVESTED_BLOCKS = new HashSet<>(); // Hammer's receive blocks range
-    private static BlockPos lastSentPos = null; // Hammer Tick position
-    private static int tickDelay = 0; // Hammer Tick delay
 
     @SubscribeEvent
     public static void onHammerUsage(BlockEvent.BreakEvent event) {
@@ -108,33 +105,6 @@ public class ModEvents {
                 serverPlayer.gameMode.destroyBlock(pos); // Player destroyed block with Hammer tool
                 HARVESTED_BLOCKS.remove(pos);
             }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onHammerTick(TickEvent.ClientTickEvent event) {
-        Minecraft mc = Minecraft.getInstance();
-        Player player = mc.player;
-        if (event.phase == TickEvent.Phase.END && player != null) {
-            HitResult hit = mc.hitResult;
-            HammerItem.clientTick();
-            if (!(player.getMainHandItem().getItem() instanceof HammerItem)) { lastSentPos = null; return; }
-            if (hit == null || hit.getType() != HitResult.Type.BLOCK) { return; } // Player hasn't HammerItem
-            BlockPos pos = ((BlockHitResult) hit).getBlockPos();
-            if (!pos.equals(lastSentPos) && tickDelay-- <= 0) { // Hammer render position
-                lastSentPos = pos;
-                tickDelay = 5;
-                ModNetworks.PACKET_HANDLER.sendToServer(new HammerBlockRenderServerMessage(pos));
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onHammerRender(RenderLevelStageEvent event) { // Hammer Highlight Renderer blocks
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-            HammerItem.renderHighlight(event.getPoseStack(), event.getCamera(), bufferSource); // Renderer block positions
-            bufferSource.endBatch(); // Finish the drawing!
         }
     }
 
@@ -1569,72 +1539,6 @@ public class ModEvents {
                 image(elements, "textures/misc/unlock_off.png", 9, 9,
                         "§aItem unlocked! §7- Press §eV§7 §ato lock", !locked); // UNLOCKED
             }
-        }
-    }
-
-    // CUSTOM EVENT - Scroll TOOLTIP
-    public static int scrollOffset = 0;
-    private static final int VISIBLE_LINES = 5;
-    private static int lastTooltipLines = 0;
-    private static ItemStack lastHoveredItem = ItemStack.EMPTY;
-
-    public static void resetScroll() { scrollOffset = 0; }
-
-    public static void scroll(int deltaSteps, int totalLines, int visibleLines) {
-        int maxOffset = Math.max(0, totalLines - visibleLines);
-        scrollOffset += deltaSteps; // +1 up, -1 down
-        scrollOffset = Mth.clamp(scrollOffset, 0, maxOffset);
-    }
-
-    public static void validateOffset(int totalLines, int visibleLines) {
-        int maxOffset = Math.max(0, totalLines - visibleLines);
-        scrollOffset = Mth.clamp(scrollOffset, 0, maxOffset);
-    }
-
-    @SubscribeEvent
-    public static void onMouseScroll(ScreenEvent.MouseScrolled.Pre event) {
-        Minecraft mc = Minecraft.getInstance();
-        if (!(mc.screen instanceof AbstractContainerScreen<?>)) { return; }
-        double scroll = event.getScrollDelta(); // Mouse scroll tooltip
-        if (scroll == 0) { return; }
-        int scrollSteps = (int) Math.signum(scroll); // +1 ou -1
-        scroll(-scrollSteps, lastTooltipLines, VISIBLE_LINES); // Invert the sign
-        event.setCanceled(true);
-    }
-
-    @SubscribeEvent
-    public static void onTooltipGather(RenderTooltipEvent.GatherComponents event) {
-        List<Either<FormattedText, TooltipComponent>> original = event.getTooltipElements(); // Original text
-        int total = original.size(); // Original text size
-        lastTooltipLines = total; // Used in the scroll event
-        if (total <= VISIBLE_LINES) {
-            resetScroll();
-            return;
-        }
-        validateOffset(total, VISIBLE_LINES);
-        int start = scrollOffset, end = Math.min(start + VISIBLE_LINES, total);
-        if (start >= end) start = Math.max(0, total - VISIBLE_LINES);
-        List<Either<FormattedText, TooltipComponent>> view = new ArrayList<>();
-        for (int i = start; i < end; i++) { view.add(original.get(i)); } // Added ORIGINAL lines on VIEW list
-        if (!view.isEmpty()) {
-            original.clear(); // Clear old tooltip
-            original.addAll(view); // Added new tooltip
-        }
-    }
-
-    @SubscribeEvent
-    public static void onRenderScreen(ScreenEvent.Render.Post event) {
-        Minecraft mc = Minecraft.getInstance();
-        if (!(mc.screen instanceof AbstractContainerScreen<?> screen)) { return; }
-        Slot hoveredSlot = screen.getSlotUnderMouse(); // Slot where the mouse is positioned
-        if (hoveredSlot == null || !hoveredSlot.hasItem()) {
-            lastHoveredItem = ItemStack.EMPTY;
-            return;
-        }
-        ItemStack current = hoveredSlot.getItem(); // Item that will have mouse scroll in the tooltip
-        if (!ItemStack.matches(current, lastHoveredItem)) {
-            resetScroll();
-            lastHoveredItem = current.copy();
         }
     }
 }
