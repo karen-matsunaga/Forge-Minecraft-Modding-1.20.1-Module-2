@@ -3,13 +3,14 @@ package net.karen.mccourse.util;
 import com.mojang.datafixers.util.Either;
 import net.karen.mccourse.MCCourseMod;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.Style;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.enchantment.Enchantment;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import static net.karen.mccourse.util.Utils.*;
 
@@ -38,6 +39,13 @@ public class ChatUtil {
     // CUSTOM METHOD - Using RGB colors and BOLD format
     public static void style(Player player, String message, ChatFormatting color) {
         player.displayClientMessage(componentLiteralStyle("Glowing " + message, color), true);
+    }
+
+    // CUSTOM METHOD - Using RGB colors and BOLD format
+    public static MutableComponent description(String tooltip, ChatFormatting color,
+                                                List<Boolean> curse) {
+        return Component.translatable(tooltip).withStyle(Style.EMPTY.withColor(color)
+               .withBold(curse.get(0)).withItalic(curse.get(1)));
     }
 
     public static void line(List<Component> tooltip, String message) {
@@ -105,5 +113,25 @@ public class ChatUtil {
     // CUSTOM METHOD - Chat message on prompt
     public static void chat(String item, Player player) {
         MCCourseMod.LOGGER.info("Sheep was hit with {} by {}", item, player.getName().getString());
+    }
+
+    // CUSTOM METHOD - Enchantment Icon compatibility
+    public static MutableComponent icon(boolean isCurse, Enchantment enchantment) {
+        String armor = "§6⭐", pick = "§5⛏", bow = "§a\uD83C\uDFF9", sword = "§4\uD83D\uDDE1", trident = "§b\uD83D\uDD31",
+                fish = "§e\uD83C\uDFA3", axe = "§5\uD83E\uDE93", hammer = "§3🔨", shield = "§1🛡",
+                icon = isCurse ? "§c🔥" :
+                        switch (enchantment.category) { // Replace this line with custom styled version
+                            case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> armor; case DIGGER -> pick + " " + axe;
+                            case BOW, CROSSBOW -> bow; case WEAPON -> sword; case TRIDENT -> trident; case FISHING_ROD -> fish;
+                            case BREAKABLE -> axe + " " + fish + " " + pick + " " + armor + " " + sword + " " + bow + " " + trident +
+                                    " " + hammer + " " + shield; default -> ""; };
+        return Component.literal(icon + " ");
+    }
+
+    // CUSTOM METHOD - Vault item display
+    public static Component itemChatMessage(Player player, BlockPos pos, ChatFormatting color) {
+        return Component.literal(player.getGameProfile().getName() + " died at [X: " +
+                pos.getX() + ", Y: " + pos.getY() + ", Z: " + pos.getZ() + "] " + LocalTime.now().format(
+                DateTimeFormatter.ofPattern("HH:mm:ss"))).withStyle(Style.EMPTY.withColor(color).withItalic(false));
     }
 }

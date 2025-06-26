@@ -47,11 +47,9 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.*;
-import net.minecraft.world.item.trading.*;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.*;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.scores.*;
 import net.minecraftforge.client.event.*;
@@ -67,15 +65,11 @@ import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.village.*;
 import net.minecraftforge.eventbus.api.*;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.command.ConfigCommand;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Supplier;
 import static net.karen.mccourse.item.custom.MccourseBottleItem.createMccourseBottleWithXP;
 import static net.karen.mccourse.util.ChatUtil.*;
 import static net.karen.mccourse.util.Utils.*;
@@ -137,30 +131,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Custom Villager's professions and Custom Villager Wandering trades
-    private static VillagerTrades.ItemListing createTrade(List<Item> items,
-                                                          List<Integer> levelCount, float multiplier) {
-        return (pTrader, pRandom) -> new MerchantOffer(new ItemStack(items.get(0), levelCount.get(0)),
-                new ItemStack(items.get(1), levelCount.get(1)), levelCount.get(2), levelCount.get(3), multiplier);
-    }
-
-    private static void normal(Int2ObjectMap<List<VillagerTrades.ItemListing>> trade,
-                               List<Item> items, int level, List<Integer> levelCount, float multiplier) {
-        trade.get(level).add(createTrade(items, levelCount, multiplier));
-    }
-
-    private static VillagerTrades.ItemListing normalTrade(ItemStack costStack1,
-                                                          ItemStack costStack2, Supplier<ItemStack> resultSupplier,
-                                                          int maxUses, int villagerXp, float priceMultiplier) {
-        return (pTrader, pRandom) -> { ItemStack result = resultSupplier.get();
-            return new MerchantOffer(costStack1.copy(), costStack2.copy(), result.copy(), maxUses, villagerXp, priceMultiplier);
-        };
-    }
-
-    private static void wandering(List<VillagerTrades.ItemListing> trade,
-                                  List<Item> items, List<Integer> levelCount, float multiplier) {
-        trade.add(createTrade(items, levelCount, multiplier));
-    }
-
     @SubscribeEvent
     public static void addNormalTrades(VillagerTradesEvent event) {
         Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades(); // List of all trades
@@ -202,40 +172,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - RAINBOW | AUTO SMELT | MORE ORES | MAGNETIC | MULTIPLIER | ACCUMULATOR custom enchantments
-    public static int enchant(ItemStack stack, Enchantment enchantment) {
-        return stack.getEnchantmentLevel(enchantment);
-    }
-
-    public static boolean is(BlockState state, Block block,
-                             float chance, ItemStack item, int type) {
-        int moreOres = enchant(item, ModEnchantments.MORE_ORES.get());
-        boolean hasEnchant = state.is(block) && (Math.random() < chance);
-        switch (type) {
-            case 1 -> hasEnchant = state.is(block) && (Math.random() < chance) && (moreOres < 6);
-            case 2 -> hasEnchant = state.is(block) && (Math.random() < chance) && (moreOres == 6);
-            case 3 -> hasEnchant = state.is(block) && (Math.random() < chance) && (moreOres >= 7);
-        }
-        return hasEnchant;
-    }
-
-    private static void block(LevelAccessor world, BlockPos pos, Block block,
-                              BlockEvent.BreakEvent event) {
-        event.setCanceled(true);
-        if (world instanceof ServerLevel serverLevel) { serverLevel.setBlockAndUpdate(pos, block.defaultBlockState()); }
-        else { world.setBlock(pos, block.defaultBlockState(), 3); }
-    }
-
-    private static void dropXp(BlockState state, ServerLevel serverLevel,
-                               BlockPos pos, int fortune) {
-        int exp = state.getExpDrop(serverLevel, serverLevel.random, pos, fortune, 0);
-        if (exp > 0) { state.getBlock().popExperience(serverLevel, pos, exp); }
-    }
-
-    private static void setPlayerXP(Player player, Level level, int xp) {
-        Vec3 position = new Vec3(player.getBlockX(), player.getBlockY(), player.getBlockZ());
-        ExperienceOrb.award((ServerLevel) level, position, xp);
-    }
-
     @SubscribeEvent
     public static void onPlayerWakeUp(PlayerWakeUpEvent event) { // Gain experience orb when sleep
         Player player = event.getEntity();
@@ -407,12 +343,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Enchantment tooltips
-    private static MutableComponent description(String tooltip, ChatFormatting color,
-                                                List<Boolean> curse) {
-        return Component.translatable(tooltip).withStyle(Style.EMPTY.withColor(color).withBold(curse.get(0))
-                .withItalic(curse.get(1)));
-    }
-
     @SubscribeEvent
     public static void enchantmentTooltipDescriptions(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
@@ -454,26 +384,8 @@ public class ModEvents {
         if (enchant(stack, ModEnchantments.UNLOCK.get()) > 0) { tooltip.add(EMPTY); } // Item with UNLOCK enchantment
     }
 
-    private static MutableComponent icon(boolean isCurse, Enchantment enchantment) {
-        String armor = "§6⭐", pick = "§5⛏", bow = "§a\uD83C\uDFF9", sword = "§4\uD83D\uDDE1", trident = "§b\uD83D\uDD31",
-        fish = "§e\uD83C\uDFA3", axe = "§5\uD83E\uDE93", hammer = "§3🔨", shield = "§1🛡",
-        icon = isCurse ? "§c🔥" :
-            switch (enchantment.category) { // Replace this line with custom styled version
-                case ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_LEGS, ARMOR_FEET -> armor; case DIGGER -> pick + " " + axe;
-                case BOW, CROSSBOW -> bow; case WEAPON -> sword; case TRIDENT -> trident; case FISHING_ROD -> fish;
-                case BREAKABLE -> axe + " " + fish + " " + pick + " " + armor + " " + sword + " " + bow + " " + trident +
-                " " + hammer + " " + shield; default -> ""; };
-        return Component.literal(icon + " ");
-    }
-
     // Credits by Parlack - Pickaxe modes - https://www.youtube.com/watch?v=pBo1c3hM3b0
     // CUSTOM EVENT - Custom Modes Pickaxe event GUI - Using code with some modifications
-    private static void screen(RenderGuiOverlayEvent.Pre event, Minecraft mc, String message,
-                               int x, int y, int color) {
-        event.getGuiGraphics().drawString(mc.font, Component.literal(message).setStyle(Style.EMPTY.withColor(color)
-                .applyFormat(ChatFormatting.BOLD)), x, y, color, false);
-    }
-
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void eventHandler(RenderGuiOverlayEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
@@ -493,10 +405,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Overlay: X Y Z coordinates and Light
-    private static int light(Minecraft mc, LightLayer type, BlockPos pos) {
-        return mc.level != null ? mc.level.getLightEngine().getLayerListener(type).getLightValue(pos) : 0;
-    }
-
     @SubscribeEvent
     public static void overlayCoordinateLight(RenderGuiOverlayEvent event) {
         Minecraft mc = Minecraft.getInstance();
@@ -518,10 +426,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - FLY custom effect
-    private static boolean slot(Player player, EquipmentSlot slot, TagKey<Item> item) {
-        return player.getItemBySlot(slot).is(item); // Active Fly with Item
-    }
-
     @SubscribeEvent
     public static void flyEffect(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
@@ -540,19 +444,6 @@ public class ModEvents {
 
     // Credits by Parlack - Xray - World Renderer - https://www.youtube.com/watch?v=vT4suvo0CAs
     // CUSTOM EVENT - Glowing Blocks xray custom enchantment - Using code with some modifications
-    private static void sendPacket(Player player,
-                                   GlowingBlocksNetworkMessage.SyncedSavedData data) {
-        ModNetworks.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() ->
-                        (ServerPlayer) player), new GlowingBlocksNetworkMessage.SavedDataSyncMessage(data));
-    }
-
-    public static GlowingBlocksNetworkMessage.SyncedSavedData var(Player player, int type) {
-        GlowingBlocksNetworkMessage.SyncedSavedData number = null;
-        switch (type) { case 1 -> number = GlowingBlocksNetworkMessage.Map.get(player.level());
-                        case 2 -> number = GlowingBlocksNetworkMessage.World.get(player.level()); }
-        return number;
-    }
-
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity(); // Player is on world
@@ -654,14 +545,6 @@ public class ModEvents {
         currentStage = stage.get(1);
     }
 
-    @SubscribeEvent
-    public static void renderLevel(RenderLevelStageEvent event) { // Where render block shape on world
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) { stage(List.of(1, 0), List.of(false, true), event); }
-        else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            stage(List.of(2, 0), List.of(true, true), event);
-        }
-    }
-
     private static void renderShapes(RenderLevelStageEvent event) {
         // Created block shape with all blocks and colors defined on renderColors variable
         Minecraft minecraft = Minecraft.getInstance();
@@ -683,9 +566,9 @@ public class ModEvents {
                             double posX = Math.floor(pos.x + xi), posY = Math.floor(pos.y + i), posZ = Math.floor(pos.z + zi);
                             BlockPos position = BlockPos.containing(posX, posY, posZ);
                             int[][] cubeCoordinates = { {0,0,0},{1,0,0},{1,0,0},{1,0,1},{1,0,1},{0,0,1},
-                            {0,0,1},{0,0,0},{0,0,0},{0,1,0},{1,0,0},{1,1,0},
-                            {1,0,1},{1,1,1},{0,0,1},{0,1,1},{0,1,0},{1,1,0},
-                            {1,1,0},{1,1,1},{1,1,1},{0,1,1},{0,1,1},{0,1,0}};
+                                    {0,0,1},{0,0,0},{0,0,0},{0,1,0},{1,0,0},{1,1,0},
+                                    {1,0,1},{1,1,1},{0,0,1},{0,1,1},{0,1,0},{1,1,0},
+                                    {1,1,0},{1,1,1},{1,1,1},{0,1,1},{0,1,1},{0,1,0}};
                             renderColors.forEach((key, value) -> {
                                 if (level.getBlockState(position).is(key)) {
                                     RenderSystem.depthMask(false);
@@ -709,13 +592,12 @@ public class ModEvents {
         }
     }
 
-    private static ItemStack has(Player player, EquipmentSlot slot) {
-        return player.getItemBySlot(slot); // Xray items - Enchanted Helmet or Metal Detector
-    }
-
-    private static void change(GlowingBlocksNetworkMessage.World worldVar, boolean item,
-                               LevelAccessor world) {
-        if (worldVar.xray != item) { worldVar.xray = item; worldVar.syncData(world); }
+    @SubscribeEvent
+    public static void renderLevel(RenderLevelStageEvent event) { // Where render block shape on world
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) { stage(List.of(1, 0), List.of(false, true), event); }
+        else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+            stage(List.of(2, 0), List.of(true, true), event);
+        }
     }
 
     @SubscribeEvent
@@ -741,10 +623,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Decapitator
-    private static boolean isBlock(BlockState state, TagKey<Block> block) {
-        return state.is(block); // Check if it is a log or a leaf
-    }
-
     @SubscribeEvent
     public static void decapitatorBlock(BlockEvent.BreakEvent event) {
         Level level = (Level) event.getLevel();
@@ -805,19 +683,6 @@ public class ModEvents {
         newSpeed(event, blockFly > 0 && efficiency > 0, player, (5 + efficiency));
     }
 
-    private static void newSpeed(PlayerEvent.BreakSpeed event, boolean hasEnchant,
-                                 Player player, int value) {
-        if (hasEnchant) { // CUSTOM METHOD - Set newSpeed adapt with Efficiency enchantment -> Fixed speed mining
-            BlockState state = event.getState();
-            if ((!player.onGround() && !player.isUnderWater()) || player.isUnderWater()) {
-                event.setNewSpeed(event.getOriginalSpeed() * ((float) Math.sqrt(value) + 1));
-            }
-            if (state.is(ModTags.Blocks.BLOCK_FLY_BLOCK_SPEED)) {
-                event.setNewSpeed(event.getOriginalSpeed() * 2.5F + ((float) Math.sqrt(value) + 1));
-            }
-        }
-    }
-
     // CUSTOM EVENT - Mccourse Elevator advanced block
     @SubscribeEvent
     public static void activatedMccourseElevatorOnKeyInput(InputEvent.Key event) {
@@ -827,9 +692,9 @@ public class ModEvents {
             BlockPos pos = BlockPos.containing(player.getX(), player.getY() - 1, player.getZ());
             if (player.level().getBlockState(pos).getBlock() == ModBlocks.MCCOURSE_ELEVATOR.get()) { // Detects JUMP or SHIFT
                 if (InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_SPACE)) {
-                    Utils.network(new MccourseElevatorKeyInputMessage(true));
+                    network(new MccourseElevatorKeyInputMessage(true));
                 }
-                if (player.isShiftKeyDown()) { Utils.network(new MccourseElevatorKeyInputMessage(false)); }
+                if (player.isShiftKeyDown()) { network(new MccourseElevatorKeyInputMessage(false)); }
             }
         }
     }
@@ -839,35 +704,6 @@ public class ModEvents {
     private static final Map<UUID, List<ItemStack>> preservedItems = new HashMap<>(),
     preservedArmor = new HashMap<>(), preservedOffhand = new HashMap<>(), preservedVault = new HashMap<>();
     private static final Map<UUID, int[]> preservedExperience = new HashMap<>();
-
-    private static void setPreservedVault(NonNullList<ItemStack> type, List<ItemStack> store,
-                                          List<ItemStack> vault) {
-        for (int i = 0; i < type.size(); i++) {
-            ItemStack inventory = type.get(i);
-            // Copy of item WITH Eternal enchantment
-            if (!inventory.isEmpty() && enchant(inventory, ModEnchantments.ETERNAL.get()) > 0) {
-                store.set(i, inventory.copy());
-            }
-            // Copy of item WITHOUT Eternal enchantment
-            else { vault.add(inventory.copy()); }
-            // Added on typePreserve or vaultItems removes stack on Inventory, Armor and Offhand slots
-            type.set(i, ItemStack.EMPTY);
-        }
-    }
-
-    private static Component itemChatMessage(Player player, BlockPos pos, ChatFormatting color) {
-        return Component.literal(player.getGameProfile().getName() + " died at [X: " +
-        pos.getX() + ", Y: " + pos.getY() + ", Z: " + pos.getZ() + "] " + LocalTime.now().format(
-        DateTimeFormatter.ofPattern("HH:mm:ss"))).withStyle(Style.EMPTY.withColor(color).withItalic(false));
-    }
-
-    private static void setRestoredVault(NonNullList<ItemStack> type, List<ItemStack> restored) {
-        if (restored != null) { // Player receives items after death
-            for (int i = 0; i < restored.size(); i++) {
-                if (!restored.get(i).isEmpty()) { type.set(i, restored.get(i)); } // Added all items on Player inventory
-            }
-        }
-    }
 
     @SubscribeEvent
     public static void activatedEternalEnchantmentOnPlayerDeath(LivingDeathEvent event) {
@@ -941,26 +777,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Crop replant
-    private static boolean cropAge(BlockState state, Block block,
-                                   IntegerProperty property, int value) {
-        return state.getBlock().equals(block) && state.getValue(property).equals(value);
-    }
-
-    private static void damageToolIfHoe(ItemStack tool, Player player) {
-        if (tool.getItem() instanceof HoeItem) { // CUSTOM METHOD - Damage tool
-            tool.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
-        }
-    }
-
-    private static void crop(Block block, BlockState state, Level level, BlockPos pos,
-                             Player player, BlockEvent.BreakEvent event, ItemStack tool) {
-        event.setCanceled(true); // Cancels pattern break
-        Block.dropResources(state, level, pos, null, player, tool); // Drops items as if they had broken normally
-        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3); // Removes block crop
-        level.setBlock(pos, block.defaultBlockState(), 3); // Replants the initial stage of the plantation
-        damageToolIfHoe(tool, player); // Spend tool durability
-    }
-
     @SubscribeEvent
     public static void cropReplant(BlockEvent.BreakEvent event) { // Crop automatically replant
         Level level = (Level) event.getLevel();
@@ -1012,13 +828,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - ANVIL disenchanted event
-    private static void dropItem(ServerLevel world, BlockPos pos, ItemStack stack) {
-        // CUSTOM METHOD - Drop enchanted book and base item on ground [world]
-        ItemEntity item = new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, stack);
-        item.setDeltaMovement(Vec3.ZERO);
-        world.addFreshEntity(item);
-    }
-
     @SubscribeEvent
     public static void anvilDisenchant(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
@@ -1137,10 +946,6 @@ public class ModEvents {
         if (level > 0) { event.getOrb().value += Math.round(event.getOrb().getValue() * (1.0f * level)); }
     }
 
-    private static int hasEnchant(Enchantment enchantment, Player player) {
-        return EnchantmentHelper.getEnchantmentLevel(enchantment, player);
-    }
-
     // CUSTOM EVENT - MULTIPLIER custom enchantment
     @SubscribeEvent
     public static void activatedMultiplierEnchantment(LivingDropsEvent event) {
@@ -1204,14 +1009,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - IMMORTAL custom enchantment
-    private static void activatedImmortalEnchantment(ItemEntity entity, ItemStack item) {
-        if (enchant(item, ModEnchantments.IMMORTAL.get()) > 0) {
-            entity.setInvulnerable(true);
-            entity.setUnlimitedLifetime(); // Does not disappear over time
-            entity.setPickUpDelay(10); // It can be collected after 0.5s
-        }
-    }
-
     @SubscribeEvent
     public static void onItemToss(ItemTossEvent event) {
         ItemEntity entity = event.getEntity();
@@ -1282,10 +1079,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - MCCOURSE BOTTLE item
-    private static void mccourseBottle(MccourseBottleActionItem action, int amount) {
-        ModNetworks.PACKET_HANDLER.sendToServer(new MccourseBottleKeyInputMessage(action, amount));
-    }
-
     @SubscribeEvent
     public static void mccourseBottleLeftShiftInputEvent(TickEvent.ClientTickEvent event) {
         Minecraft mc = Minecraft.getInstance();
@@ -1294,8 +1087,8 @@ public class ModEvents {
             if (mc.options.keyAttack.isDown()) {
                 if (player.getMainHandItem().getItem() instanceof MccourseBottleItem) {
                     boolean shift = InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT);
-                    int amount = shift ? MccourseBottleItem.storeXp : 1;
-                    mccourseBottle(MccourseBottleActionItem.STORE, amount); // Pressed LEFT click + SHIFT
+                    int amount = shift ? MccourseBottleItem.storeXp : 1; // Pressed LEFT click + SHIFT
+                    network(new MccourseBottleKeyInputMessage(MccourseBottleActionItem.STORE, amount));
                 }
             }
         }
@@ -1307,11 +1100,11 @@ public class ModEvents {
         if (mc.player == null) { return; }
         boolean shift = Screen.hasShiftDown();
         int storeAmount = shift ? 100 : 10, restoreAmount = shift ? 100 : 10; // Pressed SHIFT + B | SHIFT + N
-        if (KeyBinding.MCCOURSE_BOTTLE_STORED_TEN_LEVELS_KEY.consumeClick()) {
-            mccourseBottle(MccourseBottleActionItem.STORE, storeAmount); // Send to server -> STORE
+        if (KeyBinding.MCCOURSE_BOTTLE_STORED_TEN_LEVELS_KEY.consumeClick()) { // Send to server -> STORE
+            network(new MccourseBottleKeyInputMessage(MccourseBottleActionItem.STORE, storeAmount));
         }
-        if (KeyBinding.MCCOURSE_BOTTLE_RESTORED_TEN_LEVELS_KEY.consumeClick()) {
-            mccourseBottle(MccourseBottleActionItem.RESTORED, restoreAmount); // Send to server -> RESTORE
+        if (KeyBinding.MCCOURSE_BOTTLE_RESTORED_TEN_LEVELS_KEY.consumeClick()) { // Send to server -> RESTORE
+            network(new MccourseBottleKeyInputMessage(MccourseBottleActionItem.RESTORED, restoreAmount));
         }
     }
 
@@ -1389,19 +1182,19 @@ public class ModEvents {
             ItemStack main = player.getMainHandItem(), off = player.getOffhandItem();
             if (!main.isEmpty() && main.hasTag() && main.getTag() != null) { // MAIN HAND
                 boolean locked = main.getTag().getBoolean("Locked");
-                Utils.network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.MAIN, player.getInventory().selected));
+                network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.MAIN, player.getInventory().selected));
                 return;
             }
             if (!off.isEmpty() && off.hasTag() && off.getTag() != null) { // OFFHAND
                 boolean locked = off.getTag().getBoolean("Locked");
-                Utils.network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.OFFHAND, 0));
+                network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.OFFHAND, 0));
                 return;
             }
             for (int i = 0; i < player.getInventory().armor.size(); i++) { // ARMOR
                 ItemStack armorItem = player.getInventory().armor.get(i);
                 if (!armorItem.isEmpty() && armorItem.hasTag() && armorItem.getTag() != null) {
                     boolean locked = armorItem.getTag().getBoolean("Locked");
-                    Utils.network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.ARMOR, i));
+                    network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.ARMOR, i));
                     return;
                 }
             }
@@ -1452,7 +1245,7 @@ public class ModEvents {
         if (type != null) {
             boolean locked = false;
             if (hoveredStack.getTag() != null) { locked = hoveredStack.getTag().getBoolean("Locked"); }
-            Utils.network(new UnlockNetworkMessage(!locked, type, index));
+            network(new UnlockNetworkMessage(!locked, type, index));
             event.setCanceled(true); // Prevents other mods or the game from consuming the key
         }
         else { tradeMessage(player, "Slot does not belong to player's inventory!"); }
