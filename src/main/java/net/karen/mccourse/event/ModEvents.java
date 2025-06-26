@@ -125,15 +125,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - An event example that to show if player hit on sheep entity using specific items
-    private static void chat(String item, Player player) {
-        // CUSTOM METHOD - Chat message on prompt
-        MCCourseMod.LOGGER.info("Sheep was hit with {} by {}", item, player.getName().getString());
-    }
-
-    private static boolean item(Player player, Item item) {
-        return player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == item; // CUSTOM METHOD - Used item
-    }
-
     @SubscribeEvent
     public static void livingDamage(LivingDamageEvent event) {
         if (event.getEntity() instanceof Sheep) {
@@ -155,18 +146,6 @@ public class ModEvents {
     private static void normal(Int2ObjectMap<List<VillagerTrades.ItemListing>> trade,
                                List<Item> items, int level, List<Integer> levelCount, float multiplier) {
         trade.get(level).add(createTrade(items, levelCount, multiplier));
-    }
-
-    public static ItemStack createEnchantedItem(Item item, Enchantment enchantment, int level) {
-        ItemStack stack = new ItemStack(item);
-        stack.enchant(enchantment, level);
-        return stack;
-    }
-
-    public static ItemStack createEnchantedBook(Enchantment enchantment, int level) {
-        ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
-        EnchantedBookItem.addEnchantment(book, new EnchantmentInstance(enchantment, level));
-        return book;
     }
 
     private static VillagerTrades.ItemListing normalTrade(ItemStack costStack1,
@@ -840,10 +819,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Mccourse Elevator advanced block
-    private static void send(boolean response) {
-        ModNetworks.PACKET_HANDLER.sendToServer(new MccourseElevatorKeyInputMessage(response)); // Client -> Server
-    }
-
     @SubscribeEvent
     public static void activatedMccourseElevatorOnKeyInput(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
@@ -851,8 +826,10 @@ public class ModEvents {
         if (player != null) { // Checks if the player is over the elevator
             BlockPos pos = BlockPos.containing(player.getX(), player.getY() - 1, player.getZ());
             if (player.level().getBlockState(pos).getBlock() == ModBlocks.MCCOURSE_ELEVATOR.get()) { // Detects JUMP or SHIFT
-                if (InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_SPACE)) { send(true); }
-                if (player.isShiftKeyDown()) { send(false); }
+                if (InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_SPACE)) {
+                    Utils.network(new MccourseElevatorKeyInputMessage(true));
+                }
+                if (player.isShiftKeyDown()) { Utils.network(new MccourseElevatorKeyInputMessage(false)); }
             }
         }
     }
@@ -1403,10 +1380,6 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - UNLOCK custom enchantment
-    private static void network(boolean bool, UnlockEnchantmentAction action, int index) {
-        ModNetworks.PACKET_HANDLER.sendToServer(new UnlockNetworkMessage(bool, action, index));
-    }
-
     @SubscribeEvent
     public static void activatedUnlockOnKeyPress(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
@@ -1416,19 +1389,19 @@ public class ModEvents {
             ItemStack main = player.getMainHandItem(), off = player.getOffhandItem();
             if (!main.isEmpty() && main.hasTag() && main.getTag() != null) { // MAIN HAND
                 boolean locked = main.getTag().getBoolean("Locked");
-                network(!locked, UnlockEnchantmentAction.MAIN, player.getInventory().selected);
+                Utils.network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.MAIN, player.getInventory().selected));
                 return;
             }
             if (!off.isEmpty() && off.hasTag() && off.getTag() != null) { // OFFHAND
                 boolean locked = off.getTag().getBoolean("Locked");
-                network(!locked, UnlockEnchantmentAction.OFFHAND, 0);
+                Utils.network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.OFFHAND, 0));
                 return;
             }
             for (int i = 0; i < player.getInventory().armor.size(); i++) { // ARMOR
                 ItemStack armorItem = player.getInventory().armor.get(i);
                 if (!armorItem.isEmpty() && armorItem.hasTag() && armorItem.getTag() != null) {
                     boolean locked = armorItem.getTag().getBoolean("Locked");
-                    network(!locked, UnlockEnchantmentAction.ARMOR, i);
+                    Utils.network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.ARMOR, i));
                     return;
                 }
             }
@@ -1479,7 +1452,7 @@ public class ModEvents {
         if (type != null) {
             boolean locked = false;
             if (hoveredStack.getTag() != null) { locked = hoveredStack.getTag().getBoolean("Locked"); }
-            ModNetworks.PACKET_HANDLER.sendToServer(new UnlockNetworkMessage(!locked, type, index));
+            Utils.network(new UnlockNetworkMessage(!locked, type, index));
             event.setCanceled(true); // Prevents other mods or the game from consuming the key
         }
         else { tradeMessage(player, "Slot does not belong to player's inventory!"); }

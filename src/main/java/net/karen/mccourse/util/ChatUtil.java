@@ -15,13 +15,29 @@ import static net.karen.mccourse.util.Utils.*;
 
 public class ChatUtil {
     // GENERAL METHODS
-    public static void player(Player player, String message, ChatFormatting color) {
-        player.displayClientMessage(Component.literal(message).withStyle(color), true);
+    public static Component componentLiteral(String message, ChatFormatting color) {
+        return Component.literal(message).withStyle(color);
     }
 
+    public static Component componentLiteralStyle(String message, ChatFormatting color) {
+        return Component.literal(message).setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD));
+    }
+
+    public static Component componentTranslatable(String message, ChatFormatting color) {
+        return Component.translatable(message).withStyle(color);
+    }
+
+    public static Component componentTranslatableStyle(String message, ChatFormatting color) {
+        return Component.translatable(message).setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD));
+    }
+
+    public static void player(Player player, String message, ChatFormatting color) {
+        player.displayClientMessage(componentLiteral(message, color), true);
+    }
+
+    // CUSTOM METHOD - Using RGB colors and BOLD format
     public static void style(Player player, String message, ChatFormatting color) {
-        player.displayClientMessage(Component.literal("Glowing " + message)
-              .setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD)), true);
+        player.displayClientMessage(componentLiteralStyle("Glowing " + message, color), true);
     }
 
     public static void line(List<Component> tooltip, String message) {
@@ -68,14 +84,6 @@ public class ChatUtil {
         style(player, name, color);
     }
 
-    public static Component componentLiteral(String message) {
-        return Component.literal(message);
-    }
-
-    public static Component componentTranslatable(String message) {
-        return Component.translatable(message);
-    }
-
     // CUSTOM METHOD - [X, Y, Z] Coordinates
     public static Component literal(double x, double y, double z) {
         return Component.literal("X: ").append(Component.literal(String.format("%.3f", x)).withStyle(aqua))
@@ -92,5 +100,10 @@ public class ChatUtil {
                 .append(Component.literal("  Block: ")).append(Component.literal(String.valueOf(blockLight))
                         .setStyle(Style.EMPTY.withColor(blockLight > 6 ? 0x32FC76 : 0xFF1818)));
 
+    }
+
+    // CUSTOM METHOD - Chat message on prompt
+    public static void chat(String item, Player player) {
+        MCCourseMod.LOGGER.info("Sheep was hit with {} by {}", item, player.getName().getString());
     }
 }

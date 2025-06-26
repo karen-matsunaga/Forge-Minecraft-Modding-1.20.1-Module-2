@@ -41,7 +41,7 @@ public class VaultItem extends Item {
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         if (stack.getTag() != null && stack.getTag().contains("DisplayName")) {
-            return componentLiteral(stack.getTag().getString("DisplayName")); // Name item
+            return componentLiteral(stack.getTag().getString("DisplayName"), Utils.gold); // Name item
         }
         return super.getName(stack);
     }
