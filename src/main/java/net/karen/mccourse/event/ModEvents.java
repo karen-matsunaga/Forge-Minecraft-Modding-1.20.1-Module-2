@@ -1557,30 +1557,16 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void activatedUnlockOnTooltip(ItemTooltipEvent event) {
-        ItemStack stack = event.getItemStack();
-        List<Component> tooltip = event.getToolTip(); // Item TOOLTIP
-        if (enchant(stack, ModEnchantments.UNLOCK.get()) > 0) { // Item with UNLOCK enchantment
-            if (stack.getTag() != null && stack.hasTag()) {
-                boolean locked = stack.getTag().getBoolean("Locked"); // Locked NBT change stage
-                // Item is LOCKED or Item is UNLOCKED
-                booleanTooltip(tooltip, "§c\uD83D\uDD12 * Item locked! * §7- Press §eV§7 §cto unlock", locked);
-                booleanTooltip(tooltip, "§a\uD83D\uDD13 * Item unlocked! * §7- Press §eV§7 §ato lock", !locked);
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void activatedUnlockOnRenderTooltip(RenderTooltipEvent.GatherComponents event) {
         ItemStack item = event.getItemStack();
         if (enchant(item, ModEnchantments.UNLOCK.get()) > 0) { // Item contains UNLOCK enchantment
-            List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements();
+            List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements(); // Item TOOLTIP
             if (item.getTag() != null && item.hasTag()) {
                 boolean locked = item.getTag().getBoolean("Locked"); // Locked NBT change stage
-                image(elements, "textures/misc/unlock_on.png", 16, 16,
-                        "§c * Item locked! * §7- Press §eV§7 §cto unlock", locked); // LOCKED
-                image(elements, "textures/misc/unlock_off.png", 16, 16,
-                        "§a * Item unlocked! * §7- Press §eV§7 §ato lock", !locked); // UNLOCKED
+                image(elements, "textures/misc/unlock_on.png", 9, 9,
+                        "§cItem locked! §7- Press §eV§7 §cto unlock", locked); // LOCKED
+                image(elements, "textures/misc/unlock_off.png", 9, 9,
+                        "§aItem unlocked! §7- Press §eV§7 §ato lock", !locked); // UNLOCKED
             }
         }
     }

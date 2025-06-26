@@ -24,15 +24,15 @@ public class ImageTooltipComponent implements ClientTooltipComponent, TooltipCom
     @Override
     public void renderImage(@NotNull Font font, int x, int y, @NotNull GuiGraphics graphics) {
         PoseStack poseStack = graphics.pose();
-        // Render Image
+        // Render Image -> Example: Icon 8x8, Icon 9x9, Icon 16x16, etc. (width x height)
         poseStack.pushPose();
         graphics.blit(texture, x, y, 0, 0, width, height, width, height); // Render TEXTURE
         poseStack.popPose();
-        // Render Text
+        // Render Text -> Example: [ICON] text...
         poseStack.pushPose();
         int textX = x + width + 4; // 4px image spacing
         int textY = y + (height - font.lineHeight) / 2; // Center vertically
-        graphics.drawString(font, text, textX, textY, 0xFFFFFF, false); // Render TEXT
+        graphics.drawString(font, text, textX, textY, 0xFFFFFF, true); // Render TEXT
         poseStack.popPose();
     }
 
