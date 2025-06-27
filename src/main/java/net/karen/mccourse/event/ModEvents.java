@@ -1178,23 +1178,11 @@ public class ModEvents {
         if (player == null || !KeyBinding.UNLOCK_KEY.isDown() || !KeyBinding.UNLOCK_KEY.consumeClick()) { return; }
         if (mc.screen == null) {
             ItemStack main = player.getMainHandItem(), off = player.getOffhandItem();
-            if (!main.isEmpty() && main.hasTag() && main.getTag() != null) { // MAIN HAND
-                boolean locked = main.getTag().getBoolean("Locked");
-                network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.MAIN, player.getInventory().selected));
-                return;
-            }
-            if (!off.isEmpty() && off.hasTag() && off.getTag() != null) { // OFFHAND
-                boolean locked = off.getTag().getBoolean("Locked");
-                network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.OFFHAND, 0));
-                return;
-            }
+            Utils.unlockOnKeyPress(main, UnlockEnchantmentAction.MAIN, player.getInventory().selected); // MAIN HAND
+            Utils.unlockOnKeyPress(off, UnlockEnchantmentAction.OFFHAND, 0); // OFFHAND
             for (int i = 0; i < player.getInventory().armor.size(); i++) { // ARMOR
                 ItemStack armorItem = player.getInventory().armor.get(i);
-                if (!armorItem.isEmpty() && armorItem.hasTag() && armorItem.getTag() != null) {
-                    boolean locked = armorItem.getTag().getBoolean("Locked");
-                    network(new UnlockNetworkMessage(!locked, UnlockEnchantmentAction.ARMOR, i));
-                    return;
-                }
+                Utils.unlockOnKeyPress(armorItem, UnlockEnchantmentAction.ARMOR, i);
             }
         }
     }

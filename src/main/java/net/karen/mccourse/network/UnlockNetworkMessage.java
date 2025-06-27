@@ -3,11 +3,11 @@ package net.karen.mccourse.network;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.UnlockEnchantmentAction;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
+import static net.karen.mccourse.util.ChatUtil.*;
 
 public class UnlockNetworkMessage {
     private final boolean locked; // Item is LOCKED | UNLOCKED
@@ -47,8 +47,7 @@ public class UnlockNetworkMessage {
                 };
                 if (!target.isEmpty() && target.getEnchantmentLevel(ModEnchantments.UNLOCK.get()) > 0) { // Item with Unlock enchantment
                     target.getOrCreateTag().putBoolean("Locked", msg.locked); // Changed stage
-                    player.displayClientMessage(Component.literal(msg.locked ? "§c\uD83D\uDD12 Item locked!"
-                                                                             : "§a\uD83D\uDD13 Item unlocked!"), true);
+                    playerBool(player, msg.locked ? "§c\uD83D\uDD12 Item locked!" : "§a\uD83D\uDD13 Item unlocked!");
                 }
             }
         });

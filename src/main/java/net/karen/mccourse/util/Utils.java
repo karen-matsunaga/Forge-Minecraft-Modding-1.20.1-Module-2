@@ -2,8 +2,10 @@ package net.karen.mccourse.util;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.karen.mccourse.enchantment.ModEnchantments;
+import net.karen.mccourse.item.UnlockEnchantmentAction;
 import net.karen.mccourse.network.GlowingBlocksNetworkMessage;
 import net.karen.mccourse.network.ModNetworks;
+import net.karen.mccourse.network.UnlockNetworkMessage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -287,6 +289,14 @@ public class Utils {
         if (type.get(index).isEmpty() && !safeCopy.isEmpty()) {
             type.set(index, safeCopy.copy());
             safeCopy.setCount(0); // Empties after moving
+        }
+    }
+
+    // CUSTOM METHOD - Unlock enchantment on key press
+    public static void unlockOnKeyPress(ItemStack main, UnlockEnchantmentAction action, int index) {
+        if (!main.isEmpty() && main.hasTag() && main.getTag() != null) { // MAIN HAND, ARMOR and OFFHAND
+            boolean locked = main.getTag().getBoolean("Locked");
+            network(new UnlockNetworkMessage(!locked, action, index));
         }
     }
 }

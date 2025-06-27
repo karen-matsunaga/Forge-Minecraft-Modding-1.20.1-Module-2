@@ -40,6 +40,10 @@ public class ChatUtil {
         return Component.translatable(message).withStyle(color);
     }
 
+    public static void playerBool(Player player, String message) {
+        player.displayClientMessage(standardLiteral(message), true);
+    }
+
     // CUSTOM METHOD - Message appears on screen without BOLD format
     public static void player(Player player, String message, ChatFormatting color) {
         player.displayClientMessage(componentLiteral(message, color), true);
