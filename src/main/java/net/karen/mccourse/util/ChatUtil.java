@@ -40,14 +40,12 @@ public class ChatUtil {
         return Component.translatable(message).withStyle(color);
     }
 
-    public static Component componentTranslatableStyle(String message, ChatFormatting color) {
-        return Component.translatable(message).setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD));
-    }
-
+    // CUSTOM METHOD - Message appears on screen without BOLD format
     public static void player(Player player, String message, ChatFormatting color) {
         player.displayClientMessage(componentLiteral(message, color), true);
     }
 
+    // CUSTOM METHOD - Message appears on screen with BOLD format
     public static void playerStyle(Player player, String message, ChatFormatting color) {
         player.displayClientMessage(componentLiteralStyle(message, color), true);
     }
@@ -62,10 +60,6 @@ public class ChatUtil {
     public static MutableComponent description(String tooltip, ChatFormatting color,
                                                List<Boolean> curse) {
         return Component.translatable(tooltip).withStyle(Style.EMPTY.withColor(color).withBold(curse.get(0)).withItalic(curse.get(1)));
-    }
-
-    public static void line(List<Component> tooltip, String message) {
-        tooltip.add(Component.literal(message));
     }
 
     public static void tooltipLine(List<Component> tooltip, String message, ChatFormatting color) {
@@ -92,15 +86,7 @@ public class ChatUtil {
     }
 
     public static void tradeMessage(Player player, String trade) {
-        playerStyle(player, trade, Utils.red);
-    }
-
-    // TOOLTIP true/false messages
-    public static void booleanTooltip(List<Component> tooltip, String message, Boolean bool) {
-        if (bool) {
-            tooltip.add(CommonComponents.EMPTY);
-            line(tooltip, message);
-        }
+        player(player, trade, Utils.red);
     }
 
     // CUSTOM METHOD - [X, Y, Z] Coordinates

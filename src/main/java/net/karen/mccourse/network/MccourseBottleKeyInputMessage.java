@@ -2,7 +2,8 @@ package net.karen.mccourse.network;
 
 import net.karen.mccourse.item.MccourseBottleActionItem;
 import net.karen.mccourse.item.custom.MccourseBottleItem;
-import net.minecraft.ChatFormatting;
+import net.karen.mccourse.util.ChatUtil;
+import net.karen.mccourse.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -41,32 +42,32 @@ public class MccourseBottleKeyInputMessage {
                 int storedLevels = tag.getInt("StoredLevels"), maxLevels = MccourseBottleItem.storeXp,
                     availableLevels = player.experienceLevel;
                 if (player.getCooldowns().isOnCooldown(stack.getItem())) { // Check if it is already on cooldown
-                    MccourseBottleItem.screen(player, "Wait before using again!", ChatFormatting.YELLOW);
+                    ChatUtil.player(player, "Wait before using again!", Utils.yellow);
                     return;
                 }
                 switch (msg.action) {
                     case STORE -> {
                         if (availableLevels <= 0) { // Player store XP only has 1+ levels
-                            MccourseBottleItem.screen(player, "You have no XP to store!", ChatFormatting.RED);
+                            ChatUtil.tradeMessage(player, "You have no XP to store!");
                             return;
                         }
                         int canStore = Math.min(msg.amount, Math.min(maxLevels - storedLevels, availableLevels));
                         if (canStore > 0) {
                             tag.putInt("StoredLevels", storedLevels + canStore);
                             player.giveExperienceLevels(-canStore);
-                            MccourseBottleItem.screen(player, "Stored " + canStore + " levels!", ChatFormatting.GREEN);
+                            ChatUtil.player(player, "Stored " + canStore + " levels!", Utils.green);
                         }
-                        else { MccourseBottleItem.screen(player, "XP full or insufficient!", ChatFormatting.RED); }
+                        else { ChatUtil.tradeMessage(player, "XP full or insufficient!"); }
                     }
                     case RESTORED -> {
                         if (storedLevels <= 0) { // Player store XP only has 1+ levels
-                            MccourseBottleItem.screen(player, "No XP to restore!", ChatFormatting.RED);
+                            ChatUtil.tradeMessage(player, "No XP to restore!");
                             return;
                         }
                         int toRestore = Math.min(msg.amount, storedLevels);
                         tag.putInt("StoredLevels", storedLevels - toRestore);
                         player.giveExperienceLevels(toRestore);
-                        MccourseBottleItem.screen(player, "Restored " + toRestore + " levels!", ChatFormatting.GREEN);
+                        ChatUtil.player(player, "Restored " + toRestore + " levels!", Utils.green);
                     }
                 }
                 player.getCooldowns().addCooldown(stack.getItem(), 20); // Applies 1 second cooldown (20 ticks)

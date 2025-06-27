@@ -373,7 +373,6 @@ public class ModEvents {
                                 // Number line of enchantments and enchantment descriptions
                                 tooltip.set(i, name);
                                 tooltip.add(i + 1, desc);
-                                tooltip.add(i + 2, EMPTY);
                             }
                             break;
                         }
@@ -1278,15 +1277,9 @@ public class ModEvents {
             boolean added = player.getInventory().add(safeCopy);
             if (!added) {
                 for (int i = 0; i < player.getInventory().armor.size(); i++) { // Try to put in ARMOR slots
-                    if (player.getInventory().armor.get(i).isEmpty() && !safeCopy.isEmpty()) {
-                        player.getInventory().armor.set(i, safeCopy.copy());
-                        safeCopy.setCount(0); // Empties after moving
-                    }
+                    unlockItemToss(player.getInventory().armor, i, safeCopy);
                 }
-                if (player.getInventory().offhand.get(0).isEmpty() && !safeCopy.isEmpty()) { // Try to put it in OFFHAND
-                    player.getInventory().offhand.set(0, safeCopy.copy());
-                    safeCopy.setCount(0); // Empties after moving
-                }
+                unlockItemToss(player.getInventory().offhand, 0, safeCopy); // Try to put it in OFFHAND
                 if (!safeCopy.isEmpty()) { player.spawnAtLocation(safeCopy); } // If there is any left, throw it on the floor
             }
         }

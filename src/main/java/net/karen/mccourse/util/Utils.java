@@ -38,7 +38,6 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.network.PacketDistributor;
-
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -280,6 +279,14 @@ public class Utils {
             for (int i = 0; i < restored.size(); i++) {
                 if (!restored.get(i).isEmpty()) { type.set(i, restored.get(i)); } // Added all items on Player inventory
             }
+        }
+    }
+
+    // CUSTOM METHOD - Unlock enchantment item toss
+    public static void unlockItemToss(NonNullList<ItemStack> type, int index, ItemStack safeCopy) {
+        if (type.get(index).isEmpty() && !safeCopy.isEmpty()) {
+            type.set(index, safeCopy.copy());
+            safeCopy.setCount(0); // Empties after moving
         }
     }
 }

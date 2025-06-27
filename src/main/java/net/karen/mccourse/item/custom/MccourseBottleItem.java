@@ -1,7 +1,7 @@
 package net.karen.mccourse.item.custom;
 
 import net.karen.mccourse.item.ModItems;
-import net.minecraft.ChatFormatting;
+import net.karen.mccourse.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
+import static net.karen.mccourse.util.ChatUtil.*;
 
 public class MccourseBottleItem extends Item {
     public static int storeXp;
@@ -45,28 +46,19 @@ public class MccourseBottleItem extends Item {
 
     @Override
     public @NotNull Component getName(ItemStack stack) {
-        return Component.translatable(stack.getDescriptionId()).withStyle(ChatFormatting.DARK_GREEN);
+        return componentTranslatable(stack.getDescriptionId(), Utils.darkGreen);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level,
-                                List<Component> tooltip, @NotNull TooltipFlag flag) {
+                                @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         int xp = stack.getOrCreateTag().getInt("StoredLevels");
-        tooltip.add(Component.literal("Stored XP: " + xp + " / " + storeXp).withStyle(ChatFormatting.YELLOW));
-        tooltip.add(Component.literal("Left click: Store 1 XP level;").withStyle(ChatFormatting.RED));
-        tooltip.add(Component.literal("N: Store 10 XP levels;").withStyle(ChatFormatting.RED));
-        tooltip.add(Component.literal("Shift + N: Store 100 XP levels;").withStyle(ChatFormatting.RED));
-        tooltip.add(Component.literal("Shift + Left click: Store all XP levels;").withStyle(ChatFormatting.RED));
-        tooltip.add(Component.literal("Right click: Restore 1 XP level;").withStyle(ChatFormatting.GREEN));
-        tooltip.add(Component.literal("B: Restore 10 XP levels;").withStyle(ChatFormatting.GREEN));
-        tooltip.add(Component.literal("Shift + B: Restore 100 XP levels;").withStyle(ChatFormatting.GREEN));
-        tooltip.add(Component.literal("Shift + Right click: Restore all XP levels.").withStyle(ChatFormatting.GREEN));
+        tooltipLine(tooltip, "Stored XP: " + xp + " / " + storeXp, Utils.yellow);
+        tooltipLine(tooltip, "Stored XP: Left click: 1 level; N: 10 levels;", Utils.red);
+        tooltipLine(tooltip, "Shift + N: 100 levels; Shift + Left click: All levels.", Utils.red);
+        tooltipLine(tooltip, "Restored XP: Right click: 1 level; B: 10 levels;", Utils.green);
+        tooltipLine(tooltip, "Shift + B: 100 levels; Shift + Right click: All levels.", Utils.green);
         super.appendHoverText(stack, level, tooltip, flag);
-    }
-
-    // CUSTOM METHOD - Message appears on screen
-    public static void screen(Player player, String message, ChatFormatting color) {
-        player.displayClientMessage(Component.literal(message).withStyle(color), true);
     }
 
     // CUSTOM METHOD - Mccourse Bottle with XP
@@ -82,15 +74,15 @@ public class MccourseBottleItem extends Item {
                             int storedLevels, int amount, int store, String message) {
         ItemStack heldItem = player.getMainHandItem();
         if (player.getCooldowns().isOnCooldown(heldItem.getItem())) { // Check if it is already on cooldown
-            screen(player, "Wait before using again!", ChatFormatting.YELLOW);
+            player(player, "Wait before using again!", Utils.yellow);
             return;
         }
         if (storedLevels > 0) { // Restore levels
             serverPlayer.giveExperienceLevels(amount);
             tag.putInt("StoredLevels", store);
-            screen(player, "Restored " + message, ChatFormatting.GREEN);
+            player(player, "Restored " + message, Utils.green);
             player.getCooldowns().addCooldown(heldItem.getItem(), 20); // Applies 1 second cooldown (20 ticks)
         }
-        else { screen(player, "Bottle is empty.", ChatFormatting.RED); }
+        else { tradeMessage(player, "Bottle is empty."); }
     }
 }
