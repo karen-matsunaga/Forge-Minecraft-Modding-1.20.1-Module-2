@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.network.PacketDistributor;
@@ -140,6 +141,14 @@ public class Utils {
         ItemEntity item = new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, stack);
         item.setDeltaMovement(Vec3.ZERO);
         world.addFreshEntity(item);
+    }
+
+    // CUSTOM METHOD - Drop Multiplier enchantment items on ground [world]
+    public static void dropWorld(LivingDropsEvent event, Level level,
+                                 double x, double y, double z, ItemStack stack) {
+        ItemEntity drops = new ItemEntity(level, x, y, z, stack);
+        drops.setDeltaMovement(Vec3.ZERO);
+        event.getDrops().add(drops);
     }
 
     // CUSTOM METHOD - Villager Profession and Villager Wandering trades
@@ -265,22 +274,18 @@ public class Utils {
         for (int i = 0; i < type.size(); i++) {
             ItemStack inventory = type.get(i);
             // Copy of item WITH Eternal enchantment
-            if (!inventory.isEmpty() && enchant(inventory, ModEnchantments.ETERNAL.get()) > 0) {
-                store.set(i, inventory.copy());
-            }
+            if (!inventory.isEmpty() && enchant(inventory, ModEnchantments.ETERNAL.get()) > 0) { store.set(i, inventory.copy()); }
             // Copy of item WITHOUT Eternal enchantment
             else { vault.add(inventory.copy()); }
-            // Added on typePreserve or vaultItems removes stack on Inventory, Armor and Offhand slots
-            type.set(i, ItemStack.EMPTY);
+            type.set(i, ItemStack.EMPTY); // Added on typePreserve or vaultItems removes stack on Inventory, Armor and Offhand slots
         }
     }
 
     // CUSTOM METHOD - Restored Vault item
     public static void setRestoredVault(NonNullList<ItemStack> type, List<ItemStack> restored) {
         if (restored != null) { // Player receives items after death
-            for (int i = 0; i < restored.size(); i++) {
-                if (!restored.get(i).isEmpty()) { type.set(i, restored.get(i)); } // Added all items on Player inventory
-            }
+            // Added all items on Player inventory
+            for (int i = 0; i < restored.size(); i++) { if (!restored.get(i).isEmpty()) { type.set(i, restored.get(i)); } }
         }
     }
 

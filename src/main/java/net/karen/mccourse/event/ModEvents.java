@@ -302,7 +302,7 @@ public class ModEvents {
     public static void activatedGlowingMobsEnchantment(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         if (event.phase == TickEvent.Phase.END) {
-            ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD); // Player has an item on HELMET slot
+            ItemStack helmet = has(player, EquipmentSlot.HEAD); // Player has an item on HELMET slot
             UUID playerUUID = player.getUUID(); // Player UUID -> Detected GLOWING MOBS stage
             boolean isEnchanted = helmet.isEnchanted() && enchant(helmet, ModEnchantments.GLOWING_MOBS.get()) > 0;
             if (!isEnchanted) { glowingState.remove(playerUUID); } // Player hasn't GLOWING MOBS is disabled
@@ -951,13 +951,10 @@ public class ModEvents {
             ItemStack item = player.getMainHandItem();
             int level = enchant(item, ModEnchantments.MULTIPLIER.get());
             if (level > 1) {
-                List<ItemEntity> originalDrops = new ArrayList<>(event.getDrops());
-                for (ItemEntity drop : originalDrops) {
+                for (ItemEntity drop : event.getDrops()) {
                     ItemStack stack = drop.getItem().copy();
                     stack.setCount(stack.getCount() * level); // Multiplier adapt on level
-                    ItemEntity drops = new ItemEntity(drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack);
-                    drops.setDeltaMovement(Vec3.ZERO);
-                    event.getDrops().add(drops);
+                    dropWorld(event, drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack);
                 }
             }
         }
@@ -969,7 +966,7 @@ public class ModEvents {
         if (event.getSource().getEntity() instanceof Player player) {
             ItemStack weapon = player.getMainHandItem();
             int mobsCritical = enchant(weapon, ModEnchantments.MOBS_CRITICAL.get());
-            if (mobsCritical > 0 && (!(player.fallDistance > 0) || !player.onGround())) {
+            if (mobsCritical > 0 && !(player.fallDistance > 0 || !player.onGround())) {
                 float baseDamage = event.getAmount();
                 event.setAmount(baseDamage + (baseDamage * (0.5F * mobsCritical))); // Critical damage (50% extra) per level
                 sound(player, SoundEvents.PLAYER_ATTACK_CRIT, 1.0F, 1.0F); // Particle effect and sound
