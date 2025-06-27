@@ -42,6 +42,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.network.PacketDistributor;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class Utils {
@@ -149,6 +150,33 @@ public class Utils {
         ItemEntity drops = new ItemEntity(level, x, y, z, stack);
         drops.setDeltaMovement(Vec3.ZERO);
         event.getDrops().add(drops);
+    }
+
+    // CUSTOM METHOD - Drop ENCHANTED BOOK and BASE ITEM on ground
+    public static void dropEnchanted(Level world, BlockPos pos, ItemStack item) {
+        ItemEntity drop = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, item);
+        drop.setDeltaMovement(Vec3.ZERO);
+        world.addFreshEntity(drop);
+    }
+
+    // CUSTOM METHOD - GROUPED enchanted book
+    public static void groupedEnch(Map<Enchantment, Integer> enchantments,
+                                   Level level, BlockPos pos) {
+        ItemStack item = new ItemStack(Items.ENCHANTED_BOOK);
+        enchantments.forEach((ench, lvl) -> {
+            if (lvl > 0) { EnchantedBookItem.addEnchantment(item, new EnchantmentInstance(ench, lvl)); }
+        });
+        dropEnchanted(level, pos, item); // Drop grouped enchanted book WITH enchantment
+    }
+
+    // CUSTOM METHOD - INDIVIDUAL enchanted book
+    public static void individualEnch(Map<Enchantment, Integer> enchantments,
+                                      Level level, BlockPos pos) {
+        enchantments.forEach((enc, lvl) -> {
+            ItemStack item = new ItemStack(Items.ENCHANTED_BOOK);
+            if (lvl > 0) { EnchantedBookItem.addEnchantment(item, new EnchantmentInstance(enc, lvl)); }
+            dropEnchanted(level, pos, item);
+        });
     }
 
     // CUSTOM METHOD - Villager Profession and Villager Wandering trades

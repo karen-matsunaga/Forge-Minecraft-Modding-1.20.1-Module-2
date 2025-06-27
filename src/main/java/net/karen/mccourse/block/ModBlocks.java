@@ -429,8 +429,8 @@ public class ModBlocks {
 
     // Magic Disenchanted block
     public static final RegistryObject<Block> MAGIC_DISENCHANTED_BLOCK = registerBlock("magic_disenchanted_block",
-            () -> new MagicDisenchantedBlock(BlockBehaviour.Properties.of()
-                    .lightLevel(state -> 15).sound(SoundType.ANVIL).strength(5F, 3600000.0F)));
+            () -> new MagicDisenchantedBlock(BlockBehaviour.Properties.of().lightLevel(state -> 15).sound(SoundType.ANVIL)
+                      .strength(5F, 3600000.0F), 1));
 
     // Light block
     public static final RegistryObject<Block> LIGHT_BLOCK = registerBlock("light_block",
@@ -440,8 +440,8 @@ public class ModBlocks {
     // Magic Disenchanted Book Block
     public static final RegistryObject<Block> MAGIC_DISENCHANTED_BOOK_BLOCK =
             registerBlock("magic_disenchanted_book_block",
-            () -> new MagicDisenchantedBookBlock(BlockBehaviour.Properties.of().lightLevel(state -> 15)
-                      .sound(SoundType.LARGE_AMETHYST_BUD).strength(5F, 3600000.0F)));
+            () -> new MagicDisenchantedBlock(BlockBehaviour.Properties.of().lightLevel(state -> 15)
+                      .sound(SoundType.LARGE_AMETHYST_BUD).strength(5F, 3600000.0F), 2));
 
     // String block
     public static final RegistryObject<Block> STRING_BLOCK = registerBlock("string_block",
