@@ -65,6 +65,7 @@ import net.minecraftforge.server.command.ConfigCommand;
 import org.lwjgl.glfw.GLFW;
 import java.util.*;
 import static net.karen.mccourse.item.custom.MccourseBottleItem.createMccourseBottleWithXP;
+import static net.karen.mccourse.item.custom.XrayItem.getActiveMode;
 import static net.karen.mccourse.item.custom.XrayItem.stage;
 import static net.karen.mccourse.util.ChatUtil.*;
 import static net.karen.mccourse.util.Utils.*;
@@ -462,16 +463,15 @@ public class ModEvents {
     public static void activatedGlowingBlocksEnchantment(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         LevelAccessor world = player.level();
-        ItemStack helmet = has(player, EquipmentSlot.HEAD);
         if (event.phase == TickEvent.Phase.END) {
             GlowingBlocksNetworkMessage.World worldVar = GlowingBlocksNetworkMessage.World.get(world);
-            boolean hasItem = helmet.isEnchanted() && enchant(helmet, ModEnchantments.GLOWING_BLOCKS.get()) > 0 ||
-                    has(player, EquipmentSlot.MAINHAND).is(ModItems.METAL_DETECTOR.get());
+            String mode = getActiveMode(player), nameMode = mode.toUpperCase(); // Item mode
+            boolean hasItem = !mode.equals("none"); // Default mode
             if (KeyBinding.GLOWING_BLOCKS_KEY.isDown() && KeyBinding.GLOWING_BLOCKS_KEY.consumeClick()) {
                 if (hasItem) { // Has enchanted HELMET or Metal Detector
                     boolean newState = !worldVar.xray; // Adapted "newState" of "worldVar.xray" stage
-                    change(worldVar, newState, world);
-                    glow(player, newState, "Blocks: ON!", "Blocks: OFF!"); // Toggle ON/OFF
+                    change(worldVar, newState, world); // Toggle ON/OFF
+                    glow(player, newState, "Blocks: " + nameMode + " ON!", "Blocks: " + nameMode + " OFF!");
                 }
                 else { invalidMessage(player, "Blocks: Enchanted helmet or Metal detector!"); } // Hasn't item
             }
