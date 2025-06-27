@@ -1215,30 +1215,19 @@ public class ModEvents {
         UnlockEnchantmentAction type = null;
         int index = -1;
         Inventory inv = player.getInventory();
-        for (int i = 0; i < inv.items.size(); i++) { // MAIN INVENTORY
-            if (ItemStack.isSameItemSameTags(inv.items.get(i), hoveredStack)) {
-                type = UnlockEnchantmentAction.MAIN;
-                index = i;
-                break;
-            }
-        }
-        if (type == null) { // ARMOR
-            for (int i = 0; i < inv.armor.size(); i++) {
-                if (ItemStack.isSameItemSameTags(inv.armor.get(i), hoveredStack)) {
-                    type = UnlockEnchantmentAction.ARMOR;
+        List<List<ItemStack>> sections = List.of(inv.items, inv.armor, inv.offhand);
+        UnlockEnchantmentAction[] types = { UnlockEnchantmentAction.MAIN, UnlockEnchantmentAction.ARMOR,
+                UnlockEnchantmentAction.OFFHAND};
+        for (int sectionIndex = 0; sectionIndex < sections.size(); sectionIndex++) { // Sections list
+            List<ItemStack> section = sections.get(sectionIndex);
+            for (int i = 0; i < section.size(); i++) { // Section list
+                if (ItemStack.isSameItemSameTags(section.get(i), hoveredStack)) {
+                    type = types[sectionIndex];
                     index = i;
                     break;
                 }
             }
-        }
-        if (type == null) { // OFFHAND
-            for (int i = 0; i < inv.offhand.size(); i++) {
-                if (ItemStack.isSameItemSameTags(inv.offhand.get(i), hoveredStack)) {
-                    type = UnlockEnchantmentAction.OFFHAND;
-                    index = i;
-                    break;
-                }
-            }
+            if (type != null) { break; }
         }
         if (type != null) {
             boolean locked = false;
