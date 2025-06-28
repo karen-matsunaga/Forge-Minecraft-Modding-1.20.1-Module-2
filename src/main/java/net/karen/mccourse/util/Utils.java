@@ -139,7 +139,7 @@ public class Utils {
 
     // CUSTOM METHOD - Drop enchanted book and base item on ground [world]
     public static void dropItem(ServerLevel world, BlockPos pos, ItemStack stack) {
-        ItemEntity item = new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, stack);
+        ItemEntity item = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
         item.setDeltaMovement(Vec3.ZERO);
         world.addFreshEntity(item);
     }
@@ -177,6 +177,11 @@ public class Utils {
             if (lvl > 0) { EnchantedBookItem.addEnchantment(item, new EnchantmentInstance(enc, lvl)); }
             dropEnchanted(level, pos, item);
         });
+    }
+
+    // CUSTOM METHOD - GET enchantments from Item (Armor, tool, enchanted Book etc.)
+    public static void getEnch(ItemStack item) {
+        EnchantmentHelper.getEnchantments(item);
     }
 
     // CUSTOM METHOD - Villager Profession and Villager Wandering trades

@@ -697,7 +697,7 @@ public class ModEvents {
                         BlockPos blockBelow = pos.below(); // The item is below the anvil
                         // Pick up the items on the ground below the anvil - small area below the anvil
                         List<ItemEntity> itemsBelow = world.getEntitiesOfClass(ItemEntity.class,
-                                new AABB(blockBelow).inflate(0.5));
+                                                      new AABB(blockBelow).inflate(0.5));
                         if (itemsBelow.size() != 1) { continue; } // Processing only if there is exactly ONE item
                         ItemEntity itemEntity = itemsBelow.get(0); // First item of list
                         ItemStack item = itemEntity.getItem(); // Get real item
@@ -709,29 +709,46 @@ public class ModEvents {
                         if (enchantments.isEmpty() || (isBook && enchantments.size() == 1)) { continue; }
                         // Drop an enchanted book with the enchantments of tool, armor, etc.
                         if (item.isDamageableItem() && !isBook) {
-                            ItemStack groupedBooks = new ItemStack(Items.ENCHANTED_BOOK);
-                            // Added each enchantment found on tool, armor, etc.
-                            enchantments.forEach((key, value) -> EnchantedBookItem.addEnchantment(groupedBooks,
-                                    new EnchantmentInstance(key, value)));
-                            // Set original item WITHOUT enchantments
-                            ItemStack baseItem = item.copy();
+                            // Added each enchantment found on tool, armor, etc. + Drop enchanted book WITH enchantments
+                            groupedEnch(enchantments, world, blockBelow);
+                            ItemStack baseItem = item.copy(); // Set original item WITHOUT enchantments
                             EnchantmentHelper.setEnchantments(Map.of(), baseItem);
                             baseItem.removeTagKey("StoredEnchantments");
                             CompoundTag tag = baseItem.getTag(); // Clean up tag if empty
                             if (tag != null && baseItem.hasTag() && tag.isEmpty()) { baseItem.setTag(null); }
-                            dropItem(world, blockBelow, groupedBooks); // Drop enchanted book WITH enchantments
                             dropItem(world, blockBelow, baseItem); // Drop item WITHOUT enchantments
                         }
-                        else if (isBook) { // Book with multiple enchantments
-                            enchantments.forEach((key, value) -> { // Split each enchantment into individual books
-                                ItemStack singleBook = new ItemStack(Items.ENCHANTED_BOOK);
-                                EnchantedBookItem.addEnchantment(singleBook, new EnchantmentInstance(key, value));
-                                dropItem(world, blockBelow, singleBook); // Drop individual enchanted book
-                            });
-                        }
+                        // Book with multiple enchantments - Split each enchantment into individual books
+                        else if (isBook) { individualEnch(enchantments, world, pos); } // Drop individual enchanted book
                         itemEntity.discard(); // Discard the original item
                     }
                 }
+            }
+        }
+    }
+
+    // CUSTOM EVENT - ANVIL enchantment compatibilities
+    @SubscribeEvent
+    public static void onAnvilUpdate(AnvilUpdateEvent event) {
+        ItemStack left = event.getLeft(), right = event.getRight(); // LEFT -> Base item | RIGHT -> Book or Second item
+        if (!left.isEmpty() && !right.isEmpty()) {
+            ItemStack output = left.copy(); // Result of Base item + Book or Second item
+            boolean modified = false;
+            Map<Enchantment, Integer> leftEnchant = EnchantmentHelper.getEnchantments(left),
+                                      rightEnchant = EnchantmentHelper.getEnchantments(right);
+            for (Map.Entry<Enchantment, Integer> entry : rightEnchant.entrySet()) {
+                Enchantment ench = entry.getKey(); // Enchantment
+                // LEFT -> Enchantment level || RIGHT -> Book or Second item enchantment level
+                int rightLevel = entry.getValue(), leftLevel = leftEnchant.getOrDefault(ench, 0),
+                    newLevel = leftLevel == rightLevel ? rightLevel + 1 : Math.max(leftLevel, rightLevel); // Output with new level
+                leftEnchant.put(ench, Math.min(ench.getMaxLevel(), newLevel)); // Here we ignore the compatibility check.
+                modified = true;
+            }
+            if (modified) { // Output item
+                EnchantmentHelper.setEnchantments(leftEnchant, output);
+                event.setOutput(output);
+                event.setCost(1); // Cost at levels
+                event.setMaterialCost(1); // Cost of materials (e.g. books, diamonds etc.)
             }
         }
     }
@@ -832,32 +849,6 @@ public class ModEvents {
                 LivingEntity entity = event.getEntity();
                 ((ServerLevel) player.level()).sendParticles(ParticleTypes.CRIT, entity.getX(), entity.getY(0.5),
                 entity.getZ(), 5, 0.2, 0.2, 0.2, 0.1);
-            }
-        }
-    }
-
-    // CUSTOM EVENT - ANVIL enchantment compatibilities
-    @SubscribeEvent
-    public static void onAnvilUpdate(AnvilUpdateEvent event) {
-        ItemStack left = event.getLeft(), right = event.getRight(); // LEFT -> Base item | RIGHT -> Book or Second item
-        if (!left.isEmpty() && !right.isEmpty()) {
-            ItemStack output = left.copy(); // Result of Base item + Book or Second item
-            boolean modified = false;
-            Map<Enchantment, Integer> leftEnchant = EnchantmentHelper.getEnchantments(left),
-                                      rightEnchant = EnchantmentHelper.getEnchantments(right);
-            for (Map.Entry<Enchantment, Integer> entry : rightEnchant.entrySet()) {
-                Enchantment ench = entry.getKey(); // Enchantment
-                // LEFT -> Enchantment level || RIGHT -> Book or Second item enchantment level
-                int rightLevel = entry.getValue(), leftLevel = leftEnchant.getOrDefault(ench, 0),
-                    newLevel = leftLevel == rightLevel ? rightLevel + 1 : Math.max(leftLevel, rightLevel); // Output with new level
-                leftEnchant.put(ench, Math.min(ench.getMaxLevel(), newLevel)); // Here we ignore the compatibility check.
-                modified = true;
-            }
-            if (modified) { // Output item
-                EnchantmentHelper.setEnchantments(leftEnchant, output);
-                event.setOutput(output);
-                event.setCost(1); // Cost at levels
-                event.setMaterialCost(1); // Cost of materials (e.g. books, diamonds etc.)
             }
         }
     }
