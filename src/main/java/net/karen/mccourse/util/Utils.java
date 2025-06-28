@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -180,8 +181,13 @@ public class Utils {
     }
 
     // CUSTOM METHOD - GET enchantments from Item (Armor, tool, enchanted Book etc.)
-    public static void getEnch(ItemStack item) {
-        EnchantmentHelper.getEnchantments(item);
+    public static Map<Enchantment, Integer> getEnch(ItemStack item) {
+        return EnchantmentHelper.getEnchantments(item);
+    }
+
+    // CUSTOM METHOD - GET items on placed above or below block
+    public static List<ItemEntity> getItem(Level level, BlockPos pos) {
+        return level.getEntitiesOfClass(ItemEntity.class, new AABB(pos).inflate(0.5));
     }
 
     // CUSTOM METHOD - Villager Profession and Villager Wandering trades

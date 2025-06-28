@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
+import net.karen.mccourse.block.custom.MagicDisenchantedBlock;
 import net.karen.mccourse.command.*;
 import net.karen.mccourse.effect.ModEffects;
 import net.karen.mccourse.enchantment.*;
@@ -696,13 +697,12 @@ public class ModEvents {
                         if (!state.getBlock().defaultBlockState().is(BlockTags.ANVIL)) { continue; }
                         BlockPos blockBelow = pos.below(); // The item is below the anvil
                         // Pick up the items on the ground below the anvil - small area below the anvil
-                        List<ItemEntity> itemsBelow = world.getEntitiesOfClass(ItemEntity.class,
-                                                      new AABB(blockBelow).inflate(0.5));
+                        List<ItemEntity> itemsBelow = getItem(world, blockBelow);
                         if (itemsBelow.size() != 1) { continue; } // Processing only if there is exactly ONE item
                         ItemEntity itemEntity = itemsBelow.get(0); // First item of list
                         ItemStack item = itemEntity.getItem(); // Get real item
                         // Get all enchantments of the item
-                        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
+                        Map<Enchantment, Integer> enchantments = getEnch(item);
                         boolean isBook = item.is(Items.ENCHANTED_BOOK);
                         /* Ignore if item has no enchantment or if item is a book with only 1 enchantment
                            Only process if it's not a previously split book (to avoid infinite loop) */
@@ -712,11 +712,7 @@ public class ModEvents {
                             // Added each enchantment found on tool, armor, etc. + Drop enchanted book WITH enchantments
                             groupedEnch(enchantments, world, blockBelow);
                             ItemStack baseItem = item.copy(); // Set original item WITHOUT enchantments
-                            EnchantmentHelper.setEnchantments(Map.of(), baseItem);
-                            baseItem.removeTagKey("StoredEnchantments");
-                            CompoundTag tag = baseItem.getTag(); // Clean up tag if empty
-                            if (tag != null && baseItem.hasTag() && tag.isEmpty()) { baseItem.setTag(null); }
-                            dropItem(world, blockBelow, baseItem); // Drop item WITHOUT enchantments
+                            MagicDisenchantedBlock.enchant(world, blockBelow, baseItem); // Drop item WITHOUT enchantments
                         }
                         // Book with multiple enchantments - Split each enchantment into individual books
                         else if (isBook) { individualEnch(enchantments, world, pos); } // Drop individual enchanted book
@@ -734,18 +730,17 @@ public class ModEvents {
         if (!left.isEmpty() && !right.isEmpty()) {
             ItemStack output = left.copy(); // Result of Base item + Book or Second item
             boolean modified = false;
-            Map<Enchantment, Integer> leftEnchant = EnchantmentHelper.getEnchantments(left),
-                                      rightEnchant = EnchantmentHelper.getEnchantments(right);
-            for (Map.Entry<Enchantment, Integer> entry : rightEnchant.entrySet()) {
+            Map<Enchantment, Integer> leftEnch = getEnch(left), rightEnch = getEnch(right);
+            for (Map.Entry<Enchantment, Integer> entry : rightEnch.entrySet()) {
                 Enchantment ench = entry.getKey(); // Enchantment
                 // LEFT -> Enchantment level || RIGHT -> Book or Second item enchantment level
-                int rightLevel = entry.getValue(), leftLevel = leftEnchant.getOrDefault(ench, 0),
-                    newLevel = leftLevel == rightLevel ? rightLevel + 1 : Math.max(leftLevel, rightLevel); // Output with new level
-                leftEnchant.put(ench, Math.min(ench.getMaxLevel(), newLevel)); // Here we ignore the compatibility check.
+                int rightLvl = entry.getValue(), leftLvl = leftEnch.getOrDefault(ench, 0),
+                    newLevel = leftLvl == rightLvl ? rightLvl + 1 : Math.max(leftLvl, rightLvl); // Output with new level
+                leftEnch.put(ench, Math.min(ench.getMaxLevel(), newLevel)); // Here we ignore the compatibility check.
                 modified = true;
             }
             if (modified) { // Output item
-                EnchantmentHelper.setEnchantments(leftEnchant, output);
+                EnchantmentHelper.setEnchantments(leftEnch, output);
                 event.setOutput(output);
                 event.setCost(1); // Cost at levels
                 event.setMaterialCost(1); // Cost of materials (e.g. books, diamonds etc.)

@@ -110,7 +110,7 @@ public class MagicDisenchantedBlock extends Block {
     private static boolean isBook(ItemStack item) { return item.is(Items.ENCHANTED_BOOK); }
 
     // CUSTOM METHOD - Enchanted item transform on Base item
-    private static void enchant(Level level, BlockPos pos, ItemStack item) {
+    public static void enchant(Level level, BlockPos pos, ItemStack item) {
         ItemStack baseItem = item.copy(); // Remove enchantments of original item - Drop the base item WITHOUT enchantments
         removeTag(List.of("Enchantments", "StoredEnchantments"), baseItem);
         CompoundTag tag = baseItem.getTag();
