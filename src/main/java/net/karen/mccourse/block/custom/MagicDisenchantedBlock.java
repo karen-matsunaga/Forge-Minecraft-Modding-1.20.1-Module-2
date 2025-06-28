@@ -29,9 +29,10 @@ public class MagicDisenchantedBlock extends Block {
     public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
         if (!level.isClientSide() && entity instanceof ItemEntity itemEntity) {
             ItemStack item = itemEntity.getItem(); // Get real item
+            Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item); // Get all enchantments of the item
             switch (type) {
-                case 1 -> individualEnchantedBook(level, pos, item, itemEntity); // Decrement more enchantment level
-                case 2 -> groupedEnchantedBook(level, pos, item, itemEntity); // Original enchantment level
+                case 1 -> individualEnchantedBook(level, pos, item, itemEntity, enchantments); // Decrement more enchantment level
+                case 2 -> groupedEnchantedBook(level, pos, item, itemEntity, enchantments); // Original enchantment level
             }
         }
         super.stepOn(level, pos, state, entity);
@@ -49,41 +50,31 @@ public class MagicDisenchantedBlock extends Block {
     }
 
     // CUSTOM METHOD - TYPE 1
-    private static void individualEnchantedBook(Level level, BlockPos pos,
-                                               ItemStack item, ItemEntity itemEntity) {
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
-        if (enchantments.isEmpty()) { return; }
-        if (item.getItem().equals(Items.ENCHANTED_BOOK)) { // Is enchanted book divided on INDIVIDUAL books
+    private static void individualEnchantedBook(Level level, BlockPos pos, ItemStack item,
+                                                ItemEntity itemEntity, Map<Enchantment, Integer> enchant) {
+        if (enchant.isEmpty()) { return; }
+        if (isBook(item)) { // Is enchanted book divided on INDIVIDUAL books
             List<ItemStack> separatedBooks = extractEnchantments(item);
             separatedBooks.forEach(book -> dropEnchanted(level, pos, book));
         }
         else { // Is tool, armor, etc. an enchanted book with all enchantments and base item
-            groupedEnch(enchantments, level, pos);
-            ItemStack baseItem = item.copy(); // Remove enchantments of original item
-            removeTag(List.of("Enchantments", "StoredEnchantments"), baseItem);
-            CompoundTag tag = baseItem.getTag();
-            if (tag != null && tag.isEmpty()) { baseItem.setTag(null); }
-            dropEnchanted(level, pos, baseItem); // Drop base item WITHOUT enchantment
+            groupedEnch(enchant, level, pos);
+            enchant(level, pos, item);
         }
-        itemEntity.discard(); // remover item original
+        itemEntity.discard(); // Removed item original
     }
 
     // CUSTOM METHOD - TYPE 2
-    private static void groupedEnchantedBook(Level level, BlockPos pos,
-                                            ItemStack item, ItemEntity itemEntity) {
-        Map<Enchantment, Integer> enchanted = EnchantmentHelper.getEnchantments(item); // Get all enchantments of the item
+    private static void groupedEnchantedBook(Level level, BlockPos pos, ItemStack item,
+                                             ItemEntity itemEntity, Map<Enchantment, Integer> enchant) {
         // Skip if item has no enchantments - Only process if it's not a previously split book (to avoid infinite loop)
-        if (enchanted.isEmpty() || (isBook(item) && enchanted.size() == 1)) { return; }
+        if (enchant.isEmpty() || (isBook(item) && enchant.size() == 1)) { return; }
         if (!isBook(item)) { // 1. Drop enchanted books with the enchantments
-            groupedBooks(enchanted, true, level, pos); // It's a TOOL/ARMOR/etc. (Grouped books)
-            ItemStack baseItem = item.copy(); // Drop the base item WITHOUT enchantments
-            removeTag(List.of("Enchantments", "StoredEnchantments"), baseItem);
-            CompoundTag tag = baseItem.getTag();
-            if (tag != null && baseItem.hasTag() && tag.isEmpty()) { baseItem.setTag(null); } // Clean up tag if empty
-            dropEnchanted(level, pos, baseItem);
+            groupedBooks(enchant, true, level, pos); // It's a TOOL/ARMOR/etc. (Grouped books)
+            enchant(level, pos, item);
         }
         // 2. Split each enchantment into INDIVIDUAL books -> ENCHANTED BOOK
-        else { groupedBooks(enchanted, false, level, pos); }
+        else { groupedBooks(enchant, false, level, pos); }
         itemEntity.discard(); // Remove the original item (to avoid reprocessing)
     }
 
@@ -91,17 +82,15 @@ public class MagicDisenchantedBlock extends Block {
     private static List<ItemStack> extractEnchantments(ItemStack enchantedBook) {
         List<ItemStack> result = new ArrayList<>();
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(enchantedBook);
-        for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-            Enchantment enchantment = entry.getKey();
-            int level = entry.getValue();
+        enchantments.forEach((ench, lvl) -> {
             // Enchantment level 10 or below (INDIVIDUAL books with enchantment level 1)
-            if (level <= 10) { for (int i = 0; i < level; i++) { result.add(createEnchantedBook(enchantment, 1)); } }
+            if (lvl <= 10) { for (int i = 0; i < lvl; i++) { result.add(createEnchantedBook(ench, 1)); } }
             else { // Enchantment level 11 or above (INDIVIDUAL books with enchantment level 10 + remaining enchantment level)
-                int tens = level / 10, remainder = level % 10;
-                for (int i = 0; i < tens; i++) result.add(createEnchantedBook(enchantment, 10));
-                if (remainder > 0) { result.add(createEnchantedBook(enchantment, remainder)); }
+                int tens = lvl / 10, remainder = lvl % 10;
+                for (int i = 0; i < tens; i++) result.add(createEnchantedBook(ench, 10));
+                if (remainder > 0) { result.add(createEnchantedBook(ench, remainder)); }
             }
-        }
+        });
         return result;
     }
 
@@ -119,4 +108,13 @@ public class MagicDisenchantedBlock extends Block {
 
     // CUSTOM METHOD - Item dropped is an ENCHANTED (tool, armor, etc.) or an ENCHANTED BOOK
     private static boolean isBook(ItemStack item) { return item.is(Items.ENCHANTED_BOOK); }
+
+    // CUSTOM METHOD - Enchanted item transform on Base item
+    private static void enchant(Level level, BlockPos pos, ItemStack item) {
+        ItemStack baseItem = item.copy(); // Remove enchantments of original item - Drop the base item WITHOUT enchantments
+        removeTag(List.of("Enchantments", "StoredEnchantments"), baseItem);
+        CompoundTag tag = baseItem.getTag();
+        if (tag != null && tag.isEmpty() && baseItem.hasTag()) { baseItem.setTag(null); } // Clean up tag if empty
+        dropEnchanted(level, pos, baseItem); // Drop base item WITHOUT enchantment
+    }
 }
