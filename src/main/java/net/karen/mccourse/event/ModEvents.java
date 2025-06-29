@@ -187,10 +187,8 @@ public class ModEvents {
         BlockState state = event.getState();
         ItemStack tool = player.getMainHandItem();
         Level level = (Level) event.getLevel();
-        int fortune = enchant(tool, Enchantments.BLOCK_FORTUNE);
-        int moreOres = enchant(tool, ModEnchantments.MORE_ORES.get());
-        int multiplier = enchant(tool, ModEnchantments.MULTIPLIER.get());
-        int accumulator = enchant(tool, ModEnchantments.ACCUMULATOR.get());
+        int fortune = enchant(tool, Enchantments.BLOCK_FORTUNE), multiplier = enchant(tool, ModEnchantments.MULTIPLIER.get()),
+        moreOres = enchant(tool, ModEnchantments.MORE_ORES.get()), accumulator = enchant(tool, ModEnchantments.ACCUMULATOR.get());
         var blockTag = ForgeRegistries.BLOCKS.tags();
         if (!level.isClientSide() && world instanceof ServerLevel serverLevel) {
             boolean cancelVanillaDrop = false; // Adapt the drop according to the enchantment being true
