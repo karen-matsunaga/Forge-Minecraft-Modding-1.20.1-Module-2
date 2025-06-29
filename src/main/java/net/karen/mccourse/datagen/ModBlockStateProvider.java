@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.*;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -192,6 +191,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         // Furnace
         registerFurnace(ModBlocks.KAUPEN_FURNACE_BLOCK);
+
+        // Potted Snapdragon
+//        registerBlock(ModBlocks.POTTED_SNAPDRAGON);
+        // Light block
+        minerBlock(ModBlocks.MINER_BLOCK);
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json
@@ -266,7 +270,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
             }
         });
         simpleBlockItem(ModBlocks.ALEXANDRITE_LAMP.get(), models().cubeAll("alexandrite_lamp_on",
-                new ResourceLocation(MCCourseMod.MOD_ID, "block/" + "alexandrite_lamp_on")));
+              new ResourceLocation(MCCourseMod.MOD_ID, "block/" + "alexandrite_lamp_on")));
     }
 
     // Method to use trapdoor block
@@ -326,18 +330,36 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlockItem(blockRegistryObject.get(), new ModelFile.UncheckedModelFile("mccourse:block/" + name)); // Furnace
 
         // Block state folder
-        getVariantBuilder(block)
-                .forAllStates(state -> {
-                    Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING); // All directions
-                    boolean lit = state.getValue(BlockStateProperties.LIT); // Lit true and false
-                    Map<Direction, Integer> directions = Map.of(Direction.NORTH, 0, Direction.EAST, 90,
-                            Direction.SOUTH, 180, Direction.WEST, 270); // Direction keys and Y values
-                    int yRot = directions.getOrDefault(direction, 0); // yRot used each Direction and Y integer
-                    // Create model file
-                    return ConfiguredModel.builder()
-                            .modelFile(lit ? modelOn : model) // FurnaceOn and Furnace
-                            .rotationY(yRot) // Direction key and Y value
-                            .build();
-                });
+        getVariantBuilder(block).forAllStates(state -> {
+           Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING); // All directions
+           boolean lit = state.getValue(BlockStateProperties.LIT); // Lit true and false
+           Map<Direction, Integer> directions = Map.of(Direction.NORTH, 0, Direction.EAST, 90,
+           Direction.SOUTH, 180, Direction.WEST, 270); // Direction keys and Y values
+           int yRot = directions.getOrDefault(direction, 0); // yRot used each Direction and Y integer
+           // Create model file -> modelFile (FurnaceOn and Furnace) + rotationY (Direction key and Y value)
+           return ConfiguredModel.builder().modelFile(lit ? modelOn : model).rotationY(yRot).build();
+        });
+    }
+
+    // CUSTOM METHOD - POTTED
+//    private void registerBlock(RegistryObject<Block> blockRegistryObject) {
+//        Block block = blockRegistryObject.get();
+//        ResourceLocation key = ForgeRegistries.BLOCKS.getKey(block);
+//        String name = Objects.requireNonNull(key).getPath();
+//
+//        models().withExistingParent(name, mcLoc("block/flower_pot_cross"))
+//                .texture("plant", modLoc("block/snapdragon"))
+//                .renderType("minecraft:cutout"); // Model
+//
+//        simpleBlock(block, models().getExistingFile(modLoc("block/" + name))); // BlockState
+//    }
+
+    // CUSTOM METHOD - Light blocks
+    private void minerBlock(RegistryObject<Block> blockRegistryObject) {
+        Block block = blockRegistryObject.get();
+        ResourceLocation key = ForgeRegistries.BLOCKS.getKey(block);
+        String name = Objects.requireNonNull(key).getPath();
+        BlockModelBuilder model = models().cubeAll(name, modLoc("block/" + name)).renderType("translucent");
+        simpleBlock(block, model); // BlockState + Model
     }
 }

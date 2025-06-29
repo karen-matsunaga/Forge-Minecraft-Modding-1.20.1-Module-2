@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-24T12:10:56.2620813	Block States: mccourse
+// 1.20.1	2025-06-29T18:19:19.079747	Block States: mccourse
 9b0f59e6a967af477e6f41100bfecb754add6ea2 assets/mccourse/blockstates/alexandrite_block.json
 1fd0895b9aa0e87b67d2c4da0f567f8aa895de30 assets/mccourse/blockstates/alexandrite_button.json
 974428f15970c224b76ef992df827ba4718bb490 assets/mccourse/blockstates/alexandrite_door.json
@@ -40,6 +40,7 @@ a3e033c1df134f254e3e240d3db0e732145e3628 assets/mccourse/blockstates/kaupen_furn
 70707a4fa2d35146ff7d6dbc4ae5197a311927ae assets/mccourse/blockstates/magic_enchanted_block.json
 cce9dc431858456ca7ad95d1f208eac23dab14a5 assets/mccourse/blockstates/mccourse_elevator.json
 e79aeae7abf28172ffdcd15ebf2a31efa753abf3 assets/mccourse/blockstates/mccourse_generator.json
+e956e9950c8e4f8a4e192e66b92522912f8d7acb assets/mccourse/blockstates/miner_block.json
 64817565a0fa2c6f960c783edeb5fa2a8dc966ac assets/mccourse/blockstates/nether_alexandrite_ore.json
 c5ce6a89eec9518578fde6fe8ee89ab466157955 assets/mccourse/blockstates/nether_pink_ore.json
 29ae0e721fc49be0db1c10501fe3091bd84f312b assets/mccourse/blockstates/nether_star_block.json
@@ -155,6 +156,7 @@ c2320f26fe48bd067cfd7cd65fe8af80cf9fdc89 assets/mccourse/models/block/magic_dise
 23bc39722659f0b3cc5425156d56f8382ce6b1f4 assets/mccourse/models/block/magic_enchanted_block.json
 784cf6624dc12291631d9068d905dd93a143664c assets/mccourse/models/block/mccourse_elevator.json
 d086207eaa975401323a72c449685581f0226c76 assets/mccourse/models/block/mccourse_generator.json
+9ac707de74757ebe13b942f701e9c266977b4c17 assets/mccourse/models/block/miner_block.json
 26c88ba8251903cdb06561366aed91eb6259767c assets/mccourse/models/block/nether_alexandrite_ore.json
 814c1f8ff4ab2b3dfbce5ea31b5b1d14d747fece assets/mccourse/models/block/nether_pink_ore.json
 786a5feb8687035b639e51d23674acf10797b6ac assets/mccourse/models/block/nether_star_block.json

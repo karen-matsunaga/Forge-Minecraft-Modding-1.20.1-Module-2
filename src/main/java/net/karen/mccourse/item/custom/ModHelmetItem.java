@@ -36,7 +36,7 @@ public class ModHelmetItem extends ArmorItem {
             if (!level.isClientSide() && player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.MINER_HELMET.get())) {
                 BlockPos pos = player.blockPosition();
                 if (level.getBlockState(pos).isAir()) {
-                    level.setBlock(pos, ModBlocks.LIGHT_BLOCK.get().defaultBlockState(), 3);
+                    level.setBlock(pos, ModBlocks.MINER_BLOCK.get().defaultBlockState(), 3);
                 }
             }
         }

@@ -2,7 +2,7 @@ package net.karen.mccourse.block;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.custom.*;
-import net.karen.mccourse.block.custom.LightBlock;
+import net.karen.mccourse.block.custom.MinerBlock;
 import net.karen.mccourse.fluid.ModFluids;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.sound.ModSounds;
@@ -433,8 +433,8 @@ public class ModBlocks {
                       .strength(5F, 3600000.0F), 1));
 
     // Light block
-    public static final RegistryObject<Block> LIGHT_BLOCK = registerBlock("light_block",
-            () -> new LightBlock(BlockBehaviour.Properties.copy(Blocks.LIGHT).instabreak().lightLevel(s -> 15)
+    public static final RegistryObject<Block> MINER_BLOCK = registerBlock("miner_block",
+            () -> new MinerBlock(BlockBehaviour.Properties.copy(Blocks.LIGHT).instabreak().lightLevel(s -> 15)
                                                .noCollission().noOcclusion().noLootTable()));
 
     // Magic Disenchanted Book Block
