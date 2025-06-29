@@ -193,7 +193,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         registerFurnace(ModBlocks.KAUPEN_FURNACE_BLOCK);
 
         // Potted Snapdragon
-//        registerBlock(ModBlocks.POTTED_SNAPDRAGON);
+        registerBlock(ModBlocks.POTTED_SNAPDRAGON);
         // Light block
         minerBlock(ModBlocks.MINER_BLOCK);
     }
@@ -342,17 +342,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     // CUSTOM METHOD - POTTED
-//    private void registerBlock(RegistryObject<Block> blockRegistryObject) {
-//        Block block = blockRegistryObject.get();
-//        ResourceLocation key = ForgeRegistries.BLOCKS.getKey(block);
-//        String name = Objects.requireNonNull(key).getPath();
-//
-//        models().withExistingParent(name, mcLoc("block/flower_pot_cross"))
-//                .texture("plant", modLoc("block/snapdragon"))
-//                .renderType("minecraft:cutout"); // Model
-//
-//        simpleBlock(block, models().getExistingFile(modLoc("block/" + name))); // BlockState
-//    }
+    private void registerBlock(RegistryObject<Block> blockRegistryObject) {
+        Block block = blockRegistryObject.get();
+        ResourceLocation key = ForgeRegistries.BLOCKS.getKey(block);
+        String name = Objects.requireNonNull(key).getPath();
+
+        models().withExistingParent(name, mcLoc("block/flower_pot_cross"))
+                .texture("plant", modLoc("block/snapdragon"))
+                .renderType("minecraft:cutout"); // Model
+
+        simpleBlock(block, models().getExistingFile(modLoc("block/" + name))); // BlockState
+    }
 
     // CUSTOM METHOD - Light blocks
     private void minerBlock(RegistryObject<Block> blockRegistryObject) {

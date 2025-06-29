@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-29T18:19:19.079747	Block States: mccourse
+// 1.20.1	2025-06-29T18:35:40.6019851	Block States: mccourse
 9b0f59e6a967af477e6f41100bfecb754add6ea2 assets/mccourse/blockstates/alexandrite_block.json
 1fd0895b9aa0e87b67d2c4da0f567f8aa895de30 assets/mccourse/blockstates/alexandrite_button.json
 974428f15970c224b76ef992df827ba4718bb490 assets/mccourse/blockstates/alexandrite_door.json
@@ -49,6 +49,7 @@ c5ce6a89eec9518578fde6fe8ee89ab466157955 assets/mccourse/blockstates/nether_pink
 3e7d38cb31f71f310d6fe1682f9013778601948c assets/mccourse/blockstates/pink_block.json
 0e2cc29ca21214387f3837073f72696730cdea86 assets/mccourse/blockstates/pink_ender_pearl_block.json
 3dfef52756aa7af3270b8598997b6b47f580a21a assets/mccourse/blockstates/pink_ore.json
+c8ea82856ad69b9d8c9709bad45d82dd2af54b41 assets/mccourse/blockstates/potted_snapdragon.json
 68668ee9f024b18bba4ad587ccb08fde240cb1da assets/mccourse/blockstates/purple_ender_pearl_block.json
 2bd9f6ab9904321d645967996ac17eae68f3399c assets/mccourse/blockstates/raw_alexandrite_block.json
 6efb49107935c5c9dbea310a43f3b7fc06a4cbc8 assets/mccourse/blockstates/red_ender_pearl_block.json
@@ -165,6 +166,7 @@ c406646d95e9b54796914eb31a8031be35416e3e assets/mccourse/models/block/phantom_me
 d56cc82e6cc5a0306964bfd74311cba3ab3c04ca assets/mccourse/models/block/pink_block.json
 0b9a42e64df131f1815cb450b2348b3fb3e67f0f assets/mccourse/models/block/pink_ender_pearl_block.json
 c790fda8739e9af6c3a2bfa627ada52d53b9a5a8 assets/mccourse/models/block/pink_ore.json
+e5c598dabd230e81237c2f365ca3265ef76c8182 assets/mccourse/models/block/potted_snapdragon.json
 0a92832312557fa24f146efd0815161e7cdeafd6 assets/mccourse/models/block/purple_ender_pearl_block.json
 44de6fdbc9944654152a7b32b782c4b48195f25b assets/mccourse/models/block/raw_alexandrite_block.json
 8b1ae79f020616f28e61721133f872741ca7b811 assets/mccourse/models/block/red_ender_pearl_block.json
