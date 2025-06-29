@@ -16,16 +16,16 @@ import net.karen.mccourse.util.*;
 import net.karen.mccourse.villager.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.*;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.*;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
@@ -52,12 +52,10 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.*;
-import net.minecraftforge.event.entity.item.ItemExpireEvent;
-import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.item.*;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.*;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.event.level.ExplosionEvent;
+import net.minecraftforge.event.level.*;
 import net.minecraftforge.event.village.*;
 import net.minecraftforge.eventbus.api.*;
 import net.minecraftforge.fml.common.Mod;
@@ -66,8 +64,7 @@ import net.minecraftforge.server.command.ConfigCommand;
 import org.lwjgl.glfw.GLFW;
 import java.util.*;
 import static net.karen.mccourse.item.custom.MccourseBottleItem.createMccourseBottleWithXP;
-import static net.karen.mccourse.item.custom.XrayItem.getActiveMode;
-import static net.karen.mccourse.item.custom.XrayItem.stage;
+import static net.karen.mccourse.item.custom.XrayItem.*;
 import static net.karen.mccourse.util.ChatUtil.*;
 import static net.karen.mccourse.util.Utils.*;
 import static net.minecraft.network.chat.CommonComponents.*;
@@ -160,8 +157,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void addWanderingTrades(WandererTradesEvent event) {
         // List of all generic and rare trades that the player can trade because not exist levels
-        List<VillagerTrades.ItemListing> generic = event.getGenericTrades();
-        List<VillagerTrades.ItemListing> rare = event.getRareTrades();
+        List<VillagerTrades.ItemListing> generic = event.getGenericTrades(), rare = event.getRareTrades();
         // Received KOHLRABI like Generic Trades
         wandering(generic, List.of(Items.EMERALD, ModItems.KOHLRABI.get()), List.of(2, 6, 10, 2), 0.02f);
         // Received KOHLRABI SEEDS like Rare Trades
@@ -320,17 +316,15 @@ public class ModEvents {
                 Map.entry(yellow, ModTags.Entities.WATER_ANIMALS), Map.entry(darkPurple, ModTags.Entities.VILLAGER));
                 entitiesTag.forEach((color, tag) -> { // Added GLOWING effect for each GROUP
                     String teamName = tag.location().getPath();
-                    List<LivingEntity> entities = player.level().getEntitiesOfClass(LivingEntity.class,
-                    player.getBoundingBox().inflate(10), // Range of GLOWING effect on mobs
-                    entity -> entity.getType().is(tag) && entity != player);
+                    List<LivingEntity> entities = getPlayer(player, tag); // Range of GLOWING effect on mobs
                     if (!entities.isEmpty()) { // Groups not empty
                         Scoreboard score = player.getScoreboard();
                         PlayerTeam team = score.getPlayerTeam(teamName);
                         // Added each entity on group with specif tag and color on entitiesTag
                         if (team == null) { team = score.addPlayerTeam(teamName); team.setColor(color); }
                         PlayerTeam finalTeam = team; // Each entity received GLOWING effect with specif color on entitiesTag
-                        entities.forEach(entity -> { entity.addEffect(new MobEffectInstance(
-                            MobEffects.GLOWING, 20, 1, true, false, false));
+                        entities.forEach(entity -> {
+                            entity.addEffect(effect(MobEffects.GLOWING, 20, 1));
                             score.addPlayerToTeam(entity.getScoreboardName(), finalTeam);
                         });
                     }
@@ -413,8 +407,8 @@ public class ModEvents {
                     totalLight = Math.max(blockLight, skyLight);
                 Font font = mc.font;
                 GuiGraphics guiGraphics = event.getGuiGraphics();
-                Component coordinate = ChatUtil.literal(x, y, z); // Text to be displayed on screen
-                Component light = ChatUtil.numbers(totalLight, skyLight, blockLight); // LIGHT, SKY, BLOCK
+                // Text to be displayed on screen - LIGHT, SKY, BLOCK
+                Component coordinate = ChatUtil.literal(x, y, z), light = ChatUtil.numbers(totalLight, skyLight, blockLight);
                 guiGraphics.drawString(font, coordinate, 10, 10, 0x5597DF); // X, Y, Z
                 guiGraphics.drawString(font, light, 10, 20, 0xDBE947); // LIGHT
             }
@@ -494,9 +488,8 @@ public class ModEvents {
                     Set<BlockPos> visited = new HashSet<>(); // BFS (or DFS) search for connected logs and leaves
                     Queue<BlockPos> toVisit = new ArrayDeque<>();
                     toVisit.add(origin);
-                    int maxDistance = 50; // Maximum search distance
-                    int maxHeight = 512; // Height limit (e.g. 10 blocks above and below)
-                    int logCount = 0;
+                    // Maximum search distance + Height limit (e.g. 10 blocks above and below)
+                    int maxDistance = 50, maxHeight = 512, logCount = 0;
                     while (!toVisit.isEmpty()) {
                         BlockPos pos = toVisit.poll();
                         // Check if it is already visited or within the height limit
@@ -504,8 +497,7 @@ public class ModEvents {
                         for (int dx = -1; dx <= 1; dx++) { // Check the surrounding blocks (relative to the current position)
                             for (int dy = -1; dy <= 1; dy++) {
                                 for (int dz = -1; dz <= 1; dz++) {
-                                    BlockPos offset = pos.offset(dx, dy, dz);
-                                    // Limit horizontal distance
+                                    BlockPos offset = pos.offset(dx, dy, dz); // Limit horizontal distance
                                     if (visited.contains(offset) || offset.distManhattan(origin) > maxDistance) { continue; }
                                     BlockState neighborState = level.getBlockState(offset);
                                     if (isBlock(neighborState, BlockTags.LOGS) || isBlock(neighborState, BlockTags.LEAVES)) {
@@ -522,9 +514,8 @@ public class ModEvents {
                             if (isBlock(state, BlockTags.LOGS)) { logCount++; } // Damage tool
                         }
                     }
-                    if (logCount > 0) { // Applies damage proportional to the amount of logs broken
-                        tool.hurtAndBreak(logCount, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
-                    }
+                    // Applies damage proportional to the amount of logs broken
+                    if (logCount > 0) { hurtTool(tool, logCount, player); }
                 }
             }
         }
@@ -534,8 +525,8 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedBlockFlyEnchantment(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity(); // Entity is a player
-        int efficiency = hasEnchant(Enchantments.BLOCK_EFFICIENCY, player);
-        int blockFly = hasEnchant(ModEnchantments.BLOCK_FLY.get(), player);
+        int efficiency = hasEnchant(Enchantments.BLOCK_EFFICIENCY, player),
+            blockFly = hasEnchant(ModEnchantments.BLOCK_FLY.get(), player);
         newSpeed(event, blockFly > 0, player, 5); // There is Block Fly enchantment -> OLD speed * NEW speed (5)
         // There is Block Fly and Efficiency enchantments -> OLD speed * (NEW speed (5) * efficiency level)
         newSpeed(event, blockFly > 0 && efficiency > 0, player, (5 + efficiency));
@@ -567,24 +558,21 @@ public class ModEvents {
     public static void activatedEternalEnchantmentOnPlayerDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player player) { // Entity is player
             UUID playerUUID = player.getUUID(); // Player UUID
-            List<ItemStack> vaultItems = new ArrayList<>(); // Added rest items on Vault item
-            // Added all Inventory slots, Armor slots and Offhand slot
-            List<ItemStack> inventoryPreserve = new ArrayList<>(Collections.nCopies(36, ItemStack.EMPTY));
-            List<ItemStack> armorPreserve = new ArrayList<>(Collections.nCopies(4, ItemStack.EMPTY));
-            List<ItemStack> offhandPreserve = new ArrayList<>(Collections.nCopies(1, ItemStack.EMPTY));
+            // Added all Inventory slots, Armor slots and Offhand slot + Added rest items on Vault item
+            List<ItemStack> vaultItems = new ArrayList<>(), inventoryPreserve = new ArrayList<>(Collections.nCopies(36, empty)),
+            armorPreserve = new ArrayList<>(Collections.nCopies(4, empty)),
+            offhandPreserve = new ArrayList<>(Collections.nCopies(1, empty));
             int[] experienceData = new int[] { player.experienceLevel, Float.floatToIntBits(player.experienceProgress),
             player.totalExperience }; // Added player experience
             // Get all items on Main inventory, Armor and Left hand or Offhand slots
             setPreservedVault(player.getInventory().items, inventoryPreserve, vaultItems);
             setPreservedVault(player.getInventory().armor, armorPreserve, vaultItems);
             setPreservedVault(player.getInventory().offhand, offhandPreserve, vaultItems);
-            // Save items data
-            preservedItems.put(playerUUID, inventoryPreserve);
+            preservedItems.put(playerUUID, inventoryPreserve); // Save items data from preserved ITEMS, ARMOR and OFFHAND
             preservedArmor.put(playerUUID, armorPreserve);
             preservedOffhand.put(playerUUID, offhandPreserve);
             preservedExperience.put(playerUUID, experienceData);
-            // Reset EXPERIENCE to prevent drop
-            player.experienceLevel = 0;
+            player.experienceLevel = 0; // Reset EXPERIENCE to prevent drop
             player.experienceProgress = 0;
             player.totalExperience = 0;
             // Display PLAYER NAME, Player death (X, Y and Z) positions and TIME showing (Hours::Minutes::Seconds)
@@ -593,14 +581,13 @@ public class ModEvents {
                 ItemStack vaultItem = new ItemStack(ModItems.VAULT.get());
                 CompoundTag vaultTag = new CompoundTag();
                 ListTag itemListTag = new ListTag();
-                vaultItems.forEach(item -> { CompoundTag itemTag = new CompoundTag(); item.save(itemTag);
-                    itemListTag.add(itemTag); }); // Create VaultItem with the items data
+                vaultItems.forEach(item -> { // Create VaultItem with the items data
+                    CompoundTag itemTag = new CompoundTag(); item.save(itemTag); itemListTag.add(itemTag); });
                 vaultTag.put("VaultItems", itemListTag); // Added information on Vault item
                 vaultTag.putString("DisplayName", displayName.toString()); // Save custom name in NBT
                 vaultItem.setTag(vaultTag);
                 vaultItem.setHoverName(displayName);
-                /* Temporarily saved for the clone event;
-                   Add directly to the new Player's inventory in onClone()
+                /* Temporarily saved for the clone event; Add directly to the new Player's inventory in onClone()
                    Try adding to a free inventory slot. */
                 preservedVault.computeIfAbsent(playerUUID, k -> new ArrayList<>()).add(vaultItem);
             }
@@ -611,17 +598,15 @@ public class ModEvents {
     public static void activatedEternalEnchantmentOnPlayerClone(PlayerEvent.Clone event) {
         if (event.isWasDeath()) { // Ensures that it only runs AFTER death
             UUID playerUUID = event.getOriginal().getUUID(); // Get Player UUID
-            Player newPlayer = event.getEntity(); // Entity is Player -> After death
-            Player original = event.getOriginal(); // Old player -> Before death
+            // Entity is Player -> After death | Old player -> Before death
+            Player newPlayer = event.getEntity(), original = event.getOriginal();
             BlockPos blockPos = original.blockPosition(); // Player position after death
-            // Player death message on chat
-            newPlayer.sendSystemMessage(itemChatMessage(newPlayer, blockPos, gold));
+            newPlayer.sendSystemMessage(itemChatMessage(newPlayer, blockPos, gold)); // Player death message on chat
             // Restore all Inventory, Armor and Offhand saved slots
             setRestoredVault(newPlayer.getInventory().items, preservedItems.remove(playerUUID));
             setRestoredVault(newPlayer.getInventory().armor, preservedArmor.remove(playerUUID));
             setRestoredVault(newPlayer.getInventory().offhand, preservedOffhand.remove(playerUUID));
-            // Restore Experience
-            int[] experienceData = preservedExperience.remove(playerUUID); // Removed all experience saved
+            int[] experienceData = preservedExperience.remove(playerUUID); // Restore Experience and removed all experience saved
             if (experienceData != null) {
                 newPlayer.experienceLevel = experienceData[0]; // Restored experience level
                 newPlayer.experienceProgress = Float.intBitsToFloat(experienceData[1]); // Restored experience progress
@@ -755,8 +740,8 @@ public class ModEvents {
         if ((event.phase == TickEvent.Phase.END) || !player.level().isClientSide()) {
             // Desired value for level.getGameTime() % X != 0 -> [0.5, 1, 2, 5] seconds -> X = [10, 20, 40, 100] ticks
             if (player.level().getGameTime() % 40 != 0) { return; } // Example: 1 second = 20 ticks
-            List<NonNullList<ItemStack>> playerSlots = List.of(player.getInventory().items,
-            player.getInventory().armor, player.getInventory().offhand);
+            List<NonNullList<ItemStack>> playerSlots =
+            List.of(player.getInventory().items, player.getInventory().armor, player.getInventory().offhand);
             playerSlots.forEach(itemStacks -> itemStacks.forEach(stack -> {
                 if (!stack.isEmpty() && stack.isDamaged() && enchant(stack, ModEnchantments.RECOVER.get()) > 0) {
                     int currentDamage = stack.getDamageValue();
@@ -822,7 +807,8 @@ public class ModEvents {
             ItemStack item = player.getMainHandItem();
             int level = enchant(item, ModEnchantments.MULTIPLIER.get());
             if (level > 1) {
-                for (ItemEntity drop : event.getDrops()) {
+                List<ItemEntity> originalDrops = new ArrayList<>(event.getDrops());
+                for (ItemEntity drop : originalDrops) {
                     ItemStack stack = drop.getItem().copy();
                     stack.setCount(stack.getCount() * level); // Multiplier adapt on level
                     dropWorld(event, drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack);
@@ -841,9 +827,7 @@ public class ModEvents {
                 float baseDamage = event.getAmount();
                 event.setAmount(baseDamage + (baseDamage * (0.5F * mobsCritical))); // Critical damage (50% extra) per level
                 sound(player, SoundEvents.PLAYER_ATTACK_CRIT, 1.0F, 1.0F); // Particle effect and sound
-                LivingEntity entity = event.getEntity();
-                ((ServerLevel) player.level()).sendParticles(ParticleTypes.CRIT, entity.getX(), entity.getY(0.5),
-                entity.getZ(), 5, 0.2, 0.2, 0.2, 0.1);
+                particle(player, event.getEntity());
             }
         }
     }
@@ -866,7 +850,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onExplosion(ExplosionEvent.Detonate event) {
         event.getAffectedEntities().removeIf(entity -> entity instanceof ItemEntity itemEntity &&
-                enchant(itemEntity.getItem(), ModEnchantments.IMMORTAL.get()) > 0);
+                                                       enchant(itemEntity.getItem(), ModEnchantments.IMMORTAL.get()) > 0);
     }
 
     @SubscribeEvent
@@ -877,8 +861,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onEntityTick(TickEvent.LevelTickEvent event) {
         if (event.phase == TickEvent.Phase.END && !event.level.isClientSide()) {
-            for (Entity entity : event.level.getEntities(null,
-                    AABB.ofSize(new Vec3(0, -100, 0), 10000, 500, 10000))) {
+            for (Entity entity : getRadiusItem(event)) {
                 if (entity instanceof ItemEntity item && enchant(item.getItem(), ModEnchantments.IMMORTAL.get()) > 0) {
                     if (item.getY() < -64) {
                         Player nearestPlayer = event.level.getNearestPlayer(item, 64); // Find the nearest player
@@ -903,11 +886,10 @@ public class ModEvents {
         ItemStack stack = event.getItemStack();
         if (!player.level().isClientSide()) { // Teleport when using item (like tools, etc.)
             if (!stack.isEmpty() && stack.is(ModTags.Items.TELEPORT_ITEMS)) { // Check if holding a tool
-                double distance = 5.0; // How many blocks ahead to ray trace (reach distance)
-                // 1. Get the direction the player is looking; 2. It starts from the eyes; 3. Block render distance.
-                Vec3 look = player.getLookAngle(), start = player.getEyePosition(), end = start.add(look.scale(distance));
-                BlockHitResult hitResult = player.level().clip(new ClipContext(start, end,
-                ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)); // Ray trace until it hits a block
+                // 1. Get the direction the player is looking; 2. It starts from the eyes;
+                // 3. Block render distance. How many blocks ahead to ray trace (reach distance).
+                Vec3 look = player.getLookAngle(), start = player.getEyePosition(), end = start.add(look.scale(5.0));
+                BlockHitResult hitResult = hitBlock(player, start, end); // Ray trace until it hits a block
                 if (hitResult.getType() == HitResult.Type.BLOCK) {
                     BlockPos blockPos = hitResult.getBlockPos(); // Teleports to the top of the block hit (+1 height)
                     double x = blockPos.getX() + 0.5, y = blockPos.getY() + 1.0, z = blockPos.getZ() + 0.5;
@@ -965,11 +947,9 @@ public class ModEvents {
             if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
                 ItemStack target = slot.getItem();
                 if (target.isEmpty() || target == carried) { return; }
-                // Send to the server
-                ModNetworks.PACKET_HANDLER.sendToServer(new InfiniteInventorySlotMessage(slot.index));
-                ModNetworks.PACKET_HANDLER.sendToServer(new LevelChargerInventorySlotMessage(slot.index));
-                // Consume item on client (immediate visual effect)
-                if (!player.getAbilities().instabuild) {
+                network(new InfiniteInventorySlotMessage(slot.index)); // Send to the server -> Infinite item
+                network(new LevelChargerInventorySlotMessage(slot.index)); // Send to the server -> Level Charger item
+                if (!player.getAbilities().instabuild) { // Consume item on client (immediate visual effect)
                     carried.shrink(1);
                     player.containerMenu.broadcastChanges();
                 }
@@ -1115,6 +1095,46 @@ public class ModEvents {
                         "§cItem locked! §7- Press §eV§7 §cto unlock", locked); // LOCKED
                 image(elements, "textures/misc/unlock_off.png", 9, 9,
                         "§aItem unlocked! §7- Press §eV§7 §ato lock", !locked); // UNLOCKED
+            }
+        }
+    }
+
+    // CUSTOM EVENT - TOOLTIP position
+    private static int offsetX = 0, offsetY = 0;
+    private static boolean hoveringTooltip = false;
+
+    @SubscribeEvent
+    public static void onRenderTooltipPre(RenderTooltipEvent.Pre event) {
+        if (Minecraft.getInstance().screen instanceof AbstractContainerScreen<?>) {
+            int mouseX = event.getX(), mouseY = event.getY(), height = event.getComponents().size() * 10,
+                width = event.getFont().width(event.getComponents().get(0).toString()) + 10;
+            // Set flag if mouse is over tooltip
+            double mx = Minecraft.getInstance().mouseHandler.xpos() / Minecraft.getInstance().getWindow().getGuiScale(),
+                   my = Minecraft.getInstance().mouseHandler.ypos() / Minecraft.getInstance().getWindow().getGuiScale();
+            hoveringTooltip = mx >= mouseX && mx <= mouseX + width && my >= mouseY && my <= mouseY + height;
+            event.setX(event.getX() + offsetX); // Apply offset
+            event.setY(event.getY() + offsetY);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onMouseScroll(ScreenEvent.MouseScrolled.Pre event) {
+        if (Minecraft.getInstance().screen instanceof AbstractContainerScreen<?>) {
+            if (hoveringTooltip) { // Scroll moves the tooltip
+                double delta = event.getScrollDelta();
+                if (Screen.hasShiftDown()) { offsetX += delta > 0 ? 10 : -10; } // Side
+                else { offsetY += delta > 0 ? 10 : -10; } // Up/down
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onKeyPress(ScreenEvent.KeyPressed.Pre event) {
+        if (Minecraft.getInstance().screen instanceof AbstractContainerScreen<?>) {
+            if (event.getKeyCode() == GLFW.GLFW_KEY_KP_DIVIDE) { // Divide key to reset
+                offsetX = 0;
+                offsetY = 0;
             }
         }
     }

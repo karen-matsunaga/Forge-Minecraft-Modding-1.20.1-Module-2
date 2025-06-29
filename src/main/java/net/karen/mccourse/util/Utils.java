@@ -10,6 +10,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
@@ -18,8 +19,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
@@ -28,6 +30,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
@@ -36,8 +39,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -51,17 +56,25 @@ public class Utils {
 
     // All vanilla colors
     public static ChatFormatting blue = ChatFormatting.BLUE, darkBlue = ChatFormatting.DARK_BLUE,
-                   aqua = ChatFormatting.AQUA, darkAqua = ChatFormatting.DARK_AQUA,
-                   purple = ChatFormatting.LIGHT_PURPLE, darkPurple = ChatFormatting.DARK_PURPLE,
-                   green = ChatFormatting.GREEN, darkGreen = ChatFormatting.DARK_GREEN,
-                   gray = ChatFormatting.GRAY, darkGray = ChatFormatting.DARK_GRAY,
-                   yellow = ChatFormatting.YELLOW, gold = ChatFormatting.GOLD,
-                   red = ChatFormatting.RED, darkRed = ChatFormatting.DARK_RED,
-                   black = ChatFormatting.BLACK, white = ChatFormatting.WHITE;
+    aqua = ChatFormatting.AQUA, darkAqua = ChatFormatting.DARK_AQUA, purple = ChatFormatting.LIGHT_PURPLE,
+    darkPurple = ChatFormatting.DARK_PURPLE, green = ChatFormatting.GREEN, darkGreen = ChatFormatting.DARK_GREEN,
+    gray = ChatFormatting.GRAY, darkGray = ChatFormatting.DARK_GRAY, yellow = ChatFormatting.YELLOW,
+    gold = ChatFormatting.GOLD, red = ChatFormatting.RED, darkRed = ChatFormatting.DARK_RED,
+    black = ChatFormatting.BLACK, white = ChatFormatting.WHITE;
+
+    public static ClipContext.Block collider = ClipContext.Block.COLLIDER;
+    public static ClipContext.Fluid none = ClipContext.Fluid.NONE;
+
+    public static ItemStack empty = ItemStack.EMPTY;
 
     // CUSTOM METHOD - Block and item sounds
     public static void sound(Player player, SoundEvent sound, float volume, float pitch) {
         player.level().playSound(null, player.blockPosition(), sound, SoundSource.PLAYERS, volume, pitch);
+    }
+
+    public static void particle(Player player, Entity entity) {
+        ((ServerLevel) player.level()).sendParticles(ParticleTypes.CRIT, entity.getX(), entity.getY(0.5),
+        entity.getZ(), 5, 0.2, 0.2, 0.2, 0.1);
     }
 
     // CUSTOM METHOD - Enchanted ITEM
@@ -117,6 +130,11 @@ public class Utils {
     // CUSTOM METHOD - Item used on MAIN HAND
     public static boolean item(Player player, Item item) {
         return player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == item; // CUSTOM METHOD - Used item
+    }
+
+    // CUSTOM METHOD - Effect
+    public static MobEffectInstance effect(MobEffect effect, int duration, int amplifier) {
+        return new MobEffectInstance(effect, duration, amplifier, true, false, false);
     }
 
     // CUSTOM METHOD - Activated IMMORTAL enchantment
@@ -188,6 +206,28 @@ public class Utils {
     // CUSTOM METHOD - GET items on placed above or below block
     public static List<ItemEntity> getItem(Level level, BlockPos pos) {
         return level.getEntitiesOfClass(ItemEntity.class, new AABB(pos).inflate(0.5));
+    }
+
+    // CUSTOM METHOD - GET player item
+    public static List<LivingEntity> getPlayer(Player player, TagKey<EntityType<?>> tag) {
+        return player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(10),
+               entity -> entity.getType().is(tag) && entity != player);
+    }
+
+    // CUSTOM METHOD - GET radius item
+    public static List<Entity> getRadiusItem(TickEvent.LevelTickEvent event) {
+        double x = 0, y = -100, z = 0, xSize = 10000, ySize = 500, zSize = 10000;
+        return event.level.getEntities(null, AABB.ofSize(new Vec3(x, y, z), xSize, ySize, zSize));
+    }
+
+    // CUSTOM METHOD - GET hit block when broken blocks
+    public static BlockHitResult hitBlock(Player player, Vec3 eye, Vec3 reach) {
+        return player.level().clip(new ClipContext(eye, reach, collider, none, player));
+    }
+
+    // CUSTOM METHOD - HURT tool
+    public static void hurtTool(ItemStack tool, int logCount, Player player) {
+        tool.hurtAndBreak(logCount, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
     }
 
     // CUSTOM METHOD - Villager Profession and Villager Wandering trades

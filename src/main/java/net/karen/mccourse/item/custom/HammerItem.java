@@ -18,6 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import static net.karen.mccourse.util.Utils.collider;
+import static net.karen.mccourse.util.Utils.none;
 
 // Credits by Kaupenjoe - https://github.com/Kaupenjoe/Forge-Course-1.20.X/tree/22-customHammer
 // Distributed under MIT - Using with some modifications
@@ -47,16 +49,9 @@ public class HammerItem extends DiggerItem implements Vanishable {
         List<BlockPos> positions = new ArrayList<>();
         Vec3 eye = player.getEyePosition(1f), look = player.getViewVector(1f),
              reach = eye.add(look.scale(6f));
-
-        ClipContext.Block block = ClipContext.Block.COLLIDER;
-        ClipContext.Fluid fluid = ClipContext.Fluid.NONE;
-
-        BlockHitResult traceResult = player.level().clip(new ClipContext(eye, reach, block, fluid, player));
-
+        BlockHitResult traceResult = player.level().clip(new ClipContext(eye, reach, collider, none, player));
         if (traceResult.getType() == HitResult.Type.MISS) { return positions; }
-
         Direction direction = traceResult.getDirection(); // Determines the direction the player is facing
-
         // For each step along the direction (up to the desired distance)
         for (int i = 0; i <= distance; i++) {
             BlockPos offsetPos = initialBlockPos.relative(direction, i);
@@ -85,8 +80,8 @@ public class HammerItem extends DiggerItem implements Vanishable {
     @Override
     public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
         super.onCraftedBy(stack, level, player);
-        if (infinite) {
-            CompoundTag tag = stack.getOrCreateTag(); // Added Unbreakable tag
+        if (infinite) { // Added Unbreakable tag
+            CompoundTag tag = stack.getOrCreateTag();
             tag.putBoolean("Unbreakable", true);
         }
     }
