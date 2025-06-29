@@ -18,6 +18,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -169,6 +170,13 @@ public class Utils {
         ItemEntity drops = new ItemEntity(level, x, y, z, stack);
         drops.setDeltaMovement(Vec3.ZERO);
         event.getDrops().add(drops);
+    }
+
+    // CUSTOM METHOD - Drop fish items
+    public static void dropFish(Level level, double x, double y, double z, ItemStack item) {
+        ItemEntity drop = new ItemEntity(level, x, y, z, item);
+        drop.setDeltaMovement(Vec3.ZERO);
+        level.addFreshEntity(drop);
     }
 
     // CUSTOM METHOD - Drop ENCHANTED BOOK and BASE ITEM on ground
@@ -354,8 +362,7 @@ public class Utils {
             ItemStack inventory = type.get(i);
             // Copy of item WITH Eternal enchantment
             if (!inventory.isEmpty() && enchant(inventory, ModEnchantments.ETERNAL.get()) > 0) { store.set(i, inventory.copy()); }
-            // Copy of item WITHOUT Eternal enchantment
-            else { vault.add(inventory.copy()); }
+            else { vault.add(inventory.copy()); } // Copy of item WITHOUT Eternal enchantment
             type.set(i, ItemStack.EMPTY); // Added on typePreserve or vaultItems removes stack on Inventory, Armor and Offhand slots
         }
     }
@@ -381,6 +388,15 @@ public class Utils {
         if (!main.isEmpty() && main.hasTag() && main.getTag() != null) { // MAIN HAND, ARMOR and OFFHAND
             boolean locked = main.getTag().getBoolean("Locked");
             network(new UnlockNetworkMessage(!locked, action, index));
+        }
+    }
+
+    // CUSTOM METHOD - Mccourse Fishing Rod - Random item
+    public static void mccourseFishingRodDrops(RandomSource random, float chance,
+                                               int min, int max, List<ItemStack> drops, Item item) {
+        if (random.nextFloat() < chance) {
+            int fishAmount = min + random.nextInt(max);
+            drops.add(new ItemStack(item, fishAmount)); // Guaranteed drop
         }
     }
 }

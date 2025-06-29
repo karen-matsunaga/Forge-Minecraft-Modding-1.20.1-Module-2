@@ -804,15 +804,13 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedMultiplierEnchantment(LivingDropsEvent event) {
         if (event.getSource().getEntity() instanceof Player player) {
-            ItemStack item = player.getMainHandItem();
-            int level = enchant(item, ModEnchantments.MULTIPLIER.get());
+            int level = enchant(player.getMainHandItem(), ModEnchantments.MULTIPLIER.get());
             if (level > 1) {
                 List<ItemEntity> originalDrops = new ArrayList<>(event.getDrops());
-                for (ItemEntity drop : originalDrops) {
+                originalDrops.forEach(drop -> {
                     ItemStack stack = drop.getItem().copy();
                     stack.setCount(stack.getCount() * level); // Multiplier adapt on level
-                    dropWorld(event, drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack);
-                }
+                    dropWorld(event, drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack); });
             }
         }
     }
@@ -821,8 +819,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedMobsCriticalEnchantment(LivingHurtEvent event) {
         if (event.getSource().getEntity() instanceof Player player) {
-            ItemStack weapon = player.getMainHandItem();
-            int mobsCritical = enchant(weapon, ModEnchantments.MOBS_CRITICAL.get());
+            int mobsCritical = enchant(player.getMainHandItem(), ModEnchantments.MOBS_CRITICAL.get());
             if (mobsCritical > 0 && !(player.fallDistance > 0 || !player.onGround())) {
                 float baseDamage = event.getAmount();
                 event.setAmount(baseDamage + (baseDamage * (0.5F * mobsCritical))); // Critical damage (50% extra) per level

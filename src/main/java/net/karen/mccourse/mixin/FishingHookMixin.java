@@ -1,8 +1,9 @@
 package net.karen.mccourse.mixin;
 
+import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
+import net.karen.mccourse.util.Utils;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
@@ -27,7 +28,7 @@ public abstract class FishingHookMixin {
     @Inject(method = "tick", at = @At("HEAD"))
     private void reduceFishingWaitTime(CallbackInfo ci) {
         Player player = getPlayerOwner(); // Player Fishing Rod OWNER
-        if (player != null) {
+        if (player != null && !player.level().isClientSide()) {
             ItemStack fishingRod = player.getMainHandItem(); // Player has Mccourse Fishing Rod on MAIN HAND
             if (fishingRod.is(ModItems.MCCOURSE_FISHING_ROD.get())) {
                 this.timeUntilLured = Math.min(this.timeUntilLured, 10); // Waiting time until a fish starts to approach
@@ -40,21 +41,23 @@ public abstract class FishingHookMixin {
     // METHOD - Player catch fish
     @Inject(method = "retrieve", at = @At("HEAD"))
     private void onCustomFishing(ItemStack pStack, CallbackInfoReturnable<Integer> cir) {
-        Player player = getPlayerOwner();
+        Player player = getPlayerOwner(); // Fishing Rod's owner
         if (player != null && !player.level().isClientSide()) {
-            Player owner = getPlayerOwner();
-            ItemStack held = owner.getMainHandItem();
+            ItemStack held = player.getMainHandItem(); // Player with Fishing Rod
+            int betterFishing = Utils.enchant(held, ModEnchantments.BETTER_FISHING.get()); // Item Better Fishing enchantment
+            List<ItemStack> drops = new ArrayList<>(); // Saves all items generated from fishing
+            Level level = player.level();
+            RandomSource random = level.random; // Random chance drop item
             if (held.is(ModItems.MCCOURSE_FISHING_ROD.get())) {
-                List<ItemStack> drops = new ArrayList<>();
-                Level level = player.level();
-                RandomSource random = level.random;
-                int fishAmount = 2 + random.nextInt(4);
-                drops.add(new ItemStack(Items.SALMON, fishAmount)); // Guaranteed drop
-                if (random.nextFloat() < 0.25f) { drops.add(new ItemStack(Items.NAUTILUS_SHELL)); } // Random drop chance
-                for (ItemStack drop : drops) {
-                    ItemEntity item = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), drop);
-                    level.addFreshEntity(item);
-                }
+                Utils.mccourseFishingRodDrops(random, 0.1f, 2, 2, drops, Items.SALMON); // Random drop chance
+                Utils.mccourseFishingRodDrops(random, 0.25f, 1, 1, drops, Items.NAUTILUS_SHELL);
+                drops.forEach(drop -> Utils.dropFish(level, player.getX(), player.getY(), player.getZ(), drop));
+            }
+            if (betterFishing > 0) { // "Rare" loots
+                float rareChance = 0.05f + 0.10f * betterFishing; // 5% base + 10% per level
+                Utils.mccourseFishingRodDrops(random, 0.1f, 1, 3, drops, Items.COD);
+                Utils.mccourseFishingRodDrops(random, rareChance, 1, 1, drops, ModItems.LEVEL_CHARGER_MINUS.get());
+                drops.forEach(drop -> Utils.dropFish(level, player.getX(), player.getY(), player.getZ(), drop));
             }
         }
     }

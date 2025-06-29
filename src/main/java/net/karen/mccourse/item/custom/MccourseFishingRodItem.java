@@ -1,5 +1,7 @@
 package net.karen.mccourse.item.custom;
 
+import net.karen.mccourse.enchantment.ModEnchantments;
+import net.karen.mccourse.util.ChatUtil;
 import net.karen.mccourse.util.Utils;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -26,11 +28,8 @@ import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
-import java.util.Set;
 
 public class MccourseFishingRodItem extends Item implements Vanishable {
-    private static final Set<Enchantment> ALLOWED_ENCHANTMENTS = Set.of(Enchantments.FISHING_LUCK);
-
     public MccourseFishingRodItem(Item.Properties properties) { super(properties); }
 
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player,
@@ -69,6 +68,7 @@ public class MccourseFishingRodItem extends Item implements Vanishable {
     // METHOD - Mccourse Fishing Rod can be enchanted on Enchantment Table
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        List<Enchantment> ALLOWED_ENCHANTMENTS = List.of(Enchantments.FISHING_LUCK, ModEnchantments.BETTER_FISHING.get());
         return ALLOWED_ENCHANTMENTS.contains(enchantment) || enchantment.category == EnchantmentCategory.BREAKABLE ||
                super.canApplyAtEnchantingTable(stack, enchantment);
     }
@@ -80,9 +80,10 @@ public class MccourseFishingRodItem extends Item implements Vanishable {
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level pLevel,
-                                List<Component> list, @NotNull TooltipFlag flag) {
-        list.add(Component.literal("More faster than vanilla Fishing Rod").withStyle(Utils.white));
-        list.add(Component.literal("Exclusive drops as Salmon, etc.").withStyle(Utils.darkGray).append(CommonComponents.EMPTY));
+                                @NotNull List<Component> list, @NotNull TooltipFlag flag) {
+        ChatUtil.tooltipLine(list, "More faster than vanilla Fishing Rod", Utils.white);
+        ChatUtil.tooltipLine(list, "Exclusive drops as Salmon, etc.", Utils.darkGray);
+        list.add(CommonComponents.EMPTY);
     }
 
     // CUSTOM METHOD - Fish sound

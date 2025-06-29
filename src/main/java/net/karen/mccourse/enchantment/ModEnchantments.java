@@ -7,10 +7,10 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.*;
 
 public class ModEnchantments {
+    // Registry all custom enchantments - Books and enchantment's levels are adding automatically in game
     public static final DeferredRegister<Enchantment> ENCHANTMENTS =
             DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, MCCourseMod.MOD_ID);
 
-    // Registry all custom enchantments - Books and enchantment's levels are adding automatically in game
     // Lightning Striker enchantment - SWORD enchantment
     public static final RegistryObject<Enchantment> LIGHTNING_STRIKER = ENCHANTMENTS.register("lightning_striker",
             () -> new LightningStrikerEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND));
@@ -43,49 +43,53 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> BLOCK_FLY = ENCHANTMENTS.register("block_fly",
             () -> new BlockFlyEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.DIGGER, EquipmentSlot.MAINHAND));
 
-    // Eternal enchantment - Armor and Tools enchantment
+    // Eternal enchantment - ARMOR and TOOLS enchantment
     public static final RegistryObject<Enchantment> ETERNAL = ENCHANTMENTS.register("eternal",
             () -> new EternalEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
 
-    // Recover enchantment - Armor and Tools enchantment
+    // Recover enchantment - ARMOR and TOOLS enchantment
     public static final RegistryObject<Enchantment> RECOVER = ENCHANTMENTS.register("recover",
             () -> new RecoverEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
 
-    // Elytra Boost enchantment - Elytra enchantment
+    // Elytra Boost enchantment - ELYTRA enchantment
     public static final RegistryObject<Enchantment> ELYTRA_BOOST = ENCHANTMENTS.register("elytra_boost",
             () -> new ElytraBoostEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.ARMOR_CHEST, EquipmentSlot.CHEST));
 
-    // Peaceful Mobs enchantment - Leggings enchantment
+    // Peaceful Mobs enchantment - LEGGINGS enchantment
     public static final RegistryObject<Enchantment> PEACEFUL_MOBS = ENCHANTMENTS.register("peaceful_mobs",
             () -> new PeacefulMobsEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.ARMOR_LEGS, EquipmentSlot.LEGS));
 
-    // Xp Boost enchantment - Armor and Tools enchantment
+    // Xp Boost enchantment - ARMOR and TOOLS enchantment
     public static final RegistryObject<Enchantment> XP_BOOST = ENCHANTMENTS.register("xp_boost",
             () -> new XpBoostEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
 
-    // Multiplier enchantment - Tools enchantment
+    // Multiplier enchantment - TOOLS enchantment
     public static final RegistryObject<Enchantment> MULTIPLIER = ENCHANTMENTS.register("multiplier",
             () -> new MultiplierEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.BREAKABLE, EquipmentSlot.MAINHAND));
 
-    // Mobs Critical enchantment - Sword enchantment
+    // Mobs Critical enchantment - SWORD enchantment
     public static final RegistryObject<Enchantment> MOBS_CRITICAL = ENCHANTMENTS.register("mobs_critical",
             () -> new MobsCriticalEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND));
 
-    // Immortal enchantment - Armor and Tools enchantment
+    // Immortal enchantment - ARMOR and TOOLS enchantment
     public static final RegistryObject<Enchantment> IMMORTAL = ENCHANTMENTS.register("immortal",
             () -> new ImmortalEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
 
-    // Accumulator enchantment - Armor and Tools enchantment
+    // Accumulator enchantment - ARMOR and TOOLS enchantment
     public static final RegistryObject<Enchantment> ACCUMULATOR = ENCHANTMENTS.register("accumulator",
             () -> new AccumulatorEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
 
-    // Magnetism enchantment - Leggings enchantment
+    // Magnetism enchantment - LEGGINGS enchantment
     public static final RegistryObject<Enchantment> MAGNETISM = ENCHANTMENTS.register("magnetism",
             () -> new MagnetismEnchantment(Enchantment.Rarity.UNCOMMON, EnchantmentCategory.ARMOR_LEGS, EquipmentSlot.LEGS));
 
-    // Unlock enchantment - Armor and Tools enchantment
+    // Unlock enchantment - ARMOR and TOOLS enchantment
     public static final RegistryObject<Enchantment> UNLOCK = ENCHANTMENTS.register("unlock",
             () -> new UnlockEnchantment(Enchantment.Rarity.COMMON, EnchantmentCategory.BREAKABLE, EquipmentSlot.values()));
+
+    // Better Fishing enchantment - FISHING ROD enchantment
+    public static final RegistryObject<Enchantment> BETTER_FISHING = ENCHANTMENTS.register("better_fishing",
+            () -> new BetterFishingEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.FISHING_ROD, EquipmentSlot.MAINHAND));
 
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
