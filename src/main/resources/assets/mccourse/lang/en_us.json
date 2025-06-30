@@ -294,6 +294,8 @@
 
   "enchantment.mccourse.better_fishing": "Better Fishing",
 
+  "enchantment.mccourse.lightstring": "Lightstring",
+
   "enchantment.minecraft.efficiency.desc": "When applied on axe, pickaxe, shovel or hoe increases mining speed.",
   "enchantment.minecraft.silk_touch.desc": "When applied on axe, pickaxe, shovel or hoe receives the broken block.",
   "enchantment.minecraft.fortune.desc": "When applied on axe, pickaxe, shovel or hoe receives bonus loot drops of ores.",
@@ -367,6 +369,8 @@
   "enchantment.mccourse.unlock.desc": "When applied to tools, armor, etc., item is locked from being dropped until you press the V key to unlock the item drop.",
 
   "enchantment.mccourse.better_fishing.desc": "When applied on fishing rod increase chance to drop better items when fish.",
+
+  "enchantment.mccourse.lightstring.desc": "When applied on bow increases bow loading speed.",
 
   "key.category.mccourse": "Mccourse",
   "key.mccourse_glowing_blocks": "Glowing Blocks",

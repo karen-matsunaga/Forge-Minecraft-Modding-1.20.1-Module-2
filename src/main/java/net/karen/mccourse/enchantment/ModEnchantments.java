@@ -91,6 +91,10 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> BETTER_FISHING = ENCHANTMENTS.register("better_fishing",
             () -> new BetterFishingEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.FISHING_ROD, EquipmentSlot.MAINHAND));
 
+    // Lightstring enchantment - BOW enchantment
+    public static final RegistryObject<Enchantment> LIGHTSTRING = ENCHANTMENTS.register("lightstring",
+            () -> new LightstringEnchantment(Enchantment.Rarity.VERY_RARE, EnchantmentCategory.BOW, EquipmentSlot.MAINHAND));
+
     // Registry all enchantments in game
     public static void register(IEventBus eventBus) { ENCHANTMENTS.register(eventBus); }
 }

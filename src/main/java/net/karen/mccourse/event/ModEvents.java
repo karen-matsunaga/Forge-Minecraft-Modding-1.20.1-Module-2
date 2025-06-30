@@ -1184,4 +1184,21 @@ public class ModEvents {
         }
         arrow.discard();
     }
+
+    @SubscribeEvent
+    public static void onUsingItem(LivingEntityUseItemEvent.Tick event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        ItemStack stack = event.getItem();
+        if (stack.getItem() instanceof BowItem) {
+            int level = enchant(stack, ModEnchantments.LIGHTSTRING.get());
+            if (level > 1) {
+                // Reduces usage time (accelerates charging) - Example: doubles the speed (charges in half the time)
+                // New simulated time (e.g. 2x faster)
+                int originalUseDuration = stack.getUseDuration(), useTicks = player.getUseItemRemainingTicks(),
+                    usedTime = originalUseDuration - useTicks,    adjustedUsedTime = usedTime * level;
+                // If enough time has passed, fire the arrow manually - 20 ticks is usually full load
+                if (adjustedUsedTime >= 20) { player.releaseUsingItem(); } // Release the button
+            }
+        }
+    }
 }
