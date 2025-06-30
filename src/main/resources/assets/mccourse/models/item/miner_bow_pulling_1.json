@@ -1,0 +1,6 @@
+{
+    "parent": "mccourse:item/miner_bow",
+    "textures": {
+        "layer0": "mccourse:item/miner_bow_pulling_1"
+    }
+}

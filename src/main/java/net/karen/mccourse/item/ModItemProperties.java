@@ -23,8 +23,9 @@ public class ModItemProperties {
             return p_174577_ != null && p_174577_.isUsingItem() && p_174577_.getUseItem() == p_174575_ ? 1.0F : 0.0F;
         });
 
-        // Alexandrite's bow
-        makeBow(ModItems.ALEXANDRITE_BOW.get());
+        // Custom bow
+        makeBow(ModItems.ALEXANDRITE_BOW.get()); // Alexandrite's bow
+        makeBow(ModItems.MINER_BOW.get()); // Miner's bow
 
         // Mccourse Fishing Rod
         makeFishingRod(ModItems.MCCOURSE_FISHING_ROD.get());

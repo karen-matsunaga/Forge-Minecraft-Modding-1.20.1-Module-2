@@ -38,6 +38,7 @@ import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.npc.*;
 import net.minecraft.world.entity.player.*;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
@@ -1132,5 +1133,26 @@ public class ModEvents {
                 offsetY = 0;
             }
         }
+    }
+
+    // CUSTOM EVENT - MINER Bow
+    @SubscribeEvent
+    public static void onArrowHitBlock(ProjectileImpactEvent event) {
+        if (!(event.getProjectile() instanceof Arrow arrow)) { return; }
+        if (!arrow.getPersistentData().getBoolean("MiningArrow")) { return; }
+        if (!(event.getRayTraceResult() instanceof BlockHitResult blockHit)) { return; }
+        Level level = arrow.level();
+        if (level.isClientSide()) { return; }
+        BlockPos startPos = blockHit.getBlockPos();
+        Direction direction = blockHit.getDirection(); // Direction of the impact
+        int blocksToBreak = 5; // Number of blocks to break (behind the impacted face)
+        for (int i = 0; i < blocksToBreak; i++) {
+            BlockPos targetPos = startPos.relative(direction, i);
+            BlockState targetState = level.getBlockState(targetPos);
+            if (!targetState.isAir() && targetState.getDestroySpeed(level, targetPos) >= 0) {
+                level.destroyBlock(targetPos, true); // Drop the block
+            }
+        }
+        arrow.discard(); // Remove the arrow after mining
     }
 }

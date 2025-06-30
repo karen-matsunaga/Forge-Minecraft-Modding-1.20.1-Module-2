@@ -431,6 +431,10 @@ public class ModItems {
     public static final RegistryObject<Item> GROWTH = ITEMS.register("growth",
             () -> new GrowthItem(new Item.Properties().stacksTo(64).fireResistant()));
 
+    // Miner Bow
+    public static final RegistryObject<Item> MINER_BOW = ITEMS.register("miner_bow",
+            () -> new MinerBowItem(new Item.Properties().fireResistant().durability(10000)));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 }
