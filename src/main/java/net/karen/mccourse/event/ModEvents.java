@@ -1139,20 +1139,49 @@ public class ModEvents {
     @SubscribeEvent
     public static void onArrowHitBlock(ProjectileImpactEvent event) {
         if (!(event.getProjectile() instanceof Arrow arrow)) { return; }
-        if (!arrow.getPersistentData().getBoolean("MiningArrow")) { return; }
-        if (!(event.getRayTraceResult() instanceof BlockHitResult blockHit)) { return; }
+        CompoundTag tag = arrow.getPersistentData();
+        if (!tag.getBoolean("MiningArrow")) { return; }
         Level level = arrow.level();
         if (level.isClientSide()) { return; }
-        BlockPos startPos = blockHit.getBlockPos();
-        Direction direction = blockHit.getDirection(); // Direction of the impact
-        int blocksToBreak = 5; // Number of blocks to break (behind the impacted face)
-        for (int i = 0; i < blocksToBreak; i++) {
-            BlockPos targetPos = startPos.relative(direction, i);
-            BlockState targetState = level.getBlockState(targetPos);
-            if (!targetState.isAir() && targetState.getDestroySpeed(level, targetPos) >= 0) {
-                level.destroyBlock(targetPos, true); // Drop the block
+        String bowId = tag.getString("ShooterBow"); // Check if the arrow came from the correct bow
+        if (!"mccourse:miner_bow".equals(bowId)) { return; }
+        // Direction saved on shooting
+        Direction forward = Direction.values()[tag.getInt("MiningDirection")];
+        Direction.Axis axis = forward.getAxis();
+        Direction right = (axis == Direction.Axis.X) ? Direction.SOUTH : Direction.EAST,
+                     up = (axis == Direction.Axis.Y) ? Direction.NORTH : Direction.UP;
+        BlockPos startPos = ((BlockHitResult) event.getRayTraceResult()).getBlockPos();
+        Player shooter = null;
+        int radius = 1, depth = 10; // 3x3
+        Set<Block> blockedBlocks = Set.of(Blocks.BEDROCK, Blocks.OBSIDIAN, Blocks.END_PORTAL_FRAME,
+                                          Blocks.END_PORTAL, Blocks.NETHER_PORTAL);
+        if (tag.hasUUID("ShooterUUID") && level instanceof ServerLevel serverLevel) {
+            shooter = serverLevel.getPlayerByUUID(tag.getUUID("ShooterUUID"));
+        }
+        int blocksBroken = 0;
+        for (int i = 0; i < depth; i++) {
+            BlockPos depthPos = startPos.relative(forward, i);
+            for (int x = -radius; x <= radius; x++) {
+                for (int y = -radius; y <= radius; y++) {
+                    BlockPos targetPos = depthPos.relative(right, x).relative(up, y);
+                    BlockState state = level.getBlockState(targetPos);
+                    if (state.isAir() || blockedBlocks.contains(state.getBlock())) { continue; }
+                    if (state.getDestroySpeed(level, targetPos) < 0) { continue; }
+                    level.destroyBlock(targetPos, true);
+                    blocksBroken++;
+                }
             }
         }
-        arrow.discard(); // Remove the arrow after mining
+        if (shooter != null) { // Expends bow durability if found
+            ItemStack main = shooter.getMainHandItem(), off = shooter.getOffhandItem(), usedBow = empty;
+            var held = ForgeRegistries.ITEMS.getKey(main.getItem());
+            var offHand = ForgeRegistries.ITEMS.getKey(off.getItem());
+            if (held != null && held.toString().equals(bowId)) { usedBow = main; }
+            else if (offHand != null && offHand.toString().equals(bowId)) { usedBow = off; }
+            if (!usedBow.isEmpty()) {
+                usedBow.hurt(blocksBroken, shooter.getRandom(), shooter instanceof ServerPlayer ? (ServerPlayer) shooter : null);
+            }
+        }
+        arrow.discard();
     }
 }
