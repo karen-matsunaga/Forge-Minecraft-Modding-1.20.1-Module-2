@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.*;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -194,8 +195,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         // Potted Snapdragon
         registerBlock(ModBlocks.POTTED_SNAPDRAGON);
+
         // Light block
         minerBlock(ModBlocks.MINER_BLOCK);
+
+        // Dice block
+        registerDiceBlock(ModBlocks.DICE_BLOCK);
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json
@@ -346,11 +351,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         Block block = blockRegistryObject.get();
         ResourceLocation key = ForgeRegistries.BLOCKS.getKey(block);
         String name = Objects.requireNonNull(key).getPath();
-
         models().withExistingParent(name, mcLoc("block/flower_pot_cross"))
                 .texture("plant", modLoc("block/snapdragon"))
                 .renderType("minecraft:cutout"); // Model
-
         simpleBlock(block, models().getExistingFile(modLoc("block/" + name))); // BlockState
     }
 
@@ -361,5 +364,36 @@ public class ModBlockStateProvider extends BlockStateProvider {
         String name = Objects.requireNonNull(key).getPath();
         BlockModelBuilder model = models().cubeAll(name, modLoc("block/" + name)).renderType("translucent");
         simpleBlock(block, model); // BlockState + Model
+    }
+
+    // CUSTOM METHOD - Block with six different textures
+    private void registerDiceBlock(RegistryObject<Block> blockRegistryObject) {
+        Block block = blockRegistryObject.get(); // dice_block
+        String[] modelNames = {"dice_1", "dice_2", "dice_3", "dice_4", "dice_5", "dice_6"}; // Model names (one per die side)
+        List<String[]> diceTextures = List.of( // List of textures per model, in order: up, down, north, east, south, west
+                new String[]{"dice_1", "dice_6", "dice_2", "dice_3", "dice_5", "dice_4"},
+                new String[]{"dice_2", "dice_5", "dice_6", "dice_3", "dice_1", "dice_4"},
+                new String[]{"dice_3", "dice_4", "dice_6", "dice_2", "dice_1", "dice_5"},
+                new String[]{"dice_4", "dice_3", "dice_1", "dice_5", "dice_6", "dice_2"},
+                new String[]{"dice_5", "dice_2", "dice_1", "dice_4", "dice_6", "dice_3"},
+                new String[]{"dice_6", "dice_1", "dice_2", "dice_4", "dice_5", "dice_3"});
+        for (int i = 0; i < modelNames.length; i++) { // Generation of real models (dice_1.json ... dice_6.json)
+            String modelName = modelNames[i];
+            String[] textures = diceTextures.get(i);
+            models().withExistingParent(modelName, mcLoc("block/cube"))
+                    .texture("up", modLoc("block/" + textures[0]))
+                    .texture("down", modLoc("block/" + textures[1]))
+                    .texture("north", modLoc("block/" + textures[2]))
+                    .texture("east", modLoc("block/" + textures[3]))
+                    .texture("south", modLoc("block/" + textures[4]))
+                    .texture("west", modLoc("block/" + textures[5]))
+                    .texture("particle", modLoc("block/" + textures[0]));
+        }
+        getVariantBuilder(block).forAllStates(state -> { // Blockstate generation (one model per FACING direction)
+            Direction dir = state.getValue(DiceBlock.FACING);
+            String modelName = switch (dir) { case UP    -> "dice_1"; case DOWN  -> "dice_6"; case NORTH -> "dice_2";
+                                              case EAST  -> "dice_3"; case WEST  -> "dice_4"; case SOUTH -> "dice_5"; };
+            return ConfiguredModel.builder().modelFile(models().getExistingFile(modLoc("block/" + modelName))).build();
+        });
     }
 }
