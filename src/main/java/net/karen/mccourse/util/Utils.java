@@ -55,6 +55,14 @@ import java.util.function.Supplier;
 public class Utils {
     public static boolean IGNORE_LAPIS = false; // Avoid consumption of LAPIS LAZULI
 
+    private static final ThreadLocal<ItemStack> LAST_BOW_USED = new ThreadLocal<>(); // Store Miner Bow
+
+    public static void setLastBowUsed(ItemStack stack) { LAST_BOW_USED.set(stack); } // Set Miner Bow
+
+    public static ItemStack getLastBowUsed() { return LAST_BOW_USED.get(); } // Get Miner Bow
+
+    public static void clear() { LAST_BOW_USED.remove(); } // Clear Miner Bow
+
     // All vanilla colors
     public static ChatFormatting blue = ChatFormatting.BLUE, darkBlue = ChatFormatting.DARK_BLUE,
     aqua = ChatFormatting.AQUA, darkAqua = ChatFormatting.DARK_AQUA, purple = ChatFormatting.LIGHT_PURPLE,

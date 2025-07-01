@@ -37,7 +37,8 @@ public class MinerBowItem extends BowItem {
             if (velocity < 0.1F) { return; } // Very weak, does not launch
             Arrow arrow = new Arrow(world, player); // Set arrow direction
             arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, velocity * 3.0F, 1.0F);
-            arrow.setBaseDamage(2.0); // Damage 0
+            arrow.setBaseDamage(2.0);
+            arrow.setCritArrow(true);
             arrow.pickup = AbstractArrow.Pickup.ALLOWED;
             CompoundTag tag = arrow.getPersistentData();
             tag.putBoolean("MiningArrow", true);
@@ -55,6 +56,7 @@ public class MinerBowItem extends BowItem {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level,
                                 @NotNull List<Component> list, @NotNull TooltipFlag flag) {
-        ChatUtil.tooltipLine(list, "Break " + getRadius() + " x " + getRadius() + " x " + getDepth(), Utils.red);
+        int rad = getRadius(), dep = getDepth();
+        ChatUtil.tooltipLine(list, "Blocks: " + "§6" + rad + "§c x " + "§6" + rad + "§c x " + "§6" + dep, Utils.red);
     }
 }

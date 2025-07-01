@@ -13,6 +13,7 @@
     "ArrowDamageEnchantmentMixin",
     "ArrowKnockbackEnchantmentMixin",
     "ArrowPiercingEnchantmentMixin",
+    "BowItemMixin",
     "DamageEnchantmentMixin",
     "DigDurabilityEnchantmentMixin",
     "DiggingEnchantmentMixin",

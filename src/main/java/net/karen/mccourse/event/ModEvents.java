@@ -1190,7 +1190,23 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void onUsingItem(LivingEntityUseItemEvent.Tick event) {
+    public static void onStartUsing(LivingEntityUseItemEvent.Start event) {
+        ItemStack stack = event.getItem();
+        if (stack.getItem() instanceof BowItem) { Utils.setLastBowUsed(stack); } // Temporarily save the bow
+    }
+
+    @SubscribeEvent
+    public static void onStopUsing(LivingEntityUseItemEvent.Stop event) {
+        Utils.clear(); // Clean after use
+    }
+
+    @SubscribeEvent
+    public static void onFinishUsing(LivingEntityUseItemEvent.Finish event) {
+        Utils.clear(); // Clean up if usage is finished
+    }
+
+    @SubscribeEvent
+    public static void onCancelUsing(LivingEntityUseItemEvent.Tick event) {
         if (!(event.getEntity() instanceof Player)) { return; }
         ItemStack stack = event.getItem();
         if (!(stack.getItem() instanceof BowItem)) { return; }
@@ -1198,5 +1214,6 @@ public class ModEvents {
         if (level <= 0) { return; }
         int newDuration = event.getDuration() - level; // Decreases usage time (ex: 20 → 15)
         event.setDuration(newDuration);
+        if (event.getDuration() <= 0) { Utils.clear(); } // Ensures you don't get stuck
     }
 }
