@@ -1,7 +1,8 @@
 package net.karen.mccourse.network;
 
 import net.karen.mccourse.item.custom.InfiniteItem;
-import net.minecraft.ChatFormatting;
+import net.karen.mccourse.util.ChatUtil;
+import net.karen.mccourse.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,7 +10,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
-import static net.karen.mccourse.item.custom.InfiniteItem.screen;
+import static net.karen.mccourse.util.Utils.consumeInfinite;
 
 public class InfiniteInventorySlotMessage {
     private final int slotIndex;
@@ -29,24 +30,20 @@ public class InfiniteInventorySlotMessage {
             if (slotIndex < 0 || slotIndex >= player.containerMenu.slots.size()) { return; }
             Slot slot = player.containerMenu.getSlot(slotIndex);
             if (!slot.hasItem()) { return; }
-            ItemStack stack = slot.getItem();
-            ItemStack carried = player.containerMenu.getCarried();
-            if (carried.isEmpty() || !(carried.getItem() instanceof InfiniteItem)) return;
+            ItemStack stack = slot.getItem(), carried = player.containerMenu.getCarried();
+            if (carried.isEmpty() || !(carried.getItem() instanceof InfiniteItem)) { return; }
             if (!stack.isDamageableItem()) { // Item hasn't durability
-                screen(player, "This item has no durability!", ChatFormatting.RED);
+                ChatUtil.player(player, "This item has no durability!", Utils.red);
                 return;
             }
             CompoundTag tag = stack.getOrCreateTag();
             if (tag.getBoolean("Unbreakable")) { // Item has Unbreakable tag
-                screen(player, "This item is already unbreakable!", ChatFormatting.YELLOW);
+                ChatUtil.player(player, "This item is already unbreakable!", Utils.yellow);
                 return;
             }
             tag.putBoolean("Unbreakable", true); // Apply the Unbreakable tag
-            screen(player, "Item is now unbreakable!", ChatFormatting.GREEN);
-            if (!player.getAbilities().instabuild) { // Consumes the InfiniteItem
-                carried.shrink(1);
-                player.containerMenu.broadcastChanges(); // Update the interface
-            }
+            ChatUtil.player(player, "Item is now unbreakable!", Utils.green);
+            consumeInfinite(player, carried); // Consumes the InfiniteItem
         });
         ctx.get().setPacketHandled(true);
     }

@@ -1,5 +1,7 @@
 package net.karen.mccourse.item.custom;
 
+import net.karen.mccourse.util.ChatUtil;
+import net.karen.mccourse.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -12,55 +14,45 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
+import static net.karen.mccourse.util.Utils.consumeInfinite;
 
 public class InfiniteItem extends Item {
     public InfiniteItem(Properties properties) { super(properties); }
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
-        ItemStack usedStack = player.getItemInHand(hand);
-        if (!level.isClientSide()) {
-            ItemStack mainHand = player.getMainHandItem();
-            if (!mainHand.isEmpty() && mainHand != usedStack) {
-                if (!mainHand.isDamageableItem()) { // Item hasn't durability
-                    screen(player, "This item has no durability!", ChatFormatting.RED);
-                    return InteractionResultHolder.fail(usedStack);
-                }
-                if (mainHand.getOrCreateTag().getBoolean("Unbreakable")) { // Item has Unbreakable tag
-                    screen(player, "This item is already unbreakable!", ChatFormatting.YELLOW);
-                    return InteractionResultHolder.fail(usedStack);
-                }
-                mainHand.getOrCreateTag().putBoolean("Unbreakable", true); // Apply the Unbreakable tag
-                screen(player, "Item is now unbreakable!", ChatFormatting.GREEN);
-                if (!player.getAbilities().instabuild) {
-                    usedStack.shrink(1);
-                    player.containerMenu.broadcastChanges();
-                }
-                return InteractionResultHolder.success(usedStack);
+        ItemStack usedStack = player.getItemInHand(hand), mainHand = player.getMainHandItem();
+        if (!level.isClientSide() && !mainHand.isEmpty() && mainHand != usedStack) {
+            // Item hasn't durability
+            if (!mainHand.isDamageableItem()) { return fail(player, "This item has no durability!", Utils.red, usedStack); }
+            if (mainHand.getOrCreateTag().getBoolean("Unbreakable")) { // Item has Unbreakable tag
+                return fail(player, "This item is already unbreakable!", Utils.yellow, usedStack);
             }
-            else {
-                screen(player, "Hold the tool in your main hand!", ChatFormatting.RED);
-                return InteractionResultHolder.fail(usedStack);
-            }
+            mainHand.getOrCreateTag().putBoolean("Unbreakable", true); // Apply the Unbreakable tag
+            ChatUtil.player(player, "Item is now unbreakable!", Utils.green);
+            consumeInfinite(player, usedStack);
+            return InteractionResultHolder.success(usedStack);
         }
+        else { fail(player, "Hold the tool in your main hand!", Utils.red, usedStack); }
         return InteractionResultHolder.pass(usedStack);
     }
 
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
-        return Component.translatable(stack.getDescriptionId()).withStyle(ChatFormatting.AQUA);
+        return ChatUtil.componentTranslatable(stack.getDescriptionId(), Utils.aqua);
     }
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level pLevel,
-                                @NotNull List<Component> components, @NotNull TooltipFlag flag) {
-        components.add(Component.literal("Click on item to your tools or armors transform on infinite durability!")
-                .withStyle(ChatFormatting.LIGHT_PURPLE));
-        super.appendHoverText(stack, pLevel, components, flag);
+                                @NotNull List<Component> list, @NotNull TooltipFlag flag) {
+        ChatUtil.tooltipLine(list, "Click on item to your tools or armors transform on infinite durability!", Utils.purple);
+        super.appendHoverText(stack, pLevel, list, flag);
     }
 
-    // CUSTOM METHOD - Message appears on screen
-    public static void screen(Player player, String message, ChatFormatting color) {
-        player.displayClientMessage(Component.literal(message).withStyle(color), true);
+    // CUSTOM METHOD - Fail messages
+    public InteractionResultHolder<ItemStack> fail(Player player, String message,
+                                                   ChatFormatting color, ItemStack usedStack) {
+        ChatUtil.player(player, message, color);
+        return InteractionResultHolder.fail(usedStack);
     }
 }

@@ -930,14 +930,12 @@ public class ModEvents {
     @SubscribeEvent
     public static void itemOnMouseClick(ScreenEvent.MouseButtonPressed.Pre event) {
         if (!(event.getScreen() instanceof AbstractContainerScreen<?> screen)) { return; }
-        Minecraft mc = Minecraft.getInstance();
-        Player player = mc.player;
+        Player player =  Minecraft.getInstance().player;
         if (player == null) { return; }
         ItemStack carried = player.containerMenu.getCarried();
         if (!(carried.getItem() instanceof InfiniteItem || carried.getItem() instanceof LevelChargerItem)) { return; }
         double mouseX = event.getMouseX(), mouseY = event.getMouseY();
-        int button = event.getButton();
-        if (button != 0) { return; }
+        if (event.getButton() != 0) { return; }
         for (Slot slot : screen.getMenu().slots) {
             int x = screen.getGuiLeft() + slot.x, y = screen.getGuiTop() + slot.y;
             if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
@@ -945,10 +943,7 @@ public class ModEvents {
                 if (target.isEmpty() || target == carried) { return; }
                 network(new InfiniteInventorySlotMessage(slot.index)); // Send to the server -> Infinite item
                 network(new LevelChargerInventorySlotMessage(slot.index)); // Send to the server -> Level Charger item
-                if (!player.getAbilities().instabuild) { // Consume item on client (immediate visual effect)
-                    carried.shrink(1);
-                    player.containerMenu.broadcastChanges();
-                }
+                Utils.consumeInfinite(player, carried); // Consume item on client (immediate visual effect)
                 event.setCanceled(true);
                 return;
             }

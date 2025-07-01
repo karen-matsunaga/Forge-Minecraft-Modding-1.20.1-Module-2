@@ -412,4 +412,12 @@ public class Utils {
             drops.add(new ItemStack(item, fishAmount)); // Guaranteed drop
         }
     }
+
+    // CUSTOM METHOD - Consume Infinite item
+    public static void consumeInfinite(Player player, ItemStack usedStack) {
+        if (!player.getAbilities().instabuild) {
+            usedStack.shrink(1); // Consume Infinite item
+            player.containerMenu.broadcastChanges(); // Update the interface
+        }
+    }
 }
