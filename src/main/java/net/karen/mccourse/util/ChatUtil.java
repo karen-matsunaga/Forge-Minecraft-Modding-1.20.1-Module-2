@@ -74,7 +74,12 @@ public class ChatUtil {
 
     // CUSTOM METHOD - Text appears on TOOLTIP item
     public static void tooltipLine(List<Component> tooltip, String message, ChatFormatting color) {
-        tooltip.add(Component.literal(message).withStyle(color));
+        tooltip.add(componentLiteral(message, color));
+    }
+
+    // CUSTOM METHOD - Text appears on TOOLTIP item with BOLD format
+    public static void tooltipLineBold(List<Component> tooltip, String message, ChatFormatting color) {
+        tooltip.add(componentLiteralStyle(message, color));
     }
 
     // CUSTOM METHOD - Text appears on TOOLTIP item with STAGE change
