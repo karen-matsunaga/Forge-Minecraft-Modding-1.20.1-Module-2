@@ -45,7 +45,7 @@ public class MagicDisenchantedBlock extends Block {
             tooltipLine(tooltip, "1. Enchanted Tool NEAR -> Grouped book + Tool without enchantments;", aqua);
             tooltipLine(tooltip, "2. Enchanted Tool FAR -> Separate book + Tool without enchantments.", darkAqua);
         }
-        if (type == 2) { tooltipLine(tooltip, "The books separate but remain at the original level.", black); }
+        if (type == 2) { tooltipLine(tooltip, "The books separate but remain at the original level.", green); }
         super.appendHoverText(stack, pLevel, tooltip, flag);
     }
 

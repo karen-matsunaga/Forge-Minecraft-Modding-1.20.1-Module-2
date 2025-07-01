@@ -1211,4 +1211,18 @@ public class ModEvents {
         event.setDuration(newDuration);
         if (event.getDuration() <= 0) { Utils.clear(); } // Ensures you don't get stuck
     }
+
+    // CUSTOM EVENT - Block TOOLTIP
+    @SubscribeEvent
+    public static void onBlockTooltip(ItemTooltipEvent event) {
+        ItemStack stack = event.getItemStack(); // Check if it is the specific block
+        if (stack.getItem() == ModBlocks.MAGIC_DISENCHANTED_BOOK_BLOCK.get().asItem()) {
+            List<Component> tooltip = event.getToolTip(); // Original tooltip
+            if (!tooltip.isEmpty()) {
+                Component original = tooltip.get(0); // Change only the name (first line of the tooltip)
+                Component colored = original.copy().withStyle(style -> style.withColor(ChatFormatting.AQUA));
+                tooltip.set(0, colored);
+            }
+        }
+    }
 }
