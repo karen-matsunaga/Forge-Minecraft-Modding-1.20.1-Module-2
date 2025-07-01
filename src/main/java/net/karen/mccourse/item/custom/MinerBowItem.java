@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -48,8 +47,7 @@ public class MinerBowItem extends BowItem {
             var item = ForgeRegistries.ITEMS.getKey(stack.getItem()); // Saves which item was used to fire
             if (item != null) { tag.putString("ShooterBow", item.toString()); }
             world.addFreshEntity(arrow);
-            world.playSound(null, player.getX(), player.getY(), player.getZ(),
-                    SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F);
+            Utils.playerSound(world, player, SoundEvents.ARROW_SHOOT, 1.0F, 1.0F);
         }
     }
 

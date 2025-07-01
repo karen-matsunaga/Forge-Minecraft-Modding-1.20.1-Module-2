@@ -91,6 +91,11 @@ public class Utils {
         level.playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundSource.NEUTRAL, volume, pitch);
     }
 
+    // CUSTOM METHOD - Level
+    public static void playerSound(Level level, Player player, SoundEvent sound, float volume, float pitch) {
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundSource.PLAYERS, volume, pitch);
+    }
+
     public static void particle(Player player, Entity entity) {
         ((ServerLevel) player.level()).sendParticles(ParticleTypes.CRIT, entity.getX(), entity.getY(0.5),
         entity.getZ(), 5, 0.2, 0.2, 0.2, 0.1);
