@@ -54,6 +54,11 @@ public class ChatUtil {
         player.displayClientMessage(componentLiteralStyle(message, color), true);
     }
 
+    // CUSTOM METHOD - Message appears on screen with BOLD format with STAGE change
+    public static void playerStyleBool(Player player, String message, boolean bool, ChatFormatting color) {
+        if (bool) { player.displayClientMessage(componentLiteralStyle(message, color), true); }
+    }
+
     // CUSTOM METHOD - Using RGB colors and BOLD format
     public static void glow(Player player, boolean test, String message, String message1) {
         player.displayClientMessage(componentLiteralStyle("Glowing " + (test ? message : message1),
@@ -63,11 +68,19 @@ public class ChatUtil {
     // CUSTOM METHOD - Using RGB colors and BOLD format
     public static MutableComponent description(String tooltip, ChatFormatting color,
                                                List<Boolean> curse) {
-        return Component.translatable(tooltip).withStyle(Style.EMPTY.withColor(color).withBold(curse.get(0)).withItalic(curse.get(1)));
+        boolean curseFalse = curse.get(0), curseTrue = curse.get(1);
+        return Component.translatable(tooltip).withStyle(Style.EMPTY.withColor(color).withBold(curseFalse).withItalic(curseTrue));
     }
 
+    // CUSTOM METHOD - Text appears on TOOLTIP item
     public static void tooltipLine(List<Component> tooltip, String message, ChatFormatting color) {
         tooltip.add(Component.literal(message).withStyle(color));
+    }
+
+    // CUSTOM METHOD - Text appears on TOOLTIP item with STAGE change
+    public static void tooltipLineBool(List<Component> tooltip, String message,
+                                       boolean bool, ChatFormatting color) {
+        if (bool) { tooltip.add(Component.literal(message).withStyle(color)); }
     }
 
     // UNIQUE message

@@ -1,10 +1,9 @@
 package net.karen.mccourse.item.custom;
 
-import net.minecraft.ChatFormatting;
+import net.karen.mccourse.util.ChatUtil;
+import net.karen.mccourse.util.Utils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -20,7 +19,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 
 public class MagnetItem extends Item {
@@ -31,85 +29,55 @@ public class MagnetItem extends Item {
         this.radius = radius;
     }
 
-    // Call active CUSTOM TAG to detected stage of Magnet item
+    // CUSTOM METHOD - Call active CUSTOM NBT TAG to detected stage of Magnet item
     private boolean activeMagnet(ItemStack stack) {
         return stack.getOrCreateTag().contains("active") && stack.getOrCreateTag().getBoolean("active");
     }
 
-    // CUSTOM METHOD - Player has call active CUSTOM TAG stage on SCREEN
-    private void messageScreen(Player player, String name, ChatFormatting color, boolean bool) {
-        if (bool) {
-            player.displayClientMessage(Component.literal("Magnet is " + name)
-                    .setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD)), true);
-        }
-    }
-
-    // Enchanted only Magnet is active
     @Override
-    public boolean isFoil(@NotNull ItemStack stack) { return activeMagnet(stack); }
+    public boolean isFoil(@NotNull ItemStack stack) { return activeMagnet(stack); } // Enchanted only Magnet is active
 
-    // Magnet can activate or disable only right-clicking
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player,
-                                                           @NotNull InteractionHand hand) {
-        // Magnet item has on HAND
-        ItemStack stack = player.getItemInHand(hand);
-        // Player on SERVER side and has Magnet item
-        if (!player.level().isClientSide() && stack.getItem() instanceof MagnetItem) {
-            // Sound when Player change to activate -> disable || disable -> activate
-            level.playSound(null, player.blockPosition(), activeMagnet(stack) ? SoundEvents.BEACON_DEACTIVATE
-                    : SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0f, 2.0f);
-            // Active CUSTOM TAG stage
-            stack.getOrCreateTag().putBoolean("active", !activeMagnet(stack));
-            messageScreen(player, "ACTIVE", ChatFormatting.DARK_GREEN, activeMagnet(stack)); // Magnet active message on SCREEN
-            messageScreen(player, "DISABLE", ChatFormatting.DARK_RED, !activeMagnet(stack)); // Magnet disable message on SCREEN
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand); // Magnet item has on HAND
+        if (!player.level().isClientSide() && stack.getItem() instanceof MagnetItem) { // Player on SERVER side and has Magnet item
+            // Sound when Player change STAGE - Magnet can Activate or Disable only right-clicking
+            Utils.soundBlock(player, activeMagnet(stack) ? SoundEvents.BEACON_DEACTIVATE : SoundEvents.BEACON_ACTIVATE,
+                      1.0f, 2.0f);
+            stack.getOrCreateTag().putBoolean("active", !activeMagnet(stack)); // Active CUSTOM TAG stage
+            // Player has call active CUSTOM TAG stage on SCREEN - Active | Disable message
+            ChatUtil.playerStyleBool(player, "Magnet is ACTIVE", activeMagnet(stack), Utils.darkGreen);
+            ChatUtil.playerStyleBool(player, "Magnet is DISABLE", !activeMagnet(stack), Utils.darkRed);
         }
-
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
     }
 
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, Entity entity,
                               int slot, boolean selected) {
-        // Mode Spectator is nothing
-        if (entity.isSpectator()) { return; }
-
-        // Call active tag
-        if (activeMagnet(stack)) {
-            // Radius area that collect items
-            AABB radiusArea = new AABB(entity.position().add(-radius, -radius, -radius),
-                    entity.position().add(radius, radius, radius));
-
-            // Items collect from radius area
-            List<ItemEntity> items = level.getEntities(EntityType.ITEM, radiusArea,
-                    item -> item.isAlive() && (!level.isClientSide() || item.tickCount > 1) &&
-                            (item.getOwner() == null || !item.hasPickUpDelay()) && !item.getItem().isEmpty());
-
-            // Items return on Player inventory
-            items.forEach(item -> { Vec3 vec3 = new Vec3(entity.getX() - item.getX(), entity.getY() - item.getY(),
-                        entity.getZ() - item.getZ());
-                if (vec3.lengthSqr() < 64.0) {
-                    item.setDeltaMovement(item.getDeltaMovement().add(vec3.normalize()
-                            .scale((1.0 - Math.sqrt(vec3.lengthSqr()) / 8.0) *
-                                    (1.0 - Math.sqrt(vec3.lengthSqr()) / 8.0) * 0.1)));
-                }
+        if (entity.isSpectator()) { return; } // Mode Spectator is nothing
+        if (activeMagnet(stack)) { // Call active tag
+            int minus = -radius, plus = radius;
+            Vec3 entityMinus = entity.position().add(minus, minus, minus), entityPlus = entity.position().add(plus, plus, plus);
+            AABB radiusArea = new AABB(entityMinus, entityPlus); // Radius area that collect items
+            List<ItemEntity> items = level.getEntities(EntityType.ITEM, radiusArea, item -> // Items collect from radius area
+                             item.isAlive() && (!level.isClientSide() || item.tickCount > 1) &&
+                             (item.getOwner() == null || !item.hasPickUpDelay()) && !item.getItem().isEmpty());
+            items.forEach(item -> { // Items return on Player inventory
+               double x = entity.getX() - item.getX(), y = entity.getY() - item.getY(), z = entity.getZ() - item.getZ();
+               Vec3 vec3 = new Vec3(x, y, z);
+               double lenght = vec3.lengthSqr(), math = Math.sqrt(lenght), scale = (1.0 - math / 8.0) * (1.0 - math / 8.0) * 0.1;
+               if (lenght < 64.0) { item.setDeltaMovement(item.getDeltaMovement().add(vec3.normalize().scale(scale))); }
             });
         }
     }
 
-    // Magnet item description
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, @NotNull
                                 List<Component> tooltip, @NotNull TooltipFlag context) {
         boolean compoundTag = stack.getOrCreateTag().getBoolean("active"); // Call ACTIVE tag
-        message(tooltip, "Activated", ChatFormatting.DARK_GREEN, compoundTag); // Magnet active message on TOOLTIP
-        message(tooltip, "Inactivated", ChatFormatting.DARK_RED, !compoundTag); // Magnet disable message on TOOLTIP
-    }
-
-    // Magnet message depends of active CUSTOM TAG
-    private void message(List<Component> tooltip, String name, ChatFormatting color, boolean bool) {
-        if (bool) {
-            tooltip.add(Component.literal(name + " Magnet").setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD)));
-        }
+        // Magnet item description depends of active CUSTOM NBT TAG - Active | Disable message on TOOLTIP
+        ChatUtil.tooltipLineBool(tooltip, "Activated Magnet", compoundTag, Utils.darkGreen);
+        ChatUtil.tooltipLineBool(tooltip, "Activated Inactivated", !compoundTag, Utils.darkRed);
     }
 }
