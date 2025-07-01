@@ -76,14 +76,19 @@ public class Utils {
 
     public static ItemStack empty = ItemStack.EMPTY;
 
-    // CUSTOM METHOD - Item sounds
+    // CUSTOM METHOD - Player item sounds
     public static void sound(Player player, SoundEvent sound, float volume, float pitch) {
         player.level().playSound(null, player.blockPosition(), sound, SoundSource.PLAYERS, volume, pitch);
     }
 
-    // CUSTOM METHOD - Block sounds
+    // CUSTOM METHOD - Player block sounds
     public static void soundBlock(Player player, SoundEvent sound, float volume, float pitch) {
         player.level().playSound(null, player.blockPosition(), sound, SoundSource.BLOCKS, volume, pitch);
+    }
+
+    // CUSTOM METHOD - Level neutral sounds
+    public static void neutralSound(Level level, Player player, SoundEvent sound, float volume, float pitch) {
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundSource.NEUTRAL, volume, pitch);
     }
 
     public static void particle(Player player, Entity entity) {
