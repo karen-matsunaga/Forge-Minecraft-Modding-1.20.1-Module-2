@@ -1143,6 +1143,9 @@ public class ModEvents {
         if (!tag.getBoolean("MiningArrow")) { return; }
         Level level = arrow.level();
         if (level.isClientSide()) { return; }
+        HitResult hitResult = event.getRayTraceResult();
+        if (hitResult instanceof EntityHitResult) { return; }
+        if (!(hitResult instanceof BlockHitResult blockHit)) { return; }
         String bowId = tag.getString("ShooterBow"); // Check if the arrow came from the correct bow
         if (!"mccourse:miner_bow".equals(bowId)) { return; }
         // Direction saved on shooting
@@ -1150,9 +1153,9 @@ public class ModEvents {
         Direction.Axis axis = forward.getAxis();
         Direction right = (axis == Direction.Axis.X) ? Direction.SOUTH : Direction.EAST,
                      up = (axis == Direction.Axis.Y) ? Direction.NORTH : Direction.UP;
-        BlockPos startPos = ((BlockHitResult) event.getRayTraceResult()).getBlockPos();
+        BlockPos startPos = blockHit.getBlockPos();
         Player shooter = null;
-        int radius = 1, depth = 10; // 3x3
+        int radius = 1, depth = 10; // 3x3x10
         Set<Block> blockedBlocks = Set.of(Blocks.BEDROCK, Blocks.OBSIDIAN, Blocks.END_PORTAL_FRAME,
                                           Blocks.END_PORTAL, Blocks.NETHER_PORTAL);
         if (tag.hasUUID("ShooterUUID") && level instanceof ServerLevel serverLevel) {
@@ -1187,18 +1190,12 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onUsingItem(LivingEntityUseItemEvent.Tick event) {
-        if (!(event.getEntity() instanceof Player player)) return;
+        if (!(event.getEntity() instanceof Player)) { return; }
         ItemStack stack = event.getItem();
-        if (stack.getItem() instanceof BowItem) {
-            int level = enchant(stack, ModEnchantments.LIGHTSTRING.get());
-            if (level > 1) {
-                // Reduces usage time (accelerates charging) - Example: doubles the speed (charges in half the time)
-                // New simulated time (e.g. 2x faster)
-                int originalUseDuration = stack.getUseDuration(), useTicks = player.getUseItemRemainingTicks(),
-                    usedTime = originalUseDuration - useTicks,    adjustedUsedTime = usedTime * level;
-                // If enough time has passed, fire the arrow manually - 20 ticks is usually full load
-                if (adjustedUsedTime >= 20) { player.releaseUsingItem(); } // Release the button
-            }
-        }
+        if (!(stack.getItem() instanceof BowItem)) { return; }
+        int level = enchant(stack, ModEnchantments.LIGHTSTRING.get());
+        if (level <= 0) { return; }
+        int newDuration = event.getDuration() - level; // Decreases usage time (ex: 20 → 15)
+        event.setDuration(newDuration);
     }
 }
