@@ -122,6 +122,9 @@ public class ModTags {
         // Rainbow enchantment
         public static final TagKey<Block> RAINBOW_DROPS = tag("rainbow_drops");
 
+        // Miner Bow
+        public static final TagKey<Block> MINER_BOW_BLACKLIST = tag("miner_bow_blacklist");
+
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass block id
         }

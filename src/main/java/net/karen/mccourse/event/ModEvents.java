@@ -1144,23 +1144,29 @@ public class ModEvents {
         Level level = arrow.level();
         if (level.isClientSide()) { return; }
         HitResult hitResult = event.getRayTraceResult();
-        if (hitResult instanceof EntityHitResult) { return; }
         if (!(hitResult instanceof BlockHitResult blockHit)) { return; }
-        String bowId = tag.getString("ShooterBow"); // Check if the arrow came from the correct bow
-        if (!"mccourse:miner_bow".equals(bowId)) { return; }
-        // Direction saved on shooting
-        Direction forward = Direction.values()[tag.getInt("MiningDirection")];
+        Direction forward = Direction.values()[tag.getInt("MiningDirection")]; // Direction saved on shooting
         Direction.Axis axis = forward.getAxis();
         Direction right = (axis == Direction.Axis.X) ? Direction.SOUTH : Direction.EAST,
                      up = (axis == Direction.Axis.Y) ? Direction.NORTH : Direction.UP;
         BlockPos startPos = blockHit.getBlockPos();
-        Player shooter = null;
-        int radius = 1, depth = 10; // 3x3x10
-        Set<Block> blockedBlocks = Set.of(Blocks.BEDROCK, Blocks.OBSIDIAN, Blocks.END_PORTAL_FRAME,
-                                          Blocks.END_PORTAL, Blocks.NETHER_PORTAL);
-        if (tag.hasUUID("ShooterUUID") && level instanceof ServerLevel serverLevel) {
-            shooter = serverLevel.getPlayerByUUID(tag.getUUID("ShooterUUID"));
+        if (!(tag.hasUUID("ShooterUUID") && level instanceof ServerLevel serverLevel)) { return; }
+        Player shooter = serverLevel.getPlayerByUUID(tag.getUUID("ShooterUUID"));
+        if (shooter == null) { return; }
+        // Retrieves the actual item used and ensures it is a MinerBowItem
+        ItemStack main = shooter.getMainHandItem(), off = shooter.getOffhandItem(), usedBow;
+        int radius, depth;
+        if (main.getItem() instanceof MinerBowItem minerBow) {
+            usedBow = main;
+            radius = minerBow.getRadius();
+            depth = minerBow.getDepth();
         }
+        else if (off.getItem() instanceof MinerBowItem minerBow) {
+            usedBow = off;
+            radius = minerBow.getRadius();
+            depth = minerBow.getDepth();
+        }
+        else { return; }
         int blocksBroken = 0;
         for (int i = 0; i < depth; i++) {
             BlockPos depthPos = startPos.relative(forward, i);
@@ -1168,23 +1174,18 @@ public class ModEvents {
                 for (int y = -radius; y <= radius; y++) {
                     BlockPos targetPos = depthPos.relative(right, x).relative(up, y);
                     BlockState state = level.getBlockState(targetPos);
-                    if (state.isAir() || blockedBlocks.contains(state.getBlock())) { continue; }
+                    var blocks = ForgeRegistries.BLOCKS.tags();
+                    if (blocks != null &&
+                        (state.isAir() || blocks.getTag(ModTags.Blocks.MINER_BOW_BLACKLIST).contains(state.getBlock()))) {
+                        continue;
+                    }
                     if (state.getDestroySpeed(level, targetPos) < 0) { continue; }
                     level.destroyBlock(targetPos, true);
                     blocksBroken++;
                 }
             }
         }
-        if (shooter != null) { // Expends bow durability if found
-            ItemStack main = shooter.getMainHandItem(), off = shooter.getOffhandItem(), usedBow = empty;
-            var held = ForgeRegistries.ITEMS.getKey(main.getItem());
-            var offHand = ForgeRegistries.ITEMS.getKey(off.getItem());
-            if (held != null && held.toString().equals(bowId)) { usedBow = main; }
-            else if (offHand != null && offHand.toString().equals(bowId)) { usedBow = off; }
-            if (!usedBow.isEmpty()) {
-                usedBow.hurt(blocksBroken, shooter.getRandom(), shooter instanceof ServerPlayer ? (ServerPlayer) shooter : null);
-            }
-        }
+        usedBow.hurt(blocksBroken, shooter.getRandom(), shooter instanceof ServerPlayer ? (ServerPlayer) shooter : null);
         arrow.discard();
     }
 

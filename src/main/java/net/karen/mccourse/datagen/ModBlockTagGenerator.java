@@ -138,6 +138,11 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .addTag(Tags.Blocks.STORAGE_BLOCKS_IRON).addTag(Tags.Blocks.STORAGE_BLOCKS_LAPIS)
                 .addTag(Tags.Blocks.STORAGE_BLOCKS_NETHERITE).addTag(Tags.Blocks.STORAGE_BLOCKS_REDSTONE)
                 .add(PINK_BLOCK.get(), ALEXANDRITE_BLOCK.get());
+
+        // Miner bow
+        this.tag(MINER_BOW_BLACKLIST).add(Blocks.BEDROCK, Blocks.OBSIDIAN, Blocks.END_PORTAL_FRAME,
+                                          Blocks.END_PORTAL, Blocks.NETHER_PORTAL);
+
     }
 
     @Override

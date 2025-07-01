@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-24T12:10:56.2620813	Block Tags
+// 1.20.1	2025-06-30T22:27:59.4229181	Block Tags
 eb00ac23195fefc6f2c490d17ae7e4ab1bb4e35f data/mccourse/tags/blocks/accumulator_experience.json
 16bc8d1b9b571914b59b5fad5f245361e5bfe539 data/mccourse/tags/blocks/alexandrite_ores.json
 cbfd4de29a27c4f1a70865ae5e666c14b7dab9f0 data/mccourse/tags/blocks/all_ores.json
@@ -13,6 +13,7 @@ ff26ab6c65d2442b5f4f080570d97de570ba22e5 data/mccourse/tags/blocks/farmer_crops_
 501ba4dec7d8b548d8a897d1a3cd7f659282d5d8 data/mccourse/tags/blocks/metal_detector_colors.json
 00f8e4bc9e6efe8ac98803227e0d688aa0eefe25 data/mccourse/tags/blocks/metal_detector_valuables.json
 64ba52a0503fe733de3f3907b7f157cb0821a8e3 data/mccourse/tags/blocks/mineable/paxel.json
+62e80ab8c26c9c04e8fdbf35b937d3611b357c2b data/mccourse/tags/blocks/miner_bow_blacklist.json
 9f49a41843f5ff844d3d1cb97aa8181f5d975c5a data/mccourse/tags/blocks/mobs_blocks_drops.json
 406ac0c95969460a13ecb2f69827207c540c87de data/mccourse/tags/blocks/more_ores_all_drops.json
 c1c4b8eca5edd47e1e04044d1e84b02f729cb0f6 data/mccourse/tags/blocks/more_ores_five_drops.json
