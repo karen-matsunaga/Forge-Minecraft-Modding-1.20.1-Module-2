@@ -252,6 +252,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.STONE_PAXEL.get());
                         output.accept(ModItems.WOODEN_PAXEL.get());
                         output.accept(ModItems.NETHERITE_PAXEL.get());
+                        output.accept(ModItems.LAPIS_LAZULI_PAXEL.get()); // Lapis Lazuli Paxel
 
                         // My custom ore
                         output.accept(ModItems.PINK.get());

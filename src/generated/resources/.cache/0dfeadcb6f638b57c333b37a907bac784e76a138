@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-24T15:31:04.3978735	Item Models: mccourse
+// 1.20.1	2025-07-01T22:27:39.8762225	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -131,6 +131,7 @@ b27190e2df26eff5a924d16e4f2d9cf0308838f1 assets/mccourse/models/item/iron_paxel.
 0ba45fa0b9fa861a6995c3a85d8bc1c786ed1fa6 assets/mccourse/models/item/kaupen_armor_trim_smithing_template.json
 6349d1adee80001ce5a46b787665a782e5c25798 assets/mccourse/models/item/kohlrabi.json
 39b609a6c230f85321604bec3c0fbf1976247e24 assets/mccourse/models/item/kohlrabi_seeds.json
+d33320c7e1fedc16824d4864bacbc12715387163 assets/mccourse/models/item/lapis_lazuli_paxel.json
 aba4053e29f3086634ca394fe48fddc465fbd1ea assets/mccourse/models/item/level_charger_minus.json
 dd998d73f4cbd3ed7d675c7f86d891f4d35d89de assets/mccourse/models/item/level_charger_minus_fortune.json
 39d9cfd88e738246eae357e46b83988a0217196e assets/mccourse/models/item/level_charger_plus.json

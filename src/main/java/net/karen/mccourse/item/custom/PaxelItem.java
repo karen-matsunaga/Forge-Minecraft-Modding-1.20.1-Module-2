@@ -6,7 +6,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Vanishable;
 
 public class PaxelItem extends DiggerItem implements Vanishable {
-    public PaxelItem(Tier tier, float pAttackDamageModifier, float pAttackSpeedModifier, Properties properties) {
-        super(pAttackDamageModifier, pAttackSpeedModifier, tier, ModTags.Blocks.PAXEL_MINEABLE, properties);
+    public PaxelItem(Tier tier, float attackDamageModifier, float attackSpeedModifier, Properties properties) {
+        super(attackDamageModifier, attackSpeedModifier, tier, ModTags.Blocks.PAXEL_MINEABLE, properties);
     }
 }

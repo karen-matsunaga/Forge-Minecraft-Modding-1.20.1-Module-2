@@ -71,6 +71,12 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(PAXEL_MINEABLE).addTag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .addTag(BlockTags.MINEABLE_WITH_SHOVEL).addTag(BlockTags.MINEABLE_WITH_AXE);
 
+        // Pink tool tag
+        this.tag(NEEDS_PINK_TOOL).add(NETHER_PINK_ORE.get(), END_STONE_PINK_ORE.get());
+        this.tag(NEEDS_COPPER_TOOL).add(Blocks.COPPER_ORE, Blocks.DEEPSLATE_COPPER_ORE);
+        this.tag(NEEDS_LAPIS_LAZULI_TOOL).add(Blocks.LAPIS_ORE, Blocks.DEEPSLATE_LAPIS_ORE);
+        this.tag(NEEDS_REDSTONE_TOOL).add(Blocks.REDSTONE_ORE, Blocks.DEEPSLATE_REDSTONE_ORE);
+
         // Walnut's tag
         this.tag(BlockTags.LOGS_THAT_BURN).add(WALNUT_LOG.get(), WALNUT_WOOD.get(),
                  STRIPPED_WALNUT_LOG.get(), STRIPPED_WALNUT_WOOD.get());

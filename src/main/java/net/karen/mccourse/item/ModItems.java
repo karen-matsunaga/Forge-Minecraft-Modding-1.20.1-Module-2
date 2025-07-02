@@ -18,11 +18,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import java.util.function.Supplier;
 
 public class ModItems {
     // Register items
-    public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, MCCourseMod.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MCCourseMod.MOD_ID);
 
     // Register item in game
     // Ore's item
@@ -435,6 +435,16 @@ public class ModItems {
     public static final RegistryObject<Item> MINER_BOW = ITEMS.register("miner_bow",
             () -> new MinerBowItem(new Item.Properties().fireResistant().durability(10000), 1, 3));
 
+    // Lapis Lazuli Paxel
+    public static final RegistryObject<Item> LAPIS_LAZULI_PAXEL = registerItem("lapis_lazuli_paxel",
+            () -> new PaxelItem(ModToolTiers.LAPIS_LAZULI, 1, 1,
+                  new Item.Properties().fireResistant()));
+
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
+
+    // CUSTOM METHOD - Register custom items
+    public static RegistryObject<Item> registerItem(String name, Supplier<Item> supplier) {
+        return ITEMS.register(name, supplier);
+    }
 }

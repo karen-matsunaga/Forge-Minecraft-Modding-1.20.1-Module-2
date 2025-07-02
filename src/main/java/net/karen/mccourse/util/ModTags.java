@@ -73,6 +73,8 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_ALEXANDRITE_TOOL = tag("needs_alexandrite_tool");
         public static final TagKey<Block> NEEDS_PINK_TOOL = tag("needs_pink_tool");
         public static final TagKey<Block> NEEDS_COPPER_TOOL = tag("needs_copper_tool");
+        public static final TagKey<Block> NEEDS_LAPIS_LAZULI_TOOL = tag("needs_lapis_lazuli_tool");
+        public static final TagKey<Block> NEEDS_REDSTONE_TOOL = tag("needs_redstone_tool");
 
         // Created Alexandrite Paxel's tag
         public static final TagKey<Block> PAXEL_MINEABLE = tag("mineable/paxel");

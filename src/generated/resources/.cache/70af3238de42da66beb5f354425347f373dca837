@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-30T22:27:59.4229181	Block Tags
+// 1.20.1	2025-07-01T22:27:39.8842699	Block Tags
 eb00ac23195fefc6f2c490d17ae7e4ab1bb4e35f data/mccourse/tags/blocks/accumulator_experience.json
 16bc8d1b9b571914b59b5fad5f245361e5bfe539 data/mccourse/tags/blocks/alexandrite_ores.json
 cbfd4de29a27c4f1a70865ae5e666c14b7dab9f0 data/mccourse/tags/blocks/all_ores.json
@@ -25,6 +25,10 @@ a3b034ba6dfc318ff77dbd2fedd47a18e2872e02 data/mccourse/tags/blocks/more_ores_six
 76e1074a2f2f826c8f45cc1ab2a7d876f28710d8 data/mccourse/tags/blocks/more_ores_two_drops.json
 08f949771eaf1ded6903b40b92c0af47fb25828b data/mccourse/tags/blocks/mushroom_blocks.json
 08e816d84dd5a9806309e91f51915a5605841bb8 data/mccourse/tags/blocks/needs_alexandrite_tool.json
+37c1e07dffc966dafe0401977955eba42bfaeccf data/mccourse/tags/blocks/needs_copper_tool.json
+89a7253fe70309e791af46e2363de068e26b63f2 data/mccourse/tags/blocks/needs_lapis_lazuli_tool.json
+bfcdb077a8fe4540ef19cbb855311a06ba51e379 data/mccourse/tags/blocks/needs_pink_tool.json
+d1b3de80a7e228bb1b85aa05703471032bc2a8c8 data/mccourse/tags/blocks/needs_redstone_tool.json
 ed55ae35c47237708c0967e2d75d1532412996c6 data/mccourse/tags/blocks/pink_ores.json
 1ae31dc8bb5d5a23ac4854b4d292d972b528b05e data/mccourse/tags/blocks/rainbow_drops.json
 db54a62a991dd498c37615be9aec236435b1513c data/mccourse/tags/blocks/special_metal_detector_valuables.json
