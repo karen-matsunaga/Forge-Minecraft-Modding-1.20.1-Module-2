@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-24T15:31:04.3978735	Item Tags
+// 1.20.1	2025-07-02T17:25:18.9282852	Item Tags
 a9a5672ff047d00463e43bd4f3311688fbc78584 data/forge/tags/items/tools/fishing_rods.json
 c7cf40b65e9f80b0da876b8c7ba47601cc2eef92 data/mccourse/tags/items/alexandrite_armor.json
 86562fd08aff39d08443a35e89d8fabc2114cb9b data/mccourse/tags/items/alexandrite_ores_items.json
@@ -7,6 +7,11 @@ cb72b9f19012bb274543528930deea6b590c73f5 data/mccourse/tags/items/chestplate_fly
 80c56329dbc8fc4fcf5a04af29335f059961b8ba data/mccourse/tags/items/copper_armor.json
 e70861732ee55a7128661f30008e9c2dc2dd8409 data/mccourse/tags/items/helmet_fly.json
 8ba7b35398496adf646c932b2ac34f34aa5d172f data/mccourse/tags/items/leggings_fly.json
+e209e711b45f62b36e015b91e49bd510cdda547e data/mccourse/tags/items/level_charger_all.json
+8a25a245d2fe5ad0093bcf30de272c8ac5a6e408 data/mccourse/tags/items/level_charger_general.json
+ab44240589409daace011d07c0df20da3baa14cf data/mccourse/tags/items/level_charger_minus_enchant.json
+b2dd2ce669aef0793f76a04bacf2fc1e8d3164d8 data/mccourse/tags/items/level_charger_plus_enchant.json
+b5f7c0ce1a54c143ce95cd1b1b860726ea19b7bf data/mccourse/tags/items/level_charger_specific.json
 bfbfe93c1207420484e0725620adc02b8b2000f6 data/mccourse/tags/items/mccourse_items.json
 8dab101b6ef5c99bb3c5f3b52e2226fcc7e2d0eb data/mccourse/tags/items/mccourse_ores_items.json
 cf427f888bb00e762a7b143d8b52c96ef4a52975 data/mccourse/tags/items/multiplier_ores.json

@@ -113,6 +113,13 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
         // Mccourse Fishing Rod
         this.tag(Tags.Items.TOOLS_FISHING_RODS).add(MCCOURSE_FISHING_ROD.get());
+
+        // Level Charger items
+        this.tag(LEVEL_CHARGER_GENERAL).add(LEVEL_CHARGER_PLUS.get(), LEVEL_CHARGER_MINUS.get()); // GENERAL
+        this.tag(LEVEL_CHARGER_SPECIFIC).add(LEVEL_CHARGER_PLUS_FORTUNE.get(), LEVEL_CHARGER_MINUS_FORTUNE.get()); // SPECIFIC
+        this.tag(LEVEL_CHARGER_PLUS_ENCHANT).add(LEVEL_CHARGER_PLUS.get(), LEVEL_CHARGER_PLUS_FORTUNE.get()); // PLUS
+        this.tag(LEVEL_CHARGER_MINUS_ENCHANT).add(LEVEL_CHARGER_MINUS.get(), LEVEL_CHARGER_MINUS_FORTUNE.get()); // MINUS
+        this.tag(LEVEL_CHARGER_ALL).addTag(LEVEL_CHARGER_GENERAL).addTag(LEVEL_CHARGER_SPECIFIC); // ALL TYPES
     }
 
     @Override

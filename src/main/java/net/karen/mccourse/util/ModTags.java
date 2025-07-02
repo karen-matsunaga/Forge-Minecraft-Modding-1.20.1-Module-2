@@ -51,6 +51,13 @@ public class ModTags {
         public static final TagKey<Item> PINK_ULTRA_COMPACTOR_ITEMS = tag("pink_ultra_compactor_items");
         public static final TagKey<Item> PINK_ULTRA_COMPACTOR_RESULT = tag("pink_ultra_compactor_result");
 
+        // Level Charger items
+        public static final TagKey<Item> LEVEL_CHARGER_GENERAL = tag("level_charger_general");
+        public static final TagKey<Item> LEVEL_CHARGER_SPECIFIC = tag("level_charger_specific");
+        public static final TagKey<Item> LEVEL_CHARGER_PLUS_ENCHANT = tag("level_charger_plus_enchant");
+        public static final TagKey<Item> LEVEL_CHARGER_MINUS_ENCHANT = tag("level_charger_minus_enchant");
+        public static final TagKey<Item> LEVEL_CHARGER_ALL = tag("level_charger_all");
+
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass item id
         }

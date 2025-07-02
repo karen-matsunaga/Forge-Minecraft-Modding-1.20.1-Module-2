@@ -60,11 +60,11 @@ public class ChatUtil { // GENERAL METHODS
         player.displayClientMessage(componentLiteralStyle(message, color), true);
     }
 
-    // CUSTOM METHOD - Message appears on screen with BOLD format with STAGE change
-    public static void playerStyleBool(boolean bool, Player player,
-                                       String mes1, String mes2, ChatFormatting color, ChatFormatting color1) {
-        String display = bool ? mes1 : mes2;
-        player.displayClientMessage(componentLiteralStyle(display, bool ? color : color1), true);
+    // CUSTOM METHOD - Message appears on screen with STAGE change
+    public static void playerStyleBool(Player player, boolean bool, boolean bool2,
+                                       String message, String message2, ChatFormatting color, ChatFormatting color2) {
+        if (bool) { player.displayClientMessage(componentLiteral(message, color), true); }
+        if (bool2) { player.displayClientMessage(componentLiteral(message2, color2), true); }
     }
 
     // CUSTOM METHOD - Using RGB colors and BOLD format
