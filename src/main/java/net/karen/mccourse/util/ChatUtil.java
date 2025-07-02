@@ -8,38 +8,40 @@ import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import static net.karen.mccourse.util.Utils.*;
 
-public class ChatUtil {
-    // GENERAL METHODS
+public class ChatUtil { // GENERAL METHODS
+    // CUSTOM METHOD - COMPONENT LITERAL without color
     public static Component standardLiteral(String message) {
         return Component.literal(message);
     }
 
+    // CUSTOM METHOD - COMPONENT TRANSLATABLE without color
     public static Component standardTranslatable(String message) {
         return Component.translatable(message);
     }
 
+    // CUSTOM METHOD - COMPONENT LITERAL with one color
     public static Component componentLiteral(String message, ChatFormatting color) {
         return Component.literal(message).withStyle(color);
     }
 
-    public static Component componentLiteralStyle(String message, ChatFormatting color) {
-        return Component.literal(message).setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD));
-    }
-
-    public static Component customStyle(String number, int light) {
-        return Component.literal(String.valueOf(number)).setStyle(Style.EMPTY.withColor(light > 6 ? 0x32FC76 : 0xFF1818));
-    }
-
+    // CUSTOM METHOD - COMPONENT LITERAL with one color
     public static Component componentTranslatable(String message, ChatFormatting color) {
         return Component.translatable(message).withStyle(color);
     }
 
+    // CUSTOM METHOD - COMPONENT LITERAL with BOLD format
+    public static Component componentLiteralStyle(String message, ChatFormatting color) {
+        return Component.literal(message).setStyle(Style.EMPTY.applyFormats(color, ChatFormatting.BOLD));
+    }
+
+    // CUSTOM METHOD - Message appears on screen with COMPONENT LITERAL without color (BOOL)
     public static void playerBool(Player player, String message) {
         player.displayClientMessage(standardLiteral(message), true);
     }
@@ -49,14 +51,20 @@ public class ChatUtil {
         player.displayClientMessage(componentLiteral(message, color), true);
     }
 
+    public static void playerTranslatable(Player player, String message, ChatFormatting color) {
+        player.displayClientMessage(componentTranslatable(message, color), true);
+    }
+
     // CUSTOM METHOD - Message appears on screen with BOLD format
     public static void playerStyle(Player player, String message, ChatFormatting color) {
         player.displayClientMessage(componentLiteralStyle(message, color), true);
     }
 
     // CUSTOM METHOD - Message appears on screen with BOLD format with STAGE change
-    public static void playerStyleBool(Player player, String message, boolean bool, ChatFormatting color) {
-        if (bool) { player.displayClientMessage(componentLiteralStyle(message, color), true); }
+    public static void playerStyleBool(boolean bool, Player player,
+                                       String mes1, String mes2, ChatFormatting color, ChatFormatting color1) {
+        String display = bool ? mes1 : mes2;
+        player.displayClientMessage(componentLiteralStyle(display, bool ? color : color1), true);
     }
 
     // CUSTOM METHOD - Using RGB colors and BOLD format
@@ -83,17 +91,18 @@ public class ChatUtil {
     }
 
     // CUSTOM METHOD - Text appears on TOOLTIP item with STAGE change
-    public static void tooltipLineBool(List<Component> tooltip, String message,
-                                       boolean bool, ChatFormatting color) {
-        if (bool) { tooltip.add(Component.literal(message).withStyle(color)); }
+    public static void tooltipLines(List<Component> tooltip, ItemStack item,
+                                    String message, ChatFormatting color) {
+        tooltip.add(Component.translatable(item.getDescriptionId()).withStyle(color)
+                             .append(componentLiteral(message, color)));
     }
 
-    // UNIQUE message
+    // CUSTOM METHOD - UNIQUE message
     public static void normalMessage(Player player, String message, ChatFormatting color) {
         player(player, message, color);
     }
 
-    // TOOLTIP MESSAGE
+    // CUSTOM METHOD - Icon message TOOLTIP
     public static void image(List<Either<FormattedText, TooltipComponent>> element,
                                     String path, int width, int height, String text, Boolean bool) {
         if (bool) {
@@ -102,11 +111,12 @@ public class ChatUtil {
         }
     }
 
-    // INVALID message
+    // CUSTOM METHOD - INVALID message with BOLD format
     public static void invalidMessage(Player player, String invalid) {
         playerStyle(player, invalid, Utils.darkRed);
     }
 
+    // CUSTOM METHOD - TRADE message with BOLD format
     public static void tradeMessage(Player player, String trade) {
         player(player, trade, Utils.red);
     }
@@ -123,6 +133,11 @@ public class ChatUtil {
         return Component.literal("Light:").append(customStyle(" " + totalLight, totalLight))
                .append(standardLiteral("  Sky:")).append(customStyle(" " + skyLight, skyLight))
                .append(standardLiteral("  Block:")).append(customStyle(" " + blockLight, blockLight));
+    }
+
+    // CUSTOM METHOD - Light colors numbers
+    public static Component customStyle(String number, int light) {
+        return Component.literal(String.valueOf(number)).setStyle(Style.EMPTY.withColor(light > 6 ? 0x32FC76 : 0xFF1818));
     }
 
     // CUSTOM METHOD - Chat message on prompt
@@ -148,6 +163,6 @@ public class ChatUtil {
         int x = pos.getX(), y = pos.getY(), z = pos.getZ();
         return Component.literal(player.getGameProfile().getName() + " died at [X: " + x + ", Y: " + y + ", Z: " + z + "] " +
                LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
-               .withStyle(Style.EMPTY.withColor(color).withItalic(false));
+                        .withStyle(Style.EMPTY.withColor(color).withItalic(false));
     }
 }
