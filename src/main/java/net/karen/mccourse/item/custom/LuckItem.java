@@ -1,5 +1,7 @@
 package net.karen.mccourse.item.custom;
 
+import net.karen.mccourse.util.ChatUtil;
+import net.karen.mccourse.util.Utils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -15,10 +17,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
 import static net.minecraft.world.item.enchantment.EnchantmentCategory.*;
 
 public class LuckItem extends Item {
@@ -36,36 +36,35 @@ public class LuckItem extends Item {
         this.ENCHANTMENT_TYPE = type;
     }
 
-    // Player press Right-click activated item
+    @Override
+    public void appendHoverText(ItemStack item, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
+        String name = item.getDescriptionId().replace("item.mccourse.", "").replace("_", " ");
+        ChatUtil.tooltipLine(list, "Good luck! " + name.toUpperCase(), Utils.purple); // Added description of Luck item
+        super.appendHoverText(item, level, list, flag);
+    }
+
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level world, Player player, @NotNull InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand); // Player get item on main hand
-        if (!world.isClientSide()) {
+        if (!world.isClientSide()) { // Player press Right-click ACTIVATED item
             Random random = new Random(); // Activated random enchantment
-            // Book quantity
-            for (int i = 0; i < BOOKS_TO_GENERATE; i++) {
+            for (int i = 0; i < BOOKS_TO_GENERATE; i++) { // Book quantity
                 ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK); // Enchanted book to add the enchantments
                 Map<Enchantment, Integer> books = new HashMap<>(); // List to store the book's enchantments
                 List<Enchantment> enchantmentType = getEnchantmentsByCategory(ENCHANTMENT_CATEGORY);
-                // Adding various enchantments on the book
-                for (int j = 0; j < ENCHANTMENTS_PER_BOOK; j++) {
+                for (int j = 0; j < ENCHANTMENTS_PER_BOOK; j++) { // Adding various enchantments on the book
                     switch (ENCHANTMENT_TYPE) {
-                        case 0:
-                            Enchantment randomEnchantment = getRandomEnchantment(random); // Enchantments are random
-                            if (randomEnchantment != null) { books.put(randomEnchantment, randomEnchantment.getMaxLevel()); }
-                        break;
-                        case 1: // I want some enchantments
+                        case 0 -> { // Enchantments are RANDOM
+                            Enchantment randomEnchantment = getRandomEnchantment(random);
+                            if (randomEnchantment != null) { books.put(randomEnchantment, randomEnchantment.getMaxLevel()); } }
+                        case 1 -> { // SOME enchantments
                             Enchantment randomEnchant = enchantmentType.get(random.nextInt(enchantmentType.size()));
                             if (randomEnchant.getMaxLevel() == 1) { books.put(randomEnchant, randomEnchant.getMaxLevel()); }
-                            else if (randomEnchant.getMaxLevel() >= 1) { books.put(randomEnchant, ENCHANTMENT_LEVEL); }
-                        break;
-                        case 2: // I want all enchantments
-                            enchantmentType.forEach(enchant -> books.put(enchant, ENCHANTMENT_LEVEL));
-                        break;
+                            else if (randomEnchant.getMaxLevel() >= 1) { books.put(randomEnchant, ENCHANTMENT_LEVEL); } }
+                        case 2 -> enchantmentType.forEach(enchant -> books.put(enchant, ENCHANTMENT_LEVEL)); // ALL enchantments
                     }
                 }
-                // Applies the enchantments to the book
-                EnchantmentHelper.setEnchantments(books, enchantedBook);
+                EnchantmentHelper.setEnchantments(books, enchantedBook); // Applies the enchantments to the book
                 // Give the book to the player -> If inventory is full drop on ground
                 if (!player.getInventory().add(enchantedBook)) { player.drop(enchantedBook, false); }
             }
@@ -74,11 +73,9 @@ public class LuckItem extends Item {
         return InteractionResultHolder.sidedSuccess(itemStack, world.isClientSide());
     }
 
-    // Custom method - Enchantment random
+    // CUSTOM METHOD - Enchantment random (Mixing categories: only sword, only armor, etc.)
     private Enchantment getRandomEnchantment(Random random) {
-        // Separating enchantments by type
-        // Mixing categories: only sword, only armor, etc.
-        List<Enchantment> allEnchantments = new ArrayList<>();
+        List<Enchantment> allEnchantments = new ArrayList<>(); // Separating enchantments by TYPE
         allEnchantments.addAll(getEnchantmentsByCategory(WEAPON)); // Sword category
         allEnchantments.addAll(getEnchantmentsByCategory(ARMOR)); // Armor category
         allEnchantments.addAll(getEnchantmentsByCategory(DIGGER)); // Pickaxe category
@@ -91,26 +88,13 @@ public class LuckItem extends Item {
         allEnchantments.addAll(getEnchantmentsByCategory(ARMOR_LEGS)); // Armor Legs category
         allEnchantments.addAll(getEnchantmentsByCategory(BOW)); // Bow category
         allEnchantments.addAll(getEnchantmentsByCategory(CROSSBOW)); // Crossbow category
-
         if (allEnchantments.isEmpty()) { return null; } // If the list is empty, it ignores and returns nothing
-
-        // Returns a random enchantment from the list
-        return allEnchantments.get(random.nextInt(allEnchantments.size()));
+        return allEnchantments.get(random.nextInt(allEnchantments.size())); // Returns a random enchantment from the list
     }
 
-    // Custom method - Enchantment Category
+    // CUSTOM METHOD - Enchantment Category (Filter by category and added category in a list)
     private List<Enchantment> getEnchantmentsByCategory(EnchantmentCategory category) {
-        return ForgeRegistries.ENCHANTMENTS.getValues().stream()
-                .filter(enchantment -> enchantment.category == category)  // Filter by category
-                .collect(Collectors.toList());  // Added category in a list
-    }
-
-    // Added description of Luck item
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components,
-                                @NotNull TooltipFlag tooltipFlag) {
-        components.add(Component.literal("Congratulations! Good luck! " +
-                stack.getDescriptionId().replace("item.mccourse.", "").replace("_", " ")));
-        super.appendHoverText(stack, level, components, tooltipFlag);
+        return ForgeRegistries.ENCHANTMENTS.getValues().stream().filter(enchantment -> enchantment.category == category)
+                                                                .collect(Collectors.toList());
     }
 }
