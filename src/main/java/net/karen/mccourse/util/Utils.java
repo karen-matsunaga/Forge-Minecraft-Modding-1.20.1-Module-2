@@ -87,12 +87,14 @@ public class Utils {
     }
 
     // CUSTOM METHOD - Level neutral sounds
-    public static void neutralSound(Level level, Player player, SoundEvent sound, float volume, float pitch) {
+    public static void neutralSound(Level level, Player player,
+                                    SoundEvent sound, float volume, float pitch) {
         level.playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundSource.NEUTRAL, volume, pitch);
     }
 
     // CUSTOM METHOD - Level
-    public static void playerSound(Level level, Player player, SoundEvent sound, float volume, float pitch) {
+    public static void playerSound(Level level, Player player,
+                                   SoundEvent sound, float volume, float pitch) {
         level.playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundSource.PLAYERS, volume, pitch);
     }
 
@@ -156,9 +158,14 @@ public class Utils {
         return player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == item; // CUSTOM METHOD - Used item
     }
 
-    // CUSTOM METHOD - Effect
+    // CUSTOM METHOD - Added Effect on full Armor
     public static MobEffectInstance effect(MobEffect effect, int duration, int amplifier) {
         return new MobEffectInstance(effect, duration, amplifier, true, false, false);
+    }
+
+    // CUSTOM METHOD - Added effects on Helmet armor piece
+    public static MobEffectInstance helmet(MobEffect effect, int duration, int amplifier) {
+        return new MobEffectInstance(effect, duration, amplifier, false, false);
     }
 
     // CUSTOM METHOD - Activated IMMORTAL enchantment
@@ -196,7 +203,8 @@ public class Utils {
     }
 
     // CUSTOM METHOD - Drop fish items
-    public static void dropFish(Level level, double x, double y, double z, ItemStack item) {
+    public static void dropFish(Level level,
+                                double x, double y, double z, ItemStack item) {
         ItemEntity drop = new ItemEntity(level, x, y, z, item);
         drop.setDeltaMovement(Vec3.ZERO);
         level.addFreshEntity(drop);
