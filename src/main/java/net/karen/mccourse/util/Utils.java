@@ -155,7 +155,12 @@ public class Utils {
 
     // CUSTOM METHOD - Item used on MAIN HAND
     public static boolean item(Player player, Item item) {
-        return player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == item; // CUSTOM METHOD - Used item
+        return player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == item; // Used item
+    }
+
+    // CUSTOM METHOD - Item used is on offhand or main hand
+    public static ItemStack hasItem(Player player, InteractionHand hand) {
+        return player.getItemInHand(hand);
     }
 
     // CUSTOM METHOD - Added Effect on full Armor
