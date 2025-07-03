@@ -3,53 +3,37 @@ package net.karen.mccourse.util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.UnlockEnchantmentAction;
-import net.karen.mccourse.network.GlowingBlocksNetworkMessage;
-import net.karen.mccourse.network.ModNetworks;
-import net.karen.mccourse.network.UnlockNetworkMessage;
+import net.karen.mccourse.network.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
+import net.minecraft.core.*;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.network.chat.*;
+import net.minecraft.server.level.*;
+import net.minecraft.sounds.*;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.*;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.network.PacketDistributor;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class Utils {
@@ -72,7 +56,9 @@ public class Utils {
     black = ChatFormatting.BLACK, white = ChatFormatting.WHITE;
 
     public static ClipContext.Block collider = ClipContext.Block.COLLIDER;
-    public static ClipContext.Fluid none = ClipContext.Fluid.NONE;
+    public static ClipContext.Fluid none = ClipContext.Fluid.NONE, any = ClipContext.Fluid.ANY;
+
+    public static HitResult.Type hitMiss = HitResult.Type.MISS, hitBlock = HitResult.Type.BLOCK;
 
     public static ItemStack empty = ItemStack.EMPTY;
 

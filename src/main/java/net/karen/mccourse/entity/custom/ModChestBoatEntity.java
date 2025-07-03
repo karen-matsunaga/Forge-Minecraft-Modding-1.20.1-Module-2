@@ -2,49 +2,45 @@ package net.karen.mccourse.entity.custom;
 
 import net.karen.mccourse.entity.ModEntities;
 import net.karen.mccourse.item.ModItems;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.syncher.*;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.vehicle.Boat;
-import net.minecraft.world.entity.vehicle.ChestBoat;
+import net.minecraft.world.entity.vehicle.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class ModChestBoatEntity extends ChestBoat {
-    private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(Boat.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_ID_TYPE =
+            SynchedEntityData.defineId(Boat.class, EntityDataSerializers.INT);
 
-    public ModChestBoatEntity(EntityType<? extends ChestBoat> pEntityType, Level pLevel) { super(pEntityType, pLevel); }
+    public ModChestBoatEntity(EntityType<? extends ChestBoat> entityType, Level level) {
+        super(entityType, level);
+    }
 
-    public ModChestBoatEntity(Level pLevel, double pX, double pY, double pZ) {
+    public ModChestBoatEntity(Level pLevel, double x, double y, double z) {
         this(ModEntities.MOD_CHEST_BOAT.get(), pLevel);
-        this.setPos(pX, pY, pZ);
-        this.xo = pX;
-        this.yo = pY;
-        this.zo = pZ;
+        this.setPos(x, y, z);
+        this.xo = x;
+        this.yo = y;
+        this.zo = z;
     }
 
     @Override
-    public Item getDropItem() {
-        switch (getModVariant()) {
-            case WALNUT -> { return ModItems.WALNUT_CHEST_BOAT.get(); }
-        }
+    public @NotNull Item getDropItem() {
+        switch (getModVariant()) { case WALNUT -> { return ModItems.WALNUT_CHEST_BOAT.get(); } }
         return super.getDropItem();
     }
 
-    public void setVariant(ModBoatEntity.Type pVariant) { this.entityData.set(DATA_ID_TYPE, pVariant.ordinal()); }
+    public void setVariant(ModBoatEntity.Type type) {
+        this.entityData.set(DATA_ID_TYPE, type.ordinal());
+    }
 
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_ID_TYPE, ModBoatEntity.Type.WALNUT.ordinal());
     }
 
-    protected void addAdditionalSaveData(CompoundTag pCompound) { pCompound.putString("Type", this.getModVariant().getSerializedName()); }
-
-    protected void readAdditionalSaveData(CompoundTag pCompound) {
-        if (pCompound.contains("Type", 8)) { this.setVariant(ModBoatEntity.Type.byName(pCompound.getString("Type"))); }
+    public ModBoatEntity.Type getModVariant() {
+        return ModBoatEntity.Type.byId(this.entityData.get(DATA_ID_TYPE));
     }
-
-    public ModBoatEntity.Type getModVariant() { return ModBoatEntity.Type.byId(this.entityData.get(DATA_ID_TYPE)); }
 }

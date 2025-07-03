@@ -2,12 +2,9 @@ package net.karen.mccourse.entity;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.entity.custom.*;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.*;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.*;
 
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
@@ -16,42 +13,45 @@ public class ModEntities {
     // Register all custom entities
     public static final RegistryObject<EntityType<RhinoEntity>> RHINO =
             ENTITY_TYPES.register("rhino", () -> EntityType.Builder.of(RhinoEntity::new, MobCategory.CREATURE)
-                    .sized(2.5f, 2.5f).build("rhino"));
+                        .sized(2.5f, 2.5f).build("rhino"));
 
     // Register all custom entity projectiles
     public static final RegistryObject<EntityType<DiceProjectileEntity>> DICE_PROJECTILE =
             ENTITY_TYPES.register("dice_projectile", () -> EntityType.Builder.<DiceProjectileEntity>of(DiceProjectileEntity::new, MobCategory.MISC)
-                    .sized(0.5f, 0.5f)
-                    .clientTrackingRange(4)
-                    .updateInterval(20)
-                    .setCustomClientFactory(((spawnEntity, level) -> new DiceProjectileEntity(level)))
-                    .build("dice_projectile"));
+                        .sized(0.5f, 0.5f)
+                        .clientTrackingRange(4)
+                        .updateInterval(20)
+                        .setCustomClientFactory(((spawnEntity, level) -> new DiceProjectileEntity(level)))
+                        .build("dice_projectile"));
 
     public static final RegistryObject<EntityType<MagicProjectileEntity>> MAGIC_PROJECTILE =
             ENTITY_TYPES.register("magic_projectile",
                     () -> EntityType.Builder.<MagicProjectileEntity>of(MagicProjectileEntity::new, MobCategory.MISC)
-                            .sized(0.5f, 0.5f)
-                            .clientTrackingRange(4)
-                            .updateInterval(20)
-                            .build("magic_projectile"));
+                                            .sized(0.5f, 0.5f)
+                                            .clientTrackingRange(4)
+                                            .updateInterval(20)
+                                            .build("magic_projectile"));
 
-    // My custom ender pearl
+    // Register all custom ender pearl
     public static final RegistryObject<EntityType<BouncyBallsProjectileEntity>> BOUNCY_BALLS_PROJECTILE =
             ENTITY_TYPES.register("bouncy_balls_projectile",
                     () -> EntityType.Builder.<BouncyBallsProjectileEntity>of(BouncyBallsProjectileEntity::new, MobCategory.MISC)
-                            .sized(0.5f, 0.5f)
-                            .clientTrackingRange(4)
-                            .updateInterval(20)
-                            .build("bouncy_balls_projectile"));
+                                            .sized(0.5f, 0.5f)
+                                            .clientTrackingRange(4)
+                                            .updateInterval(20)
+                                            .build("bouncy_balls_projectile"));
 
     // Register all custom boats
     public static final RegistryObject<EntityType<ModBoatEntity>> MOD_BOAT =
-            ENTITY_TYPES.register("mod_boat", () -> EntityType.Builder.<ModBoatEntity>of(ModBoatEntity::new, MobCategory.MISC)
-                    .sized(1.375f, 0.5625f).build("mod_boat")); // Custom boat
+            ENTITY_TYPES.register("mod_boat", () ->
+                        EntityType.Builder.<ModBoatEntity>of(ModBoatEntity::new, MobCategory.MISC)
+                                          .sized(1.375f, 0.5625f).build("mod_boat")); // Custom boat
 
     public static final RegistryObject<EntityType<ModChestBoatEntity>> MOD_CHEST_BOAT =
-            ENTITY_TYPES.register("mod_chest_boat", () -> EntityType.Builder.<ModChestBoatEntity>of(ModChestBoatEntity::new, MobCategory.MISC)
-                    .sized(1.375f, 0.5625f).build("mod_chest_boat")); // Custom chest boat
+            ENTITY_TYPES.register("mod_chest_boat", () ->
+                        EntityType.Builder.<ModChestBoatEntity>of(ModChestBoatEntity::new, MobCategory.MISC)
+                                          .sized(1.375f, 0.5625f).build("mod_chest_boat")); // Custom chest boat
 
-    public static void register(IEventBus eventBus) { ENTITY_TYPES.register(eventBus); } // Register all custom entities on forge
+    // CUSTOM METHOD - Register all custom entities on forge
+    public static void register(IEventBus eventBus) { ENTITY_TYPES.register(eventBus); }
 }
