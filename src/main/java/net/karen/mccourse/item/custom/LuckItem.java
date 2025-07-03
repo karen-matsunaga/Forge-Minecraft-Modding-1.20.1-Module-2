@@ -1,24 +1,17 @@
 package net.karen.mccourse.item.custom;
 
-import net.karen.mccourse.util.ChatUtil;
-import net.karen.mccourse.util.Utils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import static net.karen.mccourse.util.ChatUtil.*;
+import static net.karen.mccourse.util.Utils.*;
 import static net.minecraft.world.item.enchantment.EnchantmentCategory.*;
 
 public class LuckItem extends Item {
@@ -38,8 +31,8 @@ public class LuckItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack item, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
-        String name = item.getDescriptionId().replace("item.mccourse.", "").replace("_", " ");
-        ChatUtil.tooltipLine(list, "Good luck! " + name.toUpperCase(), Utils.purple); // Added description of Luck item
+        String upper = itemLine(item.getDescriptionId(), "item.mccourse.", "", "_", " ");
+        tooltipLine(list, "Good luck! " + itemLines(upper), purple); // Added description of Luck item
         super.appendHoverText(item, level, list, flag);
     }
 

@@ -12,10 +12,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
 import static net.karen.mccourse.util.Utils.*;
 
 public class ChatUtil { // GENERAL METHODS
+    public static String mod = "enchantment.mccourse.", vanilla = "enchantment.minecraft.";
+
     // CUSTOM METHOD - COMPONENT LITERAL without color
     public static Component standardLiteral(String message) {
         return Component.literal(message);
@@ -164,5 +166,28 @@ public class ChatUtil { // GENERAL METHODS
         return Component.literal(player.getGameProfile().getName() + " died at [X: " + x + ", Y: " + y + ", Z: " + z + "] " +
                LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
                         .withStyle(Style.EMPTY.withColor(color).withItalic(false));
+    }
+
+    // CUSTOM METHOD - Interaction Result Holder FAIL messages
+    public static boolean fail(Player player, String message, ChatFormatting color) {
+        player(player, message, color);
+        return false;
+    }
+
+    // CUSTOM METHOD - Renamed string on TOOLTIP -> Ex: Fortune etc. (Only one word) -> Capitalize First Letters
+    public static String itemLine(String var, String old, String value,
+                                  String old2, String value2) {
+        String name = var.replace(old, value).replace(old2, value2), firstIndex = name.substring(0, 1).toUpperCase();
+        return firstIndex + name.substring(1);
+    }
+
+    // CUSTOM METHOD - Renamed string on TOOLTIP -> Ex: Mccourse Generator etc. (Two+ words) -> Capitalize First Letters
+    public static String itemLines(String input) {
+        String[] words = input.split(" "); // Separated words
+        StringJoiner capitalized = new StringJoiner(" "); // Spaced words
+        for (String word : words) { // For each word
+            if (!word.isEmpty()) { capitalized.add(word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase()); }
+        }
+        return capitalized.toString(); // Joined words with capitalize words
     }
 }

@@ -76,6 +76,8 @@ public class Utils {
 
     public static ItemStack empty = ItemStack.EMPTY;
 
+    public static InteractionHand mainHand = InteractionHand.MAIN_HAND, offhand = InteractionHand.OFF_HAND;
+
     // CUSTOM METHOD - Player item sounds
     public static void sound(Player player, SoundEvent sound, float volume, float pitch) {
         player.level().playSound(null, player.blockPosition(), sound, SoundSource.PLAYERS, volume, pitch);

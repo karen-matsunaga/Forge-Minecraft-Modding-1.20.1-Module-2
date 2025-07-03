@@ -1,8 +1,5 @@
 package net.karen.mccourse.item.custom;
 
-import net.karen.mccourse.item.ModItems;
-import net.karen.mccourse.util.*;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.*;
@@ -13,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.*;
 import java.util.*;
+import net.karen.mccourse.util.*;
 import static net.karen.mccourse.util.ChatUtil.*;
 import static net.karen.mccourse.util.Utils.*;
 
@@ -29,12 +27,11 @@ public class LevelChargerItem extends Item {
     // DEFAULT METHOD - Level Charger item used on Main hand + RIGHT CLICK
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level world, Player player, @NotNull InteractionHand hand) {
-        ItemStack changerStack = player.getItemInHand(hand); // Player Main hand
-        InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
-        ItemStack targetStack = player.getItemInHand(otherHand); // Player Offhand
+        InteractionHand otherHand = (hand == mainHand) ? offhand : mainHand; // Player's MAIN HAND and OFFHAND
+        ItemStack changerStack = player.getItemInHand(hand), targetStack = player.getItemInHand(otherHand);
         if (applyTo(player, targetStack, changerStack) && changerStack.is(ModTags.Items.LEVEL_CHARGER_ALL)) {
-            itemHurt(player, ModTags.Items.LEVEL_CHARGER_GENERAL, changerStack); // General enchantment
-            itemHurt(player, ModTags.Items.LEVEL_CHARGER_SPECIFIC, changerStack); // Specific enchantment
+            itemHurt(player, ModTags.Items.LEVEL_CHARGER_GENERAL, changerStack); // GENERAL enchantment
+            itemHurt(player, ModTags.Items.LEVEL_CHARGER_SPECIFIC, changerStack); // SPECIFIC enchantment
             changerStack.shrink(1);
             return InteractionResultHolder.success(changerStack);
         }
@@ -45,19 +42,17 @@ public class LevelChargerItem extends Item {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level,
                                 @NotNull List<Component> list, @NotNull TooltipFlag flag) {
-        boolean positive = changeAmount == 1;
-        String message = positive ? " increase +" : " decrease ", screen = changeAmount + " enchantment level.";
-        tooltipLines(list, stack, message + screen, positive ? green : red);
+        boolean value = (changeAmount == 1);
+        tooltipLines(list, stack, (value ? " increase +" : " decrease ") + changeAmount + " level.", value ? green : red);
         super.appendHoverText(stack, level, list, flag);
     }
 
     // DEFAULT METHOD - Added NAME on all Level Charger -> Translatable en_us.json
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
-        Component baseName = super.getName(stack), red = baseName.copy().withStyle(Utils.red),
-                  green = baseName.copy().withStyle(Utils.green);
-        if (stack.is(ModItems.LEVEL_CHARGER_PLUS.get()) || stack.is(ModItems.LEVEL_CHARGER_PLUS_FORTUNE.get())) { return green; }
-        else if (stack.is(ModItems.LEVEL_CHARGER_MINUS.get()) || stack.is(ModItems.LEVEL_CHARGER_MINUS_FORTUNE.get())) { return red; }
+        Component baseName = super.getName(stack);
+        if (stack.is(ModTags.Items.LEVEL_CHARGER_PLUS_ENCHANT)) { return baseName.copy().withStyle(green); }
+        else if (stack.is(ModTags.Items.LEVEL_CHARGER_MINUS_ENCHANT)) { return baseName.copy().withStyle(red); }
         return baseName;
     }
 
@@ -91,27 +86,20 @@ public class LevelChargerItem extends Item {
 
     // CUSTOM METHOD - Message when consumed Level Charger (Plus / Minus) items
     private void itemHurt(Player player, TagKey<Item> items, ItemStack chargerStack) {
-        String pos = "Increased +", neg = "Decreased ", screen = changeAmount + " enchantment levels!", value = changeAmount + " ";
+        String pos = "Increased +", neg = "Decreased ", screen = changeAmount + " level(s)!";
         var itemsTag = ForgeRegistries.ITEMS.tags();
         if (itemsTag != null) {
             if (itemsTag.getTag(items).contains(chargerStack.getItem())) {
                 String name = chargerStack.getItem().getDescriptionId();
-                boolean isPlus = name.contains("plus"), isMinus = name.contains("minus");
-                if (enchantment == null) {
-                    playerStyleBool(player, isPlus, isMinus, pos+screen, neg+screen, green, red);
-                }
-                if (enchantment != null) {
-                    String ench = enchantment.getDescriptionId().replace("enchantment.minecraft.", ""),
-                           firstIndex = ench.substring(0, 1).toUpperCase(), upper = firstIndex + ench.substring(1);
-                    playerStyleBool(player, isPlus, isMinus, pos+value+upper, neg+value+upper, green, red);
+                boolean isPlus = name.contains("plus"), isMinus = name.contains("minus"),
+                        isNull = (enchantment == null), notNull = (enchantment != null);
+                if (isNull) { playerStyleBool(player, isPlus, isMinus, pos + screen, neg + screen, green, red); }
+                if (notNull) {
+                    String item = itemLine(enchantment.getDescriptionId(), vanilla, "", mod, ""),
+                           upper = itemLines(item), message = changeAmount + " " + upper + " level!";
+                    playerStyleBool(player, isPlus, isMinus, pos + message, neg + message, green, red);
                 }
             }
         }
-    }
-
-    // CUSTOM METHOD - Fail messages
-    private static boolean fail(Player player, String message, ChatFormatting color) {
-        player(player, message, color);
-        return false;
     }
 }
