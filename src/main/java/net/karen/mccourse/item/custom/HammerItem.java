@@ -1,25 +1,18 @@
 package net.karen.mccourse.item.custom;
 
+import net.karen.mccourse.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import static net.karen.mccourse.util.Utils.collider;
-import static net.karen.mccourse.util.Utils.none;
+import net.minecraft.world.phys.*;
+import org.jetbrains.annotations.*;
+import java.util.*;
+import static net.karen.mccourse.util.Utils.*;
 
 // Credits by Kaupenjoe - https://github.com/Kaupenjoe/Forge-Course-1.20.X/tree/22-customHammer
 // Distributed under MIT - Using with some modifications
@@ -51,38 +44,29 @@ public class HammerItem extends DiggerItem implements Vanishable {
              reach = eye.add(look.scale(6f));
         BlockHitResult traceResult = player.level().clip(new ClipContext(eye, reach, collider, none, player));
         if (traceResult.getType() == HitResult.Type.MISS) { return positions; }
-        Direction direction = traceResult.getDirection(); // Determines the direction the player is facing
-        // For each step along the direction (up to the desired distance)
-        for (int i = 0; i <= distance; i++) {
-            BlockPos offsetPos = initialBlockPos.relative(direction, i);
-            addCube(offsetPos, radius, positions);
+        // Determines the direction the player is facing - For each step along the direction (up to the desired distance)
+        for (int i = 0; i <= distance; i++) { // Adds all blocks inside the X x Y x Z cube around the center position
+            BlockPos offsetPos = initialBlockPos.relative(traceResult.getDirection(), i);
+            for (int x = -radius; x <= radius; x++) {
+                for (int y = -radius; y <= radius; y++) {
+                    for (int z = -radius; z <= radius; z++) { positions.add(offsetPos.offset(x, y, z)); }
+                }
+            }
         }
         return positions;
     }
 
-    // CUSTOM METHOD - Adds all blocks inside the X x Y x Z cube around the center position
-    private static void addCube(BlockPos center, int radius, List<BlockPos> positions) {
-        for (int x = -radius; x <= radius; x++) {
-            for (int y = -radius; y <= radius; y++) {
-                for (int z = -radius; z <= radius; z++) { positions.add(center.offset(x, y, z)); }
-            }
-        }
-    }
-
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level,
-                                @NotNull List<Component> components, @NotNull TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, level, components, tooltipFlag); // Appears tooltip on screen of Hammer.
-        int range = this.radius * 2 + 1;
-        components.add(Component.translatable("Hammer breaks: " + range + "x" + range + "x" + this.distance));
+                                @NotNull List<Component> list, @NotNull TooltipFlag flag) {
+        super.appendHoverText(stack, level, list, flag); // Appears tooltip on screen of Hammer.
+        int range = this.radius * 2 + 1, distance = this.distance;
+        ChatUtil.tooltipLine(list, "Hammer breaks: " + range + "x" + range + "x" + distance, Utils.red);
     }
 
     @Override
     public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
         super.onCraftedBy(stack, level, player);
-        if (infinite) { // Added Unbreakable tag
-            CompoundTag tag = stack.getOrCreateTag();
-            tag.putBoolean("Unbreakable", true);
-        }
+        if (infinite) { stack.getOrCreateTag().putBoolean("Unbreakable", true); } // Added Unbreakable tag
     }
 }
