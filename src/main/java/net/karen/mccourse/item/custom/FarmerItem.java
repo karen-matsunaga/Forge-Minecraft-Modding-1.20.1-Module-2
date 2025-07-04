@@ -1,8 +1,8 @@
 package net.karen.mccourse.item.custom;
 
+import net.karen.mccourse.block.custom.ModSaplingBlock;
 import net.minecraft.core.*;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -16,6 +16,7 @@ import net.minecraftforge.registries.tags.ITagManager;
 import org.jetbrains.annotations.*;
 import java.util.Collections;
 import static net.karen.mccourse.util.ModTags.Blocks.*;
+import static net.karen.mccourse.util.Utils.*;
 
 public class FarmerItem extends Item {
     public FarmerItem(Properties properties) { super(properties); }
@@ -30,30 +31,25 @@ public class FarmerItem extends Item {
         Block block = state.getBlock();
         ITagManager<Block> blockTag = ForgeRegistries.BLOCKS.tags(); // Checks if the block is in the tag
         if (!level.isClientSide() && player != null && blockTag != null) {
-            if (isBlock(blockTag, FARMER_TREE_GROWABLES, block)) {
-                if (block instanceof SaplingBlock sapling) {
-                    if (sapling.isValidBonemealTarget(level, pos, state, false)) {
-                        sapling.advanceTree((ServerLevel) level, pos, state, level.random);
-                        return consumeAndSucceed(stack, player);
-                    }
-                    else { return  InteractionResult.SUCCESS; }
-                }
-                if (block instanceof MangrovePropaguleBlock mangrove) {
-                    if (mangrove.isValidBonemealTarget(level, pos, state, false)) {
-                        mangrove.advanceTree((ServerLevel) level, pos, state, level.random);
-                        return consumeAndSucceed(stack, player);
-                    }
-                    else { return  InteractionResult.SUCCESS; }
-                }
-                if (block instanceof BonemealableBlock grow) {
-                    if (grow.isValidBonemealTarget(level, pos, state, false)) {
-                        grow.performBonemeal((ServerLevel) level, level.random, pos, state); // Standard Bonemealable
+            if (isBlockTag(blockTag, FARMER_TREE_GROWABLES, block)) {
+                if (block instanceof BonemealableBlock growable) { // Standard Bonemealable
+                    if (growable.isValidBonemealTarget(level, pos, state, false)) {
+                        if (block instanceof SaplingBlock sapling) { // Vanilla sapling -> Oak, Acacia, etc.
+                            sapling.advanceTree((ServerLevel) level, pos, state, level.random);
+                        }
+                        else if (block instanceof MangrovePropaguleBlock mangrove) { // Dark and Jungle saplings
+                            mangrove.advanceTree((ServerLevel) level, pos, state, level.random);
+                        }
+                        else if (block instanceof ModSaplingBlock mod) { // Mod sapling
+                            mod.advanceTree((ServerLevel) level, pos, state, level.random);
+                        }
+                        else { growable.performBonemeal((ServerLevel) level, level.random, pos, state); }
                         return consumeAndSucceed(stack, player); // Used Farmer on TREES
                     }
-                    else { return  InteractionResult.SUCCESS; }
+                    else { return InteractionResult.SUCCESS; }
                 }
             }
-            if (isBlock(blockTag, FARMER_CROPS_GROWABLES, block)) {
+            if (isBlockTag(blockTag, FARMER_CROPS_GROWABLES, block)) { // Potato, Carrot, Beetroot, etc.
                 for (Property<?> property : state.getProperties()) {
                     if (property.getName().equals("age") && property instanceof IntegerProperty age) {
                         int currentAge = state.getValue(age), maxAge = Collections.max(age.getPossibleValues());
@@ -61,11 +57,11 @@ public class FarmerItem extends Item {
                             grow(level, pos, state.setValue(age, maxAge), 2);
                             return consumeAndSucceed(stack, player); // Used Farmer on CROPS
                         }
-                        else { return  InteractionResult.SUCCESS; } // Crops are max age level
+                        else { return InteractionResult.SUCCESS; } // Crops are max age level
                     }
                 }
             }
-            if (isBlock(blockTag, FARMER_VERTICAL_GROWABLES, block)) {
+            if (isBlockTag(blockTag, FARMER_VERTICAL_GROWABLES, block)) { // Bamboo, Sugar cane and Cactus
                 int height = 0;
                 BlockState contains = block.defaultBlockState();
                 BlockPos.MutableBlockPos current = pos.mutable();
@@ -81,29 +77,22 @@ public class FarmerItem extends Item {
                     else { break; }
                 }
                 // Vertical growth (if tagged) - Used Farmer on GROW VERTICALLY
-                return grew ? consumeAndSucceed(stack, player) :  InteractionResult.SUCCESS;
+                return grew ? consumeAndSucceed(stack, player) : InteractionResult.SUCCESS;
             }
-            if (isBlock(blockTag, FARMER_AGE_GROWABLES, block) && state.hasProperty(BlockStateProperties.AGE_3)) {
+            if (isBlockTag(blockTag, FARMER_AGE_GROWABLES, block) && state.hasProperty(BlockStateProperties.AGE_3)) {
                 if (state.getValue(BlockStateProperties.AGE_3) < 3) {
                     grow(level, pos, state.setValue(BlockStateProperties.AGE_3, 3), 2);
                     return consumeAndSucceed(stack, player); // Used Farmer on NETHER WART
                 }
-                else { return  InteractionResult.SUCCESS; } // Nether Wart is max age level
+                else { return InteractionResult.SUCCESS; } // Nether Wart is max age level
             }
         }
         return InteractionResult.PASS;
     }
 
+    // CUSTOM METHOD - Consumed item
     private InteractionResult consumeAndSucceed(ItemStack stack, Player player) {
         if (!player.getAbilities().instabuild) { stack.shrink(1); } // Every time it is used it is consumed
         return InteractionResult.SUCCESS;
-    }
-
-    private void grow(Level level, BlockPos pos, BlockState state, int flag) {
-        level.setBlock(pos, state, flag);
-    }
-
-    private boolean isBlock(ITagManager<Block> registry, TagKey<Block> blocks, Block block) {
-        return registry.getTag(blocks).contains(block);
     }
 }

@@ -33,6 +33,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.tags.ITagManager;
 import java.util.*;
 import java.util.function.Supplier;
 
@@ -330,6 +331,11 @@ public class Utils {
         return state.is(block); // Check if it is a log or a leaf
     }
 
+    // CUSTOM METHOD - Check if it is a block using Block Tag
+    public static boolean isBlockTag(ITagManager<Block> registry, TagKey<Block> blocks, Block block) {
+        return registry.getTag(blocks).contains(block);
+    }
+
     // CUSTOM METHOD - Screen Overlay
     public static void screen(RenderGuiOverlayEvent.Pre event, Minecraft mc, String message,
                                int x, int y, int color) {
@@ -367,6 +373,11 @@ public class Utils {
         if (tool.getItem() instanceof HoeItem) {
             tool.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
         }
+    }
+
+    // CUSTOM METHOD - Grow block
+    public static void grow(Level level, BlockPos pos, BlockState state, int flag) {
+        level.setBlock(pos, state, flag);
     }
 
     // CUSTOM METHOD - Crop break
