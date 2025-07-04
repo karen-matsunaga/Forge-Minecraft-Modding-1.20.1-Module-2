@@ -25,7 +25,6 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.*;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
