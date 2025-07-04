@@ -3,38 +3,46 @@ package net.karen.mccourse.worldgen.tree.custom;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.karen.mccourse.worldgen.tree.ModFoliagePlacerTypes;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.*;
+import org.jetbrains.annotations.NotNull;
 
 public class WalnutFoliagePlacer extends FoliagePlacer {
-    public static final Codec<WalnutFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> foliagePlacerParts(instance)
-            .and(Codec.intRange(0, 16).fieldOf("height").forGetter(fp -> fp.height)).apply(instance, WalnutFoliagePlacer::new));
+    public static final Codec<WalnutFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) ->
+            foliagePlacerParts(instance).and(Codec.intRange(0, 16).fieldOf("height").forGetter(fp -> fp.height))
+                                        .apply(instance, WalnutFoliagePlacer::new));
     protected final int height;
 
-    public WalnutFoliagePlacer(IntProvider pRadius, IntProvider pOffset, int height) { super(pRadius, pOffset); this.height = height; }
+    public WalnutFoliagePlacer(IntProvider radius, IntProvider offset, int height) {
+        super(radius, offset); this.height = height;
+    }
 
     @Override
-    protected FoliagePlacerType<?> type() { return ModFoliagePlacerTypes.WALNUT_FOLIAGE_PLACER.get(); }
+    protected @NotNull FoliagePlacerType<?> type() { return ModFoliagePlacerTypes.WALNUT_FOLIAGE_PLACER.get(); }
 
     @Override
-    protected void createFoliage(LevelSimulatedReader pLevel, FoliageSetter foliageSetter, RandomSource pRandom, TreeConfiguration pConfig, int maxFreeTreeHeight,
-                                 FoliagePlacer.FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
+    protected void createFoliage(@NotNull LevelSimulatedReader level, @NotNull FoliageSetter foliageSetter,
+                                 @NotNull RandomSource source, @NotNull TreeConfiguration config, int maxFreeTreeHeight,
+                                 @NotNull FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
         // Creating the foliage
         // attachment.pos() is the first position ABOVE the last places log
-
         // tryPlaceLeaf() // places one leave at given position!
-        for(int i = 0; i < 4; i++) {
-            this.placeLeavesRow(pLevel, foliageSetter, pRandom, pConfig, attachment.pos().above(i), 2, i + 1, attachment.doubleTrunk());
+        int x = attachment.pos().getX(), y = attachment.pos().getY(), z = attachment.pos().getZ();
+        for (int i = 0; i < 4; i++) {
+            this.placeLeavesRow(level, foliageSetter, source, config,
+                                attachment.pos().above(i), 2, i + 1, attachment.doubleTrunk());
+            tryPlaceLeaf(level, foliageSetter, source, config, new BlockPos(x, y, z));
         }
     }
 
     @Override
-    public int foliageHeight(RandomSource pRandom, int pHeight, TreeConfiguration pConfig) { return this.height; }
+    public int foliageHeight(@NotNull RandomSource source, int height, @NotNull TreeConfiguration config) { return this.height; }
 
     @Override
-    protected boolean shouldSkipLocation(RandomSource pRandom, int pLocalX, int pLocalY, int pLocalZ, int pRange, boolean pLarge) { return false; }
+    protected boolean shouldSkipLocation(@NotNull RandomSource source, int localX, int localY, int localZ,
+                                         int range, boolean large) { return false; }
 }
