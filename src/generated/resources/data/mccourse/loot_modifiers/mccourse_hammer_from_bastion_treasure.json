@@ -3,14 +3,14 @@
   "conditions": [
     {
       "condition": "forge:loot_table_id",
-      "loot_table_id": "minecraft:chests/ancient_city"
+      "loot_table_id": "minecraft:chests/bastion_treasure"
     },
     {
-      "chance": 0.5,
+      "chance": 0.1,
       "condition": "minecraft:random_chance"
     }
   ],
   "items": [
-    "mccourse:orange_modes"
+    "mccourse:mccourse_hammer"
   ]
 }

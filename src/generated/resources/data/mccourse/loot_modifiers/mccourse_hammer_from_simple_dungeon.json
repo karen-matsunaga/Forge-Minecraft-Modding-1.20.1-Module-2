@@ -3,14 +3,14 @@
   "conditions": [
     {
       "condition": "forge:loot_table_id",
-      "loot_table_id": "minecraft:chests/bastion_bridge"
+      "loot_table_id": "minecraft:chests/simple_dungeon"
     },
     {
-      "chance": 0.2,
+      "chance": 0.4,
       "condition": "minecraft:random_chance"
     }
   ],
   "items": [
-    "mccourse:orange_modes"
+    "mccourse:mccourse_hammer"
   ]
 }
