@@ -1,49 +1,38 @@
 package net.karen.mccourse.item.custom;
 
 import net.karen.mccourse.enchantment.ModEnchantments;
-import net.karen.mccourse.util.ChatUtil;
-import net.karen.mccourse.util.Utils;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.network.chat.*;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.Vanishable;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.common.*;
+import org.jetbrains.annotations.*;
 import java.util.List;
+import static net.karen.mccourse.util.ChatUtil.*;
+import static net.karen.mccourse.util.Utils.*;
+import static net.minecraft.world.item.enchantment.EnchantmentCategory.*;
 
 public class MccourseFishingRodItem extends Item implements Vanishable {
     public MccourseFishingRodItem(Item.Properties properties) { super(properties); }
 
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player,
                                                            @NotNull InteractionHand hand) {
-        ItemStack item = player.getItemInHand(hand);
+        ItemStack item = player.getItemInHand(hand); // Mccourse Fishing Rod on main hand
         if (!level.isClientSide()) {
+            float pitch = 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F);
             if (player.fishing != null) {
-                int i = player.fishing.retrieve(item);
-                item.hurtAndBreak(i, player, (player1) -> player1.broadcastBreakEvent(hand));
-                song(level, player, SoundEvents.FISHING_BOBBER_RETRIEVE, 1.0F);
+                item.hurtAndBreak(player.fishing.retrieve(item), player, (player1) -> player1.broadcastBreakEvent(hand));
+                neutralSound(level, player, SoundEvents.FISHING_BOBBER_RETRIEVE, 1.0F, pitch);
                 player.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
             }
             else {
-                song(level, player, SoundEvents.FISHING_BOBBER_THROW, 0.5F);
+                neutralSound(level, player, SoundEvents.FISHING_BOBBER_THROW, 0.5F, pitch);
                 int lure = EnchantmentHelper.getFishingSpeedBonus(item), luck = EnchantmentHelper.getFishingLuckBonus(item);
                 level.addFreshEntity(new FishingHook(player, level, luck, lure));
                 player.awardStat(Stats.ITEM_USED.get(this));
@@ -58,37 +47,29 @@ public class MccourseFishingRodItem extends Item implements Vanishable {
         return ToolActions.DEFAULT_FISHING_ROD_ACTIONS.contains(toolAction);
     }
 
-    // METHOD - Mccourse Fishing Rod can be enchanted
     @Override
-    public boolean isEnchantable(@NotNull ItemStack stack) { return true; }
+    public boolean isEnchantable(@NotNull ItemStack stack) { return true; } // Mccourse Fishing Rod can be enchanted
 
     @Override
     public int getEnchantmentValue(ItemStack stack) { return 1; }
 
-    // METHOD - Mccourse Fishing Rod can be enchanted on Enchantment Table
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         List<Enchantment> ALLOWED_ENCHANTMENTS = List.of(Enchantments.FISHING_LUCK, ModEnchantments.BETTER_FISHING.get());
-        return ALLOWED_ENCHANTMENTS.contains(enchantment) || enchantment.category == EnchantmentCategory.BREAKABLE ||
-               super.canApplyAtEnchantingTable(stack, enchantment);
+        return ALLOWED_ENCHANTMENTS.contains(enchantment) || enchantment.category == BREAKABLE ||
+               super.canApplyAtEnchantingTable(stack, enchantment); // Mccourse Fishing Rod can be enchanted on Enchantment Table
     }
 
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
-        return Component.translatable(this.getDescriptionId(stack)).withStyle(Utils.purple);
+        return Component.translatable(this.getDescriptionId(stack)).withStyle(purple); // Appears on name item
     }
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level pLevel,
                                 @NotNull List<Component> list, @NotNull TooltipFlag flag) {
-        ChatUtil.tooltipLine(list, "More faster than vanilla Fishing Rod", Utils.white);
-        ChatUtil.tooltipLine(list, "Exclusive drops as Salmon, etc.", Utils.darkGray);
+        tooltipLine(list, "More faster than vanilla Fishing Rod", white); // Appears on tooltip
+        tooltipLine(list, "Exclusive drops as Salmon, etc.", darkGray);
         list.add(CommonComponents.EMPTY);
-    }
-
-    // CUSTOM METHOD - Fish sound
-    private void song(Level level, Player player, SoundEvent sound, float volume) {
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), sound,
-              SoundSource.NEUTRAL, volume, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
     }
 }
