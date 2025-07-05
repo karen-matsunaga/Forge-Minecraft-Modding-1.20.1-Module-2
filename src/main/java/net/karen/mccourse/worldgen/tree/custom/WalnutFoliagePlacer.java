@@ -33,9 +33,10 @@ public class WalnutFoliagePlacer extends FoliagePlacer {
         // tryPlaceLeaf() // places one leave at given position!
         int x = attachment.pos().getX(), y = attachment.pos().getY(), z = attachment.pos().getZ();
         for (int i = 0; i < 4; i++) {
-            this.placeLeavesRow(level, foliageSetter, source, config,
-                                attachment.pos().above(i), 2, i + 1, attachment.doubleTrunk());
-            tryPlaceLeaf(level, foliageSetter, source, config, new BlockPos(x, y, z));
+            BlockPos pos = new BlockPos(x, y + i, z);
+            this.placeLeavesRow(level, foliageSetter, source, config, attachment.pos().above(i),
+                         2, i + 1, attachment.doubleTrunk());
+            tryPlaceLeaf(level, foliageSetter, source, config, pos);
         }
     }
 
