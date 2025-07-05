@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-01T22:27:39.8762225	Item Models: mccourse
+// 1.20.1	2025-07-05T15:30:06.9354367	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -142,6 +142,7 @@ dd06874e678545a31d36c7baadcf2852a6afcf4d assets/mccourse/models/item/level_charg
 9b345ce3fc1dda66adb63dbb1758236c273a597f assets/mccourse/models/item/mccourse_bottle_on.json
 c628f10ef6c246920d111a65ba0780fdc830843f assets/mccourse/models/item/mccourse_fishing_rod.json
 ecfd01c1b353faa96ef05dc9d66beae6d950403c assets/mccourse/models/item/mccourse_fishing_rod_cast.json
+0e297299d4c51d2283bc37debba84c6651f5b8c4 assets/mccourse/models/item/mccourse_glass_pane_block.json
 faf15074e0b43be5fa09cf3411c543621e6ee3f2 assets/mccourse/models/item/mccourse_hammer.json
 23f99234f647aa805541635819a0a2a8b1552d81 assets/mccourse/models/item/metal_detector.json
 5b7331bfbfe07c27ea477daa07bb3edd4fac98bb assets/mccourse/models/item/miner_helmet.json

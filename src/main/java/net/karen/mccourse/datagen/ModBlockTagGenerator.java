@@ -41,7 +41,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                      MAGIC_ENCHANTED_BLOCK.get(), MAGIC_DISENCHANTED_BLOCK.get(), MAGIC_DISENCHANTED_BOOK_BLOCK.get(),
                      RUBY_BLOCK.get(), RUBY_BLOCK_1.get(), RUBY_BLOCK_2.get(), RUBY_BLOCK_3.get(),
                      WAXED_RUBY_BLOCK.get(), WAXED_RUBY_BLOCK_1.get(), WAXED_RUBY_BLOCK_2.get(), WAXED_RUBY_BLOCK_3.get(),
-                     SUGAR_BLOCK.get(), SUGAR_CANE_BLOCK.get())
+                     SUGAR_BLOCK.get(), SUGAR_CANE_BLOCK.get(), MCCOURSE_GLASS_BLOCK.get(), MCCOURSE_GLASS_PANE_BLOCK.get())
                 .addTag(MOBS_BLOCKS_DROPS).addTag(MCCOURSE_ORES).addTag(MCCOURSE_ORES_BLOCK);
 
         // Iron's tool tag

@@ -314,6 +314,10 @@ public class ModCreativeModeTabs {
 
                         // Miner Bow
                         output.accept(ModItems.MINER_BOW.get());
+
+                        // Mccourse glass
+                        output.accept(ModBlocks.MCCOURSE_GLASS_BLOCK.get());
+                        output.accept(ModBlocks.MCCOURSE_GLASS_PANE_BLOCK.get());
                     }).build());
 
     // Registry Creative Mode Tab

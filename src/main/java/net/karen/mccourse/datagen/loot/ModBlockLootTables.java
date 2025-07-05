@@ -180,6 +180,10 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.MAGIC_ENCHANTED_BLOCK.get());
         this.dropSelf(ModBlocks.MAGIC_DISENCHANTED_BLOCK.get());
         this.dropSelf(ModBlocks.MAGIC_DISENCHANTED_BOOK_BLOCK.get());
+
+        // Mccourse glass
+        this.dropSelf(ModBlocks.MCCOURSE_GLASS_BLOCK.get());
+        this.dropSelf(ModBlocks.MCCOURSE_GLASS_PANE_BLOCK.get());
     }
 
     // Custom ore's drops

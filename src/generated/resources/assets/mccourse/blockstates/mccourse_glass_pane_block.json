@@ -1,0 +1,77 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "mccourse:block/mccourse_glass_pane_block_post"
+      }
+    },
+    {
+      "apply": {
+        "model": "mccourse:block/mccourse_glass_pane_block_side"
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "mccourse:block/mccourse_glass_pane_block_noside"
+      },
+      "when": {
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "mccourse:block/mccourse_glass_pane_block_side_alt"
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "mccourse:block/mccourse_glass_pane_block_noside_alt",
+        "y": 90
+      },
+      "when": {
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "mccourse:block/mccourse_glass_pane_block_side_alt",
+        "y": 90
+      },
+      "when": {
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "mccourse:block/mccourse_glass_pane_block_noside",
+        "y": 270
+      },
+      "when": {
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "mccourse:block/mccourse_glass_pane_block_side",
+        "y": 90
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "mccourse:block/mccourse_glass_pane_block_noside_alt"
+      },
+      "when": {
+        "east": "false"
+      }
+    }
+  ]
+}

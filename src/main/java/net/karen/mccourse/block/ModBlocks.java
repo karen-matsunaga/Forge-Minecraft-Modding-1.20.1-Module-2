@@ -468,15 +468,26 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN)
                       .requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.SAND)));
 
+    // Mccourse glass
+    public static final RegistryObject<Block> MCCOURSE_GLASS_BLOCK = registerBlock("mccourse_glass_block",
+            () -> new GlassBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion()
+                                                          .strength(3.0F, 10.0F)));
+
+    public static final RegistryObject<Block> MCCOURSE_GLASS_PANE_BLOCK = registerBlock("mccourse_glass_pane_block",
+            () -> new IronBarsBlock(BlockBehaviour.Properties.copy(Blocks.GLASS_PANE)
+                                                             .strength(3.0F, 10.0F)));
+
     // Register all custom blocks in the game
-    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
+    private static <T extends Block> RegistryObject<T> registerBlock(String name,
+                                                                     Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
         return toReturn;
     }
 
     // Register block as item
-    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
+    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name,
+                                                                            RegistryObject<T> block) {
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 

@@ -211,6 +211,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Alternate items
         alternateItem(ModItems.DATA_TABLET); // Data Tablet
         alternateItem(ModItems.MCCOURSE_BOTTLE); // Mccourse Bottle
+
+        // Mccourse glass
+        simpleBlockItemModel(ModBlocks.MCCOURSE_GLASS_PANE_BLOCK, ModBlocks.MCCOURSE_GLASS_BLOCK);
     }
 
     // Registry all sapling item's models
@@ -252,10 +255,18 @@ public class ModItemModelProvider extends ItemModelProvider {
                 new ResourceLocation(MCCourseMod.MOD_ID,"item/" + item.getId().getPath()));
     }
 
-    // Registry all block's models
+    // Registry all block's models like item
     private ItemModelBuilder simpleBlockItem(RegistryObject<Block> item) {
         return withExistingParent(item.getId().getPath(), new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(MCCourseMod.MOD_ID,"item/" + item.getId().getPath()));
+    }
+
+    // Registry all block's models like block
+    private ItemModelBuilder simpleBlockItemModel(RegistryObject<Block> blockName, RegistryObject<Block> blockResult) {
+        String name = blockName.getId().getPath(), result = blockResult.getId().getPath();
+        ResourceLocation item = new ResourceLocation("item/generated"),
+                         block = new ResourceLocation(MCCourseMod.MOD_ID, "block/" + result);
+        return withExistingParent(name, item).texture("layer0", block);
     }
 
     // Registry all item's models

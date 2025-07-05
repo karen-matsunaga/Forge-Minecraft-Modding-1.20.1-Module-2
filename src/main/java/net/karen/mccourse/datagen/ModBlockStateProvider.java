@@ -12,9 +12,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 public class ModBlockStateProvider extends BlockStateProvider {
@@ -201,6 +199,14 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         // Dice block
         registerDiceBlock(ModBlocks.DICE_BLOCK);
+
+        // Mccourse glass
+        minerBlock(ModBlocks.MCCOURSE_GLASS_BLOCK);
+
+        // Mccourse glass pane
+        paneBlockWithRenderType((IronBarsBlock) ModBlocks.MCCOURSE_GLASS_PANE_BLOCK.get(),
+                  blockTexture(ModBlocks.MCCOURSE_GLASS_BLOCK.get()),
+                  blockTexture(ModBlocks.MCCOURSE_GLASS_PANE_BLOCK.get()), "translucent");
     }
 
     // Method to generate custom sign automatically in .JSON file models/blocks/name_(wall, hanging, sign).json
@@ -361,9 +367,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
     private void minerBlock(RegistryObject<Block> blockRegistryObject) {
         Block block = blockRegistryObject.get();
         ResourceLocation key = ForgeRegistries.BLOCKS.getKey(block);
-        String name = Objects.requireNonNull(key).getPath();
-        BlockModelBuilder model = models().cubeAll(name, modLoc("block/" + name)).renderType("translucent");
-        simpleBlock(block, model); // BlockState + Model
+        if (key != null) {
+            String name = key.getPath();
+            BlockModelBuilder model = models().cubeAll(name, modLoc("block/" + name)).renderType("translucent");
+            simpleBlock(block, model); // BlockState + Model
+            simpleBlockItem(block, new ModelFile.UncheckedModelFile("mccourse:block/" + name));
+        }
     }
 
     // CUSTOM METHOD - Block with six different textures

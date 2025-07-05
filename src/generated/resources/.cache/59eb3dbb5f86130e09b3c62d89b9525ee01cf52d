@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-24T12:10:56.2620813	Loot Tables
+// 1.20.1	2025-07-05T15:30:06.9354367	Loot Tables
 3c04bafc8e377b8b3a0acec4fb355ebe506bd32a data/mccourse/loot_tables/blocks/alexandrite_block.json
 5ee80a3f0dae7a738f12360934f26b319920a8a3 data/mccourse/loot_tables/blocks/alexandrite_button.json
 3cf926928d6232271016b028304beb66caa9effe data/mccourse/loot_tables/blocks/alexandrite_door.json
@@ -39,6 +39,8 @@ f2e167b057f7f2b5678d6eefad476f33851d4c5b data/mccourse/loot_tables/blocks/magic_
 3782889650c282d22fba18d7acdbbc17927e386a data/mccourse/loot_tables/blocks/magic_enchanted_block.json
 58104e91969996740beb3708844da5b5a23e42e2 data/mccourse/loot_tables/blocks/mccourse_elevator.json
 e5c7a271f89c7b044654cc5c7a854f86e2ed4e62 data/mccourse/loot_tables/blocks/mccourse_generator.json
+7a3f25175c2f0b07c80a306a7730b0757a012054 data/mccourse/loot_tables/blocks/mccourse_glass_block.json
+077b31570c1fe46efdc2879e41a0cf5ebadb0601 data/mccourse/loot_tables/blocks/mccourse_glass_pane_block.json
 b77c5c7fe17b19d017b68cf68952ff7eb071d241 data/mccourse/loot_tables/blocks/nether_alexandrite_ore.json
 82bf98aa9cfc7a60e82ef2b2f179b5b3b8791934 data/mccourse/loot_tables/blocks/nether_pink_ore.json
 f28dc78627aa96d457cb1bf427ae6d4b2ef427b4 data/mccourse/loot_tables/blocks/nether_star_block.json

@@ -32,6 +32,9 @@
   "tooltip.mccourse.metal_detector.tooltip": "Press §eSHIFT§r for more Information",
   "tooltip.mccourse.sound_block": "Plays nice sounds when walking or right-clicking.",
 
+  "block.mccourse.mccourse_glass_block": "Mccourse Glass Block",
+  "block.mccourse.mccourse_glass_pane_block": "Mccourse Glass Pane Block",
+
   "item.mccourse.alexandrite_sword": "Alexandrite Sword",
   "item.mccourse.alexandrite_pickaxe": "Alexandrite Pickaxe",
   "item.mccourse.alexandrite_shovel": "Alexandrite Shovel",
