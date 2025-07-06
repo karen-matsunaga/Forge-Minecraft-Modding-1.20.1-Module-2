@@ -18,8 +18,7 @@ public class BouncyBallsItem extends Item {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player,
                                                            @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand); // Player has Bouncy Balls item on hand
-        float pitch = 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F);
-        neutralSound(level, player, SoundEvents.ENDER_PEARL_THROW, 0.5F, pitch); // Sound when used item
+        neutralSoundValue(level, player, SoundEvents.ENDER_PEARL_THROW, 0.0F); // Sound when used item
         player.getCooldowns().addCooldown(this, 0); // Nothing cooldown
         if (!level.isClientSide()) {
             BouncyBallsProjectileEntity thrownBouncyBalls = new BouncyBallsProjectileEntity(level, player);

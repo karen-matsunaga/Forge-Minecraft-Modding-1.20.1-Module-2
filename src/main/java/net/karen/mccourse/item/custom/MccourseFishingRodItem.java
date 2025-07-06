@@ -25,14 +25,13 @@ public class MccourseFishingRodItem extends Item implements Vanishable {
                                                            @NotNull InteractionHand hand) {
         ItemStack item = player.getItemInHand(hand); // Mccourse Fishing Rod on main hand
         if (!level.isClientSide()) {
-            float pitch = 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F);
             if (player.fishing != null) {
                 item.hurtAndBreak(player.fishing.retrieve(item), player, (player1) -> player1.broadcastBreakEvent(hand));
-                neutralSound(level, player, SoundEvents.FISHING_BOBBER_RETRIEVE, 1.0F, pitch);
+                neutralSoundValue(level, player, SoundEvents.FISHING_BOBBER_THROW, 0.5F);
                 player.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
             }
             else {
-                neutralSound(level, player, SoundEvents.FISHING_BOBBER_THROW, 0.5F, pitch);
+                neutralSoundValue(level, player, SoundEvents.FISHING_BOBBER_THROW, 0.0F);
                 int lure = EnchantmentHelper.getFishingSpeedBonus(item), luck = EnchantmentHelper.getFishingLuckBonus(item);
                 level.addFreshEntity(new FishingHook(player, level, luck, lure));
                 player.awardStat(Stats.ITEM_USED.get(this));
