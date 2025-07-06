@@ -12,13 +12,15 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.*;
 import org.jetbrains.annotations.NotNull;
 
 public class WalnutFoliagePlacer extends FoliagePlacer {
-    public static final Codec<WalnutFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) ->
-            foliagePlacerParts(instance).and(Codec.intRange(0, 16).fieldOf("height").forGetter(fp -> fp.height))
-                                        .apply(instance, WalnutFoliagePlacer::new));
+    public static final Codec<WalnutFoliagePlacer> CODEC =
+            RecordCodecBuilder.create((instance) -> foliagePlacerParts(instance).and(Codec.intRange(0, 16).fieldOf("height")
+                                                                                .forGetter(fp -> fp.height))
+                                                                                .apply(instance, WalnutFoliagePlacer::new));
     protected final int height;
 
     public WalnutFoliagePlacer(IntProvider radius, IntProvider offset, int height) {
-        super(radius, offset); this.height = height;
+        super(radius, offset);
+        this.height = height;
     }
 
     @Override
@@ -29,14 +31,11 @@ public class WalnutFoliagePlacer extends FoliagePlacer {
                                  @NotNull RandomSource source, @NotNull TreeConfiguration config, int maxFreeTreeHeight,
                                  @NotNull FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
         // Creating the foliage
-        // attachment.pos() is the first position ABOVE the last places log
-        // tryPlaceLeaf() // places one leave at given position!
-        int x = attachment.pos().getX(), y = attachment.pos().getY(), z = attachment.pos().getZ();
+        // attachment.pos() is the first position ABOVE the last places log; tryPlaceLeaf() places one leave at given position!
+        BlockPos pos = attachment.pos();
+        boolean isDoubleTrunk = attachment.doubleTrunk();
         for (int i = 0; i < 4; i++) {
-            BlockPos pos = new BlockPos(x, y + i, z);
-            this.placeLeavesRow(level, foliageSetter, source, config, attachment.pos().above(i),
-                         2, i + 1, attachment.doubleTrunk());
-            tryPlaceLeaf(level, foliageSetter, source, config, pos);
+            this.placeLeavesRow(level, foliageSetter, source, config, pos.above(i), 2, 1, isDoubleTrunk);
         }
     }
 

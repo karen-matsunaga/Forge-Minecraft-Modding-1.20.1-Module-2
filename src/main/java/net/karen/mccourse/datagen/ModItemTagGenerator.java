@@ -2,6 +2,7 @@ package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.block.ModBlocks;
+import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -15,7 +16,6 @@ import org.jetbrains.annotations.*;
 import java.util.concurrent.CompletableFuture;
 import static net.karen.mccourse.block.ModBlocks.*;
 import static net.karen.mccourse.item.ModItems.*;
-import static net.karen.mccourse.util.ModTags.Items.*;
 
 public class ModItemTagGenerator extends ItemTagsProvider {
     public ModItemTagGenerator(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> future,
@@ -38,66 +38,74 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ItemTags.PLANKS).add(ModBlocks.WALNUT_PLANKS.get().asItem());
 
         // MCCOURSE custom items
-        this.tag(MCCOURSE_ITEMS).add(PINK.get(), ALEXANDRITE.get(), RAW_ALEXANDRITE.get());
+        this.tag(ModTags.Items.MCCOURSE_ITEMS).add(PINK.get(), ALEXANDRITE.get(), RAW_ALEXANDRITE.get());
 
-        this.tag(MCCOURSE_ORES_ITEMS).addTag(PINK_ORES_ITEMS).addTag(ALEXANDRITE_ORES_ITEMS);
+        this.tag(ModTags.Items.MCCOURSE_ORES_ITEMS).addTag(ModTags.Items.PINK_ORES_ITEMS).addTag(ModTags.Items.ALEXANDRITE_ORES_ITEMS);
 
-        this.tag(ALEXANDRITE_ORES_ITEMS).add(ModBlocks.ALEXANDRITE_BLOCK.get().asItem(),
+        this.tag(ModTags.Items.ALEXANDRITE_ORES_ITEMS).add(ModBlocks.ALEXANDRITE_BLOCK.get().asItem(),
                  ModBlocks.ALEXANDRITE_ORE.get().asItem(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get().asItem(),
                  ModBlocks.END_STONE_ALEXANDRITE_ORE.get().asItem(), ModBlocks.NETHER_ALEXANDRITE_ORE.get().asItem());
 
-        this.tag(PINK_ORES_ITEMS).add(ModBlocks.PINK_BLOCK.get().asItem(), ModBlocks.PINK_ORE.get().asItem(),
+        this.tag(ModTags.Items.PINK_ORES_ITEMS).add(ModBlocks.PINK_BLOCK.get().asItem(), ModBlocks.PINK_ORE.get().asItem(),
                  ModBlocks.DEEPSLATE_PINK_ORE.get().asItem(), ModBlocks.END_STONE_PINK_ORE.get().asItem(),
                  ModBlocks.NETHER_PINK_ORE.get().asItem());
 
         // Active Fly effect tag
-        this.tag(HELMET_FLY).add(ALEXANDRITE_HELMET.get(), PINK_HELMET.get(), COPPER_HELMET.get());
+        this.tag(ModTags.Items.HELMET_FLY).add(ALEXANDRITE_HELMET.get(), PINK_HELMET.get(), COPPER_HELMET.get());
 
-        this.tag(CHESTPLATE_FLY).add(ALEXANDRITE_CHESTPLATE.get(), PINK_CHESTPLATE.get(), COPPER_CHESTPLATE.get());
+        this.tag(ModTags.Items.CHESTPLATE_FLY).add(ALEXANDRITE_CHESTPLATE.get(), PINK_CHESTPLATE.get(), COPPER_CHESTPLATE.get());
 
-        this.tag(LEGGINGS_FLY).add(ALEXANDRITE_LEGGINGS.get(), PINK_LEGGINGS.get(), COPPER_LEGGINGS.get());
+        this.tag(ModTags.Items.LEGGINGS_FLY).add(ALEXANDRITE_LEGGINGS.get(), PINK_LEGGINGS.get(), COPPER_LEGGINGS.get());
 
-        this.tag(BOOTS_FLY).add(ALEXANDRITE_BOOTS.get(), PINK_BOOTS.get(), COPPER_BOOTS.get());
+        this.tag(ModTags.Items.BOOTS_FLY).add(ALEXANDRITE_BOOTS.get(), PINK_BOOTS.get(), COPPER_BOOTS.get());
 
         // Restore blacklist items tag
-        this.tag(RESTORE_BLACKLIST_ITEMS).add(BLUE_MODES.get(), GREEN_MODES.get(), ORANGE_MODES.get(),
+        this.tag(ModTags.Items.RESTORE_BLACKLIST_ITEMS).add(BLUE_MODES.get(), GREEN_MODES.get(), ORANGE_MODES.get(),
                  PINK_MODES.get(), PURPLE_MODES.get(), Items.ENCHANTED_BOOK);
 
         // Custom armors
-        this.tag(ALEXANDRITE_ARMOR).add(ALEXANDRITE_HELMET.get(), ALEXANDRITE_CHESTPLATE.get(),
-                 ALEXANDRITE_LEGGINGS.get(), ALEXANDRITE_BOOTS.get());
+        this.tag(ModTags.Items.ALEXANDRITE_ARMOR)
+                .add(ALEXANDRITE_HELMET.get(), ALEXANDRITE_CHESTPLATE.get(), ALEXANDRITE_LEGGINGS.get(), ALEXANDRITE_BOOTS.get());
 
-        this.tag(COPPER_ARMOR).add(COPPER_HELMET.get(), COPPER_CHESTPLATE.get(), COPPER_LEGGINGS.get(), COPPER_BOOTS.get());
+        this.tag(ModTags.Items.COPPER_ARMOR)
+                .add(COPPER_HELMET.get(), COPPER_CHESTPLATE.get(), COPPER_LEGGINGS.get(), COPPER_BOOTS.get());
 
-        this.tag(PINK_ARMOR).add(PINK_HELMET.get(), PINK_CHESTPLATE.get(), PINK_LEGGINGS.get(), PINK_BOOTS.get());
+        this.tag(ModTags.Items.PINK_ARMOR).add(PINK_HELMET.get(), PINK_CHESTPLATE.get(), PINK_LEGGINGS.get(), PINK_BOOTS.get());
 
         // Trimmable's armor item tag
-        this.tag(ItemTags.TRIMMABLE_ARMOR).addTag(ALEXANDRITE_ARMOR).addTag(COPPER_ARMOR).addTag(PINK_ARMOR).add(MINER_HELMET.get());
+        this.tag(ItemTags.TRIMMABLE_ARMOR).addTag(ModTags.Items.ALEXANDRITE_ARMOR)
+                                          .addTag(ModTags.Items.COPPER_ARMOR)
+                                          .addTag(ModTags.Items.PINK_ARMOR)
+                                          .add(MINER_HELMET.get());
         this.tag(ItemTags.TRIM_MATERIALS).add(ALEXANDRITE.get());
         this.tag(ItemTags.TRIM_TEMPLATES).add(KAUPEN_SMITHING_TEMPLATE.get());
 
         // Ores
-        this.tag(MULTIPLIER_ORES).addTag(Tags.Items.ORES).addTag(MCCOURSE_ORES_ITEMS).addTag(ORE_BLOCK_ITEMS);
+        this.tag(ModTags.Items.MULTIPLIER_ORES).addTag(Tags.Items.ORES)
+                                               .addTag(ModTags.Items.MCCOURSE_ORES_ITEMS)
+                                               .addTag(ModTags.Items.ORE_BLOCK_ITEMS);
 
-        this.tag(ORE_BLOCK_ITEMS).addTag(Tags.Items.STORAGE_BLOCKS_COAL).addTag(Tags.Items.STORAGE_BLOCKS_COPPER)
+        this.tag(ModTags.Items.ORE_BLOCK_ITEMS).addTag(Tags.Items.STORAGE_BLOCKS_COAL).addTag(Tags.Items.STORAGE_BLOCKS_COPPER)
                 .addTag(Tags.Items.STORAGE_BLOCKS_DIAMOND).addTag(Tags.Items.STORAGE_BLOCKS_EMERALD)
                 .addTag(Tags.Items.STORAGE_BLOCKS_GOLD).addTag(Tags.Items.STORAGE_BLOCKS_IRON).addTag(Tags.Items.STORAGE_BLOCKS_LAPIS)
                 .addTag(Tags.Items.STORAGE_BLOCKS_NETHERITE).addTag(Tags.Items.STORAGE_BLOCKS_REDSTONE);
 
         // Teleport items
-        this.tag(TELEPORT_ITEMS).add(ALEXANDRITE_SWORD.get(), ALEXANDRITE_PAXEL.get());
+        this.tag(ModTags.Items.TELEPORT_ITEMS).add(ALEXANDRITE_SWORD.get(), ALEXANDRITE_PAXEL.get());
 
         // Ultra Compactor Input
-        this.tag(ULTRA_COMPACTOR_ITEMS).addTag(Tags.Items.INGOTS_COPPER).addTag(Tags.Items.INGOTS_GOLD).addTag(ItemTags.COALS)
+        this.tag(ModTags.Items.ULTRA_COMPACTOR_ITEMS)
+                .addTag(Tags.Items.INGOTS_COPPER).addTag(Tags.Items.INGOTS_GOLD).addTag(ItemTags.COALS)
                 .addTag(Tags.Items.INGOTS_IRON).addTag(Tags.Items.INGOTS_NETHERITE).addTag(Tags.Items.GEMS_DIAMOND)
                 .addTag(Tags.Items.GEMS_EMERALD).addTag(Tags.Items.GEMS_LAPIS).addTag(Tags.Items.DUSTS_REDSTONE)
-                .addTag(MCCOURSE_ITEMS).addTag(Tags.Items.RAW_MATERIALS)
+                .addTag(ModTags.Items.MCCOURSE_ITEMS).addTag(Tags.Items.RAW_MATERIALS)
                 .add(Items.ENDER_PEARL, Items.BLAZE_ROD, Items.ROTTEN_FLESH, Items.GUNPOWDER, Items.NETHER_STAR,
                      Items.PHANTOM_MEMBRANE, Items.STRING, Items.SPIDER_EYE, Items.FERMENTED_SPIDER_EYE);
 
         // Ultra Compactor Output
-        this.tag(ULTRA_COMPACTOR_RESULT).addTag(Tags.Items.STORAGE_BLOCKS_RAW_COPPER).addTag(Tags.Items.STORAGE_BLOCKS_RAW_GOLD)
-                .addTag(Tags.Items.STORAGE_BLOCKS_RAW_IRON).addTag(ORE_BLOCK_ITEMS)
+        this.tag(ModTags.Items.ULTRA_COMPACTOR_RESULT)
+                .addTag(Tags.Items.STORAGE_BLOCKS_RAW_COPPER).addTag(Tags.Items.STORAGE_BLOCKS_RAW_GOLD)
+                .addTag(Tags.Items.STORAGE_BLOCKS_RAW_IRON).addTag(ModTags.Items.ORE_BLOCK_ITEMS)
                 .add(ALEXANDRITE_BLOCK.get().asItem(), RAW_ALEXANDRITE_BLOCK.get().asItem(),
                      PINK_BLOCK.get().asItem(), ENDER_PEARL_BLOCK.get().asItem(), NETHER_STAR_BLOCK.get().asItem(),
                      GUNPOWDER_BLOCK.get().asItem(), ROTTEN_FLESH_BLOCK.get().asItem(),
@@ -105,21 +113,33 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                      STRING_BLOCK.get().asItem(), SPIDER_EYE_BLOCK.get().asItem(), FERMENTED_SPIDER_EYE_BLOCK.get().asItem());
 
         // Pink Ultra Compactor Input
-        this.tag(PINK_ULTRA_COMPACTOR_ITEMS).add(Items.SUGAR, Items.SUGAR_CANE, Items.WHEAT);
+        this.tag(ModTags.Items.PINK_ULTRA_COMPACTOR_ITEMS).add(Items.SUGAR, Items.SUGAR_CANE, Items.WHEAT);
 
         // Pink Ultra Compactor Output
-        this.tag(PINK_ULTRA_COMPACTOR_RESULT).add(SUGAR_BLOCK.get().asItem(), SUGAR_CANE_BLOCK.get().asItem(),
-                 Blocks.HAY_BLOCK.asItem());
+        this.tag(ModTags.Items.PINK_ULTRA_COMPACTOR_RESULT)
+                .add(SUGAR_BLOCK.get().asItem(), SUGAR_CANE_BLOCK.get().asItem(), Blocks.HAY_BLOCK.asItem());
 
         // Mccourse Fishing Rod
         this.tag(Tags.Items.TOOLS_FISHING_RODS).add(MCCOURSE_FISHING_ROD.get());
 
         // Level Charger items
-        this.tag(LEVEL_CHARGER_GENERAL).add(LEVEL_CHARGER_PLUS.get(), LEVEL_CHARGER_MINUS.get()); // GENERAL
-        this.tag(LEVEL_CHARGER_SPECIFIC).add(LEVEL_CHARGER_PLUS_FORTUNE.get(), LEVEL_CHARGER_MINUS_FORTUNE.get()); // SPECIFIC
-        this.tag(LEVEL_CHARGER_PLUS_ENCHANT).add(LEVEL_CHARGER_PLUS.get(), LEVEL_CHARGER_PLUS_FORTUNE.get()); // PLUS
-        this.tag(LEVEL_CHARGER_MINUS_ENCHANT).add(LEVEL_CHARGER_MINUS.get(), LEVEL_CHARGER_MINUS_FORTUNE.get()); // MINUS
-        this.tag(LEVEL_CHARGER_ALL).addTag(LEVEL_CHARGER_GENERAL).addTag(LEVEL_CHARGER_SPECIFIC); // ALL TYPES
+        this.tag(ModTags.Items.LEVEL_CHARGER_GENERAL)
+                .add(LEVEL_CHARGER_PLUS.get(), LEVEL_CHARGER_MINUS.get()); // GENERAL
+
+        this.tag(ModTags.Items.LEVEL_CHARGER_SPECIFIC)
+                .add(LEVEL_CHARGER_PLUS_FORTUNE.get(), LEVEL_CHARGER_MINUS_FORTUNE.get()); // SPECIFIC
+
+        this.tag(ModTags.Items.LEVEL_CHARGER_PLUS_ENCHANT)
+                .add(LEVEL_CHARGER_PLUS.get(), LEVEL_CHARGER_PLUS_FORTUNE.get()); // PLUS
+
+        this.tag(ModTags.Items.LEVEL_CHARGER_MINUS_ENCHANT)
+                .add(LEVEL_CHARGER_MINUS.get(), LEVEL_CHARGER_MINUS_FORTUNE.get()); // MINUS
+
+        this.tag(ModTags.Items.LEVEL_CHARGER_ALL)
+                .addTag(ModTags.Items.LEVEL_CHARGER_GENERAL).addTag(ModTags.Items.LEVEL_CHARGER_SPECIFIC); // ALL TYPES
+
+        // WALNUT block
+        this.copy(ModTags.Blocks.WALNUT_LOGS, ModTags.Items.WALNUT_LOGS);
     }
 
     @Override

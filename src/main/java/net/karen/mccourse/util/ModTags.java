@@ -58,6 +58,9 @@ public class ModTags {
         public static final TagKey<Item> LEVEL_CHARGER_MINUS_ENCHANT = tag("level_charger_minus_enchant");
         public static final TagKey<Item> LEVEL_CHARGER_ALL = tag("level_charger_all");
 
+        // Walnut item
+        public static final TagKey<Item> WALNUT_LOGS = tag("walnut_logs");
+
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass item id
         }
@@ -133,6 +136,9 @@ public class ModTags {
 
         // Miner Bow
         public static final TagKey<Block> MINER_BOW_BLACKLIST = tag("miner_bow_blacklist");
+
+        // Walnut block
+        public static final TagKey<Block> WALNUT_LOGS = tag("walnut_logs");
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass block id

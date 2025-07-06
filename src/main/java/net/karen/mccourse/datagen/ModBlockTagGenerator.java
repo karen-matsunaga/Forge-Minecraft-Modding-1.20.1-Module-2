@@ -1,6 +1,7 @@
 package net.karen.mccourse.datagen;
 
 import net.karen.mccourse.MCCourseMod;
+import net.karen.mccourse.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -152,6 +153,9 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         // Saplings
         this.tag(BlockTags.SAPLINGS).add(WALNUT_SAPLING.get());
         this.tag(BlockTags.LEAVES).add(WALNUT_LEAVES.get());
+        this.tag(ModTags.Blocks.WALNUT_LOGS)
+                .add(WALNUT_LOG.get(), WALNUT_WOOD.get(), STRIPPED_WALNUT_LOG.get(), STRIPPED_WALNUT_WOOD.get());
+        this.tag(BlockTags.STANDING_SIGNS).add(WALNUT_SIGN.get());
     }
 
     @Override

@@ -44,12 +44,13 @@ public class WalnutTrunkPlacer extends TrunkPlacer {
                 placeLogBlock(level, blockSetter, source, pos, i, Direction.WEST, config);
             }
         }
-        return ImmutableList.of(new FoliagePlacer.FoliageAttachment(pos.above(height), 0, false));
+        return ImmutableList.of(new FoliagePlacer.FoliageAttachment(pos.above(height-1), 0, false));
     }
 
     // CUSTOM METHOD - Place LOG block position
-    private void placeLogBlock(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> blockSetter,
-                               RandomSource source, BlockPos pos, int value, Direction direction, TreeConfiguration config) {
+    private void placeLogBlock(LevelSimulatedReader level,
+                               BiConsumer<BlockPos, BlockState> blockSetter, RandomSource source, BlockPos pos,
+                               int value, Direction direction, TreeConfiguration config) {
         if (source.nextFloat() > 0.25f) {
             for (int x = 0; x < 4; x++) { placeLog(level, blockSetter, source, pos.above(value).relative(direction, x), config); }
         }
