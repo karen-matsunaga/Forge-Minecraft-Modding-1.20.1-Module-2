@@ -149,6 +149,9 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(MINER_BOW_BLACKLIST).add(Blocks.BEDROCK, Blocks.OBSIDIAN, Blocks.END_PORTAL_FRAME,
                                           Blocks.END_PORTAL, Blocks.NETHER_PORTAL);
 
+        // Saplings
+        this.tag(BlockTags.SAPLINGS).add(WALNUT_SAPLING.get());
+        this.tag(BlockTags.LEAVES).add(WALNUT_LEAVES.get());
     }
 
     @Override

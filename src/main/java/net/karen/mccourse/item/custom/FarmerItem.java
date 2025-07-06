@@ -1,6 +1,5 @@
 package net.karen.mccourse.item.custom;
 
-import net.karen.mccourse.block.custom.ModSaplingBlock;
 import net.minecraft.core.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -39,9 +38,6 @@ public class FarmerItem extends Item {
                         }
                         else if (block instanceof MangrovePropaguleBlock mangrove) { // Dark and Jungle saplings
                             mangrove.advanceTree((ServerLevel) level, pos, state, level.random);
-                        }
-                        else if (block instanceof ModSaplingBlock mod) { // Mod sapling
-                            mod.advanceTree((ServerLevel) level, pos, state, level.random);
                         }
                         else { growable.performBonemeal((ServerLevel) level, level.random, pos, state); }
                         return consumeAndSucceed(stack, player); // Used Farmer on TREES
