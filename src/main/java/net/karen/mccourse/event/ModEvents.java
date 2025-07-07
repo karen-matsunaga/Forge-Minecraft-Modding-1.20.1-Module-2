@@ -176,7 +176,17 @@ public class ModEvents {
     public static void onItemFished(ItemFishedEvent event) { // Gain experience orb when fished
         Player player = event.getEntity();
         Level level = player.level();
-        if (level.isClientSide()) { if (!event.getDrops().isEmpty()) { setPlayerXP(player, level, 4); } }
+        if (!level.isClientSide()) { if (!event.getDrops().isEmpty()) { setPlayerXP(player, level, 10); } }
+    }
+
+    @SubscribeEvent
+    public static void activatedAccumulatorOnBreakAnyBlocks(BlockEvent.BreakEvent event) {
+        Player player = event.getPlayer();
+        Level level = player.level();
+        int accumulator = hasEnchant(ModEnchantments.ACCUMULATOR.get(), player);
+        if (!level.isClientSide() && accumulator > 0) { // ACCUMULATOR block drop xp
+            ForgeRegistries.BLOCKS.getValues().forEach(block -> setPlayerXP(player, level, 10)); // All blocks
+        }
     }
 
     @SubscribeEvent
@@ -783,9 +793,9 @@ public class ModEvents {
     public static void activatedXpBoostEnchantment(LivingExperienceDropEvent event) {
         if (event.getEntity() instanceof Player player) {
             if (event.getAttackingPlayer() != null) { // Attacked entities
-                int level = hasEnchant(ModEnchantments.XP_BOOST.get(), player);
-                if (level > 0) {
-                    int bonus = Math.round(event.getOriginalExperience() * (1.0f * level));
+                int xpBoost = hasEnchant(ModEnchantments.XP_BOOST.get(), player);
+                if (!player.level().isClientSide() && xpBoost > 0) {
+                    int bonus = Math.round(event.getOriginalExperience() * (1.0f * xpBoost));
                     event.setDroppedExperience(event.getDroppedExperience() + bonus);
                 }
             }
@@ -798,17 +808,25 @@ public class ModEvents {
         if (level > 0) { event.getOrb().value += Math.round(event.getOrb().getValue() * (1.0f * level)); }
     }
 
-    // CUSTOM EVENT - MULTIPLIER custom enchantment
+    // CUSTOM EVENT - MULTIPLIER custom enchantment and LUCKY BOMB effect
     @SubscribeEvent
     public static void activatedMultiplierEnchantment(LivingDropsEvent event) {
         if (event.getSource().getEntity() instanceof Player player) {
-            int level = enchant(player.getMainHandItem(), ModEnchantments.MULTIPLIER.get());
+            ItemStack mainHand = player.getMainHandItem();
+            int level = enchant(mainHand, ModEnchantments.MULTIPLIER.get());
+            CompoundTag tag = mainHand.getOrCreateTag();
+            List<ItemEntity> originalDrops = new ArrayList<>(event.getDrops());
             if (level > 1) {
-                List<ItemEntity> originalDrops = new ArrayList<>(event.getDrops());
-                originalDrops.forEach(drop -> {
-                    ItemStack stack = drop.getItem().copy();
-                    stack.setCount(stack.getCount() * level); // Multiplier adapt on level
-                    dropWorld(event, drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack); });
+                originalDrops.forEach(drop -> { ItemStack stack = drop.getItem().copy();
+                                                stack.setCount(stack.getCount() * level); // Multiplier adapt on level
+                                                dropWorld(event, drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack); });
+            }
+            if (tag.getBoolean("LuckyBomb") && player.level().random.nextFloat() < 0.05F) { // Paxel item
+                tag.putInt("LuckyBomb", 50);
+                int value = tag.getInt("LuckyBomb");
+                originalDrops.forEach(drop -> { ItemStack luckyItem = drop.getItem().copy();
+                                                luckyItem.setCount(luckyItem.getCount() * value); // Lucky Bomb effect
+                                                dropWorld(event, drop.level(), drop.getX(), drop.getY(), drop.getZ(), luckyItem); });
             }
         }
     }
@@ -1147,39 +1165,46 @@ public class ModEvents {
         if (!(tag.hasUUID("ShooterUUID") && level instanceof ServerLevel serverLevel)) { return; }
         Player shooter = serverLevel.getPlayerByUUID(tag.getUUID("ShooterUUID"));
         if (shooter == null) { return; }
-        // Retrieves the actual item used and ensures it is a MinerBowItem
-        ItemStack main = shooter.getMainHandItem(), off = shooter.getOffhandItem(), usedBow;
+        ItemStack main = shooter.getMainHandItem(), off = shooter.getOffhandItem(), bow; // Get the used bow and its radius/depth
         int radius, depth;
         if (main.getItem() instanceof MinerBowItem minerBow) {
-            usedBow = main;
+            bow = main;
             radius = minerBow.getRadius();
             depth = minerBow.getDepth();
         }
         else if (off.getItem() instanceof MinerBowItem minerBow) {
-            usedBow = off;
+            bow = off;
             radius = minerBow.getRadius();
             depth = minerBow.getDepth();
         }
         else { return; }
-        int blocksBroken = 0;
+        boolean lucky = bow.getOrCreateTag().getBoolean("LuckyBomb"); // Has Lucky Bomb effect and get Lucky Bomb boolean
+        int multiplier = lucky ? 50 : 1, blocksBroken = 0; // Insert multiplier value
         for (int i = 0; i < depth; i++) {
             BlockPos depthPos = startPos.relative(forward, i);
             for (int x = -radius; x <= radius; x++) {
                 for (int y = -radius; y <= radius; y++) {
                     BlockPos targetPos = depthPos.relative(right, x).relative(up, y);
                     BlockState state = level.getBlockState(targetPos);
-                    var blocks = ForgeRegistries.BLOCKS.tags();
-                    if (blocks != null &&
-                        (state.isAir() || blocks.getTag(ModTags.Blocks.MINER_BOW_BLACKLIST).contains(state.getBlock()))) {
+                    var tags = ForgeRegistries.BLOCKS.tags();
+                    Block isBlock = state.getBlock();
+                    if (tags != null && (state.isAir() || tags.getTag(ModTags.Blocks.MINER_BOW_BLACKLIST).contains(isBlock))) {
                         continue;
                     }
                     if (state.getDestroySpeed(level, targetPos) < 0) { continue; }
+                    List<ItemStack> drops = Block.getDrops(state, serverLevel, targetPos, null);
+                    drops.forEach(drop -> { // Random chance
+                       if (lucky && level.random.nextFloat() < 1.0F) {
+                           drop.setCount(drop.getCount() * multiplier);
+                           Block.popResource(serverLevel, targetPos, drop);
+                       }
+                    });
                     level.destroyBlock(targetPos, true);
                     blocksBroken++;
                 }
             }
         }
-        usedBow.hurt(blocksBroken, shooter.getRandom(), shooter instanceof ServerPlayer ? (ServerPlayer) shooter : null);
+        bow.hurt(blocksBroken, shooter.getRandom(), shooter instanceof ServerPlayer ? (ServerPlayer) shooter : null);
         arrow.discard();
     }
 
@@ -1222,6 +1247,26 @@ public class ModEvents {
                 Component colored = original.copy().withStyle(style -> style.withColor(ChatFormatting.AQUA));
                 tooltip.set(0, colored);
             }
+        }
+    }
+
+    // CUSTOM EVENT - LUCKY BOMB EFFECT
+    @SubscribeEvent
+    public static void activatedLuckyBombOnBlockBreak(BlockEvent.BreakEvent event) {
+        Player player = event.getPlayer();
+        ItemStack heldItem = player.getMainHandItem();
+        CompoundTag tag = heldItem.getOrCreateTag();
+        String luckyTag = "LuckyBomb";
+        tag.putInt(luckyTag, 50);
+        int value = tag.getInt(luckyTag);
+        boolean bool = tag.getBoolean(luckyTag);
+        if (bool && player.level().random.nextFloat() < 1.0F) {
+            BlockPos pos = event.getPos();
+            List<ItemStack> drops = Block.getDrops(event.getState(), (ServerLevel) player.level(), pos, null);
+            drops.forEach(drop -> { drop.setCount(drop.getCount() * value);
+                                    Block.popResource(player.level(), pos, drop); });
+            event.setCanceled(true);
+            player.level().setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
         }
     }
 }

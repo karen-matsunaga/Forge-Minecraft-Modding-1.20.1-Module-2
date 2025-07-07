@@ -70,7 +70,7 @@ public class ModItems {
     // Alexandrite Paxel
     public static final RegistryObject<Item> ALEXANDRITE_PAXEL = ITEMS.register("alexandrite_paxel",
             () -> new PaxelItem(ModToolTiers.ALEXANDRITE, 2, 3,
-                    new Item.Properties().durability(2304).fireResistant()));
+                  new Item.Properties().durability(2304).fireResistant(), false));
 
     // Alexandrite Hammer
     public static final RegistryObject<Item> ALEXANDRITE_HAMMER = ITEMS.register("alexandrite_hammer",
@@ -198,7 +198,7 @@ public class ModItems {
 
     public static final RegistryObject<Item> PINK_PAXEL = ITEMS.register("pink_paxel",
             () -> new PaxelItem(ModToolTiers.PINK, 1, 2,
-                    new Item.Properties().fireResistant()));
+                  new Item.Properties().fireResistant(), false));
 
     public static final RegistryObject<Item> PINK_PICKAXE = ITEMS.register("pink_pickaxe",
             () -> new PickaxeItem(ModToolTiers.PINK, 1, 2,
@@ -240,52 +240,57 @@ public class ModItems {
     // Custom paxel
     public static final RegistryObject<Item> COPPER_PAXEL = ITEMS.register("copper_paxel",
             () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
-                    new Item.Properties().fireResistant()));
+                  new Item.Properties().fireResistant(), false));
 
     public static final RegistryObject<Item> DIAMOND_PAXEL = ITEMS.register("diamond_paxel",
-            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
-                    new Item.Properties().fireResistant()));
+            () -> new PaxelItem(Tiers.DIAMOND, 1, 1,
+                  new Item.Properties().fireResistant(), false));
 
     public static final RegistryObject<Item> GOLD_PAXEL = ITEMS.register("gold_paxel",
-            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
-                    new Item.Properties().fireResistant()));
+            () -> new PaxelItem(Tiers.GOLD, 1, 1,
+                  new Item.Properties().fireResistant(), true));
 
     public static final RegistryObject<Item> IRON_PAXEL = ITEMS.register("iron_paxel",
-            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
-                    new Item.Properties().fireResistant()));
+            () -> new PaxelItem(Tiers.IRON, 1, 1,
+                  new Item.Properties().fireResistant(), false));
 
     public static final RegistryObject<Item> STONE_PAXEL = ITEMS.register("stone_paxel",
-            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
-                    new Item.Properties().fireResistant()));
+            () -> new PaxelItem(Tiers.STONE, 1, 1,
+                    new Item.Properties().fireResistant(), false));
 
     public static final RegistryObject<Item> WOODEN_PAXEL = ITEMS.register("wooden_paxel",
-            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
-                    new Item.Properties().fireResistant()));
+            () -> new PaxelItem(Tiers.WOOD, 1, 1,
+                  new Item.Properties().fireResistant(), false));
 
     public static final RegistryObject<Item> NETHERITE_PAXEL = ITEMS.register("netherite_paxel",
-            () -> new PaxelItem(ModToolTiers.COPPER, 1, 1,
-                    new Item.Properties().fireResistant()));
+            () -> new PaxelItem(Tiers.NETHERITE, 1, 1,
+                  new Item.Properties().fireResistant(), true));
+
+    // Lapis Lazuli Paxel
+    public static final RegistryObject<Item> LAPIS_LAZULI_PAXEL = registerItem("lapis_lazuli_paxel",
+            () -> new PaxelItem(ModToolTiers.LAPIS_LAZULI, 1, 1,
+                  new Item.Properties().fireResistant(), false));
 
     // Modes's custom pickaxes
     public static final RegistryObject<Item> BLUE_MODES = ITEMS.register("blue_modes",
             () -> new ModesPickaxeItem(ModToolTiers.PINK, 2, 3,
-                    new Item.Properties().fireResistant().durability(0)));
+                  new Item.Properties().fireResistant().durability(0), false));
 
     public static final RegistryObject<Item> GREEN_MODES = ITEMS.register("green_modes",
             () -> new ModesPickaxeItem(ModToolTiers.COPPER, 3, 4,
-                    new Item.Properties().fireResistant().durability(0)));
+                  new Item.Properties().fireResistant().durability(0), false));
 
     public static final RegistryObject<Item> ORANGE_MODES = ITEMS.register("orange_modes",
             () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 5, 6,
-                    new Item.Properties().fireResistant().durability(0)));
+                  new Item.Properties().fireResistant().durability(0), true));
 
     public static final RegistryObject<Item> PINK_MODES = ITEMS.register("pink_modes",
             () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 6, 7,
-                    new Item.Properties().fireResistant().durability(0)));
+                  new Item.Properties().fireResistant().durability(0), false));
 
     public static final RegistryObject<Item> PURPLE_MODES = ITEMS.register("purple_modes",
             () -> new ModesPickaxeItem(ModToolTiers.ALEXANDRITE, 4, 5,
-                    new Item.Properties().fireResistant().durability(0)));
+                  new Item.Properties().fireResistant().durability(0), true));
 
     // Custom hammer
     public static final RegistryObject<Item> COPPER_HAMMER = ITEMS.register("copper_hammer",
@@ -433,12 +438,7 @@ public class ModItems {
 
     // Miner Bow
     public static final RegistryObject<Item> MINER_BOW = ITEMS.register("miner_bow",
-            () -> new MinerBowItem(new Item.Properties().fireResistant().durability(10000), 1, 3));
-
-    // Lapis Lazuli Paxel
-    public static final RegistryObject<Item> LAPIS_LAZULI_PAXEL = registerItem("lapis_lazuli_paxel",
-            () -> new PaxelItem(ModToolTiers.LAPIS_LAZULI, 1, 1,
-                  new Item.Properties().fireResistant()));
+            () -> new MinerBowItem(new Item.Properties().fireResistant().durability(10000), 1, 3, true));
 
     // Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }

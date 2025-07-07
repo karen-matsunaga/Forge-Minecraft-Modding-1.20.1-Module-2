@@ -19,10 +19,12 @@ import java.util.List;
 
 public class MinerBowItem extends BowItem {
     private final int radius, depth;
-    public MinerBowItem(Properties properties, int radius, int depth) {
+    private final boolean lucky;
+    public MinerBowItem(Properties properties, int radius, int depth, boolean lucky) {
         super(properties);
         this.radius = radius;
         this.depth = depth;
+        this.lucky = lucky;
     }
 
     public int getRadius() { return radius; }
@@ -41,6 +43,7 @@ public class MinerBowItem extends BowItem {
             arrow.pickup = AbstractArrow.Pickup.ALLOWED;
             CompoundTag tag = arrow.getPersistentData();
             tag.putBoolean("MiningArrow", true);
+            if (lucky) { tag.putBoolean("LuckyBomb", true); }
             Direction dir = Direction.getNearest(player.getLookAngle().x, player.getLookAngle().y, player.getLookAngle().z);
             tag.putInt("MiningDirection", dir.ordinal()); // Saves player direction
             tag.putUUID("ShooterUUID", player.getUUID()); // Save whoever shot
