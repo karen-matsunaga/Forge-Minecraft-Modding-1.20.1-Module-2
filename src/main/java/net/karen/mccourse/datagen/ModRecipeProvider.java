@@ -50,6 +50,13 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                           ModBlocks.STRIPPED_WALNUT_WOOD.get()),
                   ModTags.Items.WALNUT_LOGS, writer);
 
+        // Mccourse glass
+        glassBlocks(List.of(ModBlocks.MCCOURSE_GLASS_BLOCK.get(), ModBlocks.MCCOURSE_GLASS_PANE_BLOCK.get(), Items.LIME_DYE), writer);
+
+        stainedGlassFromGlassAndDye(writer, ModBlocks.MCCOURSE_GLASS_BLOCK.get(), Items.GREEN_DYE);
+        stainedGlassPaneFromGlassPaneAndDye(writer, ModBlocks.MCCOURSE_GLASS_PANE_BLOCK.get(), ModBlocks.MCCOURSE_GLASS_BLOCK.get());
+        stainedGlassPaneFromStainedGlass(writer, ModBlocks.MCCOURSE_GLASS_PANE_BLOCK.get(), Items.GREEN_DYE);
+
         // Alexandrite transforms on Alexandrite Block recipe
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ALEXANDRITE_BLOCK.get())
                 .pattern("AAA")
@@ -519,6 +526,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         signBuilder(items.get(5), Ingredient.of(items.get(0)))
                          .unlockedBy("has_item", has(items.get(3))).save(writer); // Sign block
         hangingSign(writer, items.get(6), items.get(7)); // Hanging sing block
+    }
+
+    // Custom glass blocks
+    protected static void glassBlocks(List<ItemLike> items, Consumer<FinishedRecipe> writer) {
+        // 0 -> GLASS; 1 -> GLASS PANE; 2 -> DYE COLOR.
+        stainedGlassFromGlassAndDye(writer, items.get(0), items.get(2));
+        stainedGlassPaneFromGlassPaneAndDye(writer, items.get(1), items.get(0));
+        stainedGlassPaneFromStainedGlass(writer, items.get(1), items.get(2));
     }
 
     // Luck custom items

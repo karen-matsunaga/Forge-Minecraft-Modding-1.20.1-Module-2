@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "stained_glass_pane",
+  "key": {
+    "#": {
+      "item": "minecraft:glass_pane"
+    },
+    "$": {
+      "item": "mccourse:mccourse_glass_block"
+    }
+  },
+  "pattern": [
+    "###",
+    "#$#",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "item": "mccourse:mccourse_glass_pane_block"
+  },
+  "show_notification": true
+}

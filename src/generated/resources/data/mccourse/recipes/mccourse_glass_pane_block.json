@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "stained_glass_pane",
+  "key": {
+    "#": {
+      "item": "minecraft:lime_dye"
+    }
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 16,
+    "item": "mccourse:mccourse_glass_pane_block"
+  },
+  "show_notification": true
+}
