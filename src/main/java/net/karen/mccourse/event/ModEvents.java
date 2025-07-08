@@ -1254,19 +1254,17 @@ public class ModEvents {
     @SubscribeEvent
     public static void activatedLuckyBombOnBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
-        ItemStack heldItem = player.getMainHandItem();
-        CompoundTag tag = heldItem.getOrCreateTag();
-        String luckyTag = "LuckyBomb";
-        tag.putInt(luckyTag, 50);
-        int value = tag.getInt(luckyTag);
-        boolean bool = tag.getBoolean(luckyTag);
-        if (bool && player.level().random.nextFloat() < 1.0F) {
-            BlockPos pos = event.getPos();
-            List<ItemStack> drops = Block.getDrops(event.getState(), (ServerLevel) player.level(), pos, null);
-            drops.forEach(drop -> { drop.setCount(drop.getCount() * value);
-                                    Block.popResource(player.level(), pos, drop); });
+        Level level = player.level();
+        ItemStack heldItem = player.getItemInHand(mainHand);
+        boolean bool = heldItem.getOrCreateTag().getBoolean("LuckyBomb");
+        int value = bool ? 50 : 1;
+        BlockPos pos = event.getPos();
+        if (bool && player.level().random.nextFloat() < 0.50F) {
             event.setCanceled(true);
-            player.level().setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+            List<ItemStack> drops = Block.getDrops(event.getState(), (ServerLevel) level, pos, null);
+            drops.forEach(drop -> { drop.setCount(drop.getCount() * value);
+                                    Block.popResource(level, pos, drop); });
+            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
         }
     }
 }
