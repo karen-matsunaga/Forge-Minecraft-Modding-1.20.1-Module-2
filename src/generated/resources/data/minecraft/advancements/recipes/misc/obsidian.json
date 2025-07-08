@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "mccourse:alexandrite_block"
+              "mccourse:disenchanted"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "mccourse:alexandrite"
+        "recipe": "minecraft:obsidian"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "mccourse:alexandrite"
+      "minecraft:obsidian"
     ]
   },
   "sends_telemetry_event": false

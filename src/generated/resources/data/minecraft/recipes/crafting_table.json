@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "mccourse:craft_crafting_table"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:crafting_table"
+  }
+}

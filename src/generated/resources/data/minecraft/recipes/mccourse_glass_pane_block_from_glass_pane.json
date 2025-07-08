@@ -7,7 +7,7 @@
       "item": "minecraft:glass_pane"
     },
     "$": {
-      "item": "mccourse:mccourse_glass_block"
+      "item": "minecraft:lime_dye"
     }
   },
   "pattern": [

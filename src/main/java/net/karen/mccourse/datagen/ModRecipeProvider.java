@@ -8,7 +8,6 @@ import net.karen.mccourse.datagen.custom.KaupenFurnaceRecipeBuilder;
 import net.karen.mccourse.enchantment.ModEnchantments;
 import net.karen.mccourse.item.ModItems;
 import net.karen.mccourse.util.ModTags;
-import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -30,17 +29,17 @@ import java.util.function.Consumer;
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
     // All items smelting and blasting
-    private static final List<ItemLike> ALEXANDRITE_SMELTABLES = List.of(ModItems.RAW_ALEXANDRITE.get(),
-            ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
-            ModBlocks.END_STONE_ALEXANDRITE_ORE.get(), ModBlocks.NETHER_ALEXANDRITE_ORE.get());
+    private static final List<ItemLike> ALEXANDRITE_SMELTABLES =
+            List.of(ModItems.RAW_ALEXANDRITE.get(), ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.DEEPSLATE_ALEXANDRITE_ORE.get(),
+                    ModBlocks.END_STONE_ALEXANDRITE_ORE.get(), ModBlocks.NETHER_ALEXANDRITE_ORE.get());
 
-    private static final List<ItemLike> PINK_SMELTABLES = List.of(ModItems.PINK.get(),
-            ModBlocks.PINK_ORE.get(), ModBlocks.DEEPSLATE_PINK_ORE.get(),
-            ModBlocks.END_STONE_PINK_ORE.get(), ModBlocks.NETHER_PINK_ORE.get());
+    private static final List<ItemLike> PINK_SMELTABLES =
+            List.of(ModItems.PINK.get(), ModBlocks.PINK_ORE.get(), ModBlocks.DEEPSLATE_PINK_ORE.get(),
+                    ModBlocks.END_STONE_PINK_ORE.get(), ModBlocks.NETHER_PINK_ORE.get());
 
-    public ModRecipeProvider(PackOutput pOutput) { super(pOutput); }
+    public ModRecipeProvider(PackOutput output) { super(output); }
 
-    // Create all recipes
+    // DEFAULT METHOD - Create ALL custom recipes
     @Override
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> writer) {
         // Walnut log
@@ -53,55 +52,21 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         // Mccourse glass
         glassBlocks(List.of(ModBlocks.MCCOURSE_GLASS_BLOCK.get(), ModBlocks.MCCOURSE_GLASS_PANE_BLOCK.get(), Items.LIME_DYE), writer);
 
-        stainedGlassFromGlassAndDye(writer, ModBlocks.MCCOURSE_GLASS_BLOCK.get(), Items.GREEN_DYE);
-        stainedGlassPaneFromGlassPaneAndDye(writer, ModBlocks.MCCOURSE_GLASS_PANE_BLOCK.get(), ModBlocks.MCCOURSE_GLASS_BLOCK.get());
-        stainedGlassPaneFromStainedGlass(writer, ModBlocks.MCCOURSE_GLASS_PANE_BLOCK.get(), Items.GREEN_DYE);
-
-        // Alexandrite transforms on Alexandrite Block recipe
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ALEXANDRITE_BLOCK.get())
-                .pattern("AAA")
-                .pattern("AAA")
-                .pattern("AAA")
-                .define('A', ModItems.ALEXANDRITE.get())
-                .unlockedBy("has_alexandrite",
-                            inventoryTrigger(ItemPredicate.Builder.item().of(ModItems.ALEXANDRITE.get()).build()))
-                .save(writer);
-
-        // Alexandrite Block converts to Alexandrite recipe
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ALEXANDRITE.get(), 9)
-                              .requires(ModBlocks.ALEXANDRITE_BLOCK.get())
-                              .unlockedBy("has_alexandrite_block",
-                                          inventoryTrigger(ItemPredicate.Builder.item().of(ModBlocks.ALEXANDRITE_BLOCK.get()).build()))
-                              .save(writer);
-
-        // Raw Alexandrite
-        itemTransformBlock(List.of(ModBlocks.RAW_ALEXANDRITE_BLOCK.get(), ModItems.RAW_ALEXANDRITE.get()), writer);
-        blockTransformItem(List.of(ModItems.RAW_ALEXANDRITE.get(), ModBlocks.RAW_ALEXANDRITE_BLOCK.get()), writer);
-
-        // Items Smelting
-        oreSmelting(writer, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(),
-                0.25f, 200, "alexandrite");
-
-        // Items Blasting
-        oreBlasting(writer, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(),
-                0.25f, 200, "alexandrite");
-
         // Gem Empowering Station custom recipes
         gemEmpoweringStation(ModItems.RAW_ALEXANDRITE.get(), ModItems.ALEXANDRITE.get(), 3, 160, 50,
-                new FluidStack(Fluids.WATER, 2000), writer);
+                             new FluidStack(Fluids.WATER, 2000), writer);
         gemEmpoweringStation(Items.COAL, Items.DIAMOND, 7, 40, 150,
-                new FluidStack(Fluids.LAVA, 500), writer);
+                             new FluidStack(Fluids.LAVA, 500), writer);
         gemEmpoweringStation(Items.COBBLESTONE, Items.OBSIDIAN, 1, 100, 200,
-                new FluidStack(Fluids.LAVA, 1000), writer);
+                             new FluidStack(Fluids.LAVA, 1000), writer);
 
         // Kaupen Furnace custom recipes
         kaupenFurnace(Items.IRON_INGOT, Items.RAW_IRON, 0.5f, 50, writer);
         kaupenFurnace(Items.COAL, Items.DIAMOND, 0.5f, 50, writer);
         kaupenFurnace(Items.BONE_MEAL, Items.PHANTOM_MEMBRANE, 10.0f, 100, writer);
 
-        // My custom mod
-        // Hammer
-        pickaxeHammerItem(List.of(ModItems.ALEXANDRITE_HAMMER.get(), ModBlocks.ALEXANDRITE_BLOCK.get()), writer);
+        // Hammer and Pickaxe custom recipes
+        pickaxeHammerItem(List.of(ModItems.ALEXANDRITE_HAMMER.get(), ModBlocks.ALEXANDRITE_BLOCK.get()), writer); // Hammer
         pickaxeHammerItem(List.of(ModItems.COPPER_HAMMER.get(), Items.COPPER_BLOCK), writer);
         pickaxeHammerItem(List.of(ModItems.DIAMOND_HAMMER.get(), Items.DIAMOND_BLOCK), writer);
         pickaxeHammerItem(List.of(ModItems.GOLD_HAMMER.get(), Items.GOLD_BLOCK), writer);
@@ -110,178 +75,128 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         pickaxeHammerItem(List.of(ModItems.PINK_HAMMER.get(), ModBlocks.PINK_BLOCK.get()), writer);
         pickaxeHammerItem(List.of(ModItems.WOODEN_HAMMER.get(), Items.OAK_LOG), writer);
         pickaxeHammerItem(List.of(ModItems.STONE_HAMMER.get(), Items.STONE), writer);
-
-        // Pickaxe
-        pickaxeHammerItem(List.of(ModItems.ALEXANDRITE_PICKAXE.get(), ModItems.ALEXANDRITE.get()), writer);
+        pickaxeHammerItem(List.of(ModItems.ALEXANDRITE_PICKAXE.get(), ModItems.ALEXANDRITE.get()), writer); // Pickaxes
         pickaxeHammerItem(List.of(ModItems.PINK_PICKAXE.get(), ModItems.PINK.get()), writer);
         pickaxeHammerItem(List.of(ModItems.COPPER_PICKAXE.get(), Items.COPPER_INGOT), writer);
 
-        // Sword
+        // Sword custom recipes
         swordItem(List.of(ModItems.ALEXANDRITE_SWORD.get(), ModItems.ALEXANDRITE.get()), writer);
         swordItem(List.of(ModItems.PINK_SWORD.get(), ModItems.PINK.get()), writer);
         swordItem(List.of(ModItems.COPPER_SWORD.get(), Items.COPPER_INGOT), writer);
 
-        // Axe
+        // Axe custom recipes
         axeItem(List.of(ModItems.ALEXANDRITE_AXE.get(), ModItems.ALEXANDRITE.get()), writer);
         axeItem(List.of(ModItems.PINK_AXE.get(), ModItems.PINK.get()), writer);
         axeItem(List.of(ModItems.COPPER_AXE.get(), Items.COPPER_INGOT), writer);
 
-        // Shovel
+        // Shovel custom recipes
         shovelItem(List.of(ModItems.ALEXANDRITE_SHOVEL.get(), ModItems.ALEXANDRITE.get()), writer);
         shovelItem(List.of(ModItems.PINK_SHOVEL.get(), ModItems.PINK.get()), writer);
         shovelItem(List.of(ModItems.COPPER_SHOVEL.get(), Items.COPPER_INGOT), writer);
 
-        // Paxel
+        // Paxel custom recipes
         paxelItem(List.of(ModItems.ALEXANDRITE_PAXEL.get(), ModItems.ALEXANDRITE_PICKAXE.get(),
-                ModItems.ALEXANDRITE_AXE.get(), ModItems.ALEXANDRITE_SHOVEL.get()), writer);
+                  ModItems.ALEXANDRITE_AXE.get(), ModItems.ALEXANDRITE_SHOVEL.get()), writer);
         paxelItem(List.of(ModItems.PINK_PAXEL.get(), ModItems.PINK_PICKAXE.get(),
-                ModItems.PINK_AXE.get(), ModItems.PINK_SHOVEL.get()), writer);
+                  ModItems.PINK_AXE.get(), ModItems.PINK_SHOVEL.get()), writer);
         paxelItem(List.of(ModItems.COPPER_PAXEL.get(), ModItems.COPPER_PICKAXE.get(),
-                ModItems.COPPER_AXE.get(), ModItems.COPPER_SHOVEL.get()), writer);
-        paxelItem(List.of(ModItems.DIAMOND_PAXEL.get(), Items.DIAMOND_PICKAXE,
-                Items.DIAMOND_AXE, Items.DIAMOND_SHOVEL), writer);
-        paxelItem(List.of(ModItems.GOLD_PAXEL.get(), Items.GOLDEN_PICKAXE,
-                Items.GOLDEN_AXE, Items.GOLDEN_SHOVEL), writer);
-        paxelItem(List.of(ModItems.IRON_PAXEL.get(), Items.IRON_PICKAXE,
-                Items.IRON_AXE, Items.IRON_SHOVEL), writer);
-        paxelItem(List.of(ModItems.STONE_PAXEL.get(), Items.STONE_PICKAXE,
-                Items.STONE_AXE, Items.STONE_SHOVEL), writer);
-        paxelItem(List.of(ModItems.WOODEN_PAXEL.get(), Items.WOODEN_PICKAXE,
-                Items.WOODEN_AXE, Items.WOODEN_SHOVEL), writer);
+                  ModItems.COPPER_AXE.get(), ModItems.COPPER_SHOVEL.get()), writer);
+        paxelItem(List.of(ModItems.DIAMOND_PAXEL.get(), Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE, Items.DIAMOND_SHOVEL), writer);
+        paxelItem(List.of(ModItems.GOLD_PAXEL.get(), Items.GOLDEN_PICKAXE, Items.GOLDEN_AXE, Items.GOLDEN_SHOVEL), writer);
+        paxelItem(List.of(ModItems.IRON_PAXEL.get(), Items.IRON_PICKAXE, Items.IRON_AXE, Items.IRON_SHOVEL), writer);
+        paxelItem(List.of(ModItems.STONE_PAXEL.get(), Items.STONE_PICKAXE, Items.STONE_AXE, Items.STONE_SHOVEL), writer);
+        paxelItem(List.of(ModItems.WOODEN_PAXEL.get(), Items.WOODEN_PICKAXE, Items.WOODEN_AXE, Items.WOODEN_SHOVEL), writer);
         paxelItem(List.of(ModItems.NETHERITE_PAXEL.get(), Items.NETHERITE_PICKAXE,
-                Items.NETHERITE_AXE, Items.NETHERITE_SHOVEL), writer);
+                  Items.NETHERITE_AXE, Items.NETHERITE_SHOVEL), writer);
 
-        // Hoe
+        // Hoe custom recipes
         hoeItem(List.of(ModItems.ALEXANDRITE_HOE.get(), ModItems.ALEXANDRITE.get()), writer);
         hoeItem(List.of(ModItems.PINK_HOE.get(), ModItems.PINK.get()), writer);
         hoeItem(List.of(ModItems.COPPER_HOE.get(), Items.COPPER_INGOT), writer);
 
-        // Armor
-        helmetArmor(List.of(ModItems.ALEXANDRITE_HELMET.get(), ModItems.ALEXANDRITE.get()), writer); // Helmet
-        chestplateArmor(List.of(ModItems.ALEXANDRITE_CHESTPLATE.get(), ModItems.ALEXANDRITE.get()), writer); // Chestplate
-        leggingsArmor(List.of(ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.ALEXANDRITE.get()), writer); // Leggings
-        bootsArmor(List.of(ModItems.ALEXANDRITE_BOOTS.get(), ModItems.ALEXANDRITE.get()), writer); // Boots
+        // Armor custom recipes
+        helmetArmor(List.of(ModItems.ALEXANDRITE_HELMET.get(), ModItems.ALEXANDRITE.get()), writer); // Alexandrite helmet
+        helmetArmor(List.of(ModItems.PINK_HELMET.get(), ModItems.PINK.get()), writer); // Pink helmet
+        helmetArmor(List.of(ModItems.COPPER_HELMET.get(), Items.COPPER_INGOT), writer); // Copper helmet
+        chestplateArmor(List.of(ModItems.ALEXANDRITE_CHESTPLATE.get(), ModItems.ALEXANDRITE.get()), writer); // Alexandrite chestplate
+        chestplateArmor(List.of(ModItems.PINK_CHESTPLATE.get(), ModItems.PINK.get()), writer); // Pink chestplate
+        chestplateArmor(List.of(ModItems.COPPER_CHESTPLATE.get(), Items.COPPER_INGOT), writer); // Copper chestplate
+        leggingsArmor(List.of(ModItems.ALEXANDRITE_LEGGINGS.get(), ModItems.ALEXANDRITE.get()), writer); // Alexandrite leggings
+        leggingsArmor(List.of(ModItems.PINK_LEGGINGS.get(), ModItems.PINK.get()), writer); // Pink leggings
+        leggingsArmor(List.of(ModItems.COPPER_LEGGINGS.get(), Items.COPPER_INGOT), writer); // Copper leggings
+        bootsArmor(List.of(ModItems.ALEXANDRITE_BOOTS.get(), ModItems.ALEXANDRITE.get()), writer); // Alexandrite boots
+        bootsArmor(List.of(ModItems.PINK_BOOTS.get(), ModItems.PINK.get()), writer); // Pink boots
+        bootsArmor(List.of(ModItems.COPPER_BOOTS.get(), Items.COPPER_INGOT), writer); // Copper boots
 
-        helmetArmor(List.of(ModItems.PINK_HELMET.get(), ModItems.PINK.get()), writer); // Helmet
-        chestplateArmor(List.of(ModItems.PINK_CHESTPLATE.get(), ModItems.PINK.get()), writer); // Chestplate
-        leggingsArmor(List.of(ModItems.PINK_LEGGINGS.get(), ModItems.PINK.get()), writer); // Leggings
-        bootsArmor(List.of(ModItems.PINK_BOOTS.get(), ModItems.PINK.get()), writer); // Boots
-
-        helmetArmor(List.of(ModItems.COPPER_HELMET.get(), Items.COPPER_INGOT), writer); // Helmet
-        chestplateArmor(List.of(ModItems.COPPER_CHESTPLATE.get(), Items.COPPER_INGOT), writer); // Chestplate
-        leggingsArmor(List.of(ModItems.COPPER_LEGGINGS.get(), Items.COPPER_INGOT), writer); // Leggings
-        bootsArmor(List.of(ModItems.COPPER_BOOTS.get(), Items.COPPER_INGOT), writer); // Boots
-
-        // Block -> Item and Item -> Block
-        // 0 -> Result / 1 -> Ingredient
+        // One block TRANSFORM nine items and Nine items TRANSFORM one Block -> 0 = Block | 1 = Item
+        itemTransformBlock(List.of(ModBlocks.ALEXANDRITE_BLOCK.get(), ModItems.ALEXANDRITE.get()), writer);
+        itemTransformBlock(List.of(ModBlocks.RAW_ALEXANDRITE_BLOCK.get(), ModItems.RAW_ALEXANDRITE.get()), writer);
         itemTransformBlock(List.of(ModBlocks.ENDER_PEARL_BLOCK.get(), Items.ENDER_PEARL), writer);
-        blockTransformItem(List.of(Items.ENDER_PEARL, ModBlocks.ENDER_PEARL_BLOCK.get()), writer);
-
         itemTransformBlock(List.of(ModBlocks.NETHER_STAR_BLOCK.get(), Items.NETHER_STAR), writer);
-        blockTransformItem(List.of(Items.NETHER_STAR, ModBlocks.NETHER_STAR_BLOCK.get()), writer);
-
         itemTransformBlock(List.of(ModBlocks.ROTTEN_FLESH_BLOCK.get(), Items.ROTTEN_FLESH), writer);
-        blockTransformItem(List.of(Items.ROTTEN_FLESH, ModBlocks.ROTTEN_FLESH_BLOCK.get()), writer);
-
         itemTransformBlock(List.of(ModBlocks.GUNPOWDER_BLOCK.get(), Items.GUNPOWDER), writer);
-        blockTransformItem(List.of(Items.GUNPOWDER, ModBlocks.GUNPOWDER_BLOCK.get()), writer);
-
         itemTransformBlock(List.of(ModBlocks.BLAZE_ROD_BLOCK.get(), Items.BLAZE_ROD), writer);
-        blockTransformItem(List.of(Items.BLAZE_ROD, ModBlocks.BLAZE_ROD_BLOCK.get()), writer);
-
         itemTransformBlock(List.of(ModBlocks.PHANTOM_MEMBRANE_BLOCK.get(), Items.PHANTOM_MEMBRANE), writer);
-        blockTransformItem(List.of(Items.PHANTOM_MEMBRANE, ModBlocks.PHANTOM_MEMBRANE_BLOCK.get()), writer);
-
         itemTransformBlock(List.of(ModBlocks.STRING_BLOCK.get(), Items.STRING), writer);
-        blockTransformItem(List.of(Items.STRING, ModBlocks.STRING_BLOCK.get()), writer);
-
         itemTransformBlock(List.of(ModBlocks.SPIDER_EYE_BLOCK.get(), Items.SPIDER_EYE), writer);
-        blockTransformItem(List.of(Items.SPIDER_EYE, ModBlocks.SPIDER_EYE_BLOCK.get()), writer);
-
         itemTransformBlock(List.of(ModBlocks.FERMENTED_SPIDER_EYE_BLOCK.get(), Items.FERMENTED_SPIDER_EYE), writer);
-        blockTransformItem(List.of(Items.FERMENTED_SPIDER_EYE, ModBlocks.FERMENTED_SPIDER_EYE_BLOCK.get()), writer);
-
         itemTransformBlock(List.of(ModBlocks.SUGAR_BLOCK.get(), Items.SUGAR), writer);
-        blockTransformItem(List.of(Items.SUGAR, ModBlocks.SUGAR_BLOCK.get()), writer);
-
         itemTransformBlock(List.of(ModBlocks.SUGAR_CANE_BLOCK.get(), Items.SUGAR_CANE), writer);
-        blockTransformItem(List.of(Items.SUGAR_CANE, ModBlocks.SUGAR_CANE_BLOCK.get()), writer);
+        itemTransformBlock(List.of(ModBlocks.PINK_BLOCK.get(), ModItems.PINK.get()), writer); // Pink ore
+        itemTransformBlock(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), writer); // Craft Crafting Table
+        itemTransformBlock(List.of(ModItems.GROWTH.get(), Items.WHEAT), writer); // Growth
+        itemTransformBlock(List.of(ModBlocks.DISENCHANTED_BLOCK.get(), Blocks.OBSIDIAN), writer); // Disenchanted
 
-        // Ore
-        itemTransformBlock(List.of(ModBlocks.PINK_BLOCK.get(), ModItems.PINK.get()), writer);
-        blockTransformItem(List.of(ModItems.PINK.get(), ModBlocks.PINK_BLOCK.get()), writer);
+        // Smelting + Blasting items custom recipes
+        oreSmeltingBlasting(writer, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(),
+                  0.25f, 200, "alexandrite");
+        oreSmeltingBlasting(writer, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(),
+                  0.25f, 200, "pink");
+        oreSmeltingBlasting(writer, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER,
+                  1.00f, 100, "rotten_flesh");
 
-        // Block -> Craft Crafting Table
-        itemTransformBlock(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), writer);
-
-        // Growth
-        blockTransformItem(List.of(ModItems.GROWTH.get(), Items.HAY_BLOCK), writer);
-
-        // My custom ore
-        // Items Smelting
-        oreSmelting(writer, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(),
-                0.25f, 200, "pink");
-
-        // Items Blasting
-        oreBlasting(writer, PINK_SMELTABLES, RecipeCategory.MISC, ModItems.PINK.get(),
-                0.25f, 200, "pink");
-
-        oreSmelting(writer, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER,
-                1.00f, 100, "rotten_flesh");
-        oreBlasting(writer, List.of(Items.ROTTEN_FLESH), RecipeCategory.MISC, Items.LEATHER,
-                1.00f, 100, "rotten_flesh");
-
-        // My custom enchanted book and item enchanted
+        // Enchanted book and item enchanted custom recipes
         enchantItem(List.of(Items.ENCHANTED_BOOK, Items.OBSIDIAN, Items.BOOK),
-                Map.of(Enchantments.UNBREAKING, 10), List.of("AAA", "ABA", "AAA"), List.of("A", "B"),
-                true, false, 1, writer);
-
+                    Map.of(Enchantments.UNBREAKING, 10), List.of("AAA", "ABA", "AAA"), List.of("A", "B"),
+                    true, false, 1, writer);
         enchantItem(List.of(Items.ENCHANTED_BOOK, Items.NETHER_STAR, Items.BOOK),
-                Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.BLOCK_EFFICIENCY, 10),
-                List.of("ABA", "AAA", "AAA"), List.of("A", "B"), true, false, 2, writer);
-
+                    Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.BLOCK_EFFICIENCY, 10),
+                    List.of("ABA", "AAA", "AAA"), List.of("A", "B"), true, false, 2, writer);
         enchantItem(List.of(Items.DIAMOND_PICKAXE, Items.COPPER_INGOT, Items.DIAMOND_PICKAXE),
-                Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.UNBREAKING, 10,
-                        Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1),
-                List.of("AAA", "AAA", "ABA"), List.of("A", "B"), false, true, 3, writer);
-
-        // Result + Secondary ingredient + Primary ingredient
-        enchantItem(List.of(ModItems.PINK_MODES.get(), Items.GLOWSTONE, ModItems.PINK_MODES.get()),
-                // Enchantments
-                Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.UNBREAKING, 10,
-                        Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1),
-                // 3x3 crafting recipe + letter ingredients
-                List.of("A A", " B ", "A A"), List.of("A", "B"), false, true, 4, writer);
-
+                    Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.UNBREAKING, 10,
+                           Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1),
+                    List.of("AAA", "AAA", "ABA"), List.of("A", "B"), false, true, 3, writer);
+        enchantItem( // Result + Secondary ingredient + Primary ingredient
+                    List.of(ModItems.PINK_MODES.get(), Items.GLOWSTONE, ModItems.PINK_MODES.get()),
+                    Map.of(ModEnchantments.MORE_ORES.get(), 5, Enchantments.UNBREAKING, 10,
+                           Enchantments.BLOCK_EFFICIENCY, 10, Enchantments.MENDING, 1), // Enchantments
+                    // 3x3 crafting recipe + letter ingredients
+                    List.of("A A", " B ", "A A"), List.of("A", "B"), false, true, 4, writer);
         enchantItem(List.of(Items.IRON_PICKAXE, Items.IRON_INGOT, Items.IRON_PICKAXE),
-                Map.of(Enchantments.UNBREAKING, 3, Enchantments.BLOCK_EFFICIENCY, 7,
-                        Enchantments.BLOCK_FORTUNE, 5),
-                List.of("A A", " B ", "A A"), List.of("A", "B"), false, true, 5, writer);
-
+                    Map.of(Enchantments.UNBREAKING, 3, Enchantments.BLOCK_EFFICIENCY, 7,
+                           Enchantments.BLOCK_FORTUNE, 5),
+                    List.of("A A", " B ", "A A"), List.of("A", "B"), false, true, 5, writer);
         // Modes Pickaxes custom recipes
         enchantItem(List.of(ModItems.BLUE_MODES.get(), Items.LAPIS_BLOCK, Items.NETHERITE_PICKAXE),
-                Map.of(Enchantments.BLOCK_EFFICIENCY, 1, Enchantments.UNBREAKING, 1,
-                        Enchantments.BLOCK_FORTUNE, 1, Enchantments.MENDING, 1),
-                List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 6, writer);
-
+                    Map.of(Enchantments.BLOCK_EFFICIENCY, 1, Enchantments.UNBREAKING, 1,
+                           Enchantments.BLOCK_FORTUNE, 1, Enchantments.MENDING, 1),
+                    List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 6, writer);
         enchantItem(List.of(ModItems.PINK_MODES.get(), ModBlocks.PINK_BLOCK.get(), ModItems.BLUE_MODES.get()),
-                Map.of(Enchantments.BLOCK_EFFICIENCY, 3, Enchantments.UNBREAKING, 3,
-                        Enchantments.BLOCK_FORTUNE, 3, Enchantments.MENDING, 1),
-                List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 7, writer);
-
+                    Map.of(Enchantments.BLOCK_EFFICIENCY, 3, Enchantments.UNBREAKING, 3,
+                           Enchantments.BLOCK_FORTUNE, 3, Enchantments.MENDING, 1),
+                    List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 7, writer);
         enchantItem(List.of(ModItems.GREEN_MODES.get(), Items.DIAMOND_BLOCK, ModItems.PINK_MODES.get()),
-                Map.of(Enchantments.BLOCK_EFFICIENCY, 5, Enchantments.UNBREAKING, 5,
-                        Enchantments.BLOCK_FORTUNE, 5, Enchantments.MENDING, 1),
-                List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 8, writer);
-
+                    Map.of(Enchantments.BLOCK_EFFICIENCY, 5, Enchantments.UNBREAKING, 5,
+                           Enchantments.BLOCK_FORTUNE, 5, Enchantments.MENDING, 1),
+                    List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 8, writer);
         enchantItem(List.of(ModItems.PURPLE_MODES.get(), Items.NETHERITE_BLOCK, ModItems.GREEN_MODES.get()),
-                Map.of(Enchantments.BLOCK_EFFICIENCY, 7, Enchantments.UNBREAKING, 7,
-                        Enchantments.BLOCK_FORTUNE, 7, Enchantments.MENDING, 1),
-                List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 9, writer);
-
+                    Map.of(Enchantments.BLOCK_EFFICIENCY, 7, Enchantments.UNBREAKING, 7,
+                           Enchantments.BLOCK_FORTUNE, 7, Enchantments.MENDING, 1),
+                    List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 9, writer);
+        // Miner helmet
         enchantItem(List.of(ModItems.MINER_HELMET.get(), Items.TORCH, Items.COPPER_BLOCK),
-                Map.of(ModEnchantments.GLOWING_MOBS.get(), 1),
-                List.of("AAA", "ABA", "AAA"), List.of("A", "B"), false, true, 10, writer);
+                    Map.of(ModEnchantments.GLOWING_MOBS.get(), 1), List.of("AAA", "ABA", "AAA"), List.of("A", "B"),
+                    false, true, 10, writer);
 
         // Colored blocks
         coloredBlocks(List.of(ModBlocks.GREEN_ENDER_PEARL_BLOCK.get(), Items.GREEN_DYE), writer);
@@ -299,18 +214,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         coloredBlocks(List.of(ModBlocks.ORANGE_ENDER_PEARL_BLOCK.get(), Items.ORANGE_DYE), writer);
         coloredBlocks(List.of(ModBlocks.RED_ENDER_PEARL_BLOCK.get(), Items.RED_DYE), writer);
 
-        // My Disenchanted custom block
-        itemTransformBlock(List.of(ModBlocks.DISENCHANTED_BLOCK.get(), Blocks.OBSIDIAN), writer);
-
         // Luck custom generator enchanted book
         luckItem(List.of(ModItems.LUCK.get(), Items.LAPIS_LAZULI, Items.COPPER_INGOT, Items.BOOK), writer);
-        luckItem(List.of(ModItems.PICKAXE_LUCK.get(), Items.LAPIS_LAZULI, Items.DIAMOND,
-                ModItems.LUCK.get()), writer);
-        luckItem(List.of(ModItems.WEAPON_LUCK.get(), Items.LAPIS_LAZULI, Items.REDSTONE,
-                ModItems.LUCK.get()), writer);
+        luckItem(List.of(ModItems.PICKAXE_LUCK.get(), Items.LAPIS_LAZULI, Items.DIAMOND, ModItems.LUCK.get()), writer);
+        luckItem(List.of(ModItems.WEAPON_LUCK.get(), Items.LAPIS_LAZULI, Items.REDSTONE, ModItems.LUCK.get()), writer);
 
-        // Craft Crafting Table 7x7
-        // One item
+        // Craft Crafting Table 7x7 - (One item)
         craftSeven(List.of(ModBlocks.KAUPEN_FURNACE_BLOCK.get(), Items.FURNACE), writer); // Kaupen Furnace
         craftSeven(List.of(ModBlocks.MCCOURSE_ELEVATOR.get(), Items.WHITE_WOOL), writer);
         craftSeven(List.of(ModItems.FARMER.get(), Items.BONE_MEAL), writer);
@@ -318,202 +227,190 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         craftSeven(List.of(ModBlocks.MAGIC_ENCHANTED_BLOCK.get(), Items.ENCHANTING_TABLE), writer);
         craftSeven(List.of(ModBlocks.MAGIC_DISENCHANTED_BLOCK.get(), ModBlocks.MAGIC_DISENCHANTED_BOOK_BLOCK.get()), writer);
         craftSeven(List.of(ModBlocks.MAGIC_DISENCHANTED_BOOK_BLOCK.get(), Items.ANVIL), writer);
-
-        // Two items
+        // Craft Crafting Table 7x7 - (Three items)
         craftSevenItems(List.of(ModBlocks.MCCOURSE_GENERATOR.get(), ModBlocks.CRAFT_CRAFTING_TABLE.get(),
-                Items.NETHER_STAR, Items.ENCHANTED_GOLDEN_APPLE), writer);
+                                Items.NETHER_STAR, Items.ENCHANTED_GOLDEN_APPLE), writer);
         craftSevenItems(List.of(ModBlocks.GEM_EMPOWERING_STATION.get(), Items.FURNACE, ModItems.ALEXANDRITE.get(),
-                Items.BOOK), writer); // Gem Empowering Station
+                                Items.BOOK), writer); // Gem Empowering Station
 
         // Custom trims
         trimSmithing(writer, ModItems.KAUPEN_SMITHING_TEMPLATE.get(), new ResourceLocation(MCCourseMod.MOD_ID, "kaupen"));
     }
 
-    // CUSTOM RECIPES
+    // CUSTOM METHOD - Gem Empowering Station custom recipes
     protected static void gemEmpoweringStation(ItemLike ingredient, ItemLike result, int count,
                                                int craftTime, int energyAmount, FluidStack fluidStack,
-                                               Consumer<FinishedRecipe> pWriter) {
+                                               Consumer<FinishedRecipe> writer) {
         new GemEmpoweringRecipeBuilder(ingredient, result, count, craftTime, energyAmount, fluidStack)
-                .unlockedBy("has_item", has(result)).save(pWriter);
+                                      .unlockedBy("has_item", has(result)).save(writer);
     }
 
+    // CUSTOM METHOD - Kaupen Furnace custom recipes
     protected static void kaupenFurnace(ItemLike ingredient, ItemLike result, float experience,
-                                        int cookingTime, Consumer<FinishedRecipe> pWriter) {
+                                        int cookingTime, Consumer<FinishedRecipe> writer) {
         new KaupenFurnaceRecipeBuilder(ingredient, result, experience, cookingTime)
-                .unlockedBy("has_item", has(result)).save(pWriter);
+                                      .unlockedBy("has_item", has(result)).save(writer);
     }
 
-    // Smelting
-    protected static void oreSmelting(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer,
-                                      List<ItemLike> pIngredients, @NotNull RecipeCategory pCategory,
-                                      @NotNull ItemLike pResult, float pExperience,
-                                      int pCookingTIme, @NotNull String pGroup) {
-        oreCooking(pFinishedRecipeConsumer, RecipeSerializer.SMELTING_RECIPE, pIngredients, pCategory, pResult,
-                pExperience, pCookingTIme, pGroup, "_from_smelting");
+    // CUSTOM METHOD - Smelting + Blasting custom recipes
+    protected static void oreSmeltingBlasting(@NotNull Consumer<FinishedRecipe> writer,
+                                              List<ItemLike> item, @NotNull RecipeCategory category, @NotNull ItemLike result,
+                                              float experience, int cookingTime, @NotNull String group) {
+        // SMELTING
+        oreCooking(writer, RecipeSerializer.SMELTING_RECIPE, item, category, result, experience,
+                   cookingTime, group, "_from_smelting");
+        // BLASTING
+        oreCooking(writer, RecipeSerializer.BLASTING_RECIPE, item, category, result, experience,
+                   cookingTime, group, "_from_blasting");
     }
 
-    // Blasting
-    protected static void oreBlasting(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer,
-                                      List<ItemLike> pIngredients, @NotNull RecipeCategory pCategory,
-                                      @NotNull ItemLike pResult, float pExperience,
-                                      int pCookingTime, @NotNull String pGroup) {
-        oreCooking(pFinishedRecipeConsumer, RecipeSerializer.BLASTING_RECIPE, pIngredients, pCategory, pResult,
-                pExperience, pCookingTime, pGroup, "_from_blasting");
+    // CUSTOM METHOD - oreSmelting and oreBlasting CUSTOM METHODS
+    protected static void oreCooking(@NotNull Consumer<FinishedRecipe> writer,
+                                     @NotNull RecipeSerializer<? extends AbstractCookingRecipe> serializer,
+                                     List<ItemLike> items, @NotNull RecipeCategory category, @NotNull ItemLike result,
+                                     float experience, int cookingTime, @NotNull String group, String recipeName) {
+        items.forEach(item ->
+             SimpleCookingRecipeBuilder.generic(Ingredient.of(item), category, result, experience, cookingTime, serializer)
+                                       .group(group).unlockedBy(getHasName(item), has(item))
+                                       .save(writer, MCCourseMod.MOD_ID + ":" + getItemName(result) + recipeName + "_" +
+                                             getItemName(item)));
     }
 
-    // Cooking -> Custom method to oreSmelting and oreBlasting
-    protected static void oreCooking(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer,
-                                     @NotNull RecipeSerializer<? extends AbstractCookingRecipe> pCookingSerializer,
-                                     List<ItemLike> pIngredients, @NotNull RecipeCategory pCategory,
-                                     @NotNull ItemLike pResult, float pExperience, int pCookingTime,
-                                     @NotNull String pGroup, String pRecipeName) {
-        for(ItemLike itemlike : pIngredients) {
-            SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), pCategory, pResult, pExperience, pCookingTime,
-                            pCookingSerializer).group(pGroup).unlockedBy(getHasName(itemlike), has(itemlike))
-                    .save(pFinishedRecipeConsumer, MCCourseMod.MOD_ID + ":" + getItemName(pResult) +
-                            pRecipeName + "_" + getItemName(itemlike));
-        }
-    }
-
-    // My custom Recipe methods
-
-    // Craft Crafting Table 7x7
-    protected static void craftSeven(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
+    // CUSTOM METHOD - Craft Crafting Table 7x7 (One item)
+    protected static void craftSeven(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0))
-                .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
-                .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
-                .pattern("AAAAAAA")
-                .define('A', item.get(1))
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+                           .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
+                           .pattern("AAAAAAA").pattern("AAAAAAA").pattern("AAAAAAA")
+                           .pattern("AAAAAAA")
+                           .define('A', item.get(1))
+                           .unlockedBy("has_item", has(item.get(1)))
+                           .save(writer);
     }
 
-    protected static void craftSevenItems(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
+    // CUSTOM METHOD - Craft Crafting Table 7x7 (Three items)
+    protected static void craftSevenItems(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0))
-                .pattern("AAAAAAA").pattern("ABBBBBA").pattern("ABBBBBA")
-                .pattern("ABBCBBA").pattern("ABBBBBA").pattern("ABBBBBA")
-                .pattern("AAAAAAA")
-                .define('A', item.get(1))
-                .define('B', item.get(2))
-                .define('C', item.get(3))
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+                           .pattern("AAAAAAA").pattern("ABBBBBA").pattern("ABBBBBA")
+                           .pattern("ABBCBBA").pattern("ABBBBBA").pattern("ABBBBBA")
+                           .pattern("AAAAAAA")
+                           .define('A', item.get(1))
+                           .define('B', item.get(2))
+                           .define('C', item.get(3))
+                           .unlockedBy("has_item", has(item.get(1)))
+                           .save(writer);
     }
 
-    // Item transform on custom block
-    protected static void itemTransformBlock(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0)) // Block result
-                .pattern("AAA").pattern("AAA").pattern("AAA")
-                .define('A', item.get(1)) // Item input
-                .unlockedBy("has_item", has(item.get(1))) // Has item
-                .save(pWriter);
+    // CUSTOM METHOD - ITEM transform on custom block || BLOCK transform on item
+    protected static void itemTransformBlock(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
+        // BLOCK
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0)) // BLOCK result
+                           .pattern("AAA").pattern("AAA").pattern("AAA")
+                           .define('A', item.get(1)) // ITEM input
+                           .unlockedBy("has_item", has(item.get(1))) // Has ITEM
+                           .save(writer);
+        // ITEM
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, item.get(1), 9) // ITEM result
+                              .requires(item.get(0)) // BLOCK input
+                              .unlockedBy("has_item", has(item.get(0))) // Has BLOCK
+                              .save(writer);
     }
 
-    // Custom block transform on item
-    protected static void blockTransformItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, item.get(0), 9) // Item result
-                .requires(item.get(1)) // Block input
-                .unlockedBy("has_item", has(item.get(1))) // Has block
-                .save(pWriter);
-    }
-
-    // Custom recipe
-    protected static void pickaxeHammerItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        // Hammer and Pickaxe tools
+    // CUSTOM METHOD - Hammer and Pickaxe tools custom recipes
+    protected static void pickaxeHammerItem(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, item.get(0), 1)
-                .pattern("AAA").pattern(" B ").pattern(" B ")
-                .define('A', item.get(1)).define('B', Items.STICK)
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+                           .pattern("AAA").pattern(" B ").pattern(" B ")
+                           .define('A', item.get(1)).define('B', Items.STICK)
+                           .unlockedBy("has_item", has(item.get(1)))
+                           .save(writer);
     }
 
-    protected static void helmetArmor(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        // Helmet
+    // CUSTOM METHOD - Helmet custom recipes
+    protected static void helmetArmor(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, item.get(0), 1)
-                .pattern("AAA").pattern("A A").pattern("   ")
-                .define('A', item.get(1))
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+                           .pattern("AAA").pattern("A A").pattern("   ")
+                           .define('A', item.get(1))
+                           .unlockedBy("has_item", has(item.get(1)))
+                           .save(writer);
     }
 
-    protected static void chestplateArmor(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        // Chestplate
+    // CUSTOM METHOD - Chestplate custom recipes
+    protected static void chestplateArmor(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, item.get(0), 1)
-                .pattern("A A").pattern("AAA").pattern("AAA")
-                .define('A', item.get(1))
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+                           .pattern("A A").pattern("AAA").pattern("AAA")
+                           .define('A', item.get(1))
+                           .unlockedBy("has_item", has(item.get(1)))
+                           .save(writer);
     }
 
-    protected static void leggingsArmor(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        // Leggings
+    // CUSTOM METHOD - Leggings custom recipes
+    protected static void leggingsArmor(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, item.get(0), 1)
-                .pattern("AAA").pattern("A A").pattern("A A")
-                .define('A', item.get(1))
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+                           .pattern("AAA").pattern("A A").pattern("A A")
+                           .define('A', item.get(1))
+                           .unlockedBy("has_item", has(item.get(1)))
+                           .save(writer);
     }
 
-    protected static void bootsArmor(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        // Boots
+    // CUSTOM METHOD - Boots custom recipes
+    protected static void bootsArmor(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, item.get(0), 1)
-                .pattern("   ").pattern("A A").pattern("A A")
-                .define('A', item.get(1))
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+                           .pattern("   ").pattern("A A").pattern("A A")
+                           .define('A', item.get(1))
+                           .unlockedBy("has_item", has(item.get(1)))
+                           .save(writer);
     }
 
-    protected static void shovelItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        // Shovel
+    // CUSTOM METHOD - Shovel custom recipes
+    protected static void shovelItem(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, item.get(0), 1)
-                .pattern(" A ").pattern(" B ").pattern(" B ")
-                .define('A', item.get(1)).define('B', Items.STICK)
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+                           .pattern(" A ").pattern(" B ").pattern(" B ")
+                           .define('A', item.get(1)).define('B', Items.STICK)
+                           .unlockedBy("has_item", has(item.get(1)))
+                           .save(writer);
     }
 
-    protected static void axeItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        // Axe
+    // CUSTOM METHOD - Axe custom recipes
+    protected static void axeItem(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, item.get(0), 1)
-                .pattern("AA ").pattern("AB ").pattern(" B ")
-                .define('A', item.get(1)).define('B', Items.STICK)
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+                           .pattern("AA ").pattern("AB ").pattern(" B ")
+                           .define('A', item.get(1)).define('B', Items.STICK)
+                           .unlockedBy("has_item", has(item.get(1)))
+                           .save(writer);
     }
 
-    protected static void paxelItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        // Paxel
+    // CUSTOM METHOD - Paxel custom recipes
+    protected static void paxelItem(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, item.get(0), 1)
-                .requires(item.get(1)).requires(item.get(2)).requires(item.get(3))
-                .unlockedBy("has_item", has(item.get(1))).save(pWriter);
+                              .requires(item.get(1)).requires(item.get(2)).requires(item.get(3))
+                              .unlockedBy("has_item", has(item.get(1))).save(writer);
     }
 
-    protected static void swordItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        // Paxel
+    // CUSTOM METHOD - Sword custom recipes
+    protected static void swordItem(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, item.get(0), 1)
-                .pattern(" A ").pattern(" A ").pattern(" B ")
-                .define('A', item.get(1)).define('B', Items.STICK)
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+                           .pattern(" A ").pattern(" A ").pattern(" B ")
+                           .define('A', item.get(1)).define('B', Items.STICK)
+                           .unlockedBy("has_item", has(item.get(1)))
+                           .save(writer);
     }
 
-    protected static void hoeItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
-        // Paxel
+    // CUSTOM METHOD - Hoe custom recipes
+    protected static void hoeItem(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, item.get(0), 1)
-                .pattern("AA ").pattern(" B ").pattern(" B ")
-                .define('A', item.get(1)).define('B', Items.STICK)
-                .unlockedBy("has_item", has(item.get(1)))
-                .save(pWriter);
+                           .pattern("AA ").pattern(" B ").pattern(" B ")
+                           .define('A', item.get(1)).define('B', Items.STICK)
+                           .unlockedBy("has_item", has(item.get(1)))
+                           .save(writer);
     }
 
-    // Custom color blocks
-    protected static void coloredBlocks(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
+    // CUSTOM METHOD - Color blocks custom recipes
+    protected static void coloredBlocks(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, item.get(0), 1)
-                .requires(item.get(1)).requires(ModBlocks.ENDER_PEARL_BLOCK.get())
-                .unlockedBy("has_item", has(item.get(1))).save(pWriter);
+                              .requires(item.get(1)).requires(ModBlocks.ENDER_PEARL_BLOCK.get())
+                              .unlockedBy("has_item", has(item.get(1))).save(writer);
     }
 
-    // Custom log blocks
+    // CUSTOM METHOD - Log blocks custom recipes
     protected static void logBlocks(List<ItemLike> items, TagKey<Item> itemTag,
                                     Consumer<FinishedRecipe> writer) {
         // 0 -> PLANKS; 1 -> WOOD; 2 -> LOG; 3 -> BOAT; 4 -> CHEST BOAT; 5 -> SIGN;
@@ -528,76 +425,63 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         hangingSign(writer, items.get(6), items.get(7)); // Hanging sing block
     }
 
-    // Custom glass blocks
+    // CUSTOM METHOD - Glass blocks custom recipes
     protected static void glassBlocks(List<ItemLike> items, Consumer<FinishedRecipe> writer) {
         // 0 -> GLASS; 1 -> GLASS PANE; 2 -> DYE COLOR.
         stainedGlassFromGlassAndDye(writer, items.get(0), items.get(2));
-        stainedGlassPaneFromGlassPaneAndDye(writer, items.get(1), items.get(0));
-        stainedGlassPaneFromStainedGlass(writer, items.get(1), items.get(2));
+        stainedGlassPaneFromGlassPaneAndDye(writer, items.get(1), items.get(2));
+        stainedGlassPaneFromStainedGlass(writer, items.get(1), items.get(0));
     }
 
-    // Luck custom items
-    protected static void luckItem(List<ItemLike> item, Consumer<FinishedRecipe> pWriter) {
+    // CUSTOM METHOD - Luck items custom recipes
+    protected static void luckItem(List<ItemLike> item, Consumer<FinishedRecipe> writer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, item.get(0), 1)
-                .pattern("ABA").pattern("BCB").pattern("ABA")
-                .define('A', item.get(1)).define('B', item.get(2)).define('C', item.get(3))
-                .unlockedBy("has_item", has(item.get(3))).save(pWriter);
+                           .pattern("ABA").pattern("BCB").pattern("ABA")
+                           .define('A', item.get(1)).define('B', item.get(2)).define('C', item.get(3))
+                           .unlockedBy("has_item", has(item.get(3))).save(writer);
     }
 
-    // Custom enchanted item or enchanted book
+    // CUSTOM METHOD - Enchanted items or enchanted books
     protected static void enchantItem(List<ItemLike> result, Map<Enchantment, Integer> enchantments,
                                    List<String> format, List<String> letters, boolean isBook, boolean unbreakable,
                                    int number, Consumer<FinishedRecipe> writer) {
-        String MOD_ID = MCCourseMod.MOD_ID;
+        String MOD_ID = MCCourseMod.MOD_ID, location = number + "_enchanted";
         var item = ForgeRegistries.ITEMS;
         var enchant = ForgeRegistries.ENCHANTMENTS;
-
         // Registry item = Result Index 0
         JsonObject resultJson = new JsonObject();
         resultJson.addProperty("item", Objects.requireNonNull(item.getKey(result.get(0).asItem())).toString());
         resultJson.addProperty("count", 1);
-
         // Registry enchantments
         JsonObject nbt = new JsonObject();
         JsonArray enchantmentArray = new JsonArray();
-
-        // Sorts enchantments by level and then by ID
-        enchantments.entrySet().stream()
+        enchantments.entrySet().stream() // Sorts enchantments by level and then by ID
                 .sorted(Comparator.comparingInt(Map.Entry<Enchantment, Integer>::getValue) // Enchantment level
                 .thenComparing(e -> Objects.requireNonNull(enchant.getKey(e.getKey())).toString())) // Enchantment name
                 .forEach(entry -> {
                     JsonObject enchantmentTag = new JsonObject();
                     enchantmentTag.addProperty("id", Objects.requireNonNull(enchant.getKey(entry.getKey())).toString());
                     enchantmentTag.addProperty("lvl", entry.getValue());
-                    enchantmentArray.add(enchantmentTag);
-                });
-
+                    enchantmentArray.add(enchantmentTag); });
         nbt.add(isBook ? "StoredEnchantments" : "Enchantments", enchantmentArray);
-
         // Unbreakable tag
         if (unbreakable) { nbt.addProperty("Unbreakable", 1); }
         resultJson.add("nbt", nbt);
-
         // Registry recipe
         JsonObject recipeJson = new JsonObject();
         recipeJson.addProperty("type", "minecraft:crafting_shaped");
-
         JsonArray pattern = new JsonArray();
         for (String s : format) { pattern.add(s); }
         recipeJson.add("pattern", pattern);
-
-        JsonObject key = new JsonObject(); // Registry ingredients = Result Index 1 and 2
-        JsonObject aKey = new JsonObject(), bKey = new JsonObject();
+        // Registry ingredients = Result Index 1 and 2
+        JsonObject key = new JsonObject(), aKey = new JsonObject(), bKey = new JsonObject();
         List<JsonObject> jsonObjectList = List.of(aKey, bKey);
-
         for (int i = 0; i < letters.size(); i++) {
             jsonObjectList.get(i).addProperty("item", Objects.requireNonNull(item.getKey(result.get(i+1).asItem())).toString());
             key.add(letters.get(i), jsonObjectList.get(i));
         }
-
         recipeJson.add("key", key);
         recipeJson.add("result", resultJson);
-
         // Registry JSON file
         writer.accept(new FinishedRecipe() {
             @Override
@@ -607,7 +491,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             }
 
             @Override
-            public @NotNull ResourceLocation getId() { return new ResourceLocation(MOD_ID, number + "_enchanted"); }
+            public @NotNull ResourceLocation getId() { return new ResourceLocation(MOD_ID, location); }
 
             @Override
             public @NotNull RecipeSerializer<?> getType() { return RecipeSerializer.SHAPED_RECIPE; }
@@ -616,8 +500,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             public JsonObject serializeAdvancement() {
                 JsonObject advancement = new JsonObject();
                 advancement.addProperty("parent", "minecraft:recipes/root");
-                JsonObject criteria = new JsonObject();
-                JsonObject trigger = new JsonObject();
+                JsonObject criteria = new JsonObject(), trigger = new JsonObject();
                 trigger.addProperty("trigger", "minecraft:inventory_changed");
                 JsonObject conditions = new JsonObject();
                 JsonArray items = new JsonArray();
@@ -638,9 +521,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             }
 
             @Override
-            public ResourceLocation getAdvancementId() {
-                return new ResourceLocation(MOD_ID, "recipes/custom/" + number + "_enchanted");
-            }
+            public ResourceLocation getAdvancementId() { return new ResourceLocation(MOD_ID, "recipes/custom/" + location); }
         });
     }
 }
