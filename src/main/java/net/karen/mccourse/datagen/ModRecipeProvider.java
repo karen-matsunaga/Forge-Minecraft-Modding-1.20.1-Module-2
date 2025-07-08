@@ -23,6 +23,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.Consumer;
@@ -442,33 +443,31 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     // CUSTOM METHOD - Enchanted items or enchanted books
-    protected static void enchantItem(List<ItemLike> result, Map<Enchantment, Integer> enchantments,
-                                   List<String> format, List<String> letters, boolean isBook, boolean unbreakable,
-                                   int number, Consumer<FinishedRecipe> writer) {
+    protected static void enchantItem(List<ItemLike> result, Map<Enchantment, Integer> map,
+                                      List<String> format, List<String> letters, boolean isBook, boolean unbreakable,
+                                      int number, Consumer<FinishedRecipe> writer) {
         String MOD_ID = MCCourseMod.MOD_ID, location = number + "_enchanted";
-        var item = ForgeRegistries.ITEMS;
-        var enchant = ForgeRegistries.ENCHANTMENTS;
-        // Registry item = Result Index 0
-        JsonObject resultJson = new JsonObject();
-        resultJson.addProperty("item", Objects.requireNonNull(item.getKey(result.get(0).asItem())).toString());
+        IForgeRegistry<Item> item = ForgeRegistries.ITEMS;
+        ResourceLocation result0 = item.getKey(result.get(0).asItem()), result2 = item.getKey(result.get(2).asItem());
+        IForgeRegistry<Enchantment> enchant = ForgeRegistries.ENCHANTMENTS;
+        JsonObject resultJson = new JsonObject(); // Registry item = Result Index 0
+        if (result0 != null) { resultJson.addProperty("item", result0.toString()); }
         resultJson.addProperty("count", 1);
-        // Registry enchantments
-        JsonObject nbt = new JsonObject();
+        JsonObject nbt = new JsonObject(); // Registry enchantments
         JsonArray enchantmentArray = new JsonArray();
-        enchantments.entrySet().stream() // Sorts enchantments by level and then by ID
-                .sorted(Comparator.comparingInt(Map.Entry<Enchantment, Integer>::getValue) // Enchantment level
-                .thenComparing(e -> Objects.requireNonNull(enchant.getKey(e.getKey())).toString())) // Enchantment name
-                .forEach(entry -> {
-                    JsonObject enchantmentTag = new JsonObject();
-                    enchantmentTag.addProperty("id", Objects.requireNonNull(enchant.getKey(entry.getKey())).toString());
-                    enchantmentTag.addProperty("lvl", entry.getValue());
-                    enchantmentArray.add(enchantmentTag); });
+        map.entrySet().stream() // Sorts enchantments by level and then by ID
+                    .sorted(Comparator.comparingInt(Map.Entry<Enchantment, Integer>::getValue) // Enchantment level
+                    .thenComparing(e -> { ResourceLocation key = enchant.getKey(e.getKey());
+                                          return key != null ? key.toString() : null; })) // Enchantment name
+                    .forEach(entry -> { JsonObject enchantmentTag = new JsonObject();
+                                        ResourceLocation key = enchant.getKey(entry.getKey());
+                                        enchantmentTag.addProperty("id", key != null ? key.toString() : null);
+                                        enchantmentTag.addProperty("lvl", entry.getValue());
+                                        enchantmentArray.add(enchantmentTag); });
         nbt.add(isBook ? "StoredEnchantments" : "Enchantments", enchantmentArray);
-        // Unbreakable tag
-        if (unbreakable) { nbt.addProperty("Unbreakable", 1); }
+        if (unbreakable) { nbt.addProperty("Unbreakable", 1); } // Unbreakable tag
         resultJson.add("nbt", nbt);
-        // Registry recipe
-        JsonObject recipeJson = new JsonObject();
+        JsonObject recipeJson = new JsonObject(); // Registry recipe
         recipeJson.addProperty("type", "minecraft:crafting_shaped");
         JsonArray pattern = new JsonArray();
         for (String s : format) { pattern.add(s); }
@@ -482,8 +481,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         }
         recipeJson.add("key", key);
         recipeJson.add("result", resultJson);
-        // Registry JSON file
-        writer.accept(new FinishedRecipe() {
+        writer.accept(new FinishedRecipe() { // Registry JSON file
             @Override
             public void serializeRecipeData(@NotNull JsonObject jsonObject) {
                 List<String> recipe = List.of("type", "pattern", "key", "result");
@@ -505,8 +503,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 JsonObject conditions = new JsonObject();
                 JsonArray items = new JsonArray();
                 JsonObject itemObject = new JsonObject();
-                // Item to unlock on Recipe Book
-                itemObject.addProperty("item", Objects.requireNonNull(item.getKey(result.get(2).asItem())).toString());
+                itemObject.addProperty("item", result2 != null ? result2.toString() : null); // Item to unlock on Recipe Book
                 items.add(itemObject);
                 conditions.add("items", items);
                 trigger.add("conditions", conditions);
