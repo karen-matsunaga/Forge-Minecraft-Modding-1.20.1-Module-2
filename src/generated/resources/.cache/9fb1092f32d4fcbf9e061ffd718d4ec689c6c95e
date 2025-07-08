@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-07T23:36:16.3207121	Recipes
+// 1.20.1	2025-07-08T00:11:44.2038643	Recipes
 dd52e5950ac294c207bf9b9441d3b97e76c9739e data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -50,7 +50,7 @@ d3c788c38d8460512af52b075d307257d121f481 data/mccourse/advancements/recipes/misc
 6526a922c663f6443ba632c39f5ea8a845a4c3b3 data/mccourse/advancements/recipes/misc/farmer.json
 3adc632a798fe11737ef0ddb350134ea96e12dfd data/mccourse/advancements/recipes/misc/fermented_spider_eye_block.json
 0137aefba1e224b1aa2179228e1016c1b3a4c814 data/mccourse/advancements/recipes/misc/gem_empowering_station.json
-c6f33fb7a4e6c1840151c33d926173d01149afd5 data/mccourse/advancements/recipes/misc/growth.json
+a6ff650cee608cd654994b452ff929bc40ce0617 data/mccourse/advancements/recipes/misc/growth.json
 77a7598b4b9531e1b3a8d671cf9b769ad0090873 data/mccourse/advancements/recipes/misc/gunpowder_block.json
 7ca270323ec9917d317c2ddf45c66095bd27690b data/mccourse/advancements/recipes/misc/kaupen.json
 73768cbf7a92ae82377edaf219535db458af024b data/mccourse/advancements/recipes/misc/kaupen_furnace.json
@@ -197,7 +197,7 @@ d99f34263a3ad822101bf313ea22e27a213a0cc9 data/mccourse/recipes/gem_empowering_st
 4330541ea03bf3e7ae83643f178595a5131e4eb4 data/mccourse/recipes/gold_paxel.json
 6e70e4421b298009d619c08bf4f6b973942b1934 data/mccourse/recipes/gray_ender_pearl_block.json
 50e25076a9e3d3a6420df5ba1674f5c31ee5abe8 data/mccourse/recipes/green_ender_pearl_block.json
-cae9c4181fcb2b316cb2c84af47a4d9ebf656415 data/mccourse/recipes/growth.json
+7ee714d062f2e0aeea30437b20e9084609bbc45f data/mccourse/recipes/growth.json
 98f66b88a90b829f06ff62f33158eb8a456bef71 data/mccourse/recipes/gunpowder_block.json
 e5e732d008b6fa24c7cf0776be896352974562ce data/mccourse/recipes/iron_hammer.json
 9c056291032ceaf89308a6b02e84bc37f5c9dd60 data/mccourse/recipes/iron_paxel.json
@@ -275,6 +275,7 @@ d70e4c994acf63efa7bf821c708d58df09c43ca3 data/mccourse/recipes/white_ender_pearl
 c16a87f9ce4fb08949eb40962ca9725314f11ea9 data/minecraft/advancements/recipes/decorations/mccourse_glass_pane_block_from_glass_pane.json
 d426b3326fee3942a720e55c8c4db42261ece667 data/minecraft/advancements/recipes/diamond.json
 7ee87ac0df391206bb6d8e0dd47a6b21631284a7 data/minecraft/advancements/recipes/misc/blaze_rod.json
+942dd83319041a4122092ccf6d1c8729c700011a data/minecraft/advancements/recipes/misc/carrot.json
 67ad99540746a314958b85cb617ebec7ce1927d4 data/minecraft/advancements/recipes/misc/crafting_table.json
 755d68502edf360d43e20838b899a9140a7d2029 data/minecraft/advancements/recipes/misc/ender_pearl.json
 c4a3315cd03a6413daa0e0a1abb555a36a5194c6 data/minecraft/advancements/recipes/misc/fermented_spider_eye.json
@@ -287,11 +288,11 @@ b9c1e71edfd9d505079503a2a46c97741f62ad95 data/minecraft/advancements/recipes/mis
 b44935a33d5d604b41222149f228cdcd301a6c8f data/minecraft/advancements/recipes/misc/string.json
 7bc2d21aa4ae26de3a52111ca4a40bab8fc901fc data/minecraft/advancements/recipes/misc/sugar.json
 3e15bb0cb9f69df70119d54ecfc68cf4b0afce5f data/minecraft/advancements/recipes/misc/sugar_cane.json
-a6e15711afeb4f2e3ac7e24b58790cca17cd6be6 data/minecraft/advancements/recipes/misc/wheat.json
 4692b8c7223933a466b49bd511b48177cf99c0c8 data/minecraft/advancements/recipes/obsidian.json
 4ff61f41dfd7bb1cac4e88fc196baf180d40b110 data/minecraft/advancements/recipes/phantom_membrane.json
 6c9d716a0b256e6efc62311885ffd7c0cf6b5db9 data/minecraft/advancements/recipes/raw_iron.json
 03ef333f8d20f7b12dd10e4b561cdf10a955d940 data/minecraft/recipes/blaze_rod.json
+30031213464eab0d57cff8a860c6bfafff75a870 data/minecraft/recipes/carrot.json
 ee1f0c823c65859f3716604bbc13b552187041a9 data/minecraft/recipes/crafting_table.json
 645bbfca15b3a93894147e4f266395438e6d26f0 data/minecraft/recipes/ender_pearl.json
 e2bece483648dbcedb7febc0b0e31363ae17403b data/minecraft/recipes/fermented_spider_eye.json
@@ -305,4 +306,3 @@ a9f5fa17fb09a5896c660f35ee8970934f840a41 data/minecraft/recipes/spider_eye.json
 3cc0bfab47f3a323b09ef6933c5fe40dcd0aa28e data/minecraft/recipes/string.json
 40b82fb32d78249ec438892ddb244645201ef13e data/minecraft/recipes/sugar.json
 cd922315597ea5ebf1ead162d0a218f4649114c2 data/minecraft/recipes/sugar_cane.json
-68131bb0fe0c9a9075820141a2ce821fb9a27ce3 data/minecraft/recipes/wheat.json

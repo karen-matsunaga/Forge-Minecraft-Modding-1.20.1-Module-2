@@ -145,7 +145,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         itemTransformBlock(List.of(ModBlocks.SUGAR_CANE_BLOCK.get(), Items.SUGAR_CANE), writer);
         itemTransformBlock(List.of(ModBlocks.PINK_BLOCK.get(), ModItems.PINK.get()), writer); // Pink ore
         itemTransformBlock(List.of(ModBlocks.CRAFT_CRAFTING_TABLE.get(), Items.CRAFTING_TABLE), writer); // Craft Crafting Table
-        itemTransformBlock(List.of(ModItems.GROWTH.get(), Items.WHEAT), writer); // Growth
+        itemTransformBlock(List.of(ModItems.GROWTH.get(), Items.CARROT), writer); // Growth
         itemTransformBlock(List.of(ModBlocks.DISENCHANTED_BLOCK.get(), Blocks.OBSIDIAN), writer); // Disenchanted
 
         // Smelting + Blasting items custom recipes
