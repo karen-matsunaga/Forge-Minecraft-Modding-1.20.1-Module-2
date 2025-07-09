@@ -416,7 +416,11 @@ public class ModItems {
 
     // Infinite
     public static final RegistryObject<Item> INFINITE = ITEMS.register("infinite",
-            () -> new InfiniteItem(new Item.Properties().fireResistant().stacksTo(64).fireResistant()));
+            () -> new InfiniteItem(new Item.Properties().stacksTo(64).fireResistant(), "Unbreakable"));
+
+    // Lucky Bomb
+    public static final RegistryObject<Item> LUCKY_BOMB = registerItem("lucky_bomb",
+            () -> new InfiniteItem(new Item.Properties().stacksTo(64).fireResistant(), "LuckyBomb"));
 
     // Ultra Compactor
     public static final RegistryObject<Item> ULTRA_COMPACTOR = ITEMS.register("ultra_compactor",

@@ -814,19 +814,20 @@ public class ModEvents {
         if (event.getSource().getEntity() instanceof Player player) {
             ItemStack mainHand = player.getMainHandItem();
             int level = enchant(mainHand, ModEnchantments.MULTIPLIER.get());
-            CompoundTag tag = mainHand.getOrCreateTag();
             List<ItemEntity> originalDrops = new ArrayList<>(event.getDrops());
             if (level > 1) {
                 originalDrops.forEach(drop -> { ItemStack stack = drop.getItem().copy();
                                                 stack.setCount(stack.getCount() * level); // Multiplier adapt on level
                                                 dropWorld(event, drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack); });
             }
-            if (tag.getBoolean("LuckyBomb") && player.level().random.nextFloat() < 0.05F) { // Paxel item
-                tag.putInt("LuckyBomb", 50);
-                int value = tag.getInt("LuckyBomb");
-                originalDrops.forEach(drop -> { ItemStack luckyItem = drop.getItem().copy();
-                                                luckyItem.setCount(luckyItem.getCount() * value); // Lucky Bomb effect
-                                                dropWorld(event, drop.level(), drop.getX(), drop.getY(), drop.getZ(), luckyItem); });
+            CompoundTag tag = mainHand.getTag();
+            boolean isLucky = tag != null && tag.getBoolean("LuckyBomb");
+            if (mainHand.getItem() instanceof TieredItem && isLucky) {
+                if (player.level().random.nextFloat() < 0.5F) { // Paxel item
+                    originalDrops.forEach(drop -> { ItemStack lucky = drop.getItem().copy();
+                                                    lucky.setCount(lucky.getCount() * 50); // Lucky Bomb effect
+                                                    dropWorld(event, drop.level(), drop.getX(), drop.getY(), drop.getZ(), lucky); });
+                }
             }
         }
     }
@@ -1255,16 +1256,26 @@ public class ModEvents {
     public static void activatedLuckyBombOnBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         Level level = player.level();
-        ItemStack heldItem = player.getItemInHand(mainHand);
-        boolean bool = heldItem.getOrCreateTag().getBoolean("LuckyBomb");
-        int value = bool ? 50 : 1;
         BlockPos pos = event.getPos();
-        if (bool && player.level().random.nextFloat() < 0.50F) {
-            event.setCanceled(true);
-            List<ItemStack> drops = Block.getDrops(event.getState(), (ServerLevel) level, pos, null);
-            drops.forEach(drop -> { drop.setCount(drop.getCount() * value);
-                                    Block.popResource(level, pos, drop); });
-            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+        ItemStack heldItem = player.getItemInHand(mainHand);
+        CompoundTag tag = heldItem.getTag();
+        boolean isLucky = tag != null && tag.getBoolean("LuckyBomb");
+        if (heldItem.getItem() instanceof TieredItem && isLucky) {
+            if (level.random.nextFloat() < 0.50F) {
+                event.setCanceled(true); // CANCEL default event
+                List<ItemStack> drops = Block.getDrops(event.getState(), (ServerLevel) level, pos, null);
+                drops.forEach(drop -> { drop.setCount(drop.getCount() * 50);
+                                        Block.popResource(level, pos, drop); });
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onTooltip(ItemTooltipEvent event) {
+        CompoundTag getTag = event.getItemStack().getTag();
+        if (getTag != null && getTag.getBoolean("LuckyBomb")) {
+            event.getToolTip().add(componentLiteral("§6Lucky Bomb: Multiplier x50 drops", gold));
         }
     }
 }

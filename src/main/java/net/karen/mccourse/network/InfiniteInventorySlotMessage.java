@@ -1,8 +1,6 @@
 package net.karen.mccourse.network;
 
 import net.karen.mccourse.item.custom.InfiniteItem;
-import net.karen.mccourse.util.ChatUtil;
-import net.karen.mccourse.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,7 +8,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
-import static net.karen.mccourse.util.Utils.consumeInfinite;
+import static net.karen.mccourse.util.ChatUtil.*;
+import static net.karen.mccourse.util.Utils.*;
 
 public class InfiniteInventorySlotMessage {
     private final int slotIndex;
@@ -31,20 +30,21 @@ public class InfiniteInventorySlotMessage {
             Slot slot = player.containerMenu.getSlot(slotIndex);
             if (!slot.hasItem()) { return; }
             ItemStack stack = slot.getItem(), carried = player.containerMenu.getCarried();
-            if (carried.isEmpty() || !(carried.getItem() instanceof InfiniteItem)) { return; }
-            if (!stack.isDamageableItem()) { // Item hasn't durability
-                ChatUtil.player(player, "This item has no durability!", Utils.red);
+            if (carried.isEmpty() || !(carried.getItem() instanceof InfiniteItem infinite)) { return; }
+            CompoundTag getTag = stack.getTag(), createTag = stack.getOrCreateTag();
+            String hasTag = infinite.getNameTag(), word = hasTag.replace("_", " ");
+            boolean hasUnbTag = getTag != null && getTag.getBoolean("Unbreakable");
+            if (!stack.isDamageableItem() || hasUnbTag) { // Item hasn't durability
+                player(player, "This item has no durability!", red);
                 return;
             }
-            CompoundTag tag = stack.getOrCreateTag();
-            if (tag.getBoolean("Unbreakable")) { // Item has Unbreakable tag
-                ChatUtil.player(player, "This item is already unbreakable!", Utils.yellow);
+            if (getTag != null && getTag.getBoolean("LuckyBomb")) { // Item has Lucky Bomb tag
+                player(player, "This item is already " + itemLines(word) + "!", yellow);
                 return;
             }
-            tag.putBoolean("Unbreakable", true); // Apply the Unbreakable tag
-            ChatUtil.player(player, "Item is now unbreakable!", Utils.green);
-            consumeInfinite(player, carried); // Consumes the InfiniteItem
-        });
+            createTag.putBoolean(hasTag, true); // Apply the Unbreakable | Lucky Bomb tags
+            player(player, "Item is now " + itemLines(word) + "!", green);
+            consumeInfinite(player, carried); }); // Consumes the Infinite or Lucky Bomb items
         ctx.get().setPacketHandled(true);
     }
 }

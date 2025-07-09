@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-08T00:11:44.2038643	Recipes
+// 1.20.1	2025-07-08T21:43:13.1247357	Recipes
 dd52e5950ac294c207bf9b9441d3b97e76c9739e data/mccourse/advancements/recipes/alexandrite.json
 f25f4805353ec0b5a5f8aa53faf7ed49969aa4fb data/mccourse/advancements/recipes/building_blocks/black_ender_pearl_block.json
 e7e04024d9ae0c414f9f617bda5d86e233de38ca data/mccourse/advancements/recipes/building_blocks/blue_ender_pearl_block.json
@@ -273,7 +273,7 @@ d70e4c994acf63efa7bf821c708d58df09c43ca3 data/mccourse/recipes/white_ender_pearl
 5a15694ee74f2211eed8a89e37df673a52b8a26e data/mccourse/recipes/wooden_paxel.json
 3579756b97b7ff003ebf6630395e96ba2e6996ef data/mccourse/recipes/yellow_ender_pearl_block.json
 c16a87f9ce4fb08949eb40962ca9725314f11ea9 data/minecraft/advancements/recipes/decorations/mccourse_glass_pane_block_from_glass_pane.json
-d426b3326fee3942a720e55c8c4db42261ece667 data/minecraft/advancements/recipes/diamond.json
+24050c0239dac80069257b7f5bc6592b2269b8c2 data/minecraft/advancements/recipes/diamond.json
 7ee87ac0df391206bb6d8e0dd47a6b21631284a7 data/minecraft/advancements/recipes/misc/blaze_rod.json
 942dd83319041a4122092ccf6d1c8729c700011a data/minecraft/advancements/recipes/misc/carrot.json
 67ad99540746a314958b85cb617ebec7ce1927d4 data/minecraft/advancements/recipes/misc/crafting_table.json

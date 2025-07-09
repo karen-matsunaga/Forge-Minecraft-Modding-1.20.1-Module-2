@@ -297,6 +297,7 @@ public class ModCreativeModeTabs {
                         // Mccourse bottle
                         output.accept(ModItems.MCCOURSE_BOTTLE.get());
                         output.accept(ModItems.INFINITE.get());
+                        output.accept(ModItems.LUCKY_BOMB.get());
 
                         // Level Charger
                         output.accept(ModItems.LEVEL_CHARGER_PLUS.get());
