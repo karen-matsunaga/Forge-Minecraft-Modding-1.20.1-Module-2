@@ -101,26 +101,30 @@ public class MCCourseMod {
             // All ModNetwork messages
             // Disenchanted block event network message
             ModNetworks.addNetworkMessage(DisenchantedGuiSlotMessage.class, DisenchantedGuiSlotMessage::buffer,
-                    DisenchantedGuiSlotMessage::new, DisenchantedGuiSlotMessage::handler);
+                                          DisenchantedGuiSlotMessage::new, DisenchantedGuiSlotMessage::handler);
             // Glowing Blocks Block Shape Renderer
             ModNetworks.addNetworkMessage(GlowingBlocksNetworkMessage.SavedDataSyncMessage.class,
-                    GlowingBlocksNetworkMessage.SavedDataSyncMessage::buffer, GlowingBlocksNetworkMessage.SavedDataSyncMessage::new,
-                    GlowingBlocksNetworkMessage.SavedDataSyncMessage::handler);
+                                          GlowingBlocksNetworkMessage.SavedDataSyncMessage::buffer,
+                                          GlowingBlocksNetworkMessage.SavedDataSyncMessage::new,
+                                          GlowingBlocksNetworkMessage.SavedDataSyncMessage::handler);
             // Mccourse Elevator key input message
             ModNetworks.addNetworkMessage(MccourseElevatorKeyInputMessage.class, MccourseElevatorKeyInputMessage::buffer,
-                    MccourseElevatorKeyInputMessage::new, MccourseElevatorKeyInputMessage::handler);
-            // Mccourse Bottle Item
+                                          MccourseElevatorKeyInputMessage::new, MccourseElevatorKeyInputMessage::handler);
+            // Mccourse Bottle item
             ModNetworks.addNetworkMessage(MccourseBottleKeyInputMessage.class, MccourseBottleKeyInputMessage::buffer,
-                    MccourseBottleKeyInputMessage::new, MccourseBottleKeyInputMessage::handler); // SERVER
+                                          MccourseBottleKeyInputMessage::new, MccourseBottleKeyInputMessage::handler); // SERVER
             // Infinite item
             ModNetworks.addNetworkMessage(InfiniteInventorySlotMessage.class, InfiniteInventorySlotMessage::buffer,
-                    InfiniteInventorySlotMessage::new, InfiniteInventorySlotMessage::handler); // SERVER
+                                          InfiniteInventorySlotMessage::new, InfiniteInventorySlotMessage::handler); // SERVER
             // Level Charger item
             ModNetworks.addNetworkMessage(LevelChargerInventorySlotMessage.class, LevelChargerInventorySlotMessage::buffer,
-                    LevelChargerInventorySlotMessage::new, LevelChargerInventorySlotMessage::handler); // SERVER
+                                          LevelChargerInventorySlotMessage::new, LevelChargerInventorySlotMessage::handler); // SERVER
+            // Destroyer Tag item
+            ModNetworks.addNetworkMessage(DestroyerTagSlotMessage.class, DestroyerTagSlotMessage::buffer,
+                                          DestroyerTagSlotMessage::new, DestroyerTagSlotMessage::handler); // SERVER
             // UNLOCK enchantment
             ModNetworks.addNetworkMessage(UnlockNetworkMessage.class, UnlockNetworkMessage::buffer,
-                    UnlockNetworkMessage::new, UnlockNetworkMessage::handler); // SERVER
+                                          UnlockNetworkMessage::new, UnlockNetworkMessage::handler); // SERVER
         });
     }
 

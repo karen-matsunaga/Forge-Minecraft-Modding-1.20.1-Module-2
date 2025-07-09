@@ -140,6 +140,9 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
         // WALNUT block
         this.copy(ModTags.Blocks.WALNUT_LOGS, ModTags.Items.WALNUT_LOGS);
+
+        // DESTROYER TAG
+        this.tag(ModTags.Items.DESTROYER_TAG_ITEMS).add(INFINITE.get(), LUCKY_BOMB.get());
     }
 
     @Override

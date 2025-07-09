@@ -422,6 +422,10 @@ public class ModItems {
     public static final RegistryObject<Item> LUCKY_BOMB = registerItem("lucky_bomb",
             () -> new InfiniteItem(new Item.Properties().stacksTo(64).fireResistant(), "LuckyBomb"));
 
+    // Destroyer Tag
+    public static final RegistryObject<Item> DESTROYER_TAG = registerItem("destroyer_tag",
+            () -> new DestroyerTagItem(new Item.Properties().stacksTo(64).fireResistant(), "Unbreakable"));
+
     // Ultra Compactor
     public static final RegistryObject<Item> ULTRA_COMPACTOR = ITEMS.register("ultra_compactor",
             () -> new UltraCompactorItem(new Item.Properties().fireResistant().stacksTo(1).fireResistant(),

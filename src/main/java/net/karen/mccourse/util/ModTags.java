@@ -61,6 +61,9 @@ public class ModTags {
         // Walnut item
         public static final TagKey<Item> WALNUT_LOGS = tag("walnut_logs");
 
+        // Destroyer Tag items
+        public static final TagKey<Item> DESTROYER_TAG_ITEMS = tag("destroyer_tag_items");
+
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(MCCourseMod.MOD_ID, name)); // Pass item id
         }

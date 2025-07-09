@@ -944,7 +944,7 @@ public class ModEvents {
         }
     }
 
-    // CUSTOM EVENT - INFINITE and LEVEL CHARGER items
+    // CUSTOM EVENT - INFINITE, DESTROYER TAG and LEVEL CHARGER items
     @SubscribeEvent
     public static void itemOnMouseClick(ScreenEvent.MouseButtonPressed.Pre event) {
         if (!(event.getScreen() instanceof AbstractContainerScreen<?> screen)) { return; }
@@ -959,6 +959,7 @@ public class ModEvents {
             if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
                 ItemStack target = slot.getItem();
                 if (target.isEmpty() || target == carried) { return; }
+                network(new DestroyerTagSlotMessage(slot.index)); // Send to the server -> Destroyer Tag item
                 network(new InfiniteInventorySlotMessage(slot.index)); // Send to the server -> Infinite item
                 network(new LevelChargerInventorySlotMessage(slot.index)); // Send to the server -> Level Charger item
                 Utils.consumeInfinite(player, carried); // Consume item on client (immediate visual effect)

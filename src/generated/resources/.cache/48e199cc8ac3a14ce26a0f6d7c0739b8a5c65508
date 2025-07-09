@@ -1,10 +1,11 @@
-// 1.20.1	2025-07-06T18:15:19.956924	Item Tags
+// 1.20.1	2025-07-09T13:46:35.4197169	Item Tags
 a9a5672ff047d00463e43bd4f3311688fbc78584 data/forge/tags/items/tools/fishing_rods.json
 c7cf40b65e9f80b0da876b8c7ba47601cc2eef92 data/mccourse/tags/items/alexandrite_armor.json
 86562fd08aff39d08443a35e89d8fabc2114cb9b data/mccourse/tags/items/alexandrite_ores_items.json
 488d88bfa3bf220ac3efffde7d49c83fe86f4b37 data/mccourse/tags/items/boots_fly.json
 cb72b9f19012bb274543528930deea6b590c73f5 data/mccourse/tags/items/chestplate_fly.json
 80c56329dbc8fc4fcf5a04af29335f059961b8ba data/mccourse/tags/items/copper_armor.json
+ac358dfb72419f0e5719ec300bceb586376bfde6 data/mccourse/tags/items/destroyer_tag_items.json
 e70861732ee55a7128661f30008e9c2dc2dd8409 data/mccourse/tags/items/helmet_fly.json
 8ba7b35398496adf646c932b2ac34f34aa5d172f data/mccourse/tags/items/leggings_fly.json
 e209e711b45f62b36e015b91e49bd510cdda547e data/mccourse/tags/items/level_charger_all.json
