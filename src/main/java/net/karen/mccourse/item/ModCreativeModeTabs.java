@@ -298,7 +298,8 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.MCCOURSE_BOTTLE.get());
                         output.accept(ModItems.INFINITE.get());
                         output.accept(ModItems.LUCKY_BOMB.get());
-                        output.accept(ModItems.DESTROYER_TAG.get());
+                        output.accept(ModItems.DESTROYER_UNBREAKABLE_TAG.get());
+                        output.accept(ModItems.DESTROYER_LUCKY_BOMB_TAG.get());
 
                         // Level Charger
                         output.accept(ModItems.LEVEL_CHARGER_PLUS.get());

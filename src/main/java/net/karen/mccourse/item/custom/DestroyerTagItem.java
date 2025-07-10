@@ -1,22 +1,13 @@
 package net.karen.mccourse.item.custom;
 
-import net.karen.mccourse.util.ModTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.tags.ITagManager;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import java.util.Collection;
+import org.jetbrains.annotations.*;
 import java.util.List;
-
 import static net.karen.mccourse.util.ChatUtil.*;
 import static net.karen.mccourse.util.Utils.*;
 
@@ -27,43 +18,32 @@ public class DestroyerTagItem extends Item {
         this.nameTag = nameTag;
     }
 
-    public String getNameTag() { return this.nameTag; }
-
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level,
-                                                           @NotNull Player player, @NotNull InteractionHand hand) {
-        ItemStack getItem = player.getItemInHand(hand), mainHand = player.getMainHandItem();
-        if (!level.isClientSide() && !mainHand.isEmpty() && mainHand != getItem) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player,
+                                                           @NotNull InteractionHand hand) {
+        ItemStack offHand = player.getItemInHand(hand), mainHand = player.getMainHandItem();
+        if (!level.isClientSide() && !mainHand.isEmpty() && mainHand != offHand) {
             CompoundTag getTag = mainHand.getTag();
+            if (mainHand.isEmpty() || !mainHand.hasTag()) { // Item WITHOUT tag
+                player(player, "Item without " + itemLines(nameTag) + "!", red);
+                return InteractionResultHolder.fail(offHand);
+            }
             if (mainHand.hasTag() && getTag != null && getTag.getBoolean(nameTag)) {
                 mainHand.removeTagKey(nameTag); // Removed Tag
-                Collection<Item> items = ForgeRegistries.ITEMS.getValues();
-                @Nullable ITagManager<Item> tagItem = ForgeRegistries.ITEMS.tags();
-                items.forEach(item -> { // Restore item from removed tag
-                    if (tagItem != null && tagItem.getTag(ModTags.Items.DESTROYER_TAG_ITEMS).contains(item)) {
-                        if (item.toString().contains(nameTag)) {
-                            dropFish(level, player.getX(), player.getY(), player.getZ(), new ItemStack(item));
-                        }
-                    }
-                });
-                player(player, "Removed " + itemLines(nameTag.replace("_", " ")) + " tag!", green);
-                consumeInfinite(player, getItem);
-                return InteractionResultHolder.success(getItem);
+                player(player, "Removed " + itemLines(nameTag) + " tag!", green);
+                consumeInfinite(player, offHand);
+                return InteractionResultHolder.success(offHand);
             }
-            else { player(player, "Item without " + itemLines(nameTag.replace("_", " ")) + "!", red); }
         }
-        return InteractionResultHolder.pass(getItem);
+        return InteractionResultHolder.pass(offHand);
     }
 
     @Override
-    public @NotNull Component getName(ItemStack stack) {
-        return componentTranslatable(itemLines(stack.getDescriptionId().replace("_", " ")), darkRed);
-    }
+    public @NotNull Component getName(ItemStack stack) { return componentTranslatable(stack.getDescriptionId(), darkRed); }
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level,
                                 @NotNull List<Component> list, @NotNull TooltipFlag flag) {
-        String format = stack.getDescriptionId().replace("_", " ");
-        tooltipLine(list, "Removed " + itemLines(format) + "tag!", red);
+        tooltipLine(list, "Removed " + itemLines(nameTag) + " tag!", red);
     }
 }

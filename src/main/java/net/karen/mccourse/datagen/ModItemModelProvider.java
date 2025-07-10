@@ -202,7 +202,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         // Farm items
         simpleItem(ModItems.INFINITE);
         simpleItem(ModItems.LUCKY_BOMB);
-        simpleItem(ModItems.DESTROYER_TAG);
+        simpleItem(ModItems.DESTROYER_UNBREAKABLE_TAG);
+        simpleItem(ModItems.DESTROYER_LUCKY_BOMB_TAG);
         simpleItem(ModItems.ULTRA_COMPACTOR);
         simpleItem(ModItems.PINK_ULTRA_COMPACTOR);
         simpleItem(ModItems.GROWTH);

@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-09T13:46:35.4067257	Item Models: mccourse
+// 1.20.1	2025-07-09T17:23:11.9307532	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -116,7 +116,8 @@ bb968366d50e7d7a8fa66030278ec0e58da9a465 assets/mccourse/models/item/copper_shov
 2d2cde7140d95796e114d8cd1a2babae7d66d332 assets/mccourse/models/item/data_tablet.json
 eac3449dd2f9df65a33456b5098c130c1e050c03 assets/mccourse/models/item/data_tablet_on.json
 a567576897ca2ce8cebbb3e1456a450af9c98f17 assets/mccourse/models/item/destroyer.json
-4025261133d6978281b1293a920e00b800040ca4 assets/mccourse/models/item/destroyer_tag.json
+353d243bc541a7f8c1011d586a84bff8a5796fcc assets/mccourse/models/item/destroyer_lucky_bomb_tag.json
+df90b2d235ffbcdb089fe42a6aa9c2c82cde21f4 assets/mccourse/models/item/destroyer_unbreakable_tag.json
 d05b6b7d8b4f3d85ee0762de2644d6dbf0397fd1 assets/mccourse/models/item/diamond_hammer.json
 60df385743dd097d8534a513f066ada5ded41c14 assets/mccourse/models/item/diamond_paxel.json
 eae9ea63d29bcb3e6592ee8132690be675ea7f9f assets/mccourse/models/item/dice.json
