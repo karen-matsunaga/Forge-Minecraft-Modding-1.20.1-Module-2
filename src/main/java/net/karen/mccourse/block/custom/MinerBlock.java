@@ -19,12 +19,14 @@ public class MinerBlock extends Block {
     public void onPlace(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
                         @NotNull BlockState oldState, boolean isMoving) {
         if (!level.isClientSide()) { level.scheduleTick(pos, this, 60); }
+        super.onPlace(state, level, pos, oldState, isMoving);
     }
 
     @Override
     public void tick(@NotNull BlockState state, ServerLevel level,
                      @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (level.getBlockState(pos).getBlock() == this) { level.removeBlock(pos, false); }
+        super.tick(state, level, pos, random);
     }
 
     @Override
