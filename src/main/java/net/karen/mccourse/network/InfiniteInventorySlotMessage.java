@@ -33,18 +33,14 @@ public class InfiniteInventorySlotMessage {
             if (carried.isEmpty() || !(carried.getItem() instanceof InfiniteItem infinite)) { return; }
             CompoundTag getTag = stack.getTag(), createTag = stack.getOrCreateTag();
             String hasTag = infinite.getNameTag(), word = hasTag.replace("_", " ");
-            boolean hasUnbTag = getTag != null && getTag.getBoolean("Unbreakable");
-            if (!stack.isDamageableItem() || hasUnbTag) { // Item hasn't durability
-                player(player, "This item has no durability!", red);
-                return;
-            }
-            if (getTag != null && getTag.getBoolean("LuckyBomb")) { // Item has Lucky Bomb tag
+            if (getTag != null && getTag.getBoolean(hasTag)) { // Item has Lucky Bomb tag or Unbreakable tag
                 player(player, "This item is already " + itemLines(word) + "!", yellow);
                 return;
             }
-            createTag.putBoolean(hasTag, true); // Apply the Unbreakable | Lucky Bomb tags
+            createTag.putBoolean(hasTag, true); // Apply the Unbreakable tag or Lucky Bomb tag
             player(player, "Item is now " + itemLines(word) + "!", green);
-            consumeInfinite(player, carried); }); // Consumes the Infinite or Lucky Bomb items
+            consumeInfinite(player, carried); // Consumes the Infinite or Lucky Bomb items
+        });
         ctx.get().setPacketHandled(true);
     }
 }
