@@ -33,11 +33,10 @@ public class ModHelmetItem extends ArmorItem {
     public void onArmorTick(ItemStack stack, Level level, Player player) { // Apply effect if player using all parts of armor
         if (!level.isClientSide() && !player.getInventory().getArmor(3).isEmpty()) { // Player is using Helmet
             evaluateArmorEffects(player);
-            if (!level.isClientSide() && has(player, EquipmentSlot.HEAD).is(ModItems.MINER_HELMET.get())) { // Miner Block
+            if (has(player, EquipmentSlot.HEAD).is(ModItems.MINER_HELMET.get())) { // Miner Block
                 BlockPos pos = player.blockPosition();
-                if (level.getBlockState(pos).isAir()) {
-                    level.setBlock(pos, ModBlocks.MINER_BLOCK.get().defaultBlockState(), 3);
-                }
+                boolean blockAir = level.getBlockState(pos).isAir();
+                if (blockAir) { level.setBlock(pos, ModBlocks.MINER_BLOCK.get().defaultBlockState(), 3); }
             }
         }
     }
