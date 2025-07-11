@@ -21,29 +21,32 @@ public class DestroyerTagItem extends Item {
 
     public String getNameTag() { return this.nameTag; } // Used on Destroyer Tag Slot Message Network
 
+    // DEFAULT METHOD - Action when pressed right-click mouse button
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player,
                                                            @NotNull InteractionHand hand) {
         ItemStack offHand = player.getItemInHand(hand), mainHand = player.getMainHandItem();
         if (!level.isClientSide() && !mainHand.isEmpty() && mainHand != offHand) {
             CompoundTag getTag = mainHand.getTag(); // Used item on MAIN HAND inventory
+            boolean notNull = getTag != null, notTag = notNull && !getTag.getBoolean(nameTag);
             // Item WITHOUT tag
-            if (getTag == null) { return fail(player, "Item without " + itemLines(nameTag) + "!", red, offHand); }
-            else if (getTag.getBoolean(nameTag)) { // Removed Unbreakable tag or Lucky Bomb tag
+            if (notTag) { return fail(player, "Item without " + itemLines(nameTag) + " tag!", red, offHand); }
+            else if (notNull && getTag.getBoolean(nameTag)) { // Removed Unbreakable tag or Lucky Bomb tag
                 mainHand.removeTagKey(nameTag);
                 player(player, "Removed " + itemLines(nameTag) + " tag!", green);
                 consumeInfinite(player, offHand); // Consumes OFFHAND item Destroyer Unbreakable Tag or Destroyer Lucky Bomb Tag
                 return InteractionResultHolder.success(offHand);
             }
-            else { return fail(player, "Item without any matching tags!", red, offHand); } // Different tags
         }
         player(player, "Hold the tool in your main hand!", red); // Tool or armor on MAIN HAND
         return InteractionResultHolder.pass(offHand);
     }
 
+    // DEFAULT METHOD - Name of item
     @Override
     public @NotNull Component getName(ItemStack stack) { return componentTranslatable(stack.getDescriptionId(), darkRed); }
 
+    // DEFAULT METHOD - Added more information about item
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level,
                                 @NotNull List<Component> list, @NotNull TooltipFlag flag) {

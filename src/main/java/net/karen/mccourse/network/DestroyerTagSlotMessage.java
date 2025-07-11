@@ -33,14 +33,13 @@ public class DestroyerTagSlotMessage {
             if (carried.isEmpty() || !(carried.getItem() instanceof DestroyerTagItem destroyer)) { return; }
             CompoundTag getTag = stack.getTag(); // Item has Lucky Bomb tag or Unbreakable tag
             String nameTag = destroyer.getNameTag(), word = nameTag.replace("_", " ");
-            if (getTag == null) { player(player, "Item without " + itemLines(word) + "!", red); } // Item WITHOUT tag
-            else if (getTag.getBoolean(nameTag)) { // Remove the Unbreakable tag or Lucky Bomb tag
-                stack.removeTagKey(nameTag);
-                player(player, "Removed " + itemLines(word) + "tag!", gold);
+            boolean notNull = getTag != null, notTag = notNull && !getTag.getBoolean(nameTag);
+            if (notTag) { player(player, "Item without " + itemLines(word) + " tag!", red); } // Item WITHOUT tag
+            else if (notNull && getTag.getBoolean(nameTag)) { // Remove the Unbreakable tag or Lucky Bomb tag
+                stack.removeTagKey(nameTag); // Remove tag of tool or armor on MAIN HAND
+                player(player, "Removed " + itemLines(word) + " tag!", darkRed);
                 consumeInfinite(player, carried); // Consumes OFFHAND item Destroyer Unbreakable Tag or Destroyer Lucky Bomb Tag
             }
-            else { player(player, "Item without any matching tags!", red); } // Different tags
-            player(player, "Hold the tool in your main hand!", red); // Tool or armor on MAIN HAND
         });
         ctx.get().setPacketHandled(true);
     }
