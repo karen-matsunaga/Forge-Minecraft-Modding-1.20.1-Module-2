@@ -29,17 +29,19 @@ public class InfiniteInventorySlotMessage {
             if (slotIndex < 0 || slotIndex >= player.containerMenu.slots.size()) { return; }
             Slot slot = player.containerMenu.getSlot(slotIndex);
             if (!slot.hasItem()) { return; }
-            ItemStack stack = slot.getItem(), carried = player.containerMenu.getCarried();
+            ItemStack stack = slot.getItem(), carried = player.containerMenu.getCarried(); // Get MAIN HAND item on inventory
             if (carried.isEmpty() || !(carried.getItem() instanceof InfiniteItem infinite)) { return; }
-            CompoundTag getTag = stack.getTag(), createTag = stack.getOrCreateTag();
-            String hasTag = infinite.getNameTag(), word = hasTag.replace("_", " ");
+            CompoundTag getTag = stack.getTag(), createTag = stack.getOrCreateTag(); // Get MAIN HAND item on inventory
+            String hasTag = infinite.getNameTag(), word = splitWord(hasTag), upper = upperString(word);
             if (getTag != null && getTag.getBoolean(hasTag)) { // Item has Lucky Bomb tag or Unbreakable tag
-                player(player, "This item is already " + itemLines(word) + "!", yellow);
-                return;
+                player(player, "This item is already " + upper + " tag!", yellow);
             }
-            createTag.putBoolean(hasTag, true); // Apply the Unbreakable tag or Lucky Bomb tag
-            player(player, "Item is now " + itemLines(word) + "!", green);
-            consumeInfinite(player, carried); // Consumes the Infinite or Lucky Bomb items
+            else if (getTag != null && !getTag.getBoolean(hasTag)) { // Apply the Unbreakable tag or Lucky Bomb tag
+                createTag.putBoolean(hasTag, true);
+                player(player, "Added " + upper + " tag!", green);
+                consumeInfinite(player, carried); // Consumes the Infinite or Lucky Bomb items
+            }
+            else { player(player, "Hold the tool in your main hand!", red); } // Tool or armor on MAIN HAND
         });
         ctx.get().setPacketHandled(true);
     }

@@ -197,6 +197,16 @@ public class ChatUtil { // GENERAL METHODS
         return capitalized.toString(); // Joined words with capitalize words
     }
 
+    // CUSTOM METHOD - SPLIT STRING
+    public static String splitWord(String word) {
+        return word.replace("_", " ");
+    }
+
+    // CUSTOM METHOD - SPLIT UPPER STRING -> Example: LuckyBomb -> Lucky Bomb
+    public static String upperString(String upper) {
+        return upper.replaceAll("([a-z])([A-Z])", "$1 $2");
+    }
+
     // CUSTOM METHOD - Fail messages
     public static InteractionResultHolder<ItemStack> fail(Player player, String message,
                                                           ChatFormatting color, ItemStack usedStack) {

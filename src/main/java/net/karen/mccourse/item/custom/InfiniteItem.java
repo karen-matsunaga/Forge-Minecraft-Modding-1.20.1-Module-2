@@ -27,17 +27,18 @@ public class InfiniteItem extends Item {
         ItemStack offHand = player.getItemInHand(hand), mainHand = player.getMainHandItem();
         if (!level.isClientSide() && !mainHand.isEmpty() && mainHand != offHand) {
             CompoundTag getTag =  mainHand.getTag(), createTag = mainHand.getOrCreateTag();
+            String split = splitWord(nameTag), upper = upperString(split);
             if (getTag != null && getTag.getBoolean(nameTag)) { // Item has Unbreakable tag or Lucky Bomb tag
-                return fail(player, "This item is already " + nameTag + "!", yellow, offHand);
+                return fail(player, "This item is already " + upper + " tag!", yellow, offHand);
             }
-            else if (mainHand.isDamageableItem() && mainHand.getMaxStackSize() == 1) { // Apply Unbreakable tag or Lucky Bomb tag
+            else if (getTag != null && !getTag.getBoolean(nameTag)) { // Apply Unbreakable tag or Lucky Bomb tag
                 createTag.putBoolean(nameTag, true);
-                player(player, "Item is now " + nameTag + "!", green);
+                player(player, "Added " + upper + " tag!", green);
                 consumeInfinite(player, offHand);
+                return InteractionResultHolder.success(offHand);
             }
-            return InteractionResultHolder.success(offHand);
         }
-        fail(player, "Hold the tool in your main hand!", red, offHand);
+        player(player, "Hold the tool in your main hand!", red);
         return InteractionResultHolder.pass(offHand);
     }
 

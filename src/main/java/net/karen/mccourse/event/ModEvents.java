@@ -46,6 +46,8 @@ import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.*;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.scores.*;
 import net.minecraftforge.client.event.*;
@@ -385,7 +387,7 @@ public class ModEvents {
     // Credits by Parlack - Pickaxe modes - https://www.youtube.com/watch?v=pBo1c3hM3b0
     // CUSTOM EVENT - Custom Modes Pickaxe event GUI - Using code with some modifications
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void eventHandler(RenderGuiOverlayEvent.Pre event) {
+    public static void activatedModesPickaxeOnScreen(RenderGuiOverlayEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         int x = 10 , y = event.getWindow().getGuiScaledHeight() - 30;
@@ -1240,16 +1242,15 @@ public class ModEvents {
         if (event.getDuration() <= 0) { Utils.clear(); } // Ensures you don't get stuck
     }
 
-    // CUSTOM EVENT - Block TOOLTIP
+    // CUSTOM EVENT - Block TOOLTIP name
     @SubscribeEvent
     public static void onBlockTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack(); // Check if it is the specific block
         if (stack.getItem() == ModBlocks.MAGIC_DISENCHANTED_BOOK_BLOCK.get().asItem()) {
             List<Component> tooltip = event.getToolTip(); // Original tooltip
             if (!tooltip.isEmpty()) {
-                Component original = tooltip.get(0); // Change only the name (first line of the tooltip)
-                Component colored = original.copy().withStyle(style -> style.withColor(ChatFormatting.AQUA));
-                tooltip.set(0, colored);
+                Component original = tooltip.get(0), colored = original.copy().withStyle(style -> style.withColor(aqua));
+                tooltip.set(0, colored); // Change only the name (first line of the tooltip)
             }
         }
     }
@@ -1261,24 +1262,50 @@ public class ModEvents {
         Level level = player.level();
         BlockPos pos = event.getPos();
         ItemStack heldItem = player.getItemInHand(mainHand);
-        CompoundTag tag = heldItem.getTag();
-        boolean isLucky = tag != null && tag.getBoolean("LuckyBomb");
-        if (heldItem.getItem() instanceof TieredItem && isLucky) {
-            if (level.random.nextFloat() < 0.50F) {
-                event.setCanceled(true); // CANCEL default event
-                List<ItemStack> drops = Block.getDrops(event.getState(), (ServerLevel) level, pos, null);
-                drops.forEach(drop -> { drop.setCount(drop.getCount() * 50);
-                                        Block.popResource(level, pos, drop); });
-                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-            }
+        CompoundTag tag = heldItem.getTag(); // MAIN HAND item has Lucky Bomb
+        if (!(level instanceof ServerLevel serverLevel)) { return; }
+        if (!(heldItem.getItem() instanceof TieredItem) || !(tag != null && tag.getBoolean("LuckyBomb"))) { return; }
+        if (serverLevel.random.nextFloat() < 0.05F) { // 5% chance to apply Lucky Bomb effect
+            event.setCanceled(true); // Cancel DEFAULT drop block event
+            LootParams.Builder builder = new LootParams.Builder(serverLevel) // Create loot context
+                                                       .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+                                                       .withParameter(LootContextParams.TOOL, heldItem)
+                                                       .withParameter(LootContextParams.BLOCK_STATE, event.getState())
+                                                       .withOptionalParameter(LootContextParams.THIS_ENTITY, player);
+            List<ItemStack> drops = event.getState().getDrops(builder); // Get real drops with SILK TOUCH or FORTUNE
+            drops.forEach(drop -> { drop.setCount(drop.getCount() * 50); // Get original DROP and ADDED Lucky Bomb effect
+                                    Block.popResource(level, pos, drop); });
+            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);  // Remove block
         }
     }
 
     @SubscribeEvent
-    public static void onTooltip(ItemTooltipEvent event) {
+    public static void activatedLuckyBombOnTooltip(ItemTooltipEvent event) {
         CompoundTag getTag = event.getItemStack().getTag();
         if (getTag != null && getTag.getBoolean("LuckyBomb")) {
-            event.getToolTip().add(componentLiteral("§6Lucky Bomb: Multiplier x50 drops", gold));
+            List<Component> tooltip = event.getToolTip();
+            int insertIndex = 1; // Pattern: add after attributes (usually after line 1 or 2)
+            for (int i = 0; i < tooltip.size(); i++) {
+                Component line = tooltip.get(i);
+                String str = line.getString();
+                if (str.contains("Attack") || str.contains("Speed")) { insertIndex = i + 1; } // After the last attribute
+            }
+            tooltip.add(insertIndex, componentLiteral("Lucky Bomb: 5% Chance to MULTIPLIER x50 drops", gold));
+        }
+    }
+
+    // CUSTOM EVENT - Infinite JUMP
+    @SubscribeEvent
+    public static void playerInfiniteJumpOnClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) { return; }
+        Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
+        if (player == null || mc.level == null) { return; }
+        double x = player.getDeltaMovement().x, z = player.getDeltaMovement().z;
+        KeyMapping jump = mc.options.keyJump;
+        if (jump.consumeClick() && jump.isDown()) { // Check if the pulse key is being pressed
+            if (!player.onGround()) { player.setDeltaMovement(x, 0.42, z); } // Applies the boost only if not on the ground
+            else { player.jumpFromGround(); } // Default jump if on the ground
         }
     }
 }

@@ -32,12 +32,12 @@ public class DestroyerTagSlotMessage {
             ItemStack stack = slot.getItem(), carried = player.containerMenu.getCarried(); // Used item on MAIN HAND inventory
             if (carried.isEmpty() || !(carried.getItem() instanceof DestroyerTagItem destroyer)) { return; }
             CompoundTag getTag = stack.getTag(); // Item has Lucky Bomb tag or Unbreakable tag
-            String nameTag = destroyer.getNameTag(), word = nameTag.replace("_", " ");
+            String nameTag = destroyer.getNameTag(), word = splitWord(nameTag), upper = upperString(word);
             boolean notNull = getTag != null, notTag = notNull && !getTag.getBoolean(nameTag);
-            if (notTag) { player(player, "Item without " + itemLines(word) + " tag!", red); } // Item WITHOUT tag
+            if (notTag) { player(player, "Item without " + upper + " tag!", red); } // Item WITHOUT tag
             else if (notNull && getTag.getBoolean(nameTag)) { // Remove the Unbreakable tag or Lucky Bomb tag
                 stack.removeTagKey(nameTag); // Remove tag of tool or armor on MAIN HAND
-                player(player, "Removed " + itemLines(word) + " tag!", darkRed);
+                player(player, "Removed " + upper + " tag!", darkRed); // Remove message on screen
                 consumeInfinite(player, carried); // Consumes OFFHAND item Destroyer Unbreakable Tag or Destroyer Lucky Bomb Tag
             }
         });

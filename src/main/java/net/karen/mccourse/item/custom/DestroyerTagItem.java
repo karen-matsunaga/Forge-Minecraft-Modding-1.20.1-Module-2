@@ -28,12 +28,12 @@ public class DestroyerTagItem extends Item {
         ItemStack offHand = player.getItemInHand(hand), mainHand = player.getMainHandItem();
         if (!level.isClientSide() && !mainHand.isEmpty() && mainHand != offHand) {
             CompoundTag getTag = mainHand.getTag(); // Used item on MAIN HAND inventory
+            String split = splitWord(nameTag), upper = upperString(split);
             boolean notNull = getTag != null, notTag = notNull && !getTag.getBoolean(nameTag);
-            // Item WITHOUT tag
-            if (notTag) { return fail(player, "Item without " + itemLines(nameTag) + " tag!", red, offHand); }
+            if (notTag) { return fail(player, "Item without " + upper + " tag!", red, offHand); } // Item WITHOUT tag
             else if (notNull && getTag.getBoolean(nameTag)) { // Removed Unbreakable tag or Lucky Bomb tag
                 mainHand.removeTagKey(nameTag);
-                player(player, "Removed " + itemLines(nameTag) + " tag!", green);
+                player(player, "Removed " + upper + " tag!", darkRed); // Remove message on screen
                 consumeInfinite(player, offHand); // Consumes OFFHAND item Destroyer Unbreakable Tag or Destroyer Lucky Bomb Tag
                 return InteractionResultHolder.success(offHand);
             }
