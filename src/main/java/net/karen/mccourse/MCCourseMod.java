@@ -119,6 +119,9 @@ public class MCCourseMod {
             // Level Charger item
             ModNetworks.addNetworkMessage(LevelChargerInventorySlotMessage.class, LevelChargerInventorySlotMessage::buffer,
                                           LevelChargerInventorySlotMessage::new, LevelChargerInventorySlotMessage::handler); // SERVER
+            // Destroyer Tag item
+            ModNetworks.addNetworkMessage(DestroyerTagSlotMessage.class, DestroyerTagSlotMessage::buffer,
+                                          DestroyerTagSlotMessage::new, DestroyerTagSlotMessage::handler); // SERVER
             // UNLOCK enchantment
             ModNetworks.addNetworkMessage(UnlockNetworkMessage.class, UnlockNetworkMessage::buffer,
                                           UnlockNetworkMessage::new, UnlockNetworkMessage::handler); // SERVER

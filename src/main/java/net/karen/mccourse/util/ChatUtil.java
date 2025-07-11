@@ -6,6 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -194,5 +195,12 @@ public class ChatUtil { // GENERAL METHODS
             if (!word.isEmpty()) { capitalized.add(word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase()); }
         }
         return capitalized.toString(); // Joined words with capitalize words
+    }
+
+    // CUSTOM METHOD - Fail messages
+    public static InteractionResultHolder<ItemStack> fail(Player player, String message,
+                                                          ChatFormatting color, ItemStack usedStack) {
+        player(player, message, color);
+        return InteractionResultHolder.fail(usedStack);
     }
 }

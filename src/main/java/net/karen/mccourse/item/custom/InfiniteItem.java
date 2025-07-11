@@ -1,7 +1,6 @@
 package net.karen.mccourse.item.custom;
 
 import net.karen.mccourse.item.ModItems;
-import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.*;
@@ -53,12 +52,5 @@ public class InfiniteItem extends Item {
         if (stack.is(ModItems.INFINITE.get())) { tooltipLine(list, message + itemLines(item) + " durability!", purple); }
         if (stack.is(ModItems.LUCKY_BOMB.get())) { tooltipLine(list, message + itemLines(item) + " tag!", gold); }
         super.appendHoverText(stack, pLevel, list, flag);
-    }
-
-    // CUSTOM METHOD - Fail messages
-    public InteractionResultHolder<ItemStack> fail(Player player, String message,
-                                                   ChatFormatting color, ItemStack usedStack) {
-        player(player, message, color);
-        return InteractionResultHolder.fail(usedStack);
     }
 }

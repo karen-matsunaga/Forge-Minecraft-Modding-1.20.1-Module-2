@@ -951,7 +951,9 @@ public class ModEvents {
         Player player =  Minecraft.getInstance().player;
         if (player == null) { return; }
         ItemStack carried = player.containerMenu.getCarried();
-        if (!(carried.getItem() instanceof InfiniteItem || carried.getItem() instanceof LevelChargerItem)) { return; }
+        boolean inf = carried.getItem() instanceof InfiniteItem, des = carried.getItem() instanceof DestroyerTagItem,
+                lev = carried.getItem() instanceof LevelChargerItem;
+        if (!(inf || lev || des)) { return; } // Hasn't Infinite, Destroyer Tag or Level Charger items
         double mouseX = event.getMouseX(), mouseY = event.getMouseY();
         if (event.getButton() != 0) { return; }
         for (Slot slot : screen.getMenu().slots) {
@@ -959,6 +961,7 @@ public class ModEvents {
             if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
                 ItemStack target = slot.getItem();
                 if (target.isEmpty() || target == carried) { return; }
+                network(new DestroyerTagSlotMessage(slot.index)); // Send to the server -> Destroyer Tag item
                 network(new InfiniteInventorySlotMessage(slot.index)); // Send to the server -> Infinite item
                 network(new LevelChargerInventorySlotMessage(slot.index)); // Send to the server -> Level Charger item
                 Utils.consumeInfinite(player, carried); // Consume item on client (immediate visual effect)
