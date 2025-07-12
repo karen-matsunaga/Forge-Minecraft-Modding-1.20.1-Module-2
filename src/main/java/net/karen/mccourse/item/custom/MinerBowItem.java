@@ -3,7 +3,7 @@ package net.karen.mccourse.item.custom;
 import net.karen.mccourse.util.ChatUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.*;
@@ -13,11 +13,14 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.*;
 import java.util.List;
+import static net.karen.mccourse.util.ChatUtil.*;
 import static net.karen.mccourse.util.Utils.*;
 
 public class MinerBowItem extends BowItem {
     private final int radius, depth;
     private final boolean lucky;
+    private static final int[] COLORS = { 0xff5555, 0xffaa00, 0xffff55, 0x55ff55, 0x55ffff, 0x5555ff, 0xff55ff };
+
     public MinerBowItem(Properties properties, int radius, int depth, boolean lucky) {
         super(properties);
         this.radius = radius;
@@ -40,7 +43,7 @@ public class MinerBowItem extends BowItem {
                 ItemStack invStack = inventory.getItem(i);
                 if (invStack.getItem() instanceof ArrowItem) {
                     invStack.shrink(1); // Remove 1 arrow
-                    if (invStack.isEmpty()) inventory.setItem(i, ItemStack.EMPTY);
+                    if (invStack.isEmpty()) { inventory.setItem(i, ItemStack.EMPTY); }
                     removedArrow = true;
                     break;
                 }
@@ -62,6 +65,19 @@ public class MinerBowItem extends BowItem {
             world.addFreshEntity(arrow);
             playerSound(world, player, SoundEvents.ARROW_SHOOT, 1.0F, 1.0F);
         }
+    }
+
+    @Override
+    public @NotNull Component getName(ItemStack stack) {
+        int shift = (int) (System.currentTimeMillis() / 200L % COLORS.length); // Calculates color shift based on time
+        MutableComponent minerText = Component.literal(""); // Animated text for "Miner Bow" with RGB wave effect
+        String text = itemLine(stack.getDescriptionId(), "item.mccourse.", "", "_", " "), on = itemLines(text);
+        for (int i = 0; i < on.length(); i++) {
+            int colorIndex = (i - shift + COLORS.length) % COLORS.length; // Adjust to move colors from left to right
+            minerText.append(Component.translatable(String.valueOf(on.charAt(i)))
+                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(COLORS[colorIndex]))));
+        }
+        return minerText;
     }
 
     @Override
