@@ -158,6 +158,8 @@
   "item.mccourse.pickaxe_luck": "Pickaxe Luck",
   "item.mccourse.weapon_luck": "Weapon Luck",
 
+  "item.mccourse.saturation_gem_effect": "Saturation Gem Effect",
+
   "block.mccourse.craft_crafting_table": "Craft Crafting Table",
   "mccourse.container.crafting": "",
   "container.inventory": "",

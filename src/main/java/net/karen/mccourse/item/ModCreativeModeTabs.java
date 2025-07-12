@@ -324,6 +324,9 @@ public class ModCreativeModeTabs {
 
                         // Torch Ball
                         output.accept(ModItems.TORCH_BALL.get());
+
+                        // Saturation Gem Effect
+                        output.accept(ModItems.SATURATION_GEM_EFFECT.get());
                     }).build());
 
     // Registry Creative Mode Tab

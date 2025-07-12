@@ -218,6 +218,9 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         // Mccourse glass
         simpleBlockItemModel(ModBlocks.MCCOURSE_GLASS_PANE_BLOCK, ModBlocks.MCCOURSE_GLASS_BLOCK);
+
+        // Saturation Gem Effect
+        simpleItem(ModItems.SATURATION_GEM_EFFECT);
     }
 
     // Registry all sapling item's models

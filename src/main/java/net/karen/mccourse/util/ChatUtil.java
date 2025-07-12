@@ -54,8 +54,8 @@ public class ChatUtil { // GENERAL METHODS
         player.displayClientMessage(componentLiteral(message, color), true);
     }
 
-    public static void playerTranslatable(Player player, String message, ChatFormatting color) {
-        player.displayClientMessage(componentTranslatable(message, color), true);
+    public static void playerRGB(Player player, Component message) {
+        player.displayClientMessage(message, true);
     }
 
     // CUSTOM METHOD - Message appears on screen with BOLD format
@@ -93,9 +93,18 @@ public class ChatUtil { // GENERAL METHODS
         tooltip.add(standardTranslatable(message));
     }
 
-    // CUSTOM METHOD - Text appears on TOOLTIP item (Translatable version) with color
-    public static void tooltipLineTranslatable(List<Component> tooltip, String message, ChatFormatting color) {
-        tooltip.add(componentTranslatable(message, color));
+    // CUSTOM METHOD - Text appears on TOOLTIP item (Translatable version) with RGB color
+    public static MutableComponent tooltipLineTranslatableRGB(int[] COLORS, ItemStack stack) {
+        int shift = (int) (System.currentTimeMillis() / 200L % COLORS.length); // Calculates color shift based on time
+        MutableComponent minerText = Component.literal(""); // Animated text for "Miner Bow" with RGB wave effect
+        String text = itemLine(stack.getDescriptionId(), "item.mccourse.", "", "_", " "),
+                 on = itemLines(text);
+        for (int i = 0; i < on.length(); i++) {
+            int colorIndex = (i - shift + COLORS.length) % COLORS.length; // Adjust to move colors from left to right
+            minerText.append(Component.translatable(String.valueOf(on.charAt(i)))
+                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(COLORS[colorIndex]))));
+        }
+        return minerText;
     }
 
     // CUSTOM METHOD - Text appears on TOOLTIP item with BOLD format
@@ -108,6 +117,35 @@ public class ChatUtil { // GENERAL METHODS
                                     String message, ChatFormatting color) {
         tooltip.add(Component.translatable(item.getDescriptionId()).withStyle(color)
                              .append(componentLiteral(message, color)));
+    }
+
+    // CUSTOM METHOD - Tooltip Line Literal with RGB colors
+    public static void tooltipLineLiteralRGB(List<Component> tooltip,
+                                             int[] COLORS, ItemStack stack, String message) {
+        int shift = (int) (System.currentTimeMillis() / 200L % COLORS.length); // Calculates color shift based on time
+        MutableComponent minerText = Component.literal(""); // Animated text for "Miner Bow" with RGB wave effect
+        String text = itemLine(stack.getDescriptionId(), "item.mccourse.", "", "_", " "),
+                 on = itemLines(text) + message;
+        for (int i = 0; i < on.length(); i++) {
+            int colorIndex = (i - shift + COLORS.length) % COLORS.length; // Adjust to move colors from left to right
+            minerText.append(Component.literal(String.valueOf(on.charAt(i)))
+                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(COLORS[colorIndex]))));
+        }
+        tooltip.add(minerText);
+    }
+
+    // CUSTOM METHOD - Message Literal on screen with RGB colors
+    public static void messageLiteralRGB(Player player, int[] COLORS, ItemStack stack, String message) {
+        int shift = (int) (System.currentTimeMillis() / 200L % COLORS.length); // Calculates color shift based on time
+        MutableComponent minerText = Component.literal(""); // Animated text for "Miner Bow" with RGB wave effect
+        String text = itemLine(stack.getDescriptionId(), "item.mccourse.", "", "_", " "),
+                on = itemLines(text) + message;
+        for (int i = 0; i < on.length(); i++) {
+            int colorIndex = (i - shift + COLORS.length) % COLORS.length; // Adjust to move colors from left to right
+            minerText.append(Component.literal(String.valueOf(on.charAt(i)))
+                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(COLORS[colorIndex]))));
+        }
+        playerRGB(player, minerText);
     }
 
     // CUSTOM METHOD - UNIQUE message

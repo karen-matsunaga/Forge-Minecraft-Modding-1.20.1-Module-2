@@ -10,6 +10,7 @@ import net.karen.mccourse.sound.ModSounds;
 import net.karen.mccourse.util.ModTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -456,7 +457,12 @@ public class ModItems {
     public static final RegistryObject<Item> TORCH_BALL = registerItem("torch_ball",
             () -> new TorchBallItem(new Item.Properties().fireResistant().stacksTo(1)));
 
-    // Insert in MCCourseMod.java file
+    // Saturation Gem Effect
+    public static final RegistryObject<Item> SATURATION_GEM_EFFECT = registerItem("saturation_gem_effect",
+            () -> new GemEffectItem(new Item.Properties().fireResistant().stacksTo(1),
+                                    MobEffects.SATURATION, 200, 0));
+
+    // DEFAULT METHOD - Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 
     // CUSTOM METHOD - Register custom items
