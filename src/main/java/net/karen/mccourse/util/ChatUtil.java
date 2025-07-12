@@ -93,6 +93,11 @@ public class ChatUtil { // GENERAL METHODS
         tooltip.add(standardTranslatable(message));
     }
 
+    // CUSTOM METHOD - Text appears on TOOLTIP item (Translatable version) with color
+    public static void tooltipLineTranslatable(List<Component> tooltip, String message, ChatFormatting color) {
+        tooltip.add(componentTranslatable(message, color));
+    }
+
     // CUSTOM METHOD - Text appears on TOOLTIP item with BOLD format
     public static void tooltipLineBold(List<Component> tooltip, String message, ChatFormatting color) {
         tooltip.add(componentLiteralStyle(message, color));

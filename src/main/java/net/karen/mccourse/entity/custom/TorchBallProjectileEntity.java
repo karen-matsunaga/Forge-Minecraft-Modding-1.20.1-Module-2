@@ -1,10 +1,7 @@
 package net.karen.mccourse.entity.custom;
 
 import net.karen.mccourse.entity.ModEntities;
-import net.karen.mccourse.item.ModItems;
 import net.minecraft.core.*;
-import net.minecraft.nbt.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.*;
@@ -12,13 +9,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 public class TorchBallProjectileEntity extends ThrowableItemProjectile {
-    public TorchBallProjectileEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
-        super(entityType, level);
-    }
+    public TorchBallProjectileEntity(EntityType<? extends ThrowableItemProjectile> entityType,
+                                     Level level) { super(entityType, level); }
 
     public TorchBallProjectileEntity(Level level) {
         this(ModEntities.TORCH_BALL_PROJECTILE.get(), level);
@@ -29,30 +24,40 @@ public class TorchBallProjectileEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    protected @NotNull Item getDefaultItem() { return ModItems.TORCH_BALL.get(); }
+    protected @NotNull Item getDefaultItem() { return Blocks.TORCH.asItem(); }
 
     @Override
     protected void onHitBlock(@NotNull BlockHitResult result) {
         super.onHitBlock(result);
         if (level().isClientSide()) { return; }
-        BlockPos hitPos = result.getBlockPos().relative(result.getDirection());
-        Direction hitDirection = result.getDirection();
-        ItemStack thrownStack = this.getItem();
-        CompoundTag tag = thrownStack.getTag();
-        Block blockToPlace = Blocks.TORCH;
-        if (tag != null && tag.contains("PlaceBlock", Tag.TAG_STRING)) {
-            ResourceLocation id = ResourceLocation.tryParse(tag.getString("PlaceBlock"));
-            if (id != null && ForgeRegistries.BLOCKS.containsKey(id)) { blockToPlace = ForgeRegistries.BLOCKS.getValue(id); }
+        Direction hitDir = result.getDirection();
+        BlockPos hitPos = result.getBlockPos(), placePos;
+        BlockState placeState = null;
+        Block torch = Blocks.TORCH, wallTorch = Blocks.WALL_TORCH,
+              blockToPlace = getItem().getItem() instanceof BlockItem item ? item.getBlock() : torch; // Get the associated item
+        if (blockToPlace == torch || blockToPlace == wallTorch) {
+            if (hitDir == Direction.UP) {
+                placePos = hitPos.above(); // Place a normal torch on top of the block
+                placeState = torch.defaultBlockState();
+            }
+            else if (hitDir.getAxis().isHorizontal()) {
+                placePos = hitPos.relative(hitDir); // Air block where the torch will be placed
+                if (!level().getBlockState(hitPos).isSolidRender(level(), hitPos)) { return; } // Check if the wall is solid
+                if (WallTorchBlock.FACING.getPossibleValues().contains(hitDir)) { // Check the direction is valid
+                    placeState = wallTorch.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, hitDir);
+                    level().setBlock(placePos, placeState, Block.UPDATE_ALL_IMMEDIATE); // Place the torch in the air, glued to the wall
+                }
+            }
+            else { return; } // Does not support placement on the ceiling
         }
-        BlockState placeState;
-        if (blockToPlace == Blocks.TORCH || blockToPlace == Blocks.WALL_TORCH) {
-            if (hitDirection == Direction.UP) { placeState = Blocks.TORCH.defaultBlockState(); }
-            else { placeState = Blocks.WALL_TORCH.defaultBlockState().setValue(WallTorchBlock.FACING, hitDirection.getOpposite()); }
+        else { // Place normal blocks on any valid face
+            placePos = hitPos.relative(hitDir);
+            placeState = blockToPlace.defaultBlockState();
         }
-        else { placeState = blockToPlace != null ? blockToPlace.defaultBlockState() : null; }
-        if (level().getBlockState(hitPos).isAir()) {
-            if (placeState != null && placeState.canSurvive(level(), hitPos)) { level().setBlockAndUpdate(hitPos, placeState); }
+
+        if (placeState != null && level().getBlockState(placePos).isAir() && placeState.canSurvive(level(), placePos)) {
+            level().setBlockAndUpdate(placePos, placeState); // Place the block if the location is empty and can hold it
         }
-        this.discard();
+        this.discard(); // Remove the entity after use
     }
 }

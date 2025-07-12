@@ -28,7 +28,7 @@ import net.minecraft.network.chat.*;
 import net.minecraft.server.level.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
-import net.minecraft.util.RandomSource;
+import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.minecraft.world.effect.*;
 import net.minecraft.world.entity.*;
@@ -1242,6 +1242,18 @@ public class ModEvents {
         if (event.getDuration() <= 0) { Utils.clear(); } // Ensures you don't get stuck
     }
 
+    @SubscribeEvent
+    public static void onComputeFov(ViewportEvent.ComputeFov event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) { return; }
+        ItemStack stack = player.getUseItem();
+        if (!stack.isEmpty() && stack.getItem() instanceof MinerBowItem && player.isUsingItem()) {
+            int useDuration = stack.getUseDuration(), useTicks = player.getUseItemRemainingTicks();
+            float charge = Mth.clamp((useDuration - useTicks) / 20.0F, 0.0F, 1.0F);
+            event.setFOV(event.getFOV() * (1.0F - (charge * 0.1F))); // Applies zoom
+        }
+    }
+
     // CUSTOM EVENT - Block TOOLTIP name
     @SubscribeEvent
     public static void onBlockTooltip(ItemTooltipEvent event) {
@@ -1295,6 +1307,8 @@ public class ModEvents {
     }
 
     // CUSTOM EVENT - Infinite JUMP
+    private static boolean wasJumping = false;
+
     @SubscribeEvent
     public static void playerInfiniteJumpOnClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) { return; }
@@ -1302,10 +1316,11 @@ public class ModEvents {
         Player player = mc.player;
         if (player == null || mc.level == null) { return; }
         double x = player.getDeltaMovement().x, z = player.getDeltaMovement().z;
-        KeyMapping jump = mc.options.keyJump;
-        if (jump.consumeClick() && jump.isDown()) { // Check if the pulse key is being pressed
+        boolean isJumping = mc.options.keyJump.isDown();
+        if (isJumping && !wasJumping) { // Check if the pulse key is being pressed
             if (!player.onGround()) { player.setDeltaMovement(x, 0.42, z); } // Applies the boost only if not on the ground
             else { player.jumpFromGround(); } // Default jump if on the ground
         }
+        wasJumping = isJumping;
     }
 }
