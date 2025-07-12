@@ -17,12 +17,13 @@ public class ModEntities {
 
     // Register all custom entity projectiles
     public static final RegistryObject<EntityType<DiceProjectileEntity>> DICE_PROJECTILE =
-            ENTITY_TYPES.register("dice_projectile", () -> EntityType.Builder.<DiceProjectileEntity>of(DiceProjectileEntity::new, MobCategory.MISC)
-                        .sized(0.5f, 0.5f)
-                        .clientTrackingRange(4)
-                        .updateInterval(20)
-                        .setCustomClientFactory(((spawnEntity, level) -> new DiceProjectileEntity(level)))
-                        .build("dice_projectile"));
+            ENTITY_TYPES.register("dice_projectile",
+            () -> EntityType.Builder.<DiceProjectileEntity>of(DiceProjectileEntity::new, MobCategory.MISC)
+                                    .sized(0.5f, 0.5f)
+                                    .clientTrackingRange(4)
+                                    .updateInterval(20)
+                                    .setCustomClientFactory(((spawnEntity, level) -> new DiceProjectileEntity(level)))
+                                    .build("dice_projectile"));
 
     public static final RegistryObject<EntityType<MagicProjectileEntity>> MAGIC_PROJECTILE =
             ENTITY_TYPES.register("magic_projectile",
@@ -31,6 +32,15 @@ public class ModEntities {
                                             .clientTrackingRange(4)
                                             .updateInterval(20)
                                             .build("magic_projectile"));
+
+    public static final RegistryObject<EntityType<TorchBallProjectileEntity>> TORCH_BALL_PROJECTILE =
+            ENTITY_TYPES.register("torch_ball_projectile",
+                    () -> EntityType.Builder.<TorchBallProjectileEntity>of(TorchBallProjectileEntity::new, MobCategory.MISC)
+                                            .sized(0.5f, 0.5f)
+                                            .clientTrackingRange(4)
+                                            .updateInterval(20)
+                                            .setCustomClientFactory((((spawnEntity, level) -> new TorchBallProjectileEntity(level))))
+                                            .build("torch_ball_projectile"));
 
     // Register all custom ender pearl
     public static final RegistryObject<EntityType<BouncyBallsProjectileEntity>> BOUNCY_BALLS_PROJECTILE =

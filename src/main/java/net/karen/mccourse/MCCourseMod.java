@@ -179,6 +179,8 @@ public class MCCourseMod {
                 EntityRenderers.register(ModEntities.MAGIC_PROJECTILE.get(), MagicProjectileRenderer::new);
                 // Adding Bouncy Balls Projectile's custom projectile entity renderer
                 EntityRenderers.register(ModEntities.BOUNCY_BALLS_PROJECTILE.get(), ThrownItemRenderer::new);
+                // Adding Torch Ball Projectile's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.TORCH_BALL_PROJECTILE.get(), ThrownItemRenderer::new);
                 // Adding Boat's custom projectile entity renderer
                 EntityRenderers.register(ModEntities.MOD_BOAT.get(), context -> new ModBoatRenderer(context, false));
                 // Adding Chest Boat's custom projectile entity renderer

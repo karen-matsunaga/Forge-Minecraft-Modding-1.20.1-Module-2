@@ -172,7 +172,7 @@ public class ModCreativeModeTabs {
                         // Kaupen's custom furnace
                         output.accept(ModBlocks.KAUPEN_FURNACE_BLOCK.get());
 
-                        // Custom armor and tool
+                        // Custom armors and tools
                         output.accept(ModItems.PINK_HELMET.get());
                         output.accept(ModItems.PINK_CHESTPLATE.get());
                         output.accept(ModItems.PINK_LEGGINGS.get());
@@ -197,7 +197,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.COPPER_AXE.get());
                         output.accept(ModItems.COPPER_HOE.get());
 
-                        // Custom ender pearl
+                        // Bouncy Balls
                         output.accept(ModItems.BOUNCY_BALLS.get());
                         output.accept(ModItems.BOUNCY_BALLS_PARTICLES.get());
 
@@ -254,7 +254,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.NETHERITE_PAXEL.get());
                         output.accept(ModItems.LAPIS_LAZULI_PAXEL.get()); // Lapis Lazuli Paxel
 
-                        // My custom ore
+                        // Custom ores
                         output.accept(ModItems.PINK.get());
                         output.accept(ModBlocks.PINK_BLOCK.get());
                         output.accept(ModBlocks.PINK_ORE.get());
@@ -262,7 +262,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.END_STONE_PINK_ORE.get());
                         output.accept(ModBlocks.NETHER_PINK_ORE.get());
 
-                        // My Disenchanted custom block
+                        // Disenchanted custom block
                         output.accept(ModBlocks.DISENCHANTED_BLOCK.get());
 
                         // Luck custom generator enchanted book
@@ -270,7 +270,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.PICKAXE_LUCK.get());
                         output.accept(ModItems.WEAPON_LUCK.get());
 
-                        // My Craft custom crafting table
+                        // Custom crafting table
                         output.accept(ModBlocks.CRAFT_CRAFTING_TABLE.get());
 
                         // Hammer
@@ -321,6 +321,9 @@ public class ModCreativeModeTabs {
                         // Mccourse glass
                         output.accept(ModBlocks.MCCOURSE_GLASS_BLOCK.get());
                         output.accept(ModBlocks.MCCOURSE_GLASS_PANE_BLOCK.get());
+
+                        // Torch Ball
+                        output.accept(ModItems.TORCH_BALL.get());
                     }).build());
 
     // Registry Creative Mode Tab

@@ -106,7 +106,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.CATTAIL);
         simpleItem(ModItems.CATTAIL_SEEDS);
 
-        // My custom armor and tool
+        // Custom armors and tools
         simpleItem(ModItems.PINK_HELMET);
         simpleItem(ModItems.PINK_CHESTPLATE);
         simpleItem(ModItems.PINK_LEGGINGS);
@@ -139,7 +139,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.NETHERITE_PAXEL);
         handheldItem(ModItems.LAPIS_LAZULI_PAXEL);
 
-        // My custom ender pearl
+        // Bouncy Balls
         simpleItem(ModItems.BOUNCY_BALLS);
         simpleItem(ModItems.BOUNCY_BALLS_PARTICLES);
 
@@ -161,7 +161,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.WOODEN_HAMMER);
         handheldItem(ModItems.MCCOURSE_HAMMER);
 
-        // My custom ore
+        // Custom ores
         simpleItem(ModItems.PINK);
 
         // Luck custom generator enchanted book
@@ -207,6 +207,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.ULTRA_COMPACTOR);
         simpleItem(ModItems.PINK_ULTRA_COMPACTOR);
         simpleItem(ModItems.GROWTH);
+        simpleItem(ModItems.TORCH_BALL);
 
         // Fishing Rod
         fishingRodWithCastOverride(ModItems.MCCOURSE_FISHING_ROD);

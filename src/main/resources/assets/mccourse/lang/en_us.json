@@ -231,6 +231,7 @@
 
   "item.mccourse.bouncy_balls": "Bouncy Balls",
   "item.mccourse.bouncy_balls_particles": "Bouncy Balls Particles",
+  "item.mccourse.torch_ball": "Torch Ball",
 
   "tooltip.mccourse.modes_pickaxe.tooltip.shift": "§l§3Pickaxe break 3x3 area §a auto smelt§3, §a more ores§3 and §a magnetic§3 different speed mine",
   "tooltip.mccourse.modes_pickaxe.tooltip": "Press §eSHIFT§r for more Information",
