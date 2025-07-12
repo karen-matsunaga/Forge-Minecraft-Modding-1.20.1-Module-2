@@ -1302,7 +1302,7 @@ public class ModEvents {
                 String str = line.getString();
                 if (str.contains("Attack") || str.contains("Speed")) { insertIndex = i + 1; } // After the last attribute
             }
-            tooltip.add(insertIndex, componentLiteral("Lucky Bomb: 5% Chance to MULTIPLIER x50 drops", gold));
+            tooltip.add(insertIndex, componentTranslatable("tooltip.luckybomb.description", gold));
         }
     }
 

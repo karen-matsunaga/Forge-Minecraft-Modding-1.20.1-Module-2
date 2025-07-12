@@ -243,6 +243,8 @@
   "tooltip.mccourse.modes_pickaxe.tooltip.shift": "§l§3Pickaxe break 3x3 area §a auto smelt§3, §a more ores§3 and §a magnetic§3 different speed mine",
   "tooltip.mccourse.modes_pickaxe.tooltip": "Press §eSHIFT§r for more Information",
 
+  "tooltip.luckybomb.description": "Lucky Bomb: 5% Chance to MULTIPLIER x50 drops",
+
   "block.mccourse.ender_pearl_block": "Ender Pearl Block",
 
   "block.mccourse.green_ender_pearl_block": "Green Ender Pearl Block",
