@@ -96,6 +96,11 @@
   "item.minecraft.lingering_potion.effect.haste_potion": "Haste Lingering Potion",
   "item.minecraft.tipped_arrow.effect.haste_potion": "Arrow of Haste",
 
+  "item.minecraft.potion.effect.saturation_potion": "Saturation Potion",
+  "item.minecraft.splash_potion.effect.saturation_potion": "Saturation Splash Potion",
+  "item.minecraft.lingering_potion.effect.saturation_potion": "Saturation Lingering Potion",
+  "item.minecraft.tipped_arrow.effect.saturation_potion": "Arrow of Saturation",
+
   "effect.mccourse.nothing": "Nothing",
   "item.minecraft.potion.effect.nothing_potion": "Nothing Potion",
   "item.minecraft.splash_potion.effect.nothing_potion": "Nothing Splash Potion",

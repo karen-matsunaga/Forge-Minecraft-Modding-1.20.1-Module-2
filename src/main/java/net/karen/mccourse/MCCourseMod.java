@@ -94,6 +94,7 @@ public class MCCourseMod {
             ModPotionsRecipes.addRecipe(ModPotions.FLY_POTION.get(), Blocks.EMERALD_BLOCK, ModPotions.FLY_II_POTION.get());
             ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.CARROT, ModPotions.HASTE_POTION.get());
             ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.GLOWSTONE, ModPotions.NOTHING_POTION.get());
+            ModPotionsRecipes.addRecipe(Potions.AWKWARD, Items.COOKED_BEEF, ModPotions.SATURATION_POTION.get());
 
             // Added custom Surface Rules
             SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MOD_ID, ModSurfaceRules.makeRules());

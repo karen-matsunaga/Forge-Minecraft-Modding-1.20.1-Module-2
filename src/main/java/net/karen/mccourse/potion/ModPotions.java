@@ -34,5 +34,9 @@ public class ModPotions {
     public static final RegistryObject<Potion> NOTHING_POTION = POTIONS.register("nothing_potion",
             () -> new Potion(new MobEffectInstance(ModEffects.NOTHING_EFFECT.get(), 2000, 0)));
 
+    // Saturation's potion register
+    public static final RegistryObject<Potion> SATURATION_POTION = POTIONS.register("saturation_potion",
+            () -> new Potion(new MobEffectInstance(MobEffects.SATURATION, 2000, 0)));
+
     public static void register(IEventBus eventBus) { POTIONS.register(eventBus); } // Registry all potions on Forge
 }
