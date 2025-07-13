@@ -9,9 +9,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +21,9 @@ public class ModHelmetItem extends ArmorItem {
     private static final Map<ArmorMaterial, List<MobEffectInstance>> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, List<MobEffectInstance>>())
                  // MINER CUSTOM ARMOR - Added all custom effects or vanilla effects on player used only helmet
-                 .put(ModArmorMaterials.MINER, List.of(helmet(MobEffects.DIG_SPEED, 200, 1))).build();
+                 .put(ModArmorMaterials.MINER, List.of(helmet(MobEffects.DIG_SPEED, 200, 1)))
+                 // PHANTOM CUSTOM ARMOR
+                 .put(ModArmorMaterials.PHANTOM, List.of(helmet(MobEffects.NIGHT_VISION, 200, 0))).build();
 
     public ModHelmetItem(ArmorMaterial material, Type type, Properties properties) {
         super(material, type, properties);
@@ -31,12 +31,22 @@ public class ModHelmetItem extends ArmorItem {
 
     @Override
     public void onArmorTick(ItemStack stack, Level level, Player player) { // Apply effect if player using all parts of armor
-        if (!level.isClientSide() && !player.getInventory().getArmor(3).isEmpty()) { // Player is using Helmet
-            evaluateArmorEffects(player);
-            if (has(player, EquipmentSlot.HEAD).is(ModItems.MINER_HELMET.get())) { // Miner Block
-                BlockPos pos = player.blockPosition();
-                boolean blockAir = level.getBlockState(pos).isAir();
-                if (blockAir) { level.setBlock(pos, ModBlocks.MINER_BLOCK.get().defaultBlockState(), 3); }
+        if (!level.isClientSide()) { // Player is using Helmet
+            if (!player.getInventory().getArmor(0).isEmpty() || !player.getInventory().getArmor(3).isEmpty()) {
+                evaluateArmorEffects(player);
+                if (has(player, EquipmentSlot.HEAD).is(ModItems.MINER_HELMET.get())) { // Miner Block
+                    BlockPos pos = player.blockPosition();
+                    boolean blockAir = level.getBlockState(pos).isAir();
+                    if (blockAir) { level.setBlock(pos, ModBlocks.MINER_BLOCK.get().defaultBlockState(), 3); }
+                }
+                if (has(player, EquipmentSlot.FEET).is(ModItems.PHANTOM_BOOTS.get())) { // Phantom armor
+                    if (!player.isFallFlying() && !player.onGround()) {
+                        if (player.getDeltaMovement().y < 0 && player.getJumpBoostPower() > 0) {
+                            Item item = has(player, EquipmentSlot.FEET).getItem();
+                            if (!(item instanceof ElytraItem)) { player.startFallFlying(); }
+                        }
+                    }
+                }
             }
         }
     }
@@ -57,6 +67,7 @@ public class ModHelmetItem extends ArmorItem {
 
     // CUSTOM METHOD - Player is using same armor material [Helmet]
     private boolean isWearingHelmet(ArmorMaterial mapArmorMaterial, Player player) {
-        return ((ArmorItem) player.getInventory().getArmor(3).getItem()).getMaterial() == mapArmorMaterial; // Helmet
+        return ((ArmorItem) player.getInventory().getArmor(3).getItem()).getMaterial() == mapArmorMaterial || // Helmet
+               ((ArmorItem) player.getInventory().getArmor(0).getItem()).getMaterial() == mapArmorMaterial; // Boots
     }
 }

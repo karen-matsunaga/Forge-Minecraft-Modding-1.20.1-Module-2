@@ -327,6 +327,9 @@ public class ModCreativeModeTabs {
 
                         // Saturation Gem Effect
                         output.accept(ModItems.SATURATION_GEM_EFFECT.get());
+
+                        // Phantom boots
+                        output.accept(ModItems.PHANTOM_BOOTS.get());
                     }).build());
 
     // Registry Creative Mode Tab

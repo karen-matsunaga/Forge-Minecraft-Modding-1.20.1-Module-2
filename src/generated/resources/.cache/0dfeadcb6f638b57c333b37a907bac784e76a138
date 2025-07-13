@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-12T18:55:50.2172236	Item Models: mccourse
+// 1.20.1	2025-07-12T22:23:32.469974	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -163,6 +163,17 @@ c84af5e97e888b084b83c8f83d9423e5eb7d34f7 assets/mccourse/models/item/miner_helme
 79b240ec7ed516998ce448af32b9ba1ad9ca4dea assets/mccourse/models/item/netherite_paxel.json
 e5336f4140d4b01d724048034a0d5ff017bd57c2 assets/mccourse/models/item/orange_modes.json
 69f14bc527b8fd908153ba18e4c2e2a0b027fa4f assets/mccourse/models/item/peat_brick.json
+b59491870457c00201450c497f235443751b2b76 assets/mccourse/models/item/phantom_boots.json
+61054a26bd9260af9d624fd643fc32de86e9de4e assets/mccourse/models/item/phantom_boots_amethyst_trim.json
+9fef2ff925589490173c714699ad55f451bc0b79 assets/mccourse/models/item/phantom_boots_copper_trim.json
+85ac442313009d0323acbb39ff787bb30b1ad815 assets/mccourse/models/item/phantom_boots_diamond_trim.json
+6e55316d2eaf030b01e04f6593a66d243f42c017 assets/mccourse/models/item/phantom_boots_emerald_trim.json
+dc0587736e8526df39ea4eed933bd2aa5cb7950d assets/mccourse/models/item/phantom_boots_gold_trim.json
+d94f89eb7e2623f55fc2091fb57380ee8cceb476 assets/mccourse/models/item/phantom_boots_iron_trim.json
+e47d5c7ea0d303a06dfb41beefd3cc9824f89484 assets/mccourse/models/item/phantom_boots_lapis_trim.json
+8ce128310bb339cc80fd0b5a85c9fd5e36b9d5e6 assets/mccourse/models/item/phantom_boots_netherite_trim.json
+7ecbf4016ac01f36ac7496eceedb061f456ad586 assets/mccourse/models/item/phantom_boots_quartz_trim.json
+8fe1e65620b17e9b8e1c8bfbebaa179301b13610 assets/mccourse/models/item/phantom_boots_redstone_trim.json
 e45deca108f9b769457dd06d84852faaeef9fde2 assets/mccourse/models/item/pickaxe_luck.json
 46fb0a876ce0f22865aa5ac0b3fd61c573abab83 assets/mccourse/models/item/pink.json
 a2d8e496d8148cd2bef17361867af73bb6e9ab53 assets/mccourse/models/item/pink_axe.json

@@ -462,6 +462,10 @@ public class ModItems {
             () -> new GemEffectItem(new Item.Properties().fireResistant().stacksTo(1),
                                     MobEffects.SATURATION, 200, 0));
 
+    // Phantom boots
+    public static final RegistryObject<Item> PHANTOM_BOOTS = registerItem("phantom_boots",
+            () -> new ModArmorItem(ModArmorMaterials.PHANTOM, ArmorItem.Type.BOOTS, new Item.Properties().fireResistant()));
+
     // DEFAULT METHOD - Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 

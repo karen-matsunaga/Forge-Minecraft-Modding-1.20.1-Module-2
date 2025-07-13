@@ -1,5 +1,6 @@
 package net.karen.mccourse.event;
 
+import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -25,6 +26,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.level.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
@@ -32,6 +34,8 @@ import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.minecraft.world.effect.*;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.monster.warden.Warden;
@@ -1293,14 +1297,26 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void activatedLuckyBombOnTooltip(ItemTooltipEvent event) {
-        CompoundTag getTag = event.getItemStack().getTag();
-        if (getTag != null && getTag.getBoolean("LuckyBomb")) {
-            List<Component> tooltip = event.getToolTip();
+        ItemStack stack = event.getItemStack();
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("LuckyBomb")) {
+            List<Component> tooltip = event.getToolTip(); // Original tooltip lines
+            UUID BASE_ATTACK_DAMAGE_UUID = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF"), // Attack Damage UUID
+                 BASE_ATTACK_SPEED_UUID = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3"); // Attack Speed UUID
             int insertIndex = 1; // Pattern: add after attributes (usually after line 1 or 2)
-            for (int i = 0; i < tooltip.size(); i++) {
-                Component line = tooltip.get(i);
-                String str = line.getString();
-                if (str.contains("Attack") || str.contains("Speed")) { insertIndex = i + 1; } // After the last attribute
+            Multimap<Attribute, AttributeModifier> modifiers = stack.getAttributeModifiers(EquipmentSlot.MAINHAND);
+            for (AttributeModifier modifier : modifiers.values()) {
+                UUID id = modifier.getId();
+                if (id.equals(BASE_ATTACK_DAMAGE_UUID) || id.equals(BASE_ATTACK_SPEED_UUID)) {
+                    for (int i = 0; i < tooltip.size(); i++) {
+                        Component comp = tooltip.get(i);
+                        if (comp.getContents() instanceof TranslatableContents translatable) {
+                            String key = translatable.getKey();
+                            if (key.startsWith("attribute.modifier.")) { insertIndex = i + 1; } // After the last attribute
+                        }
+                    }
+                    break;
+                }
             }
             tooltip.add(insertIndex, componentTranslatable("tooltip.luckybomb.description", gold));
         }
@@ -1315,12 +1331,14 @@ public class ModEvents {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         if (player == null || mc.level == null) { return; }
-        double x = player.getDeltaMovement().x, z = player.getDeltaMovement().z;
-        boolean isJumping = mc.options.keyJump.isDown();
-        if (isJumping && !wasJumping) { // Check if the pulse key is being pressed
-            if (!player.onGround()) { player.setDeltaMovement(x, 0.42, z); } // Applies the boost only if not on the ground
-            else { player.jumpFromGround(); } // Default jump if on the ground
+        if (has(player, EquipmentSlot.FEET).is(ModItems.PHANTOM_BOOTS.get())) {
+            double x = player.getDeltaMovement().x, z = player.getDeltaMovement().z;
+            boolean isJumping = mc.options.keyJump.isDown();
+            if (isJumping && !wasJumping) { // Check if the pulse key is being pressed
+                if (!player.onGround()) { player.setDeltaMovement(x, 0.42, z); } // Applies the boost only if not on the ground
+                else { player.jumpFromGround(); } // Default jump if on the ground
+            }
+            wasJumping = isJumping;
         }
-        wasJumping = isJumping;
     }
 }

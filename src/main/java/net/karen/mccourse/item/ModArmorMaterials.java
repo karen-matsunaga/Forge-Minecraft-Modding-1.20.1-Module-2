@@ -24,8 +24,7 @@ public enum ModArmorMaterials implements ArmorMaterial {
         map.put(ArmorItem.Type.HELMET, 5);
     }), 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0F, 0.1F,
             () -> Ingredient.of(ModItems.ALEXANDRITE.get())),
-
-    // My custom armor material
+    // PINK armor material
     PINK("pink", 24, Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
         map.put(ArmorItem.Type.BOOTS, 4);
         map.put(ArmorItem.Type.LEGGINGS, 5);
@@ -33,7 +32,7 @@ public enum ModArmorMaterials implements ArmorMaterial {
         map.put(ArmorItem.Type.HELMET, 5);
     }), 15, SoundEvents.ARMOR_EQUIP_DIAMOND, 3.0F, 0.1F,
             () -> Ingredient.of(ModItems.PINK.get())),
-
+    // COPPER armor material
     COPPER("copper", 24, Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
         map.put(ArmorItem.Type.BOOTS, 4);
         map.put(ArmorItem.Type.LEGGINGS, 5);
@@ -41,11 +40,15 @@ public enum ModArmorMaterials implements ArmorMaterial {
         map.put(ArmorItem.Type.HELMET, 5);
     }), 15, SoundEvents.ARMOR_EQUIP_DIAMOND, 3.0F, 0.1F,
             () -> Ingredient.of(Items.COPPER_INGOT)),
-
+    // MINER armor material
     MINER("miner", 2, Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
-        map.put(ArmorItem.Type.HELMET, 4);
+        map.put(ArmorItem.Type.HELMET, 5);
     }), 1, SoundEvents.ANVIL_PLACE, 1.0F, 0.1F, () -> Ingredient.of(Items.TORCH)),
-
+    // PHANTOM armor material
+    PHANTOM("phantom", 2, Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
+        map.put(ArmorItem.Type.BOOTS, 4);
+    }), 1, SoundEvents.ANVIL_PLACE, 1.0F, 0.1F, () -> Ingredient.of(Items.PHANTOM_MEMBRANE)),
+    // Future armor material ...
     ; // Custom armor
 
     public static final StringRepresentable.EnumCodec<ArmorMaterials> CODEC =
