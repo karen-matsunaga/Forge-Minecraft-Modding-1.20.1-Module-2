@@ -1,7 +1,7 @@
 package net.karen.mccourse.item.custom;
 
-import net.karen.mccourse.util.*;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.*;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.*;
 import java.util.*;
+import static net.karen.mccourse.util.ChatUtil.*;
 import static net.karen.mccourse.util.Utils.*;
 
 // Credits by Kaupenjoe - https://github.com/Kaupenjoe/Forge-Course-1.20.X/tree/22-customHammer
@@ -36,6 +37,21 @@ public class HammerItem extends DiggerItem implements Vanishable {
 
     public int getDistance() { return this.distance; } // Declared DISTANCE activated on ModEvents
 
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level,
+                                @NotNull List<Component> list, @NotNull TooltipFlag flag) {
+        super.appendHoverText(stack, level, list, flag); // Appears tooltip on screen of Hammer.
+        int range = this.radius * 2 + 1, distance = this.distance;
+        tooltipLine(list, "Hammer breaks: " + range + "x" + range + "x" + distance, red);
+        list.add(CommonComponents.EMPTY);
+    }
+
+    @Override
+    public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
+        super.onCraftedBy(stack, level, player);
+        if (infinite) { stack.getOrCreateTag().putBoolean("Unbreakable", true); } // Added Unbreakable tag
+    }
+
     // CUSTOM METHOD - Player to receive the blocks destroyed
     public static List<BlockPos> getBlocksToBeDestroyed(int distance, int radius,
                                                         BlockPos initialBlockPos, ServerPlayer player) {
@@ -54,19 +70,5 @@ public class HammerItem extends DiggerItem implements Vanishable {
             }
         }
         return positions;
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level,
-                                @NotNull List<Component> list, @NotNull TooltipFlag flag) {
-        super.appendHoverText(stack, level, list, flag); // Appears tooltip on screen of Hammer.
-        int range = this.radius * 2 + 1, distance = this.distance;
-        ChatUtil.tooltipLine(list, "Hammer breaks: " + range + "x" + range + "x" + distance, Utils.red);
-    }
-
-    @Override
-    public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
-        super.onCraftedBy(stack, level, player);
-        if (infinite) { stack.getOrCreateTag().putBoolean("Unbreakable", true); } // Added Unbreakable tag
     }
 }
