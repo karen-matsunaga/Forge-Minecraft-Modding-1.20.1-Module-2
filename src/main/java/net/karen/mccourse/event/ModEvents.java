@@ -1243,14 +1243,14 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void onComputeFov(ViewportEvent.ComputeFov event) {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (player == null) { return; }
-        ItemStack stack = player.getUseItem();
-        if (!stack.isEmpty() && stack.getItem() instanceof MinerBowItem && player.isUsingItem()) {
-            int useDuration = stack.getUseDuration(), useTicks = player.getUseItemRemainingTicks();
-            float charge = Mth.clamp((useDuration - useTicks) / 20.0F, 0.0F, 1.0F);
-            event.setFOV(event.getFOV() * (1.0F - (charge * 0.1F))); // Applies zoom
+    public static void registerOnComputeFov(ComputeFovModifierEvent event) {
+        Player player = event.getPlayer();
+        if (player.isUsingItem() && player.getUseItem().getItem() == ModItems.MINER_BOW.get()) { // Used Miner Bow item
+            float fovModifier = 1f, deltaTicks = (float) event.getPlayer().getTicksUsingItem() / 20f;
+            if (deltaTicks > 1f) { deltaTicks = 1f; }
+            else { deltaTicks *= deltaTicks; }
+            fovModifier *= 1f - deltaTicks * 0.15f;
+            event.setNewFovModifier(fovModifier); // Applies zoom
         }
     }
 
