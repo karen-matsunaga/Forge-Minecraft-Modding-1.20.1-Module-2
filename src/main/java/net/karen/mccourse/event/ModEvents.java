@@ -86,8 +86,8 @@ public class ModEvents {
         // If player destroyed a block with Hammer tool
         if (mainHandItem.getItem() instanceof HammerItem hammer && player instanceof ServerPlayer serverPlayer) {
             // Player's position to break a block with Hammer tool
-            for (BlockPos pos : HammerItem.getBlocksToBeDestroyed(hammer.getDistance(),
-                hammer.getRadius(), initalBlockPos, serverPlayer)) {
+            int distance = hammer.getDistance(), radius = hammer.getRadius();
+            for (BlockPos pos : HammerItem.getBlocksToBeDestroyed(distance, radius, initalBlockPos, serverPlayer)) {
                 boolean item = hammer.isCorrectToolForDrops(mainHandItem, event.getLevel().getBlockState(pos));
                 if (pos == initalBlockPos || !item) { continue; }
                 // Have to add them to a Set otherwise, the same code right here will get called for each block!
