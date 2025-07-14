@@ -330,6 +330,9 @@ public class ModCreativeModeTabs {
 
                         // Phantom boots
                         output.accept(ModItems.PHANTOM_BOOTS.get());
+
+                        // CUSTOM ELYTRA - Diamond Elytra
+                        output.accept(ModItems.DIAMOND_ELYTRA.get());
                     }).build());
 
     // Registry Creative Mode Tab

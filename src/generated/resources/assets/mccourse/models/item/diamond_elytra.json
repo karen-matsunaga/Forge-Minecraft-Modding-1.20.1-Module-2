@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "mccourse:item/broken_diamond_elytra",
+      "predicate": {
+        "minecraft:broken": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "mccourse:item/diamond_elytra"
+  }
+}

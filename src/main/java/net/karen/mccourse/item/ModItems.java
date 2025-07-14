@@ -466,6 +466,10 @@ public class ModItems {
     public static final RegistryObject<Item> PHANTOM_BOOTS = registerItem("phantom_boots",
             () -> new ModArmorItem(ModArmorMaterials.PHANTOM, ArmorItem.Type.BOOTS, new Item.Properties().fireResistant()));
 
+    // CUSTOM ELYTRA - Diamond Elytra
+    public static final RegistryObject<Item> DIAMOND_ELYTRA = registerItem("diamond_elytra",
+            () -> new ElytraOverpower(new Item.Properties().fireResistant().durability(10000).rarity(Rarity.EPIC)));
+
     // DEFAULT METHOD - Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 

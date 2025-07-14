@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-13T16:36:08.1944589	Item Models: mccourse
+// 1.20.1	2025-07-13T22:33:37.9259195	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -60,6 +60,7 @@ cc4ab4468ea9d286c8feaf44809a99228b853eb5 assets/mccourse/models/item/alexandrite
 0a0e8b31353f4a10d661e17f34c70ef4bd1f7b14 assets/mccourse/models/item/blue_modes.json
 9a35f9a5fc9ec9739f56c244d827fdfa5c11ce48 assets/mccourse/models/item/bouncy_balls.json
 d9d8556abb4f89407cf0e75dbb0df47a6e4bd113 assets/mccourse/models/item/bouncy_balls_particles.json
+cdf81a7bbed95cf205b7cffff7a051c7e8e30306 assets/mccourse/models/item/broken_diamond_elytra.json
 d4fec10683a382af96a8b45f15f0414c193fa5da assets/mccourse/models/item/cattail.json
 aefb6b8a7b57b7d9a6980899ce5c3ec630c38e46 assets/mccourse/models/item/cattail_seeds.json
 a9659d8df478e58c0677de141875dacef44f8de9 assets/mccourse/models/item/copper_axe.json
@@ -118,6 +119,7 @@ eac3449dd2f9df65a33456b5098c130c1e050c03 assets/mccourse/models/item/data_tablet
 a567576897ca2ce8cebbb3e1456a450af9c98f17 assets/mccourse/models/item/destroyer.json
 353d243bc541a7f8c1011d586a84bff8a5796fcc assets/mccourse/models/item/destroyer_lucky_bomb_tag.json
 df90b2d235ffbcdb089fe42a6aa9c2c82cde21f4 assets/mccourse/models/item/destroyer_unbreakable_tag.json
+e46435f90670ef639e634ed980ff6e41a8b36acc assets/mccourse/models/item/diamond_elytra.json
 d05b6b7d8b4f3d85ee0762de2644d6dbf0397fd1 assets/mccourse/models/item/diamond_hammer.json
 60df385743dd097d8534a513f066ada5ded41c14 assets/mccourse/models/item/diamond_paxel.json
 eae9ea63d29bcb3e6592ee8132690be675ea7f9f assets/mccourse/models/item/dice.json

@@ -25,6 +25,9 @@ public class ModItemProperties {
 
         // Custom FISHING ROD
         makeFishingRod(ModItems.MCCOURSE_FISHING_ROD.get()); // Mccourse Fishing Rod
+
+        // CUSTOM ELYTRA - Diamond Elytra
+        makeElytra(ModItems.DIAMOND_ELYTRA.get());
     }
 
     // CUSTOM METHOD - Alexandrite shield (CUSTOM SHIELD)
@@ -76,5 +79,11 @@ public class ModItemProperties {
                 if (getTag && hasTag && get.getInt("StoredLevels") > 0) { return 1.0F; } // Has XP
                 return 0.0F; // Hasn't XP
             });
+    }
+
+    // CUSTOM METHOD - Custom Elytra
+    private static void makeElytra(Item item) {
+        ItemProperties.register(item, new ResourceLocation("broken"),
+            (stack, level, entity, i) -> ElytraItem.isFlyEnabled(stack) ? 0.0F : 1.0F);
     }
 }

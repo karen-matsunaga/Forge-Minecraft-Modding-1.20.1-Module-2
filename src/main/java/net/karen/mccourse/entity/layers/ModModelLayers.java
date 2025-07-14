@@ -19,4 +19,8 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation WALNUT_CHEST_BOAT_LAYER = new ModelLayerLocation(
             new ResourceLocation(MCCourseMod.MOD_ID, "chest_boat/walnut"), "main"); // Custom chest boat
+
+    // Registry all custom elytra - DIAMOND ELYTRA
+    public static ModelLayerLocation DIAMOND_ELYTRA_LAYER = new ModelLayerLocation(
+            new ResourceLocation(MCCourseMod.MOD_ID, "diamond_elytra_layer"), "main");
 }

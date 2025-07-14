@@ -222,6 +222,9 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         // Saturation Gem Effect
         simpleItem(ModItems.SATURATION_GEM_EFFECT);
+
+        // CUSTOM ELYTRA - Diamond Elytra
+        elytraModel(ModItems.DIAMOND_ELYTRA);
     }
 
     // Registry all sapling item's models
@@ -317,7 +320,6 @@ public class ModItemModelProvider extends ItemModelProvider {
                   .override().predicate(new ResourceLocation("cast"), 1.0f)
                   .model(new ModelFile.UncheckedModelFile(new ResourceLocation(MCCourseMod.MOD_ID, "item/" + itemName + "_cast")))
                   .end();
-
         // Example: Mccourse Fishing Rod Cast
         getBuilder(itemName + "_cast").parent(new ModelFile.UncheckedModelFile("minecraft:item/fishing_rod"))
                                            .texture("layer0", new ResourceLocation(MCCourseMod.MOD_ID,
@@ -333,9 +335,22 @@ public class ModItemModelProvider extends ItemModelProvider {
                 .override().predicate(new ResourceLocation(MCCourseMod.MOD_ID, "on"), 1.0f)
                 .model(new ModelFile.UncheckedModelFile(new ResourceLocation(MCCourseMod.MOD_ID, "item/" + itemName + "_on")))
                 .end();
-
         // Example: Data Tablet On
         getBuilder(itemName + "_on").parent(new ModelFile.UncheckedModelFile("item/generated"))
                                          .texture("layer0", new ResourceLocation(MCCourseMod.MOD_ID, "item/" + itemName));
+    }
+
+    // CUSTOM METHOD - Custom ELYTRA
+    private void elytraModel(RegistryObject<Item> item) {
+        String itemName = item.getId().getPath();
+        // Diamond Elytra item model
+        getBuilder(itemName).parent(new ModelFile.UncheckedModelFile("item/generated"))
+                            .texture("layer0", modLoc("item/" + itemName)) // Texture Layer
+                            .override().predicate(new ResourceLocation("broken"), 1).model( // Model Layer (Broken)
+                            new ModelFile.UncheckedModelFile(modLoc("item/broken_" + itemName).toString())).end();
+        // Broken Diamond Elytra item model
+        withExistingParent("broken_" + item.getId().getPath(),
+                new ResourceLocation("item/generated")).texture("layer0",
+                new ResourceLocation(MCCourseMod.MOD_ID,"item/broken_" + item.getId().getPath()));
     }
 }
