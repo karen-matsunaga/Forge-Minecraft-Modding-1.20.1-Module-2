@@ -131,6 +131,9 @@
 
   "item.mccourse.dice": "Dice",
 
+  "item.mccourse.tomahawk": "Tomahawk",
+  "entity.mccourse.tomahawk": "Tomahawk",
+
   "entity.mccourse.mod_chest_boat": "Chest Boat",
   "item.mccourse.walnut_boat": "Walnut Boat",
   "item.mccourse.walnut_chest_boat": "Walnut Chest Boat",

@@ -23,4 +23,7 @@ public class ModModelLayers {
     // Registry all custom elytra - DIAMOND ELYTRA
     public static ModelLayerLocation DIAMOND_ELYTRA_LAYER = new ModelLayerLocation(
             new ResourceLocation(MCCourseMod.MOD_ID, "diamond_elytra_layer"), "main");
+
+    public static ModelLayerLocation TOMAHAWK_LAYER = new ModelLayerLocation(
+            new ResourceLocation(MCCourseMod.MOD_ID, "tomahawk_layer"), "main");
 }

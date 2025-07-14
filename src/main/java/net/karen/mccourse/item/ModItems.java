@@ -470,6 +470,10 @@ public class ModItems {
     public static final RegistryObject<Item> DIAMOND_ELYTRA = registerItem("diamond_elytra",
             () -> new ElytraOverpower(new Item.Properties().fireResistant().durability(10000).rarity(Rarity.EPIC)));
 
+    // Tomahawk
+    public static final RegistryObject<Item> TOMAHAWK = registerItem("tomahawk",
+            () -> new TomahawkItem(new Item.Properties().fireResistant().stacksTo(16)));
+
     // DEFAULT METHOD - Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 

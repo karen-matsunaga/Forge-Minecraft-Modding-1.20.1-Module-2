@@ -62,6 +62,14 @@ public class ModEntities {
                         EntityType.Builder.<ModChestBoatEntity>of(ModChestBoatEntity::new, MobCategory.MISC)
                                           .sized(1.375f, 0.5625f).build("mod_chest_boat")); // Custom chest boat
 
+    public static final RegistryObject<EntityType<TomahawkProjectileEntity>> TOMAHAWK_PROJECTILE =
+            ENTITY_TYPES.register("tomahawk_projectile",
+                    () -> EntityType.Builder.<TomahawkProjectileEntity>of(TomahawkProjectileEntity::new, MobCategory.MISC)
+                            .sized(0.5f, 1.15f)
+                            .clientTrackingRange(4)
+                            .updateInterval(20)
+                            .build("tomahawk_projectile"));
+
     // CUSTOM METHOD - Register all custom entities on forge
     public static void register(IEventBus eventBus) { ENTITY_TYPES.register(eventBus); }
 }

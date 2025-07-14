@@ -186,6 +186,8 @@ public class MCCourseMod {
                 EntityRenderers.register(ModEntities.MOD_BOAT.get(), context -> new ModBoatRenderer(context, false));
                 // Adding Chest Boat's custom projectile entity renderer
                 EntityRenderers.register(ModEntities.MOD_CHEST_BOAT.get(), context -> new ModBoatRenderer(context, true));
+                // Adding Tomahawk Projectile's custom projectile entity renderer
+                EntityRenderers.register(ModEntities.TOMAHAWK_PROJECTILE.get(), TomahawkProjectileRenderer::new);
             });
         }
     }

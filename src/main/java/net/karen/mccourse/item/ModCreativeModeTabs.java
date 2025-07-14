@@ -333,6 +333,9 @@ public class ModCreativeModeTabs {
 
                         // CUSTOM ELYTRA - Diamond Elytra
                         output.accept(ModItems.DIAMOND_ELYTRA.get());
+
+                        // Tomahawk
+                        output.accept(ModItems.TOMAHAWK.get());
                     }).build());
 
     // Registry Creative Mode Tab

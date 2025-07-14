@@ -4,6 +4,7 @@ import net.karen.mccourse.MCCourseMod;
 import net.karen.mccourse.entity.ModEntities;
 import net.karen.mccourse.entity.client.MagicProjectileModel;
 import net.karen.mccourse.entity.client.RhinoModel;
+import net.karen.mccourse.entity.client.TomahawkProjectileModel;
 import net.karen.mccourse.entity.custom.RhinoEntity;
 import net.karen.mccourse.entity.layers.ElytraOverpowerLayer;
 import net.karen.mccourse.entity.layers.ModModelLayers;
@@ -36,6 +37,7 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.WALNUT_CHEST_BOAT_LAYER,
                                       ChestBoatModel::createBodyModel); // Chest Boat's layer
         event.registerLayerDefinition(ModModelLayers.DIAMOND_ELYTRA_LAYER, ElytraModel::createLayer); // Diamond Elytra layer
+        event.registerLayerDefinition(ModModelLayers.TOMAHAWK_LAYER, TomahawkProjectileModel::createBodyLayer); // Tomahawk layer
     }
 
     // CUSTOM EVENT - Registry all custom entities layers

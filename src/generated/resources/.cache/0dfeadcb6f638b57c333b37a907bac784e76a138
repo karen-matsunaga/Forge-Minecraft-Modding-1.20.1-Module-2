@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-13T22:33:37.9259195	Item Models: mccourse
+// 1.20.1	2025-07-14T19:25:36.1934178	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -241,6 +241,7 @@ d890745bc92e5639d4db062935218a0ef60c01fa assets/mccourse/models/item/raw_alexand
 8c4f2c3efca28e19d2e4d844a3df06a592f509eb assets/mccourse/models/item/special_metal_detector.json
 47d43cc15bf0c44cbca7be9f3fcca852f46227cb assets/mccourse/models/item/stone_hammer.json
 a35ec07586fc0b01f05633aab534110c9fbb1079 assets/mccourse/models/item/stone_paxel.json
+cd8a88b6410812e1a1202abecd0ee54cca4b359a assets/mccourse/models/item/tomahawk.json
 a480ce6f4aa41a31cd8f708bc7568a4ae3d8053c assets/mccourse/models/item/torch_ball.json
 15c35e6309dcef2bae2f181cdb5da31e1e8a6c4c assets/mccourse/models/item/ultra_compactor.json
 70097c9e1582a493e11101db7cf6b0365165a514 assets/mccourse/models/item/vault.json
