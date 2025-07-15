@@ -35,6 +35,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         // Foods
         simpleItem(ModItems.KOHLRABI);
+        simpleItem(ModItems.COFFEE);
 
         // Custom Advanced Item
         simpleItem(ModItems.METAL_DETECTOR);

@@ -336,6 +336,9 @@ public class ModCreativeModeTabs {
 
                         // Tomahawk
                         output.accept(ModItems.TOMAHAWK.get());
+
+                        // Coffee custom food
+                        output.accept(ModItems.COFFEE.get());
                     }).build());
 
     // Registry Creative Mode Tab

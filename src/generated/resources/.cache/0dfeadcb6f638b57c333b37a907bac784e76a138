@@ -1,4 +1,4 @@
-// 1.20.1	2025-07-14T22:03:50.3820171	Item Models: mccourse
+// 1.20.1	2025-07-15T18:11:29.2221319	Item Models: mccourse
 71badbc60185c294e740a7e69a688a1a52a23e11 assets/mccourse/models/item/alexandrite.json
 2708264e5c6062ce8fed21db45430ddac33ffa5c assets/mccourse/models/item/alexandrite_axe.json
 72d37254e792abb0a7590844f73b9f28521ca604 assets/mccourse/models/item/alexandrite_boots.json
@@ -63,6 +63,7 @@ d9d8556abb4f89407cf0e75dbb0df47a6e4bd113 assets/mccourse/models/item/bouncy_ball
 cdf81a7bbed95cf205b7cffff7a051c7e8e30306 assets/mccourse/models/item/broken_diamond_elytra.json
 d4fec10683a382af96a8b45f15f0414c193fa5da assets/mccourse/models/item/cattail.json
 aefb6b8a7b57b7d9a6980899ce5c3ec630c38e46 assets/mccourse/models/item/cattail_seeds.json
+51e75cd333950a7884727b1c447ad4dc3308b0e9 assets/mccourse/models/item/coffee.json
 a9659d8df478e58c0677de141875dacef44f8de9 assets/mccourse/models/item/copper_axe.json
 41d2e24f76055db94e94c10e4e4a504b7111d3bc assets/mccourse/models/item/copper_boots.json
 f1c6161c9a287968020d0592ee07dfd127a10d85 assets/mccourse/models/item/copper_boots_amethyst_trim.json

@@ -5,9 +5,12 @@ import net.minecraft.world.food.FoodProperties;
 import static net.karen.mccourse.util.Utils.effect;
 
 public class ModFoodProperties {
-    // Registry all custom foods
+    // Registry all custom foods with effect
     public static final FoodProperties KOHLRABI = registerFoodEffect(3, 0.25F, MobEffects.MOVEMENT_SPEED,
                                                                      200, 0, 0.1F);
+
+    // Registry all custom foods without effect
+    public static final FoodProperties COFFEE = registerFood(1, 0.1F);
 
     // CUSTOM METHOD - Registry all custom foods WITH effect
     private static FoodProperties registerFoodEffect(int nutrition, float saturation,

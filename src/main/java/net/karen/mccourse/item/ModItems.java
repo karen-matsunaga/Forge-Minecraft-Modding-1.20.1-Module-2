@@ -474,6 +474,10 @@ public class ModItems {
     public static final RegistryObject<Item> TOMAHAWK = registerItem("tomahawk",
             () -> new TomahawkItem(new Item.Properties().fireResistant().stacksTo(1)));
 
+    // Coffee custom food
+    public static final RegistryObject<Item> COFFEE = registerItem("coffee",
+            () -> new Item(new Item.Properties().food(ModFoodProperties.COFFEE)));
+
     // DEFAULT METHOD - Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
 
