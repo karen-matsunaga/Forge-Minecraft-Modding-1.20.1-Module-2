@@ -2,17 +2,14 @@ package net.karen.mccourse.entity.custom;
 
 import net.karen.mccourse.entity.ModEntities;
 import net.karen.mccourse.item.ModItems;
-import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.*;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
 
 public class TomahawkProjectileEntity extends AbstractArrow {
@@ -52,14 +49,25 @@ public class TomahawkProjectileEntity extends AbstractArrow {
     public boolean onGround() { return inGround; }
 
     @Override
+    protected void onHit(@NotNull HitResult result) {
+        super.onHit(result);
+        if (!this.level().isClientSide()) { this.discard(); } // Remove Tomahawk item when wrong target
+    }
+
+    @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
         super.onHitEntity(result);
         Entity entity = result.getEntity();
         entity.hurt(this.damageSources().thrown(this, this.getOwner()), 4);
-        if (!this.level().isClientSide()) {
-            this.level().broadcastEntityEvent(this, (byte)3);
-            this.discard();
+        Level level = this.level();
+        BlockPos pos = result.getEntity().getOnPos();
+        if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
+            this.level().broadcastEntityEvent(this, (byte) 3);
+            // Lightning bolt spawn when hit an entity
+            EntityType.LIGHTNING_BOLT.spawn(serverLevel, null, (Player) null, pos, MobSpawnType.TRIGGERED,
+                                                    true, true);
         }
+        this.discard(); // Remove Tomahawk when hit an entity (Animal, Mobs, etc.)
     }
 
     @Override

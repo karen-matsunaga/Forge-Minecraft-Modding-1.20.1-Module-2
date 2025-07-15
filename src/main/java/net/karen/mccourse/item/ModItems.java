@@ -472,7 +472,7 @@ public class ModItems {
 
     // Tomahawk
     public static final RegistryObject<Item> TOMAHAWK = registerItem("tomahawk",
-            () -> new TomahawkItem(new Item.Properties().fireResistant().stacksTo(16)));
+            () -> new TomahawkItem(new Item.Properties().fireResistant().stacksTo(1)));
 
     // DEFAULT METHOD - Insert in MCCourseMod.java file
     public static void register(IEventBus eventBus) { ITEMS.register(eventBus); }
